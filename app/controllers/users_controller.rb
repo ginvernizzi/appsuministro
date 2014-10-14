@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  before_action :signed_in_user, only: [:edit, :update]
+  before_action :correct_user,   only: [:edit, :update]
 
   # GET /users
   # GET /users.json
@@ -73,5 +74,14 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+    def signed_in_user
+      redirect_to signin_url, notice: "Por favor ingrese a la aplicacion" unless signed_in?
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless current_user?(@user)
     end
 end
