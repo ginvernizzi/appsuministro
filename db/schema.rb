@@ -11,10 +11,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014044936) do
+ActiveRecord::Schema.define(version: 20141020170313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bienes_de_consumo", force: true do |t|
+    t.string   "nombre"
+    t.string   "codigo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bienes_de_consumo_de_recepcion", force: true do |t|
+    t.integer  "bien_de_consumo_id"
+    t.integer  "cantidad"
+    t.decimal  "costo"
+    t.integer  "recepcion_de_bien_de_consumo_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bienes_de_consumo_de_recepcion", ["bien_de_consumo_id"], name: "index_bienes_de_consumo_de_recep_on_bien_de_consumo_id", using: :btree
+  add_index "bienes_de_consumo_de_recepcion", ["recepcion_de_bien_de_consumo_id"], name: "index_bienes_de_consumo_de_recep_on_recep_de_bien_de_consumo_id", using: :btree
+
+  create_table "documentos_de_recepcion", force: true do |t|
+    t.integer  "tipo_de_documento_id"
+    t.string   "numero_de_documento"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "documentos_de_recepcion", ["tipo_de_documento_id"], name: "index_documentos_de_recepcion_on_tipo_de_documento_id", using: :btree
+
+  create_table "documentos_de_recepcion_recepciones_de_bien_de_consumo", id: false, force: true do |t|
+    t.integer "documento_de_recepcion_id",       null: false
+    t.integer "recepcion_de_bien_de_consumo_id", null: false
+  end
+
+  add_index "documentos_de_recepcion_recepciones_de_bien_de_consumo", ["documento_de_recepcion_id", "recepcion_de_bien_de_consumo_id"], name: "index_doc_de_recep_recep_de_bien_de_consumo", using: :btree
+
+  create_table "recepciones_de_bien_de_consumo", force: true do |t|
+    t.datetime "fecha"
+    t.integer  "estado"
+    t.text     "descripcion_provisoria"
+    t.integer  "documento_de_recepcion_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "recepciones_de_bien_de_consumo", ["documento_de_recepcion_id"], name: "index_recep_de_bien_de_consumo_on_doc_de_recep_id", using: :btree
+
+  create_table "tipos_de_documentos", force: true do |t|
+    t.string   "nombre"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "name"
