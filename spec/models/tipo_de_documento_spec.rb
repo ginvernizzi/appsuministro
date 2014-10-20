@@ -1,5 +1,11 @@
 require 'spec_helper'
 
 describe TipoDeDocumento do
-  pending "add some examples to (or delete) #{__FILE__}"
+    before {
+  		@tipo_de_docuemento = TipoDeDocumento.new 
+  	}
+
+	subject { @tipo_de_docuemento }
+
+  	it { should validate_presence_of(:nombre) }
 end

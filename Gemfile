@@ -15,6 +15,8 @@ gem 'coffee-rails', '~> 4.0.0'
 # gem 'therubyracer',  platforms: :ruby
 
 group :development, :test do  
+  gem 'minitest'
+  gem 'shoulda-matchers'
   gem 'rspec-rails', '2.13.1'
 end
 

@@ -1,5 +1,15 @@
 require 'spec_helper'
 
 describe BienDeConsumo do
-  pending "add some examples to (or delete) #{__FILE__}"
+  	before {
+  		@bien_de_consumo = BienDeConsumo.new 
+  	}
+
+	subject { @bien_de_consumo }
+
+  	it { should respond_to(:nombre)}
+  	it { should respond_to(:codigo)}
+  	it { should validate_presence_of(:nombre) }
+  	it { should validate_presence_of(:codigo) }
 end
+

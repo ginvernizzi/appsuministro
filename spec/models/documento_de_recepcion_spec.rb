@@ -1,5 +1,11 @@
 require 'spec_helper'
 
 describe DocumentoDeRecepcion do
-  pending "add some examples to (or delete) #{__FILE__}"
+ 	before {
+  		@documento_de_recepcion = DocumentoDeRecepcion.new 
+  	}
+
+	subject { @documento_de_recepcion }
+
+  	it { should validate_presence_of(:numero_de_documento) }
 end
