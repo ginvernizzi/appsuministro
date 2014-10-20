@@ -14,3 +14,11 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'tipo_de_documento', 'tipos_de_documentos'
+  inflect.irregular 'documento_de_recepcion', 'documentos_de_recepcion'
+  inflect.irregular 'documento_de_recepcion_secundario', 'documentos_de_recepcion_secundarios'
+  inflect.irregular 'bien_de_consumo', 'bienes_de_consumo'
+  inflect.irregular 'bien_de_consumo_de_recepcion', 'bienes_de_consumo_de_recepcion'
+  inflect.irregular 'recepcion_de_bien_de_consumo', 'recepciones_de_bien_de_consumo'
+end
