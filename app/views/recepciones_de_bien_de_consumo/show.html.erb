@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @recepcion_de_bien_de_consumo.fecha %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @recepcion_de_bien_de_consumo.estado %>
+</p>
+
+<p>
+  <strong>Descripcion provisoria:</strong>
+  <%= @recepcion_de_bien_de_consumo.descripcion_provisoria %>
+</p>
+
+<%= link_to 'Edit', edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo) %> |
+<%= link_to 'Back', recepciones_de_bien_de_consumo_path %>

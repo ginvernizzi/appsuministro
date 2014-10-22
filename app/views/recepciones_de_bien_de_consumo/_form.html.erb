@@ -1,0 +1,29 @@
+<%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
+  <% if @recepcion_de_bien_de_consumo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>
+
+      <ul>
+      <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :fecha %><br>
+    <%= f.datetime_select :fecha %>
+  </div>
+  <div class="field">
+    <%= f.label :estado %><br>
+    <%= f.number_field :estado %>
+  </div>
+  <div class="field">
+    <%= f.label :descripcion_provisoria %><br>
+    <%= f.text_area :descripcion_provisoria %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

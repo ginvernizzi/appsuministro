@@ -1,0 +1,29 @@
+<h1>Listing recepciones_de_bien_de_consumo</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Estado</th>
+      <th>Descripcion provisoria</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @recepciones_de_bien_de_consumo.each do |recepcion_de_bien_de_consumo| %>
+      <tr>
+        <td><%= recepcion_de_bien_de_consumo.fecha %></td>
+        <td><%= recepcion_de_bien_de_consumo.estado %></td>
+        <td><%= recepcion_de_bien_de_consumo.descripcion_provisoria %></td>
+        <td><%= link_to 'Show', recepcion_de_bien_de_consumo %></td>
+        <td><%= link_to 'Edit', edit_recepcion_de_bien_de_consumo_path(recepcion_de_bien_de_consumo) %></td>
+        <td><%= link_to 'Destroy', recepcion_de_bien_de_consumo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Recepcion de bien de consumo', new_recepcion_de_bien_de_consumo_path %>
