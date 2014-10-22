@@ -30,7 +30,7 @@ describe DocumentoPrincipal do
 	 			@docRecepcion1 = DocumentoDeRecepcion.create!(numero_de_documento: "1", tipo_de_documento: @tddr)
 
 	 			@docPrincipal = DocumentoPrincipal.create!(documento_de_recepcion:@docRecepcion1, 
-			                                       recepcion_de_bien_de_consumo: @rbc)
+			                                               recepcion_de_bien_de_consumo: @rbc)
 	 		end
      		it { 
 	 			#@docPrincipal.recepcion_de_bien_de_consumo.id.should ==  @recepcion_de_bien_de_consumo.id 

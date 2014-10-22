@@ -13,42 +13,54 @@ describe RecepcionDeBienDeConsumo do
 	it { should respond_to(:documento_principal) }
 	it { should respond_to(:documentos_secundario) }
 
-	# describe "relaciones" do
-	# 	describe "documento principal" do
-	# 		before do
-	# 			@tdd = TipoDeDocumento.create!(nombre: "factura")
-	# 			@doc_de_recepcion = @recepcion_de_bien_de_consumo.create_documento_de_recepcion(numero_de_documento:"2", tipo_de_documento: @tdd)
-	# 		end
+	 describe "relaciones" do
+		describe "documento principal" do
+	 		before do	 				 	
 
-	# 		it { 
-	# 			@doc_de_recepcion.recepcion_de_bien_de_consumo.id.should ==  @recepcion_de_bien_de_consumo.id 
-	# 		}
-	# 	end
+	 			@rbc = RecepcionDeBienDeConsumo.create!(fecha:DateTime.now, estado:1)		
 
-	# 	describe "documentos secundario" do
-	# 		before do
-	# 			@factura = TipoDeDocumento.create!(nombre: "factura")
-	# 			@remito = TipoDeDocumento.create!(nombre: "remito")
-	# 			@documentos_de_recepcion1 = @recepcion_de_bien_de_consumo.documentos_de_recepcion.create!(numero_de_documento:"2", tipo_de_documento: @factura)
-	# 			@documentos_de_recepcion2 = @recepcion_de_bien_de_consumo.documentos_de_recepcion.create!(numero_de_documento:"2", tipo_de_documento: @remito)
-	# 		end
+	 			@tddr = TipoDeDocumento.create!(nombre: "remito")	 				 			
 
-	# 		it {
-	# 			doc_rec = @recepcion_de_bien_de_consumo.documentos_de_recepcion.find(@documentos_de_recepcion1.id)
-	# 			doc_rec.tipo_de_documento.nombre.should == "factura"
-	# 		}
+	 			@docRecepcion1 = DocumentoDeRecepcion.create!(numero_de_documento: "1", tipo_de_documento: @tddr)
 
-	# 		it {
-	# 			doc_rec = @recepcion_de_bien_de_consumo.documentos_de_recepcion.find(@documentos_de_recepcion2.id)
-	# 			doc_rec.tipo_de_documento.nombre.should == "remito"
-	# 		}
+	 			@documentoPpal = @rbc.create_documento_principal(documento_de_recepcion:@docRecepcion1, 
+			                                                      recepcion_de_bien_de_consumo: @rbc)
+	 		end
 
-	# 		it {
-	# 			doc_rec = @recepcion_de_bien_de_consumo.documentos_de_recepcion.find(@documentos_de_recepcion2.id)
-	# 			doc_rec.recepcion_de_bien_de_consumo.should be_nil
-	# 		}
+	 		it { 
+	 			@rbc.documento_principal.documento_de_recepcion.id.should ==  @docRecepcion1.id 
+	 		}
+	 	end
 
+	 	describe "documentos secundarios" do
+	 		before do	 				 	
 
-	# 	end
-	# end
+	 			@rbc = RecepcionDeBienDeConsumo.create!(fecha:DateTime.now, estado:1)		
+
+	 			@tddr = TipoDeDocumento.create!(nombre: "remito")	 				 			
+	 			@tddf = TipoDeDocumento.create!(nombre: "factura")
+
+	 			@docRecepcion1 = DocumentoDeRecepcion.create!(numero_de_documento: "1", tipo_de_documento: @tddf)
+	 			@docRecepcion2 = DocumentoDeRecepcion.create!(numero_de_documento: "2", tipo_de_documento: @tddf)
+	 			@docRecepcion3 = DocumentoDeRecepcion.create!(numero_de_documento: "3", tipo_de_documento: @tddr)
+
+	 			@documentoPpal = @rbc.create_documento_principal(documento_de_recepcion:@docRecepcion1, 
+			                                                     recepcion_de_bien_de_consumo: @rbc)
+
+	 			@documentoSecundario1 = @rbc.documentos_secundario.create!(documento_de_recepcion:@docRecepcion2, 
+			                                                               recepcion_de_bien_de_consumo: @rbc)
+
+	 			@documentoSecundario2 = @rbc.documentos_secundario.create!(documento_de_recepcion:@docRecepcion3, 
+			                                                               recepcion_de_bien_de_consumo: @rbc)
+	 		end
+
+	 		it { 
+	 			@rbc.documentos_secundario.find(@documentoSecundario1.id).documento_de_recepcion.tipo_de_documento.nombre.should ==  "factura"	 		
+	 		}
+
+	 		it {
+	 		    @rbc.documentos_secundario.find(@documentoSecundario2.id).documento_de_recepcion.tipo_de_documento.nombre.should ==  "remito"
+	 		}
+	 	end
+    end
 end
