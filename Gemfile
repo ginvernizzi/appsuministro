@@ -25,7 +25,7 @@ group :test do
   gem 'capybara', '2.1.0'
 end
 
-gem 'bootstrap-sass', '2.3.2.0'
+gem 'bootstrap-sass', '3.2.0.0'
 gem 'sprockets', '2.11.0'
 
 # Use jquery as the JavaScript library
