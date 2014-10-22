@@ -15,6 +15,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   # GET /recepciones_de_bien_de_consumo/new
   def new
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+    @tipos_de_documento = TipoDeDocumento.all
   end
 
   # GET /recepciones_de_bien_de_consumo/1/edit

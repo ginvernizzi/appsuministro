@@ -16,12 +16,20 @@
     <%= f.datetime_select :fecha %>
   </div>
   <div class="field">
-    <%= f.label :estado %><br>
-    <%= f.number_field :estado %>
+    <%= f.label :estado %><br>    
+    
   </div>
   <div class="field">
     <%= f.label :descripcion_provisoria %><br>
     <%= f.text_area :descripcion_provisoria %>
+  </div>  
+  <div class="field">
+      <%= f.label :tipo_de_documento %><br />
+      <%= collection_select(:t, "tipo_de_documento_id", @tipos_de_documento, "id", "nombre", :include_blank => "Seleccione un documento...") %>
+  </div>
+    <div class="field">
+    <%= f.label :numero %><br>
+    <%= text_field_tag "recepcion_de_bien_de_consumo[numero_doc_principal]", params[:numero], id: "numero_doc_principal "%>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -10,7 +10,7 @@ class RecepcionDeBienDeConsumo < ActiveRecord::Base
   validates :fecha, presence: true
   validates :estado, presence: true 
 
-  estado = { :definitiva => 1, :provisoria => 2 }
+  ESTADOS = { :definitiva => 1, :provisoria => 2 }
  
   #RecepcionDeBienDeConsumo::estados
   #para acceder: RecepcionDeBienDeConsumo::ESTADOS.key(recepcion_de_bien_de_consumo.estado)
