@@ -12,7 +12,6 @@ class RecepcionDeBienDeConsumo < ActiveRecord::Base
 
   ESTADOS = { :definitiva => 1, :provisoria => 2 }
  
-  #RecepcionDeBienDeConsumo::estados
+  #RecepcionDeBienDeConsumo::ESTADOS
   #para acceder: RecepcionDeBienDeConsumo::ESTADOS.key(recepcion_de_bien_de_consumo.estado)
-
 end

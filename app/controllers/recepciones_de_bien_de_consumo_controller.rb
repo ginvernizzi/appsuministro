@@ -16,6 +16,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def new
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
     @tipos_de_documento = TipoDeDocumento.all
+    #@estados = RecepcionDeBienDeConsumo::ESTADOS.to_a    
   end
 
   # GET /recepciones_de_bien_de_consumo/1/edit
@@ -32,6 +33,22 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
         format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'Recepcion de bien de consumo was successfully created.' }
         format.json { render :show, status: :created, location: @recepcion_de_bien_de_consumo }
       else
+        format.html { render :new }
+        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def agregar_documento
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new(recepcion_de_bien_de_consumo_params)
+
+    respond_to do |format|
+      if @recepcion_de_bien_de_consumo.save
+        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'Recepcion de bien de consumo was successfully created.' }
+        format.json { render :show, status: :created, location: @recepcion_de_bien_de_consumo }
+      else
+        @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+        @tipos_de_documento = TipoDeDocumento.all
         format.html { render :new }
         format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
       end
@@ -70,6 +87,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recepcion_de_bien_de_consumo_params
-      params.require(:recepcion_de_bien_de_consumo).permit(:fecha, :estado, :descripcion_provisoria)
+      params.require(:recepcion_de_bien_de_consumo).permit(:fecha, :estado, :descripcion_provisoria, :numero_doc_principal, :numero_doc_secundario)
     end
 end
