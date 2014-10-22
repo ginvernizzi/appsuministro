@@ -6,7 +6,7 @@ describe DocumentoPrincipal do
 		@tdd1 = TipoDeDocumento.create!(nombre: "factura")
 		#@tdd2 = TipoDeDocumento.create!(nombre: "remito")
 
-		@doc_recepcion1 = DocumentoRecepcion.create!(numero_de_documento: "1", tipo_de_documento: @tdd1)
+		@doc_recepcion1 = DocumentoDeRecepcion.create!(numero_de_documento: "1", tipo_de_documento: @tdd1)
 		#@doc_recepcion2 = DocumentoRecepcion.create!(numero_de_documento: "2", tipo_de_documento: @tdd2)
 
 
@@ -20,17 +20,27 @@ describe DocumentoPrincipal do
 	it { should respond_to(:documento_de_recepcion) }
 	it { should respond_to(:recepcion_de_bien_de_consumo) }
 
-	# describe "relaciones" do
-	# 	describe "documento principal" do
-	# 		before do
-	# 			@tdd = TipoDeDocumento.create!(nombre: "factura")
-	# 			@doc_de_recepcion = @recepcion_de_bien_de_consumo.create_documento_de_recepcion(numero_de_documento:"2", tipo_de_documento: @tdd)
-	# 		end
+	describe "relaciones" do
+	 	describe "documento principal" do
+	 		before do
 
-	# 		it { 
-	# 			@doc_de_recepcion.recepcion_de_bien_de_consumo.id.should ==  @recepcion_de_bien_de_consumo.id 
-	# 		}
-	# 	end
+	 			@rbc = RecepcionDeBienDeConsumo.create!(fecha:DateTime.now, estado:1)
+
+	 			@tddr = TipoDeDocumento.create!(nombre: "remito")	 			
+	 			@docRecepcion1 = DocumentoDeRecepcion.create!(numero_de_documento: "1", tipo_de_documento: @tddr)
+
+	 			@docPrincipal = DocumentoPrincipal.create!(documento_de_recepcion:@docRecepcion1, 
+			                                       recepcion_de_bien_de_consumo: @rbc)
+	 		end
+     		it { 
+	 			#@docPrincipal.recepcion_de_bien_de_consumo.id.should ==  @recepcion_de_bien_de_consumo.id 
+	 			@rbc.documento_principal.id.should == @docPrincipal.id
+	 		}
+
+	 		it { 
+	 			@docPrincipal.documento_de_recepcion.id.should ==  @docRecepcion1.id 	 			
+	 		}
+	 	end
 
 	# 	describe "documentos secundario" do
 	# 		before do
@@ -57,6 +67,6 @@ describe DocumentoPrincipal do
 
 
 	# 	end
-	# end
+	end
 end
 
