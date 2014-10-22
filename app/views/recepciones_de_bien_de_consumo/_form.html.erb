@@ -1,0 +1,37 @@
+<%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
+  <% if @recepcion_de_bien_de_consumo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>
+
+      <ul>
+      <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :fecha %><br>
+    <%= f.datetime_select :fecha %>
+  </div>
+  <div class="field">
+    <%= f.label :estado %><br>    
+    
+  </div>
+  <div class="field">
+    <%= f.label :descripcion_provisoria %><br>
+    <%= f.text_area :descripcion_provisoria %>
+  </div>  
+  <div class="field">
+      <%= f.label :tipo_de_documento %><br />
+      <%= collection_select(:t, "tipo_de_documento_id", @tipos_de_documento, "id", "nombre", :include_blank => "Seleccione un documento...") %>
+  </div>
+    <div class="field">
+    <%= f.label :numero %><br>
+    <%= text_field_tag "recepcion_de_bien_de_consumo[numero_doc_principal]", params[:numero], id: "numero_doc_principal "%>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
