@@ -8,5 +8,4 @@ describe TipoDeDocumento do
 	subject { @tipo_de_documento }
 
   	it { should validate_presence_of(:nombre) }
-  	  	
 end
