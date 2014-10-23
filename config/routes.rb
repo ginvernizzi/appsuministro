@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
+  
   resources :recepciones_de_bien_de_consumo
 
   get 'static_pages/home'
   get 'static_pages/help'
+
+  post 'recepciones_de_bien_de_consumo/agregar_documento'
 
 
   resources :users
