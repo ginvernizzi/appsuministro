@@ -48,8 +48,11 @@
     <%= f.label :numero %><br>
     <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_principal" %>  
   </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
 
-  <table class="table">
+<!--   <table class="table">
   <thead>
     <tr>
       <th>Tipo de documento</th>
@@ -63,15 +66,12 @@
       <tr>
         <td><%= doc_secundario.documento_de_recepcion.tipo_de_documento.nombre %></td>
         <td><%= doc_secundario.documento_de_recepcion.numero_de_documento %></td>                        
-        <td><%= link_to 'Quitar', "#recepcion_de_bien_de_consumo", method: :delete, data: { confirm: '¿Esta seguro?' } %></td> -->
+        <td><%= link_to 'Quitar', "#recepcion_de_bien_de_consumo", method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
       </tr>
     <% end %>
   </tbody>
-</table>
+</table> -->
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>
 
 
