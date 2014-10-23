@@ -10,18 +10,16 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="date">
-    <%= f.label :fecha %><br>
-    <%= f.date_select :fecha %>
-  </div>
-
+    
+  <div class="datepicker" id="sandbox-container">    
+    <%= f.label :fecha %><br />
+    <input type="text" data-provide='datepicker' id="fecha_id" name="fecha" readonly="true">
+  </div> 
 
   <div class="field">
     <%= f.label :estado %><br> 
     <%= collection_select(:e, "estado_id", RecepcionDeBienDeConsumo::ESTADOS, :last, :first, :include_blank => "Seleccione estado...") %>       
   </div>
-
 
   <div class="field">
     <%= f.label :descripcion_provisoria %><br>
@@ -52,7 +50,7 @@
     <%= f.submit %>
   </div>
 
-<!--   <table class="table">
+<table class="table">
   <thead>
     <tr>
       <th>Tipo de documento</th>
@@ -70,8 +68,17 @@
       </tr>
     <% end %>
   </tbody>
-</table> -->
+</table> 
 
+<script type="text/javascript">
+    $('#sandbox-container input').datepicker({    
+      $(document).ready(function(){
+        $('.datepicker').datepicker();
+      });
+    });
+</script>
 <% end %>
+
+
 
 
