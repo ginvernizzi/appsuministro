@@ -59,7 +59,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
     respond_to do |format|
       if @recepcion_de_bien_de_consumo.save
-        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'Recepcion de bien de consumo was successfully created.' }
+        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'La Recepcion fue creada exitosamente.' }
         format.json { render :show, status: :created, location: @recepcion_de_bien_de_consumo }
       else
         @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
