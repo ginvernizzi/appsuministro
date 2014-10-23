@@ -29,7 +29,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
    
     #@rbc = RecepcionDeBienDeConsumo.create!(fecha:DateTime.now, estado: RecepcionDeBienDeConsumo::ESTADOS[(params[:estado_id])]) 
-    @rbc = RecepcionDeBienDeConsumo.build(fecha:DateTime.now, estado: params[:e][:estado_id] )  
+    @rbc = RecepcionDeBienDeConsumo.create(fecha:DateTime.now, estado: params[:e][:estado_id], descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
     @tddp = TipoDeDocumento.find(params[:tdp][:tipo_de_documento_id])
     @tdds = TipoDeDocumento.find(params[:tds][:tipo_de_documento_secundario_id])
 
