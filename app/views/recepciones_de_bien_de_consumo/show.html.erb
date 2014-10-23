@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Fecha:</strong>
   <%= @recepcion_de_bien_de_consumo.fecha %>
@@ -7,7 +5,7 @@
 
 <p>
   <strong>Estado:</strong>
-  <%= @recepcion_de_bien_de_consumo.estado %>
+  <%= RecepcionDeBienDeConsumo::ESTADOS.key(@recepcion_de_bien_de_consumo.estado)%>
 </p>
 
 <p>
@@ -15,5 +13,5 @@
   <%= @recepcion_de_bien_de_consumo.descripcion_provisoria %>
 </p>
 
-<%= link_to 'Edit', edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo) %> |
-<%= link_to 'Back', recepciones_de_bien_de_consumo_path %>
+<%= link_to 'Modificar', edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo) %> |
+<%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>

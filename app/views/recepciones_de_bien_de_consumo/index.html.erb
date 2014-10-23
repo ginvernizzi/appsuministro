@@ -16,12 +16,16 @@
     <% @recepciones_de_bien_de_consumo.each do |recepcion_de_bien_de_consumo| %>
       <tr>
         <td><%= recepcion_de_bien_de_consumo.fecha %></td>
-        <td><%= recepcion_de_bien_de_consumo.estado %></td>
+        <td><%= RecepcionDeBienDeConsumo::ESTADOS.key(recepcion_de_bien_de_consumo.estado)%></td>
         <td><%= recepcion_de_bien_de_consumo.descripcion_provisoria %></td>
 
-        <td><%=  %></td>
-        <td><%=  %></td>
-
+      <% if (recepcion_de_bien_de_consumo.documento_principal) %>
+        <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.nombre %></td>
+        <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento %></td>
+        <% else %>
+        <td></td>
+        <td></td>
+      <% end %>      
         <td><%= link_to 'Ver', recepcion_de_bien_de_consumo %></td>
         <!-- <td><%= link_to 'Modificar', edit_recepcion_de_bien_de_consumo_path(recepcion_de_bien_de_consumo) %></td>
         <td><%= link_to 'Eliminar', recepcion_de_bien_de_consumo, method: :delete, data: { confirm: '¿Esta seguro?' } %></td> -->
