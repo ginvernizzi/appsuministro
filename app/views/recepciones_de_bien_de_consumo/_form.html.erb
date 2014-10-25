@@ -35,47 +35,32 @@
     <%= f.label :numero %><br>
     <%= text_field_tag "numero_doc_principal", params[:numero], id: "numero_doc_principal" %>
   </div>
+   
+    <div class="field">
+        <%= f.label :tipo_de_documento_secundario %><br />
+        <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
+        "nombre", :include_blank => "Seleccione un documento...") %>
+    
+      <%= f.label :numero %><br>
+      <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
 
-   <div class="field">
-      <%= f.label :tipo_de_documento_secundario %><br />
-      <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-      "nombre", :include_blank => "Seleccione un documento...") %>
-  </div>
 
-  <div class="field">
-    <%= f.label :numero %><br>
-    <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_principal" %>  
-
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+      <input type="button" id="agregar_doc" value="Agregar"/>
+      <input type="button" id="quitar_doc" value="Eliminar"/>  
+    </div>
 
 <table class="table" id="recepcion_documento">
   <thead>
-    <tr id="pn1">
-            <th>
-              <div class="field">
-              <%= f.label :tipo_de_documento_secundario %><br />
-              <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-              "nombre", :include_blank => "Seleccione un documento...") %>
-              </div>
-            </th>
-            <td>
-              <div class="field">
-              <%= f.label :numero %><br>
-              <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_principal" %>  
-              </div>
-            </td>            
-    </tr>  
-    </thead>
-  <tbody>    
-
-  </tbody>
-</table> 
-
-<input type="button" id="agregar_doc" value="Agregar"/>
-<input type="button" id="quitar_doc" value="Eliminar"/>  
+      <tr id="pn1">
+            <td> Tipo de Documento </td>
+            <td> Numero </td>
+            <td>  </td>
+      </tr>      
+  </thead>
+</table>   
+  <div class="actions">
+    <%= f.submit %>
+  </div>
 
 <% end %>
 

@@ -11,8 +11,8 @@
 });
 
 /////////////////// Vista nueva recepcion. Agrear y quitar Documentos ///////////////////  
- $(document).ready(function(){  
-  var counter = 2;
+  $(document).ready(function(){
+  var counter = 1;
       $("#agregar_doc").click(function() 
       {        
         //Validacion
@@ -22,9 +22,7 @@
           //return false;
         }
 
-    //var htmlToAppend = '<tr id="pn'+ counter +'"><th><select class="phone_no"> <option value="home">home</option> <option value="Business">Business</option> <option value="Business2">Business 2</option></select> </th><td><input type="text"/></td></tr>';      
-
-    var htmlToAppend = '<tr id="pn'+ counter> +'"><th> <%= f.label :tipo_de_documento_secundario %><br /> <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", "nombre", :include_blank => "Seleccione un documento...") %> </th> <td> <%= f.label :numero %><br> <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_principal" %> </td> </tr>'
+var htmlToAppend = '<tr id="pn'+ counter+'"> <td id="col'+ counter+'">'+ $("#tds_tipo_de_documento_secundario_id :selected").text() +' </td> <td id="col'+ counter+'">'+ $("#numero_doc_secundario").val() +' </td> <td id="col'+ counter+'">'+ $("#tds_tipo_de_documento_secundario_id").val() +' </td> </tr>';
                                                    
       $("#recepcion_documento").append ( htmlToAppend );
         newTableRow.appendTo("#recepcion_documento");
@@ -35,6 +33,5 @@
       {
         counter--;
         $("#pn" + counter-1).remove();
-      });
+      });  
   });
-
