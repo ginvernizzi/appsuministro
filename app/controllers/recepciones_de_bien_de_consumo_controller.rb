@@ -16,7 +16,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def new
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
     @tipos_de_documento = TipoDeDocumento.all
-    #@estados = RecepcionDeBienDeConsumo::ESTADOS.to_a    
+  
+    gon.numeroDeFila = 1    
   end
 
   # GET /recepciones_de_bien_de_consumo/1/edit

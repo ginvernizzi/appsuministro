@@ -43,21 +43,23 @@
     
       <%= f.label :numero %><br>
       <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
-
-
       <input type="button" id="agregar_doc" value="Agregar"/>
-      <input type="button" id="quitar_doc" value="Eliminar"/>  
+ 
     </div>
 
 <table class="table" id="recepcion_documento">
   <thead>
-      <tr id="pn1">
-            <td> Tipo de Documento </td>
-            <td> Numero </td>
-            <td>  </td>
+      <tr>
+            <th> Tipo de Documento </td>
+            <th> Numero </td>
+            <th> Accion  </td>
+            <th>  </td>
       </tr>      
   </thead>
+  <tbody>
+  </tbody>  
 </table>   
+
   <div class="actions">
     <%= f.submit %>
   </div>

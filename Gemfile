@@ -52,6 +52,8 @@ gem 'bootstrap-will_paginate', '0.0.9'
 
 gem 'rails-i18n', '~> 4.0.0'
 
+gem 'gon'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
