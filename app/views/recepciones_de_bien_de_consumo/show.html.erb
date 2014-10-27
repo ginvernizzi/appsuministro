@@ -13,4 +13,45 @@
   <%= @recepcion_de_bien_de_consumo.descripcion_provisoria %>
 </p>
 
+<p> Documento principal </p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>numero</th>
+    </tr>
+  </thead>
+  <tbody>    
+      <tr>      	
+        <td><%= @recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.nombre %></td>
+        <td><%= @recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento %></td>
+      </tr>    
+  </tbody>
+</table>
+
+<p> Documentos secundarios </p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>numero</th>
+    </tr>
+  </thead>
+  <tbody>
+  	<% if @recepcion_de_bien_de_consumo.documentos_secundario.any? %>
+        <% @recepcion_de_bien_de_consumo.documentos_secundario.each do |doc_secundario| %>
+      	<tr>      	
+        	<td><%= doc_secundario.documento_de_recepcion.tipo_de_documento.nombre %> </td>
+        	<td><%= doc_secundario.documento_de_recepcion.numero_de_documento %> </td>
+      	</tr>    
+      	<%end%>
+    <% else %>
+      	<tr>      	
+        	<td></td>
+        	<td></td>
+      	</tr>    
+   	<% end %>      
+  </tbody>
+</table>
+
 <%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>

@@ -54,6 +54,7 @@ gem 'rails-i18n', '~> 4.0.0'
 
 gem 'gon'
 
+gem 'jquery-inputmask-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -1,4 +1,4 @@
-<%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
+<%= form_for(@recepcion_de_bien_de_consumo, :html => { :class => "form-horizontal" }) do |f| %>
   <% if @recepcion_de_bien_de_consumo.errors.any? %>
   recepcion_de_bien_de_consumo.errors.any?  
     <div id="error_explanation">
@@ -36,16 +36,17 @@
     <%= text_field_tag "numero_doc_principal", params[:numero], id: "numero_doc_principal" %>
   </div>
    
-    <div class="field">
-        <%= f.label :tipo_de_documento_secundario %><br />
-        <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-        "nombre", :include_blank => "Seleccione un documento...") %>
-    
-      <%= f.label :numero %><br>
-      <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
-      <input type="button" id="agregar_doc" value="Agregar"/>
- 
+    <div class="control-group">
+          <%= f.label :tipo_de_documento_secundario %><br />
+          <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
+          "nombre", :include_blank => "Seleccione un documento...") %>      
     </div>
+    <div class="field">
+          <%= f.label :numero %><br>
+          <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
+          <input type="button" id="agregar_doc" value="Agregar"/>
+    </div>
+
 
 <table class="table" id="recepcion_documento">
   <thead>
@@ -54,15 +55,16 @@
             <th> Numero </td>
             <th> Accion  </td>
             <th>  </td>
+            <th>  </td>
       </tr>      
   </thead>
   <tbody>
   </tbody>  
 </table>   
-
   <div class="actions">
     <%= f.submit %>
   </div>
+
 
 <% end %>
 

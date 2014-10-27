@@ -16,7 +16,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def new
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
     @tipos_de_documento = TipoDeDocumento.all
-  
+    
+    #inicializa la cantidad de rows de doc secundarios a agregar la primera vez
     gon.numeroDeFila = 1    
   end
 
@@ -31,16 +32,26 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
                                                                  descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
     
     @tddp = TipoDeDocumento.find_by_id(params[:tdp][:tipo_de_documento_id])    
-    @tdds = TipoDeDocumento.find_by_id(params[:tds][:tipo_de_documento_secundario_id])    
+    
 
     @docRecepcion_p = DocumentoDeRecepcion.new(numero_de_documento: params[:numero_doc_principal], tipo_de_documento: @tddp)
-    @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: params[:numero_doc_secundario], tipo_de_documento: @tdds)        
+    
 
     @recepcion_de_bien_de_consumo.build_documento_principal(documento_de_recepcion:@docRecepcion_p, 
                                        recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
 
-    @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion:@docRecepcion_s, 
-                                       recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)    
+    #Key (tipoDeDocumento_Id) Value (numero de documento)
+    params[:ltds].each { |k, v|
+          puts "Key: #{k}, Value: #{v}" 
+          if (k.include? "numero_doc_secundario")
+          @tdds = TipoDeDocumento.find_by_id(k)
+          @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: v, tipo_de_documento: @tdds)
+          @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
+                                                                  recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
+          end                                                                              
+      }
+
+    
 
     respond_to do |format|              
       if @recepcion_de_bien_de_consumo.save                
