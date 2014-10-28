@@ -26,14 +26,11 @@
   </div>  
 
   <div class="field">
-      <%= f.label :tipo_de_documento%><br />
-      <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", 
-      "nombre", :include_blank => "Seleccione un documento...") %>
+      <%= f.label :tipo_de_documento%><br /> <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", "nombre", :include_blank => "Seleccione un documento...") %>
   </div>
-    <div class="field">
-    <%= f.label :numero %><br>
-    <%= text_field_tag "numero_doc_principal", params[:numero], id: "numero_doc_principal" %>
-  </div>
+  
+  <div id="campo_doc_principal">  
+  </div>    
        
   <div class="field">
     <%= f.label :tipo_de_documento_secundario %><br />
@@ -46,7 +43,6 @@
     <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
     <input type="button" id="agregar_doc" value="Agregar"/>
   </div>    
-
 
 <table class="table" id="recepcion_documento">
   <thead>

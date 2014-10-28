@@ -30,14 +30,14 @@
             gon.numeroDeFila++;          
 
             $(tableName + " tbody").append ( htmlToAppend );
-            //bleRow.appendTo(tableName);            
+                   
           }
           else
           {alert("Debe completar los campos de documento secundario\n")}
       });
 
       //$("#quitar_doc").click(function() 
-      $("#recepcion_documento").on('clic k', '.quitar_document', function() {            
+      $("#recepcion_documento").on('click', '.quitar_document', function() {            
         var par = $(this).parent().parent(); //tr
         par.remove();     
       });  
@@ -48,5 +48,8 @@
       // function validarNumeroDocumento(numero) { 
       // var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       // return re.test(numero);
-      // } 
+      // }
+       $('#tdp_tipo_de_documento_id').change(function() {
+            alert($(this).val());
+      });
   });
