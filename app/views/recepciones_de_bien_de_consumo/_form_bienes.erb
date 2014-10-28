@@ -1,8 +1,10 @@
-<%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
+<%= form_for(@recepcion_de_bien_de_consumo , 
+          url: save_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo), 
+      html: {method: "put"}) do |f| %>
+
   <% if @recepcion_de_bien_de_consumo.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>
-
+      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>      
       <ul>
       <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -18,16 +20,11 @@
   </div>  
 
   <div class="field">
-    <%= f.label :cuenta %><br>
-    <%= text_field_tag :cuenta %>
+    <%= f.label :nombre %><br>
+    <%= text_field_tag :nombre %>
   </div>  
 
-    <div class="field">
-    <%= f.label :descripcion_adicional %><br>
-    <%= text_field_tag :descripcion_adicional %>
-  </div>  
-
-      <div class="field">
+  <div class="field">
     <%= f.label :cantidad %><br>
     <%= text_field_tag :cantidad %>
   </div>  
@@ -37,31 +34,37 @@
     <%= text_field_tag :costo %>
   </div>  
 
+    <div class="field">
+    <%= label(:costoTotal ,"costo total") %><br>
+    <%= text_field_tag :costoTotal %>
+  </div>  
+
    <table class="table">
   <thead>
     <tr>
-      <th>Codigo</th>
+      <th>Nombre</th>
       <th>Item</th>     
       <th>Canitdad </th>
       <th>Costo </th>
     </tr>
   </thead>
-
   <tbody>
-    <% @recepcion_de_bien_de_consumo.documentos_secundario.each do |doc_secundario| %>
-      <tr>
-        <td> E34 </td>
-        <td> Tira de Madera 45cm </td>                        
-        <td> 34 </td>                        
-        <td> 145 </td>                        
-      </tr>
+    <% if @recepcion_de_bien_de_consumo %>
+      <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |doc_secundario| %>
+        <tr>
+          <td> E34 </td>
+          <td> Tira de Madera 45cm </td>                        
+          <td> 34 </td>                        
+          <td> 145 </td>                        
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table> 
 
-<!--   <div class="actions">
+  <div class="actions">
     <%= f.submit %>
-  </div> -->
+  </div> 
 <% end %>
 
 

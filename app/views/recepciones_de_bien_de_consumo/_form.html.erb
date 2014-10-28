@@ -1,6 +1,5 @@
-<%= form_for(@recepcion_de_bien_de_consumo, :html => { :class => "form-horizontal" }) do |f| %>
-  <% if @recepcion_de_bien_de_consumo.errors.any? %>
-  recepcion_de_bien_de_consumo.errors.any?  
+<%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
+  <% if @recepcion_de_bien_de_consumo.errors.any? %>  
     <div id="error_explanation">
       <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>
       <ul>
@@ -35,17 +34,18 @@
     <%= f.label :numero %><br>
     <%= text_field_tag "numero_doc_principal", params[:numero], id: "numero_doc_principal" %>
   </div>
-   
-    <div class="control-group">
-          <%= f.label :tipo_de_documento_secundario %><br />
-          <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-          "nombre", :include_blank => "Seleccione un documento...") %>      
-    </div>
-    <div class="field">
-          <%= f.label :numero %><br>
-          <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
-          <input type="button" id="agregar_doc" value="Agregar"/>
-    </div>
+       
+  <div class="field">
+    <%= f.label :tipo_de_documento_secundario %><br />
+    <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
+    "nombre", :include_blank => "Seleccione un documento...") %>      
+  </div>
+
+  <div class="field">
+    <%= f.label :numero %><br />         
+    <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
+    <input type="button" id="agregar_doc" value="Agregar"/>
+  </div>    
 
 
 <table class="table" id="recepcion_documento">

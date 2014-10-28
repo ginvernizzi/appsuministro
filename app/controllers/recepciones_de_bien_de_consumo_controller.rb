@@ -41,46 +41,55 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
                                        recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
 
     #Key (tipoDeDocumento_Id) Value (numero de documento)
-    params[:ltds].each { |k, v|
-          puts "Key: #{k}, Value: #{v}" 
-          if (k.include? "numero_doc_secundario")
-          @tdds = TipoDeDocumento.find_by_id(k)
-          @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: v, tipo_de_documento: @tdds)
-          @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
+
+      if params[:ltds] 
+          params[:ltds].each { |k, v|          
+            if (k.include? "numero_doc_secundario")
+            @tdds = TipoDeDocumento.find_by_id(k)
+            @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: v, tipo_de_documento: @tdds)
+            @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
                                                                   recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
-          end                                                                              
-      }
+            end                                                                                    
+          }
+      end
+                    
+      if @recepcion_de_bien_de_consumo.save                              
+        redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
+        #format.html { render :new_bienes}
+        #format.html { render :new }
+      else        
+        respond_to do |format|  
+          @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+          @tipos_de_documento = TipoDeDocumento.all
+          format.html { render :new }
+          format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+        end
+      end
+  end
 
+  def new_bienes
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])  
+  end
+
+  def save_bienes        
     
-
-    respond_to do |format|              
-      if @recepcion_de_bien_de_consumo.save                
-        format.html { render :new_bienes , notice: 'La Recepcion fue creada exitosamente.' }
-        format.json { render :show, status: :created, location: @recepcion_de_bien_de_consumo }
+    @bdc = BienDeConsumo.where(nombre: params[:nombre]) 
+     
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])  
+          
+    @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.new(cantidad: params[:cantidad], costo: params[:costo], bien_de_consumo: @bdc)    
+        
+    
+      if @recepcion_de_bien_de_consumo.update()     
+         redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
       else
-        @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
-        @tipos_de_documento = TipoDeDocumento.all
-        format.html { render :new }
+        respond_to do |format|
+        format.html { render :new_bienes }
         format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+        end
       end
-    end
   end
 
-  def agregar_documento
-    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new(recepcion_de_bien_de_consumo_params)
-
-    respond_to do |format|
-      if @recepcion_de_bien_de_consumo.save
-        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'La Recepcion fue creada exitosamente.' }
-        format.json { render :show, status: :created, location: @recepcion_de_bien_de_consumo }
-      else
-        @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
-        @tipos_de_documento = TipoDeDocumento.all
-        format.html { render :new }
-        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   # PATCH/PUT /recepciones_de_bien_de_consumo/1
   # PATCH/PUT /recepciones_de_bien_de_consumo/1.json
