@@ -3,10 +3,13 @@ Rails.application.routes.draw do
   resources :recepciones_de_bien_de_consumo
 
   get 'static_pages/home'
-  get 'static_pages/help'
+  get 'static_pages/help'  
+  
+  get 'recepciones_de_bien_de_consumo/new_bienes/:id' => 'recepciones_de_bien_de_consumo#new_bienes', as: 'agregar_bienes_recepciones_de_bien_de_consumo'
 
-  post 'recepciones_de_bien_de_consumo/agregar_documento'
-
+  put 'recepciones_de_bien_de_consumo/save_bienes/:id(.:format)', 
+                                        :to => 'recepciones_de_bien_de_consumo#save_bienes',
+                                        :as => 'save_bienes_recepciones_de_bien_de_consumo'
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]

@@ -10,10 +10,21 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//=require jquery
+
+//= require jquery
+//= require jquery-ui
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
-
 //= require bootstrap
-//= require turbolinks
+//= require bootstrap.js
+//= require bootstrap-datepicker
+
+//= require jquery.inputmask
+//= require jquery.inputmask.extensions
+//= require jquery.inputmask.numeric.extensions
+//= require jquery.inputmask.date.extensions
+//= require_tree 
+
+
+
+

@@ -16,7 +16,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def new
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
     @tipos_de_documento = TipoDeDocumento.all
-    #@estados = RecepcionDeBienDeConsumo::ESTADOS.to_a    
+    
+    #inicializa la cantidad de rows de doc secundarios a agregar la primera vez
+    gon.numeroDeFila = 1    
   end
 
   # GET /recepciones_de_bien_de_consumo/1/edit
@@ -25,51 +27,69 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   # POST /recepciones_de_bien_de_consumo
   # POST /recepciones_de_bien_de_consumo.json
-  def create
+  def create    
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new(fecha: params[:recepcion_de_bien_de_consumo][:fecha], estado: params[:recepcion_de_bien_de_consumo][:estado], 
+                                                                 descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
+    
+    @tddp = TipoDeDocumento.find_by_id(params[:tdp][:tipo_de_documento_id])    
+    
 
-   
-    #@recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.create!(fecha:DateTime.now, estado: RecepcionDeBienDeConsumo::ESTADOS[(params[:estado_id])]) 
-    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.create(fecha:DateTime.now, estado: params[:e][:estado_id], descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
-    @tddp = TipoDeDocumento.find(params[:tdp][:tipo_de_documento_id])
-    @tdds = TipoDeDocumento.find(params[:tds][:tipo_de_documento_secundario_id])
+    @docRecepcion_p = DocumentoDeRecepcion.new(numero_de_documento: params[:numero_doc_principal], tipo_de_documento: @tddp)
+    
 
-    @docRecepcion_p = DocumentoDeRecepcion.create!(numero_de_documento: params[:numero_doc_principal], tipo_de_documento: @tddp)
-    @docRecepcion_s = DocumentoDeRecepcion.create!(numero_de_documento: params[:numero_doc_secundario], tipo_de_documento: @tdds)        
+    @recepcion_de_bien_de_consumo.build_documento_principal(documento_de_recepcion:@docRecepcion_p, 
+                                       recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
 
-    @recepcion_de_bien_de_consumo.create_documento_principal(documento_de_recepcion:@docRecepcion_p, 
-                                    recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
+    #Key (tipoDeDocumento_Id) Value (numero de documento)
 
-    @recepcion_de_bien_de_consumo.documentos_secundario.create!(documento_de_recepcion:@docRecepcion_s, 
-                                       recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)    
-
-
-    respond_to do |format|
-      if @recepcion_de_bien_de_consumo.save
-        #format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'Recepcion de bien de consumo fue creado exitosamente.' }
-        format.html { render :new_bienes, notice: 'Recepcion de bien de consumo fue creado exitosamente.' }
-        format.json { render :show, status: :created, location: @recepcion_de_bien_de_consumo }
-      else
-        format.html { render :new }
-        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+      if params[:ltds] 
+          params[:ltds].each { |k, v|          
+            if (k.include? "numero_doc_secundario")
+            @tdds = TipoDeDocumento.find_by_id(k)
+            @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: v, tipo_de_documento: @tdds)
+            @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
+                                                                  recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
+            end                                                                                    
+          }
       end
-    end
+                    
+      if @recepcion_de_bien_de_consumo.save                              
+        redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
+        #format.html { render :new_bienes}
+        #format.html { render :new }
+      else        
+        respond_to do |format|  
+          @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+          @tipos_de_documento = TipoDeDocumento.all
+          format.html { render :new }
+          format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+        end
+      end
   end
 
-  def agregar_documento
-    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new(recepcion_de_bien_de_consumo_params)
-
-    respond_to do |format|
-      if @recepcion_de_bien_de_consumo.save
-        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'La Recepcion fue creada exitosamente.' }
-        format.json { render :show, status: :created, location: @recepcion_de_bien_de_consumo }
-      else
-        @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
-        @tipos_de_documento = TipoDeDocumento.all
-        format.html { render :new }
-        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
-      end
-    end
+  def new_bienes
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])  
   end
+
+  def save_bienes        
+    
+    @bdc = BienDeConsumo.where(nombre: params[:nombre]) 
+     
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])  
+          
+    @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.new(cantidad: params[:cantidad], costo: params[:costo], bien_de_consumo: @bdc)    
+        
+    
+      if @recepcion_de_bien_de_consumo.update()     
+         redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
+      else
+        respond_to do |format|
+        format.html { render :new_bienes }
+        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+        end
+      end
+  end
+
 
   # PATCH/PUT /recepciones_de_bien_de_consumo/1
   # PATCH/PUT /recepciones_de_bien_de_consumo/1.json

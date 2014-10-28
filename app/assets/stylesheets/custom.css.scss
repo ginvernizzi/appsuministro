@@ -86,6 +86,11 @@ footer {
     color: $gray;
     &:hover {
       color: $grayMediumLight ;
+  color: $gray-light;
+  a {
+    color: $gray;
+    &:hover {
+      color: $gray-darker;
     }
   }
   small {
@@ -111,7 +116,7 @@ footer {
 
 input, password, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
-  width: 100%;
+  width: 50%;
   margin-bottom: 15px;
   @include box_sizing;
 }
@@ -154,9 +159,13 @@ input {
   li {
     overflow: auto;
     padding: 10px 0;
+
     border-top: 1px solid $grayMediumLight;
     &:last-child {
       border-bottom: 1px solid $grayMediumLight;
+    border-top: 1px solid $gray-lighter;
+    &:last-child {
+      border-bottom: 1px solid $gray-lighter;
     }
   }
 }

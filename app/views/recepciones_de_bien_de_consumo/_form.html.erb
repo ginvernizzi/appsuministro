@@ -1,27 +1,24 @@
 <%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
-  <% if @recepcion_de_bien_de_consumo.errors.any? %>
+  <% if @recepcion_de_bien_de_consumo.errors.any? %>  
     <div id="error_explanation">
       <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>
-
       <ul>
       <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+        <li><%= message %></li>        
       <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= f.label :fecha %><br>
-    <%= f.date_select :fecha %>
-  </div>
-
+    
+  <div class="datepicker">    
+    <%= f.label :fecha %><br />
+    <%= f.text_field :fecha %>  
+  </div> 
 
   <div class="field">
     <%= f.label :estado %><br> 
-    <%= collection_select(:e, "estado_id", RecepcionDeBienDeConsumo::ESTADOS, :last, :first, :include_blank => "Seleccione estado...") %>       
+    <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS, :last, :first, :include_blank => "Seleccione estado...") %>       
   </div>
-
 
   <div class="field">
     <%= f.label :descripcion_provisoria %><br>
@@ -29,7 +26,7 @@
   </div>  
 
   <div class="field">
-      <%= f.label :tipo_de_documento %><br />
+      <%= f.label :tipo_de_documento%><br />
       <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", 
       "nombre", :include_blank => "Seleccione un documento...") %>
   </div>
@@ -37,41 +34,40 @@
     <%= f.label :numero %><br>
     <%= text_field_tag "numero_doc_principal", params[:numero], id: "numero_doc_principal" %>
   </div>
-
-   <div class="field">
-      <%= f.label :tipo_de_documento_secundario %><br />
-      <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-      "nombre", :include_blank => "Seleccione un documento...") %>
+       
+  <div class="field">
+    <%= f.label :tipo_de_documento_secundario %><br />
+    <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
+    "nombre", :include_blank => "Seleccione un documento...") %>      
   </div>
 
   <div class="field">
-    <%= f.label :numero %><br>
-    <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_principal" %>  
-  </div>
+    <%= f.label :numero %><br />         
+    <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
+    <input type="button" id="agregar_doc" value="Agregar"/>
+  </div>    
+
+
+<table class="table" id="recepcion_documento">
+  <thead>
+      <tr>
+            <th> Tipo de Documento </td>
+            <th> Numero </td>
+            <th> Accion  </td>
+            <th>  </td>
+            <th>  </td>
+      </tr>      
+  </thead>
+  <tbody>
+  </tbody>  
+</table>   
   <div class="actions">
     <%= f.submit %>
   </div>
 
-<!--   <table class="table">
-  <thead>
-    <tr>
-      <th>Tipo de documento</th>
-      <th>Numero</th>     
-      <th colspan="1"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @recepcion_de_bien_de_consumo.documentos_secundario.each do |doc_secundario| %>
-      <tr>
-        <td><%= doc_secundario.documento_de_recepcion.tipo_de_documento.nombre %></td>
-        <td><%= doc_secundario.documento_de_recepcion.numero_de_documento %></td>                        
-        <td><%= link_to 'Quitar', "#recepcion_de_bien_de_consumo", method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table> -->
 
 <% end %>
+
+
 
 

@@ -26,10 +26,14 @@ group :test do
 end
 
 gem 'bootstrap-sass', '3.2.0.0'
+
+gem 'bootstrap-datepicker-rails'
+
 gem 'sprockets', '2.11.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -48,6 +52,9 @@ gem 'bootstrap-will_paginate', '0.0.9'
 
 gem 'rails-i18n', '~> 4.0.0'
 
+gem 'gon'
+
+gem 'jquery-inputmask-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
