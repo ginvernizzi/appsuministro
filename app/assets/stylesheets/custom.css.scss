@@ -1,10 +1,12 @@
 @import "bootstrap";
 @import "bootstrap-sprockets";
 
-
 /* mixins, variables, etc. */
 
 $grayMediumLight: #eaeaea;
+$grayLight: #eaeaea;
+$grayLighter: #eaeaea;
+$grayDarker: #eaeaea;
 
 /* universal */
 
@@ -81,16 +83,11 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $grayMediumLight;
-  color: $grayMediumLight;
+  color: $grayLight;
   a {
     color: $gray;
     &:hover {
-      color: $grayMediumLight ;
-  color: $gray-light;
-  a {
-    color: $gray;
-    &:hover {
-      color: $gray-darker;
+      color: $grayDarker;
     }
   }
   small {
@@ -116,7 +113,7 @@ footer {
 
 input, password, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
-  width: 50%;
+  width: 100%;
   margin-bottom: 15px;
   @include box_sizing;
 }
@@ -159,13 +156,9 @@ input {
   li {
     overflow: auto;
     padding: 10px 0;
-
-    border-top: 1px solid $grayMediumLight;
+    border-top: 1px solid $grayLighter;
     &:last-child {
-      border-bottom: 1px solid $grayMediumLight;
-    border-top: 1px solid $gray-lighter;
-    &:last-child {
-      border-bottom: 1px solid $gray-lighter;
+      border-bottom: 1px solid $grayLighter;
     }
   }
 }
