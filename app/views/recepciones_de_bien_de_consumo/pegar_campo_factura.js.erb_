@@ -1,0 +1,1 @@
+$("#campo_numero_documento_principal").html( "<%= escape_javascript(render(:partial => "numero_factura")) %>" ); 

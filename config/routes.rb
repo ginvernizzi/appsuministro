@@ -4,12 +4,16 @@ Rails.application.routes.draw do
 
   get 'static_pages/home'
   get 'static_pages/help'  
+  post 'recepciones_de_bien_de_consumo/pegar_campo_factura', :to => 'recepciones_de_bien_de_consumo#pegar_campo_factura'
+  post 'recepciones_de_bien_de_consumo/pegar_campo_orden_de_compra', :to => 'recepciones_de_bien_de_consumo#pegar_campo_orden_de_compra'
   
   get 'recepciones_de_bien_de_consumo/new_bienes/:id' => 'recepciones_de_bien_de_consumo#new_bienes', as: 'agregar_bienes_recepciones_de_bien_de_consumo'
 
   put 'recepciones_de_bien_de_consumo/save_bienes/:id(.:format)', 
                                         :to => 'recepciones_de_bien_de_consumo#save_bienes',
                                         :as => 'save_bienes_recepciones_de_bien_de_consumo'
+
+  
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]

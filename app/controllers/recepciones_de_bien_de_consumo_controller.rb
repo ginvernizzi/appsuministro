@@ -77,11 +77,12 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
      
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])  
           
-    @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.new(cantidad: params[:cantidad], costo: params[:costo], bien_de_consumo: @bdc)    
+    @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.build(cantidad: params[:cantidad], costo: params[:costo], bien_de_consumo: @bdc[0])    
         
     
-      if @recepcion_de_bien_de_consumo.update()     
-         redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
+      if @recepcion_de_bien_de_consumo.save     
+         flash[:notice] = 'Bien de consumo agregado exitosamente.'
+         redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo
       else
         respond_to do |format|
         format.html { render :new_bienes }
@@ -113,6 +114,23 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
       format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'Recepcion de bien de consumo was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def destroy_bien_de_consumo_rececpcion
+    @bienes_de_consumo_de_recepcion.destroy
+    respond_to do |format|
+      format.html { redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo, notice: 'El bien de consumo fue eliminado exitosamente.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def pegar_campo_factura
+      render(:partial => 'numero_factura')       
+  end
+
+
+  def pegar_campo_orden_de_compra
+      render(:partial => 'numero_oc')       
   end
 
   private

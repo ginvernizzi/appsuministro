@@ -1,6 +1,6 @@
 <%= form_for(@recepcion_de_bien_de_consumo , 
-          url: save_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo), 
-      html: {method: "put"}) do |f| %>
+                    url: save_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo), 
+                    html: {method: "put"}) do |f| %>
 
   <% if @recepcion_de_bien_de_consumo.errors.any? %>
     <div id="error_explanation">
@@ -36,31 +36,39 @@
 
     <div class="field">
     <%= label(:costoTotal ,"costo total") %><br>
-    <%= text_field_tag :costoTotal %>
+    <%= text_field_tag 'costoTotal', nil,  readonly: true %>
   </div>  
 
-   <table class="table">
+   <p> Bienes de consumo  </p>
+<table class="table">
   <thead>
     <tr>
       <th>Nombre</th>
-      <th>Item</th>     
-      <th>Canitdad </th>
-      <th>Costo </th>
+      <th>Codigo</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+      <th>Accion</th>
     </tr>
   </thead>
   <tbody>
-    <% if @recepcion_de_bien_de_consumo %>
-      <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |doc_secundario| %>
-        <tr>
-          <td> E34 </td>
-          <td> Tira de Madera 45cm </td>                        
-          <td> 34 </td>                        
-          <td> 145 </td>                        
-        </tr>
-      <% end %>
-    <% end %>
+    <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
+        <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
+        <tr>        
+          <td><%= bcr.bien_de_consumo.nombre %> </td>
+          <td><%= bcr.bien_de_consumo.codigo %> </td>
+          <td><%= bcr.cantidad %> </td>
+          <td><%= bcr.costo %> </td>
+          <td> "eliminar bien de consumo" </td>
+        </tr>    
+        <%end%>
+    <% else %>
+        <tr>        
+          <td></td>
+          <td></td>
+        </tr>    
+    <% end %>      
   </tbody>
-</table> 
+</table>
 
   <div class="actions">
     <%= f.submit %>

@@ -54,4 +54,33 @@
   </tbody>
 </table>
 
+<p> Bienes de consumo  </p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Codigo</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
+        <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
+        <tr>        
+          <td><%= bcr.bien_de_consumo.nombre %> </td>
+          <td><%= bcr.bien_de_consumo.codigo %> </td>
+          <td><%= bcr.cantidad %> </td>
+          <td><%= bcr.costo %> </td>
+        </tr>    
+        <%end%>
+    <% else %>
+        <tr>        
+          <td></td>
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+
 <%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>
