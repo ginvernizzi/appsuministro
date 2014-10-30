@@ -113,7 +113,7 @@ footer {
 
 input, password, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
-  width: 100%;
+  width: 30%;
   margin-bottom: 15px;
   @include box_sizing;
 }
@@ -123,17 +123,20 @@ input {
 }
 
 #error_explanation {
-  color: #f00;
+  color: red;
   ul {
-    list-style: none;
-    
+    color: red;
+    margin: 0 0 30px 0;
   }
 }
 
 .field_with_errors {
-  @extend .control-group;
-  @extend .error;
+  @extend .has-error;
+  .form-control {
+    color: $state-danger-text;
+  }
 }
+
 
 
 

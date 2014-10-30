@@ -11,15 +11,17 @@
 
 /////////////////// Vista nueva recepcion. Agrear y quitar Documentos ///////////////////  
   $(document).ready(function(){  
+      $('#numero_doc_principal').attr('disabled', true)
+      $('#numero_doc_secundario').attr('disabled', true)      
+      $("#numero_doc_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true })      
+
       var tableName = "#recepcion_documento";
       var table = document.getElementById("recepcion_documento");  
+
       $("#agregar_doc").click(function() 
-      {    
-           //var numeroFila = $('#numeroDeFila').val();
-           //var numeroFila = gon.numeroDeFila           
-          //Validacion
-          if($('#numero_doc_secundario').val().length != 0 ||  $("#tds_tipo_de_documento_secundario_id").val()  != "")
-          {           
+      {               
+          if($('#numero_doc_secundario').val() != "" &&  $("#tds_tipo_de_documento_secundario_id").val()  != "")
+          {                       
             var htmlToAppend = '<tr id="pn'+ gon.numeroDeFila +'"> '
             + '<td id="col'+ gon.numeroDeFila +'">'+ $("#tds_tipo_de_documento_secundario_id :selected").text() +' </td>'
             + '<td id="col'+ gon.numeroDeFila +'">'+ $("#numero_doc_secundario").val() +' </td> '
@@ -30,23 +32,66 @@
             gon.numeroDeFila++;          
 
             $(tableName + " tbody").append ( htmlToAppend );
-            //bleRow.appendTo(tableName);            
+            
+            $('#numero_doc_secundario').val("")
+            $
           }
           else
-          {alert("Debe completar los campos de documento secundario\n")}
+          {alert("Hay campos vacios. No se puede agregar documento\n")}
       });
 
-      //$("#quitar_doc").click(function() 
-      $("#recepcion_documento").on('clic k', '.quitar_document', function() {            
-        var par = $(this).parent().parent(); //tr
-        par.remove();     
+      
+      $("#recepcion_documento").on('click', '.quitar_document', function() {            
+          var par = $(this).parent().parent(); 
+          par.remove();     
       });  
-   
-      $("#numero_doc_secundario").inputmask("9999-99999999")
-      $("#numero_doc_principal").inputmask("9999-99999999")
+                  
+      $('#tdp_tipo_de_documento_id').change(function() {
+            var urlToSubmit = ""
+            //Habria que traer los tipos de documento
+            if($(this).val() == 1) 
+            {
+               $("#numero_doc_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true,  greedy: false ,autoUnmask: true});
+               $('#numero_doc_principal').attr('disabled', false);
+            }            
+            if($(this).val() == 2) 
+            {   $("#numero_doc_principal").inputmask("999-9999", { clearMaskOnLostFocus: true,  greedy: false, autoUnmask: true });
+                $('#numero_doc_principal').attr('disabled', false);
+            }              
+            if($(this).val() == "") {$('#numero_doc_principal').attr('disabled', true);}  
 
-      // function validarNumeroDocumento(numero) { 
-      // var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      // return re.test(numero);
-      // } 
+      });
+
+      $('#tds_tipo_de_documento_secundario_id').change(function() {
+            var urlToSubmit = ""
+            //Habria que traer los tipos de documento
+            if($(this).val() == 1)
+              {
+                $("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true ,  greedy: false, autoUnmask: true});
+                $("#numero_doc_secundario").attr('disabled', false);
+              }                         
+            if($(this).val() == 2)
+              {
+                $("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, greedy: false, autoUnmask: true } );
+                $("#numero_doc_secundario").attr('disabled', false);
+              }   
+
+            if($(this).val() == "") {$('#numero_doc_secundario').attr('disabled', true);}  
+      });
+      
+      $('#recepcion_de_bien_de_consumo_estado').change(function() {
+            var urlToSubmit = ""
+            //Habria que traer los tipos de documento
+            if($(this).val() == 1)
+              { urlToSubmit = "/recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria" }
+
+            $.ajax({
+              url: urlToSubmit,
+              type: "POST",
+              data: { },
+              success:function(result){
+                $("#div_descripcion_provisoria").html(result)                          
+            }
+          });
+      });
   });

@@ -1,7 +1,7 @@
 <%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
   <% if @recepcion_de_bien_de_consumo.errors.any? %>  
     <div id="error_explanation">
-      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>
+      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error/es") %> en el formulario. La recepcion no pudo ser guardada:</h2>
       <ul>
       <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
         <li><%= message %></li>        
@@ -10,7 +10,7 @@
     </div>
   <% end %>
     
-  <div class="datepicker">    
+  <div class="field">    
     <%= f.label :fecha %><br />
     <%= f.text_field :fecha %>  
   </div> 
@@ -20,53 +20,50 @@
     <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS, :last, :first, :include_blank => "Seleccione estado...") %>       
   </div>
 
-  <div class="field">
-    <%= f.label :descripcion_provisoria %><br>
-    <%= f.text_area :descripcion_provisoria %>
-  </div>  
+   <div id="descripcion_provisoria">
+  </div> 
 
   <div class="field">
-      <%= f.label :tipo_de_documento%><br />
-      <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", 
-      "nombre", :include_blank => "Seleccione un documento...") %>
+      <%= f.label :tipo_de_documento%><br /> 
+      <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", "nombre", :include_blank => "Seleccione un documento...") %>
   </div>
-    <div class="field">
-    <%= f.label :numero %><br>
-    <%= text_field_tag "numero_doc_principal", params[:numero], id: "numero_doc_principal" %>
-  </div>
-       
+  
   <div class="field">
+   <%= label_tag :numero %><br>
+   <%= text_field_tag :numero_doc_principal , params[:numero], id: 'numero_doc_principal', class: 'campo_factura'%>
+  </div>    
+       
+  <div class="class="control-group"">
     <%= f.label :tipo_de_documento_secundario %><br />
     <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-    "nombre", :include_blank => "Seleccione un documento...") %>      
-  </div>
+    "nombre", :include_blank => "Seleccione un documento...") %><br /> 
 
-  <div class="field">
     <%= f.label :numero %><br />         
-    <%= text_field_tag "numero_doc_secundario", params[:numero], id: "numero_doc_secundario" %>  
+    <%= text_field_tag :numero_doc_secundario, params[:numero], id: 'numero_doc_secundario' %> 
     <input type="button" id="agregar_doc" value="Agregar"/>
-  </div>    
+  </div>        
 
-
+<div class="panel panel-default">
+<div class="panel-heading">Documentos secundarios</div>
 <table class="table" id="recepcion_documento">
-  <thead>
-      <tr>
-            <th> Tipo de Documento </td>
-            <th> Numero </td>
-            <th> Accion  </td>
-            <th>  </td>
-            <th>  </td>
-      </tr>      
-  </thead>
-  <tbody>
-  </tbody>  
+<thead>
+  <tr>
+    <th> Tipo de Documento </td>
+    <th> Numero </td>
+    <th> Accion  </td>
+    <th>  </td>
+    <th>  </td>
+  </tr>      
+</thead>
+    <tbody>
+   </tbody>  
 </table>   
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-
-
+</div>
+  <%= f.submit "Guardar Recepcion" %>  
+</div>
 <% end %>
+
+
 
 
 

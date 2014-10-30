@@ -1,4 +1,8 @@
 <p>
+
+</p>
+
+<p>
   <strong>Fecha:</strong>
   <%= @recepcion_de_bien_de_consumo.fecha %>
 </p>
@@ -13,7 +17,10 @@
   <%= @recepcion_de_bien_de_consumo.descripcion_provisoria %>
 </p>
 
-<p> Documento principal </p>
+</br>
+
+<div class="panel panel-default">
+   <div class="panel-heading">Documento principal</div>
 <table class="table">
   <thead>
     <tr>
@@ -28,8 +35,10 @@
       </tr>    
   </tbody>
 </table>
+</div>
 
-<p> Documentos secundarios </p>
+  <div class="panel panel-default">
+   <div class="panel-heading">Documentos secundarios</div>
 <table class="table">
   <thead>
     <tr>
@@ -40,11 +49,13 @@
   <tbody>
   	<% if @recepcion_de_bien_de_consumo.documentos_secundario.any? %>
         <% @recepcion_de_bien_de_consumo.documentos_secundario.each do |doc_secundario| %>
-      	<tr>      	
-        	<td><%= doc_secundario.documento_de_recepcion.tipo_de_documento.nombre %> </td>
-        	<td><%= doc_secundario.documento_de_recepcion.numero_de_documento %> </td>
-      	</tr>    
-      	<%end%>
+        <% if doc_secundario.documento_de_recepcion %>
+      	     <tr>      	          
+        	     <td><%= doc_secundario.documento_de_recepcion.tipo_de_documento.nombre %> </td>
+        	     <td><%= doc_secundario.documento_de_recepcion.numero_de_documento %> </td>        
+      	     </tr>    
+        <% end %>
+    <%end%>
     <% else %>
       	<tr>      	
         	<td></td>
@@ -53,5 +64,37 @@
    	<% end %>      
   </tbody>
 </table>
+</div>
+
+<div class="panel panel-default">
+<div class="panel-heading">Bienes de consumo</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Codigo</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
+        <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
+        <tr>        
+          <td><%= bcr.bien_de_consumo.nombre %> </td>
+          <td><%= bcr.bien_de_consumo.codigo %> </td>
+          <td><%= bcr.cantidad %> </td>
+          <td><%= bcr.costo %> </td>
+        </tr>    
+        <%end%>
+    <% else %>
+        <tr>        
+          <td></td>
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+</div>
 
 <%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>
