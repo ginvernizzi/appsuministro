@@ -40,8 +40,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     @recepcion_de_bien_de_consumo.build_documento_principal(documento_de_recepcion:@docRecepcion_p, 
                                        recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
 
-    #Key (tipoDeDocumento_Id) Value (numero de documento)
-    
+        
       if params[:ltds] 
           params[:ltds].each { |k, v|          
             if (k.include? "numero_doc_secundario")
@@ -156,6 +155,10 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
           #format.json { render :json => @bien_de_consumo }        
           format.json { render :json => @array_bien_de_consumo }        
       end
+  end
+
+  def pegar_campo_descripcion_provisoria
+        render(:partial => 'despcripcion_provisoria')       
   end
 
   private

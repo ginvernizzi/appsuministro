@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   delete 'recepciones_de_bien_de_consumo/eliminar_bien_de_recepcion/:id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
                                         as: 'eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo'
                                         
-  
+  post 'recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria', :to => 'recepciones_de_bien_de_consumo#pegar_campo_descripcion_provisoria'
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]

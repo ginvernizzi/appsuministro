@@ -4,7 +4,7 @@
 
   <% if @recepcion_de_bien_de_consumo.errors.any? %>    
     <div id="error_explanation">
-      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> Hay errores en el formulario. La recepcion no pudo ser actualizada:</h2>      
+      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error/es") %> en el formulario. La recepcion no pudo ser actualizada:</h2>      
       <ul>
       <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
         <li><%= message %></li>
