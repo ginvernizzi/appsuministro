@@ -17,7 +17,7 @@
 //= require turbolinks
 //= require bootstrap
 //= require bootstrap.js
-require bootstrap-datepicker
+//= require bootstrap-datepicker
 
 //= require jquery.inputmask
 //= require jquery.inputmask.extensions
