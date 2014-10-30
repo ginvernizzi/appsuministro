@@ -158,7 +158,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   end
 
   def pegar_campo_descripcion_provisoria
-        render(:partial => 'despcripcion_provisoria')       
+        render(:partial => 'descripcion_provisoria')                                  
   end
 
   private

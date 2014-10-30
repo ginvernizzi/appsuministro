@@ -33,9 +33,8 @@
 
             $(tableName + " tbody").append ( htmlToAppend );
             
-            $('#numero_doc_secundario').val("")
-            $
-          }
+            $('#numero_doc_secundario').val("")                    
+            }
           else
           {alert("Hay campos vacios. No se puede agregar documento\n")}
       });
@@ -81,17 +80,19 @@
       
       $('#recepcion_de_bien_de_consumo_estado').change(function() {
             var urlToSubmit = ""
-            //Habria que traer los tipos de documento
-            if($(this).val() == 1)
-              { urlToSubmit = "/recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria" }
-
-            $.ajax({
-              url: urlToSubmit,
-              type: "POST",
-              data: { },
-              success:function(result){
-                $("#div_descripcion_provisoria").html(result)                          
-            }
-          });
-      });
+            //Habria que traer los tipos de documento            
+            if($(this).val() != 2)              
+              {  $( ".field_descripcion_provisoria" ).remove(); }
+            else
+              { 
+                urlToSubmit = "/recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria"               
+                $.ajax({  
+                url: urlToSubmit,
+                type: "POST",
+                data: { },
+                success:function(result) 
+                      {  $("#div_descripcion_provisoria").html(result) }
+                });                        
+              }      
+      });                                           
   });
