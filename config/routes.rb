@@ -3,9 +3,7 @@ Rails.application.routes.draw do
   resources :recepciones_de_bien_de_consumo
 
   get 'static_pages/home'
-  get 'static_pages/help'  
-  post 'recepciones_de_bien_de_consumo/pegar_campo_factura', :to => 'recepciones_de_bien_de_consumo#pegar_campo_factura'
-  post 'recepciones_de_bien_de_consumo/pegar_campo_orden_de_compra', :to => 'recepciones_de_bien_de_consumo#pegar_campo_orden_de_compra'
+  get 'static_pages/help'    
   
   get 'recepciones_de_bien_de_consumo/new_bienes/:id' => 'recepciones_de_bien_de_consumo#new_bienes', as: 'agregar_bienes_recepciones_de_bien_de_consumo'
 
@@ -13,6 +11,14 @@ Rails.application.routes.draw do
                                         :to => 'recepciones_de_bien_de_consumo#save_bienes',
                                         :as => 'save_bienes_recepciones_de_bien_de_consumo'
 
+
+  post 'recepciones_de_bien_de_consumo/obtener_nombre_de_bien_de_consumo', 
+                                        :to => 'recepciones_de_bien_de_consumo#obtener_nombre_de_bien_de_consumo',
+                                        :as => 'obtener_nombre_bien_de_consumo_recepciones_de_bien_de_consumo'  
+
+  delete 'recepciones_de_bien_de_consumo/eliminar_bien_de_recepcion/:id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
+                                        as: 'eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo'
+                                        
   
 
   resources :users

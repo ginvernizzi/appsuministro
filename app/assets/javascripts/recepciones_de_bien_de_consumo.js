@@ -17,12 +17,10 @@
       var table = document.getElementById("recepcion_documento");  
 
       $("#agregar_doc").click(function() 
-      {    
-           //var numeroFila = $('#numeroDeFila').val();
-           //var numeroFila = gon.numeroDeFila           
-          //Validacion
-          if($('#numero_doc_secundario').val().length != 0 ||  $("#tds_tipo_de_documento_secundario_id").val()  != "")
+      {               
+          if($('#numero_doc_secundario').val() != "" ||  $("#tds_tipo_de_documento_secundario_id").val()  != "")
           {           
+            alert(gon.numeroDeFila)
             var htmlToAppend = '<tr id="pn'+ gon.numeroDeFila +'"> '
             + '<td id="col'+ gon.numeroDeFila +'">'+ $("#tds_tipo_de_documento_secundario_id :selected").text() +' </td>'
             + '<td id="col'+ gon.numeroDeFila +'">'+ $("#numero_doc_secundario").val() +' </td> '
@@ -36,7 +34,7 @@
             $('#numero_doc_secundario').val("")                   
           }
           else
-          {alert("Debe completar los campos de documento secundario\n")}
+          {alert("Hay campos vacios. No se puede agregar documento\n")}
       });
 
       
@@ -91,7 +89,26 @@
            if($('#cantidad').val() != "" &&  $("#costo").val()  != "")                  
            $('#costoTotal').val(parseFloat($('#costo').val()) * parseInt($('#cantidad').val())); 
            else
-           $('#costoTotal').val("faltan datos");
+           $('#costoTotal').val("");
            end           
       });      
+
+      $("#costo").inputmask("9999999.9999")    
+      
+      $("#traer_bien_de_consumo").click(function() {  
+        var cod = $("#codigo").val();        
+        $.ajax({
+                url: "/recepciones_de_bien_de_consumo/obtener_nombre_de_bien_de_consumo",
+                dataType: "json",
+                //contentType: "application/json", no va, si no envias un json!!!
+                type: "post",
+                data: { codigo: cod },                
+                success:function(data){                  
+                  $("#nombre").val(data[0].nombre)                
+                },
+                error: function (request, status, error) {
+                  alert("El bien no existe");
+                }
+              });
+      });
   });

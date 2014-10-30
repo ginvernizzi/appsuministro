@@ -35,37 +35,37 @@
    <%= text_field_tag :numero_doc_principal , params[:numero], id: 'numero_doc_principal', class: 'campo_factura'%>
   </div>    
        
-  <div class="field">
+  <div class="class="control-group"">
     <%= f.label :tipo_de_documento_secundario %><br />
     <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-    "nombre", :include_blank => "Seleccione un documento...") %>      
-  </div>
+    "nombre", :include_blank => "Seleccione un documento...") %><br /> 
 
-  <div class="field">
     <%= f.label :numero %><br />         
-    <%= text_field_tag :numero_doc_secundario, params[:numero], id: 'numero_doc_secundario' %>  
+    <%= text_field_tag :numero_doc_secundario, params[:numero], id: 'numero_doc_secundario' %> 
     <input type="button" id="agregar_doc" value="Agregar"/>
   </div>        
 
+<div class="panel panel-default">
+<div class="panel-heading">Documentos secundarios</div>
 <table class="table" id="recepcion_documento">
-  <thead>
-      <tr>
-            <th> Tipo de Documento </td>
-            <th> Numero </td>
-            <th> Accion  </td>
-            <th>  </td>
-            <th>  </td>
-      </tr>      
-  </thead>
-  <tbody>
-  </tbody>  
+<thead>
+  <tr>
+    <th> Tipo de Documento </td>
+    <th> Numero </td>
+    <th> Accion  </td>
+    <th>  </td>
+    <th>  </td>
+  </tr>      
+</thead>
+    <tbody>
+   </tbody>  
 </table>   
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-
-
+</div>
+  <%= f.submit "Guardar Recepcion" %>  
+</div>
 <% end %>
+
+
 
 
 

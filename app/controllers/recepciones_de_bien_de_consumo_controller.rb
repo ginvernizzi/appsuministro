@@ -45,7 +45,10 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
       if params[:ltds] 
           params[:ltds].each { |k, v|          
             if (k.include? "numero_doc_secundario")
-            @tdds = TipoDeDocumento.find_by_id(k)
+            puts "#####################"
+            puts k + "  -   " + v            
+
+            @tdds = TipoDeDocumento.find_by_id(k)            
             @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: v, tipo_de_documento: @tdds)
             @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
                                                                   recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
@@ -53,7 +56,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
           }
       end
                     
-      if @recepcion_de_bien_de_consumo.save                              
+      if @recepcion_de_bien_de_consumo.save                
+        flash[:notice] = 'La recepcion fue creada exitosamente.'              
         redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
         #format.html { render :new_bienes}
         #format.html { render :new }
@@ -61,6 +65,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
         respond_to do |format|  
           @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
           @tipos_de_documento = TipoDeDocumento.all
+          gon.numeroDeFila = 1;
           format.html { render :new }
           format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
         end
@@ -78,10 +83,10 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])  
           
     @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.build(cantidad: params[:cantidad], costo: params[:costo], bien_de_consumo: @bdc[0])    
-        
+          
     
       if @recepcion_de_bien_de_consumo.save     
-         flash[:notice] = 'Bien de consumo agregado exitosamente.'
+         flash[:notice] = 'El Bien de consumo fue agregado exitosamente.'
          redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo
       else
         respond_to do |format|
@@ -111,26 +116,32 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def destroy
     @recepcion_de_bien_de_consumo.destroy
     respond_to do |format|
-      format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'Recepcion de bien de consumo was successfully destroyed.' }
+      format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'Recepcion de bien de consumo eliminado exitosamente.' }
       format.json { head :no_content }
     end
   end
 
-  def destroy_bien_de_consumo_rececpcion
+  def eliminar_bien_de_recepcion
+    @bienes_de_consumo_de_recepcion = BienDeConsumoDeRecepcion.find(params[:id])
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(@bienes_de_consumo_de_recepcion[:recepcion_de_bien_de_consumo_id])                                                                                               
     @bienes_de_consumo_de_recepcion.destroy
-    respond_to do |format|
-      format.html { redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo, notice: 'El bien de consumo fue eliminado exitosamente.' }
+    respond_to do |format|    
+      flash[:notice] ='El bien de consumo fue eliminado exitosamente.' 
+      format.html { redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo}                    
+
       format.json { head :no_content }
     end
   end
 
-  def pegar_campo_factura
-      render(:partial => 'numero_factura')       
-  end
-
-
-  def pegar_campo_orden_de_compra
-      render(:partial => 'numero_oc')       
+  def obtener_nombre_de_bien_de_consumo              
+      @array_bien_de_consumo = BienDeConsumo.where(codigo: params[:codigo])
+      @id_de_bien = @array_bien_de_consumo[0].id
+      #@bien_de_consumo = BienDeConsumo.find(@id_de_bien)
+      
+      respond_to do | format |                  
+          #format.json { render :json => @bien_de_consumo }        
+          format.json { render :json => @array_bien_de_consumo }        
+      end
   end
 
   private
