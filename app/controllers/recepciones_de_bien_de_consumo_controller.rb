@@ -41,33 +41,47 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
                                        recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
 
     #Key (tipoDeDocumento_Id) Value (numero de documento)
-
+    
       if params[:ltds] 
           params[:ltds].each { |k, v|          
             if (k.include? "numero_doc_secundario")
-            puts "#####################"
-            puts k + "  -   " + v            
-
-            @tdds = TipoDeDocumento.find_by_id(k)            
-            @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: v, tipo_de_documento: @tdds)
-            @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
-                                                                  recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
+              @numero_doc = v            
+            else
+              @tipo_de_documento_id = v                        
             end                                                                                    
-          }
+
+            if(@numero_doc && @tipo_de_documento_id)  
+
+              puts "#####################"
+              puts @numero_doc
+              puts @tipo_de_documento_id     
+              puts "#####################"     
+
+              @tdds = TipoDeDocumento.find_by_id(@tipo_de_documento_id)            
+              @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: @numero_doc, tipo_de_documento: @tdds)
+              @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
+                                                                  recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
+
+              @numero_doc = nil
+              @tipo_de_documento_id = nil      
+
+              puts "#####################"
+              puts @numero_doc
+              puts @tipo_de_documento_id     
+              puts "#####################"        
+            end
+            }
       end
-                    
-      if @recepcion_de_bien_de_consumo.save                
-        flash[:notice] = 'La recepcion fue creada exitosamente.'              
-        redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
-        #format.html { render :new_bienes}
-        #format.html { render :new }
-      else        
-        respond_to do |format|  
-          @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
-          @tipos_de_documento = TipoDeDocumento.all
-          gon.numeroDeFila = 1;
-          format.html { render :new }
-          format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+
+        if @recepcion_de_bien_de_consumo.save                
+          flash[:notice] = 'La recepcion fue creada exitosamente.'              
+          redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
+        else                          
+          respond_to do |format|  
+            gon.numeroDeFila = 1;
+            @tipos_de_documento = TipoDeDocumento.all
+            format.html { render :new }
+            format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
         end
       end
   end

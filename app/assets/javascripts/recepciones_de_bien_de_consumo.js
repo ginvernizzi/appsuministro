@@ -19,8 +19,7 @@
       $("#agregar_doc").click(function() 
       {               
           if($('#numero_doc_secundario').val() != "" ||  $("#tds_tipo_de_documento_secundario_id").val()  != "")
-          {           
-            alert(gon.numeroDeFila)
+          {                       
             var htmlToAppend = '<tr id="pn'+ gon.numeroDeFila +'"> '
             + '<td id="col'+ gon.numeroDeFila +'">'+ $("#tds_tipo_de_documento_secundario_id :selected").text() +' </td>'
             + '<td id="col'+ gon.numeroDeFila +'">'+ $("#numero_doc_secundario").val() +' </td> '
@@ -93,7 +92,7 @@
            end           
       });      
 
-      $("#costo").inputmask("9999999.9999")    
+      //$("#costo").inputmask("9999999.9999")    
       
       $("#traer_bien_de_consumo").click(function() {  
         var cod = $("#codigo").val();        
@@ -107,7 +106,7 @@
                   $("#nombre").val(data[0].nombre)                
                 },
                 error: function (request, status, error) {
-                  alert("El bien no existe");
+                  alert("Bien de consumo inexistente");
                 }
               });
       });

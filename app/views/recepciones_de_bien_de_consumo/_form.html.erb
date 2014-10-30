@@ -1,7 +1,7 @@
 <%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
   <% if @recepcion_de_bien_de_consumo.errors.any? %>  
     <div id="error_explanation">
-      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> prohibited this recepcion_de_bien_de_consumo from being saved:</h2>
+      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error") %> Hay errores en el formulario. La recepcion no pudo ser actualizada:</h2>
       <ul>
       <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
         <li><%= message %></li>        
@@ -10,7 +10,7 @@
     </div>
   <% end %>
     
-  <div class="datepicker">    
+  <div class="field">    
     <%= f.label :fecha %><br />
     <%= f.text_field :fecha %>  
   </div> 
