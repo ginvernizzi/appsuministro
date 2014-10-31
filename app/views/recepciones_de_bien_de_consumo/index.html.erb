@@ -9,7 +9,7 @@
       <th>Descripcion provisoria</th>
       <th>Tipo de Documento</th>
       <th>Documento principal</th>
-      <th colspan="3"></th>
+      <th> </th>
     </tr>
   </thead>
 
@@ -28,9 +28,9 @@
         <td></td>
         <td></td>
       <% end %>      
-        <td><%= link_to 'Ver', recepcion_de_bien_de_consumo %></td>
-        <!-- <td><%= link_to 'Modificar', edit_recepcion_de_bien_de_consumo_path(recepcion_de_bien_de_consumo) %></td>
-        <td><%= link_to 'Eliminar', recepcion_de_bien_de_consumo, method: :delete, data: { confirm: '¿Esta seguro?' } %></td> -->
+        <td><%= link_to 'Ver', recepcion_de_bien_de_consumo %></td>        
+        <td><%= link_to 'Modificar', edit_recepcion_de_bien_de_consumo_path(recepcion_de_bien_de_consumo) %></td>
+        <td><%= link_to 'Eliminar', recepcion_de_bien_de_consumo, method: :delete, data: { confirm: '¿Esta seguro?' } %></td> 
       </tr>
     <% end %>
   </tbody>

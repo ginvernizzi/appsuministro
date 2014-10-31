@@ -10,10 +10,9 @@
 
 
 /////////////////// Vista nueva recepcion. Agrear y quitar Documentos ///////////////////  
-  $(document).ready(function(){  
-      $('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', true)
-      //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' })      
-      $('#numero_doc_secundario').attr('disabled', true)            
+  $(document).ready(function(){        
+      $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' })      
+      $('#numero_doc_secundario').attr('readonly', true)            
 
       var tableName = "#recepcion_documento";
       var table = document.getElementById("recepcion_documento");  
@@ -45,39 +44,42 @@
           par.remove();     
       });  
                   
+      //Evento al cambiar de item en el combo de documento principal
       $('#tdp_tipo_de_documento_id').change(function() {
             var urlToSubmit = ""
             //Habria que traer los tipos de documento
             if($(this).val() == 1) 
-            {
-               //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' ,autoUnmask: true});
-               $('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', false);
-            }            
+              {
+              $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' ,autoUnmask: true});
+              $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false);
+              }            
             if($(this).val() == 2) 
-            {   //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0', autoUnmask: true });
-                $('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', false);
+            {   $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0', autoUnmask: true });
+                $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false); 
             }              
             if($(this).val() == "") 
-              {$('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', true) };  
+              {$('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', true) };  
       });
 
+      //Evento al cambiar de item en el combo de documento secundario
       $('#tds_tipo_de_documento_secundario_id').change(function() {
             var urlToSubmit = ""
             //Habria que traer los tipos de documento
             if($(this).val() == 1)
               {
                 $("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true , placeholder: '0', autoUnmask: true});
-                $("#numero_doc_secundario").attr('disabled', false);
+                $("#numero_doc_secundario").attr('readonly', false);
               }                         
             if($(this).val() == 2)
               {
                 $("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0', autoUnmask: true } );
-                $("#numero_doc_secundario").attr('disabled', false);
+                $("#numero_doc_secundario").attr('readonly', false);
               }   
 
-            if($(this).val() == "") {$('#numero_doc_secundario').attr('disabled', true);}  
+            if($(this).val() == "") {$('#numero_doc_secundario').attr('readonly', true);}  
       });
       
+
       $('#recepcion_de_bien_de_consumo_estado').change(function() {
             var urlToSubmit = ""
             //Habria que traer los tipos de documento            

@@ -1,5 +1,6 @@
 <p>
-
+  <strong>Recepcion numero:</strong>
+  <%= @recepcion_de_bien_de_consumo.id %>
 </p>
 
 <p>
@@ -12,13 +13,13 @@
   <%= RecepcionDeBienDeConsumo::ESTADOS.key(@recepcion_de_bien_de_consumo.estado)%>
 </p>
 
-<p>
+<% if !@recepcion_de_bien_de_consumo.descripcion_provisoria %>
+  <p>
   <strong>Descripcion provisoria:</strong>
   <%= @recepcion_de_bien_de_consumo.descripcion_provisoria %>
-</p>
-
+  </p>    
+<% end %>
 </br>
-
 <div class="panel panel-default">
    <div class="panel-heading">Documento principal</div>
 <table class="table">

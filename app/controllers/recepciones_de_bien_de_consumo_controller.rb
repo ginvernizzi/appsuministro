@@ -23,22 +23,24 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   # GET /recepciones_de_bien_de_consumo/1/edit
   def edit
+    
   end
 
   # POST /recepciones_de_bien_de_consumo
   # POST /recepciones_de_bien_de_consumo.json
   def create    
-    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new(fecha: params[:recepcion_de_bien_de_consumo][:fecha], estado: params[:recepcion_de_bien_de_consumo][:estado], 
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new(fecha: params[:recepcion_de_bien_de_consumo][:fecha], 
+                                                                 estado: params[:recepcion_de_bien_de_consumo][:estado], 
                                                                  descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
     
     @tddp = TipoDeDocumento.find_by_id(params[:tdp][:tipo_de_documento_id])    
     
 
-    @docRecepcion_p = DocumentoDeRecepcion.new(numero_de_documento: params[:recepcion_de_bien_de_consumo][:numero_de_documento], tipo_de_documento: @tddp)
+    @docRecepcion_p = DocumentoDeRecepcion.new(numero_de_documento: params[:recepcion_de_bien_de_consumo][:documento_principal], tipo_de_documento: @tddp)
     
 
     @recepcion_de_bien_de_consumo.build_documento_principal(documento_de_recepcion:@docRecepcion_p, 
-                                       recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
+                                                            recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
 
         
       if params[:ltds] 
@@ -92,7 +94,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
          flash[:notice] = 'El Bien de consumo fue agregado exitosamente.'
          redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo
       else
-        respond_to do |format|
+        respond_to do |format|                  
         format.html { render :new_bienes }
         format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
         end
@@ -105,7 +107,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def update
     respond_to do |format|
       if @recepcion_de_bien_de_consumo.update(recepcion_de_bien_de_consumo_params)
-        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'Recepcion de bien de consumo was successfully updated.' }
+        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'La Recepcion de bien de consumo fue actulizada exitosamente.' }
         format.json { render :show, status: :ok, location: @recepcion_de_bien_de_consumo }
       else
         format.html { render :edit }
@@ -119,7 +121,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def destroy
     @recepcion_de_bien_de_consumo.destroy
     respond_to do |format|
-      format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'Recepcion de bien de consumo eliminado exitosamente.' }
+      format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion de bien de consumo eliminado exitosamente.' }
       format.json { head :no_content }
     end
   end
@@ -159,6 +161,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recepcion_de_bien_de_consumo_params
-      params.require(:recepcion_de_bien_de_consumo).permit(:fecha, :estado, :descripcion_provisoria, :numero_doc_principal, :numero_doc_secundario)
+      params.require(:recepcion_de_bien_de_consumo).permit(:fecha, :estado, :descripcion_provisoria, :documento_principal, :documentos_secundario)
     end
 end
