@@ -11,9 +11,9 @@
 
 /////////////////// Vista nueva recepcion. Agrear y quitar Documentos ///////////////////  
   $(document).ready(function(){  
-      $('#numero_doc_principal').attr('disabled', true)
-      $('#numero_doc_secundario').attr('disabled', true)      
-      $("#numero_doc_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true })      
+      $('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', true)
+      //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' })      
+      $('#numero_doc_secundario').attr('disabled', true)            
 
       var tableName = "#recepcion_documento";
       var table = document.getElementById("recepcion_documento");  
@@ -50,15 +50,15 @@
             //Habria que traer los tipos de documento
             if($(this).val() == 1) 
             {
-               $("#numero_doc_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true,  greedy: false ,autoUnmask: true});
-               $('#numero_doc_principal').attr('disabled', false);
+               //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' ,autoUnmask: true});
+               $('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', false);
             }            
             if($(this).val() == 2) 
-            {   $("#numero_doc_principal").inputmask("999-9999", { clearMaskOnLostFocus: true,  greedy: false, autoUnmask: true });
-                $('#numero_doc_principal').attr('disabled', false);
+            {   //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0', autoUnmask: true });
+                $('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', false);
             }              
-            if($(this).val() == "") {$('#numero_doc_principal').attr('disabled', true);}  
-
+            if($(this).val() == "") 
+              {$('#recepcion_de_bien_de_consumo_documento_principal').attr('disabled', true) };  
       });
 
       $('#tds_tipo_de_documento_secundario_id').change(function() {
@@ -66,12 +66,12 @@
             //Habria que traer los tipos de documento
             if($(this).val() == 1)
               {
-                $("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true ,  greedy: false, autoUnmask: true});
+                $("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true , placeholder: '0', autoUnmask: true});
                 $("#numero_doc_secundario").attr('disabled', false);
               }                         
             if($(this).val() == 2)
               {
-                $("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, greedy: false, autoUnmask: true } );
+                $("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0', autoUnmask: true } );
                 $("#numero_doc_secundario").attr('disabled', false);
               }   
 

@@ -34,7 +34,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     @tddp = TipoDeDocumento.find_by_id(params[:tdp][:tipo_de_documento_id])    
     
 
-    @docRecepcion_p = DocumentoDeRecepcion.new(numero_de_documento: params[:numero_doc_principal], tipo_de_documento: @tddp)
+    @docRecepcion_p = DocumentoDeRecepcion.new(numero_de_documento: params[:recepcion_de_bien_de_consumo][:numero_de_documento], tipo_de_documento: @tddp)
     
 
     @recepcion_de_bien_de_consumo.build_documento_principal(documento_de_recepcion:@docRecepcion_p, 
@@ -51,23 +51,13 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
             if(@numero_doc && @tipo_de_documento_id)  
 
-              puts "#####################"
-              puts @numero_doc
-              puts @tipo_de_documento_id     
-              puts "#####################"     
-
               @tdds = TipoDeDocumento.find_by_id(@tipo_de_documento_id)            
               @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: @numero_doc, tipo_de_documento: @tdds)
               @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
                                                                   recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)
 
               @numero_doc = nil
-              @tipo_de_documento_id = nil      
-
-              puts "#####################"
-              puts @numero_doc
-              puts @tipo_de_documento_id     
-              puts "#####################"        
+              @tipo_de_documento_id = nil           
             end
             }
       end
@@ -77,7 +67,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
           redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
         else                          
           respond_to do |format|  
-            gon.numeroDeFila = 1;
+            gon.numeroDeFila = 1;            
             @tipos_de_documento = TipoDeDocumento.all
             format.html { render :new }
             format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }

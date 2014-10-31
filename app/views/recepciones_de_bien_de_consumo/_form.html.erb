@@ -29,11 +29,11 @@
   </div>
   
   <div class="field">
-   <%= label_tag :numero %><br>
-   <%= text_field_tag :numero_doc_principal , params[:numero], id: 'numero_doc_principal', class: 'campo_factura'%>
+   <%= label_tag :numero %><br>      
+    <%= f.text_field :documento_principal, :value => "" %>         
   </div>    
        
-  <div class="class="control-group"">
+  <div class="field">
     <%= f.label :tipo_de_documento_secundario %><br />
     <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
     "nombre", :include_blank => "Seleccione un documento...") %><br /> 

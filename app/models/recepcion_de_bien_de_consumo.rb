@@ -7,13 +7,10 @@ class RecepcionDeBienDeConsumo < ActiveRecord::Base
   has_many :bienes_de_consumo_de_recepcion
 
   has_one :documento_principal
+
   has_many :documentos_secundario 
 
   validates :fecha, presence: true
   validates :estado, presence: true, :inclusion => { :in => self::ESTADOS.values }  
-  validates :documento_principal, presence: true
-
-  
-  #RecepcionDeBienDeConsumo::ESTADOS
-  #para acceder: RecepcionDeBienDeConsumo::ESTADOS.key(recepcion_de_bien_de_consumo.estado)
+  validates :documento_principal, presence: true      
 end
