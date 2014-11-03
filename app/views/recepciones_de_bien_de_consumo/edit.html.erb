@@ -82,6 +82,7 @@
       <th>Codigo</th>
       <th>Cantidad</th>
       <th>Costo</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -92,6 +93,7 @@
           <td><%= bcr.bien_de_consumo.codigo %> </td>
           <td><%= bcr.cantidad %> </td>
           <td><%= bcr.costo %> </td>
+          <td><%= link_to 'Eliminar Bien de consumo', eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo_path(bcr), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
         </tr>    
         <%end%>
     <% else %>

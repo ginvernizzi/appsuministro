@@ -23,7 +23,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   # GET /recepciones_de_bien_de_consumo/1/edit
   def edit
-    
+
   end
 
   # POST /recepciones_de_bien_de_consumo
