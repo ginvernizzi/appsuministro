@@ -1,0 +1,14 @@
+ <div class="field">
+  	<%= f.label :cantidad %><br>
+  	<%= f.text_field :cantidad %>
+ </div>
+
+ <div class="field">
+    <%= f.label :costo %><br>
+  	<%= f.text_field :costo %>
+ </div> 
+ <div class="field">
+ 	<%= f.fields_for :bien_de_consumo, @bien_de_consumo do |bc| %> 
+    	<%= bc.hidden_field :id %>
+ 	<% end %>
+ </div> 

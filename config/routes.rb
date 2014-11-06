@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   get 'static_pages/home'
   get 'static_pages/help'    
   
-  get 'recepciones_de_bien_de_consumo/new_bienes/:id' => 'recepciones_de_bien_de_consumo#new_bienes', as: 'agregar_bienes_recepciones_de_bien_de_consumo'
+  get 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/new_bienes/' => 'recepciones_de_bien_de_consumo#new_bienes', as: 'agregar_bienes_recepciones_de_bien_de_consumo'
 
-  put 'recepciones_de_bien_de_consumo/save_bienes/:id(.:format)', 
+  put 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/save_bienes/', 
                                         :to => 'recepciones_de_bien_de_consumo#save_bienes',
                                         :as => 'save_bienes_recepciones_de_bien_de_consumo'
 
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
                                         :to => 'recepciones_de_bien_de_consumo#obtener_nombre_de_bien_de_consumo',
                                         :as => 'obtener_nombre_bien_de_consumo_recepciones_de_bien_de_consumo'  
 
-  delete 'recepciones_de_bien_de_consumo/eliminar_bien_de_recepcion/:id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
+  delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_bien_de_recepcion/:bien_de_consumo_id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
                                         as: 'eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo'
                                         
   post 'recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria', :to => 'recepciones_de_bien_de_consumo#pegar_campo_descripcion_provisoria'

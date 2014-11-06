@@ -1,6 +1,5 @@
 class RecepcionDeBienDeConsumo < ActiveRecord::Base
-  belongs_to :documento_de_recepcion
-  #has_and_belongs_to_many :documentos_de_recepcion, :join_table => "documentos_de_recepcion_recepciones_de_bien_de_consumo"
+  belongs_to :documento_de_recepcion  
 
   ESTADOS = { :definitiva => 1, :provisoria => 2 }
 
@@ -12,5 +11,15 @@ class RecepcionDeBienDeConsumo < ActiveRecord::Base
 
   validates :fecha, presence: true
   validates :estado, presence: true, :inclusion => { :in => self::ESTADOS.values }  
-  validates :documento_principal, presence: true      
+  validates :documento_principal, presence: true
+
+  validates_associated :documento_principal      
+
+  ################# NEW #################
+  accepts_nested_attributes_for :bienes_de_consumo_de_recepcion, :allow_destroy => true
+  validates_associated :bienes_de_consumo_de_recepcion
+  
+  # def bienes_de_consumo_de_recepcion_attributes=(attributes)
+  #   bienes_de_consumo_de_recepcion.create!(attributes)
+  # end
 end
