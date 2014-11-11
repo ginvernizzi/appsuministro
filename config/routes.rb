@@ -1,15 +1,5 @@
 Rails.application.routes.draw do
 
-  #get 'recepciones_de_bien_de_consumo_a_evaluar/index', :to => 'recepciones_de_bien_de_consumo_a_evaluar#index',
-  #                                                       :as => 'index_recepciones_de_bien_de_consumo_a_evaluar'  
-    
-  # get  'recepciones_de_bien_de_consumo_a_evaluar', :to => 'recepciones_de_bien_de_consumo_a_evaluar#index',
-  #                                                  :as => 'recepciones_de_bien_de_consumo_a_evaluar_index'    
-
-  # get  'recepciones_de_bien_de_consumo_a_evaluar/:id', :to => 'recepciones_de_bien_de_consumo_a_evaluar#show', 
-  #                                                      :as => 'recepciones_de_bien_de_consumo_a_evaluar'
-
-
   resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show]
 
   get 'static_pages/home' , :as => 'home'
