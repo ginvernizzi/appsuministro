@@ -2,9 +2,9 @@
   $('#recepcion_de_bien_de_consumo_fecha').datepicker
   ({
     showOn: 'both',  
-    autoclose: true,
-    //setDate: currentDate,
-    format: 'dd/mm/yyyy'
+    autoclose: true,    
+    format: 'dd/mm/yyyy',
+    language: "es"
   });
 });
 

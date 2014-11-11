@@ -3,8 +3,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   # GET /recepciones_de_bien_de_consumo
   # GET /recepciones_de_bien_de_consumo.json
-  def index
-    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.all
+  def index    
+    @estado_a_evaluar = 3 #numero de hash  perteneciente al estado de recepcion "a_evaluar"
+    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado != 3").order(:id)
   end
 
   # GET /recepciones_de_bien_de_consumo/1
@@ -181,6 +182,22 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
         render(:partial => 'descripcion_provisoria')                                  
   end
 
+  def enviar_a_evaluar
+  @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])   
+    respond_to do |format|                                                                                       
+      if @recepcion_de_bien_de_consumo.estado == 1                
+          if @recepcion_de_bien_de_consumo.update(estado: "3")        
+            format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion fue enviada a evaluacion exitosamente.' }          
+          else     
+            format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'Error. La Recepcion no pudo ser enviada a evaluar.' }          
+          end
+          format.json { head :no_content }            
+      else
+        format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion no es definitiva. No puede ser enviada a evaluar.' }
+      end
+    end 
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recepcion_de_bien_de_consumo
@@ -189,8 +206,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recepcion_de_bien_de_consumo_params
-    #params.require(:recepcion_de_bien_de_consumo).permit(:fecha, :estado, :descripcion_provisoria, :documento_principal, 
-    #:documentos_secundario, bienes_de_consumo_de_recepcion_attributes: [:cantidad, :costo, bien_de_consumo_attributes: [:id]]) 
+      #params.require(:recepcion_de_bien_de_consumo).permit(:fecha, :estado, :descripcion_provisoria, :documento_principal, 
+      #:documentos_secundario, bienes_de_consumo_de_recepcion_attributes: [:cantidad, :costo, bien_de_consumo_attributes: [:id]]) 
       params.require(:recepcion_de_bien_de_consumo).permit!           
     end
 end

@@ -16,6 +16,10 @@ module SessionsHelper
     	!current_user.nil?
   	end
 
+    def signed_in_user
+      redirect_to signin_path , notice: "Por favor inicie sesion" unless signed_in?
+    end
+
   	def current_user
     	remember_token = User.digest(cookies[:remember_token])
     	@current_user ||= User.find_by(remember_token: remember_token)

@@ -1,0 +1,2 @@
+module RecepcionesDeBienDeConsumoAEvaluarHelper
+end

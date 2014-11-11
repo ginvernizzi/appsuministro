@@ -1,0 +1,33 @@
+<h1>Recepciones de bien de consumo a evaluar</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Numero</th>
+      <th>Fecha</th>      
+      <th>Tipo de Documento</th>
+      <th>Documento principal</th>
+      <th colspan="1"> </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @recepciones_de_bien_de_consumo.each do |recepcion_de_bien_de_consumo| %>      
+    <tr>
+      <td><%= recepcion_de_bien_de_consumo.id %></td>
+      <td><%= recepcion_de_bien_de_consumo.fecha %></td>        
+      <% if (recepcion_de_bien_de_consumo.documento_principal) %>
+        <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.nombre %></td>
+        <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento %></td>
+      <% else %>
+        <td></td>
+        <td></td>
+      <% end %>      
+        <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td>
+      </td> 
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
