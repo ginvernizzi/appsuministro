@@ -23,8 +23,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   end
 
   # GET /recepciones_de_bien_de_consumo/1/edit
-  def edit
-
+  def edit    
+    @tipos_de_documento = TipoDeDocumento.all
   end
 
   # POST /recepciones_de_bien_de_consumo
@@ -133,15 +133,35 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   # PATCH/PUT /recepciones_de_bien_de_consumo/1
   # PATCH/PUT /recepciones_de_bien_de_consumo/1.json
+  #{}"documento_principal"=>"1111-11111111"},
+  #{}"tdp"=>{"tipo_de_documento_id"=>"1"},
+  #{}"tds"=>{"tipo_de_documento_secundario_id"=>""},
+  #{}"numero_doc_secundario"=>"",
   def update
-    respond_to do |format|
-      if @recepcion_de_bien_de_consumo.update(recepcion_de_bien_de_consumo_params)
-        format.html { redirect_to @recepcion_de_bien_de_consumo, notice: 'La Recepcion de bien de consumo fue actulizada exitosamente.' }
-        format.json { render :show, status: :ok, location: @recepcion_de_bien_de_consumo }
-      else
-        format.html { render :edit }
-        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
-      end
+    @recepcion_de_bien_de_consumo.update(estado: params[:recepcion_de_bien_de_consumo][:estado], 
+                                descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
+    
+    @tddp = TipoDeDocumento.find_by_id(params[:tdp][:tipo_de_documento_id])               
+    @docRecepcion_p = DocumentoPrincipal.find(params[:documento_primario_id]).documento_de_recepcion
+    @docRecepcion_p.update(numero_de_documento: params[:recepcion_de_bien_de_consumo][:documento_principal], tipo_de_documento: @tddp)
+                                                 
+    if !params[:tds][:tipo_de_documento_secundario_id].empty? && !params[:numero_doc_secundario].empty?
+      @tdds = TipoDeDocumento.find(params[:tds][:tipo_de_documento_secundario_id])        
+      @docRecepcion_s = DocumentoDeRecepcion.new(numero_de_documento: params[:numero_doc_secundario], tipo_de_documento: @tdds)
+      
+      @recepcion_de_bien_de_consumo.documentos_secundario.new(documento_de_recepcion: @docRecepcion_s,
+                                                              recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo)                
+    end
+                        
+    if @recepcion_de_bien_de_consumo.save!               
+       flash[:notice] = 'La recepcion fue modificada exitosamente.'          
+       redirect_to edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)               
+     else           
+     respond_to do |format|                                 
+       @tipos_de_documento = TipoDeDocumento.all
+       format.html { render :edit }
+       format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+     end
     end
   end
 
@@ -165,6 +185,17 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
       format.json { head :no_content }
     end
+  end
+
+  def eliminar_documento_secundario     
+      @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])                 
+      @documento_secundario = DocumentoSecundario.find(params[:documento_secundario_id])    
+      @documento_secundario.destroy
+      respond_to do |format|    
+        flash[:notice] ='El documento fue eliminado exitosamente.' 
+        format.html { redirect_to edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo) }                    
+        format.json { head :no_content }
+      end
   end
 
   def obtener_nombre_de_bien_de_consumo              

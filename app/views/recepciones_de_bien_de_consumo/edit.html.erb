@@ -1,7 +1,10 @@
-  <%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
+<h1>Modificar recepción de bienes de consumo</h1>
+<h2> Modificar Documentos</h2>
+
+<%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
   <% if @recepcion_de_bien_de_consumo.errors.any? %>  
     <div id="error_explanation">
-      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error/es") %> en el formulario. La recepcion no pudo ser actualizada:</h2>
+      <h2><%= pluralize(@recepcion_de_bien_de_consumo.errors.count, "error/es") %> en el formulario. La recepcion no pudo ser guardada:</h2>
       <ul>
       <% @recepcion_de_bien_de_consumo.errors.full_messages.each do |message| %>
         <li><%= message %></li>        
@@ -9,102 +12,78 @@
       </ul>
     </div>
   <% end %>
-
+    
   <div class="field">    
     <%= f.label :fecha %><br />
-    <%= f.text_field :fecha, { :disabled => true} %>  
+    <%= f.text_field :fecha , { disabled: 'disabled' }%>  
   </div> 
 
   <div class="field">
     <%= f.label :estado %><br> 
-    <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS, :last, :first, { :include_blank => "Seleccione estado...", :selected =>  @recepcion_de_bien_de_consumo.estado } ) %>       
+    <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS, :last, :first, { :include_blank => "Seleccione estado...", :selected => @recepcion_de_bien_de_consumo.estado }) %>       
   </div>
-    
-    <div class="field">
-        <%= label_tag :descripcion_provisoria %><br>
-        <%= f.text_area :descripcion_provisoria , size: '25x4'   %>     
-    </div>   
 
+   <div id="div_descripcion_provisoria">
+  </div> 
 
-<div class="panel panel-default">
-   <div class="panel-heading">Documento principal</div>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Tipo</th>
-      <th>numero</th>
-    </tr>
-  </thead>
-  <tbody>    
-      <tr>      	
-        <td><%= @recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.nombre %></td>
-        <td><%= @recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento %></td>
-      </tr>    
-  </tbody>
-</table>
-</div>
+  <div class="field">
+      <%= f.label :tipo_de_documento%><br /> 
+      <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", "nombre", { :include_blank => "Seleccione un documento...", :selected => @recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.id }) %>
+      <%= hidden_field_tag(:documento_primario_id , "#{ @recepcion_de_bien_de_consumo.documento_principal.id }" ) %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag :numero %><br>      
+    <%= f.text_field :documento_principal, :value => @recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento, :readonly => true%>         
+  </div>    
+       
+  <div class="field">
+    <%= f.label :tipo_de_documento_secundario %><br />
+    <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
+    "nombre", :include_blank => "Seleccione un documento...") %><br /> 
 
-  <div class="panel panel-default">
+    <%= f.label :numero %><br />         
+    <%= text_field_tag :numero_doc_secundario, params[:numero], id: 'numero_doc_secundario' %> 
+    <%= f.submit "Agregar documento y actualizar recepcion" %>  
+  </div>        
+
+ <div class="panel panel-default">
    <div class="panel-heading">Documentos secundarios</div>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Tipo</th>
-      <th>numero</th>
-    </tr>
-  </thead>
-  <tbody>
-  	<% if @recepcion_de_bien_de_consumo.documentos_secundario.any? %>
-        <% @recepcion_de_bien_de_consumo.documentos_secundario.each do |doc_secundario| %>
-        <% if doc_secundario.documento_de_recepcion %>
-      	     <tr>      	          
-        	     <td><%= doc_secundario.documento_de_recepcion.tipo_de_documento.nombre %> </td>
-        	     <td><%= doc_secundario.documento_de_recepcion.numero_de_documento %> </td>        
-      	     </tr>    
-        <% end %>
-    <%end%>
-    <% else %>
-      	<tr>      	
-        	<td></td>
-        	<td></td>
-      	</tr>    
-   	<% end %>      
-  </tbody>
-</table>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>numero</th>
+        <th colspan="1"> </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @recepcion_de_bien_de_consumo.documentos_secundario.any? %>
+          <% @recepcion_de_bien_de_consumo.documentos_secundario.each do |doc_secundario| %>
+          <% if doc_secundario.documento_de_recepcion %>
+               <tr>                 
+                 <td><%= doc_secundario.documento_de_recepcion.tipo_de_documento.nombre %> </td>
+                 <td><%= doc_secundario.documento_de_recepcion.numero_de_documento %> </td>        
+                 <td><%= link_to 'Eliminar', eliminar_documento_secundario_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo, doc_secundario), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>                 
+               </tr>    
+          <% end %>
+      <%end%>
+      <% else %>
+          <tr>        
+            <td></td>
+            <td></td>
+          </tr>    
+      <% end %>      
+    </tbody>
+  </table>
+  </div>
+  <%= f.submit "Modificar Recepcion - cambiar por un boton con redirect " %>  
+   <!-- redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo -->
 </div>
-
-<div class="panel panel-default">
-<div class="panel-heading">Bienes de consumo</div>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Codigo</th>
-      <th>Cantidad</th>
-      <th>Costo</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
-        <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
-        <tr>        
-          <td><%= bcr.bien_de_consumo.nombre %> </td>
-          <td><%= bcr.bien_de_consumo.codigo %> </td>
-          <td><%= bcr.cantidad %> </td>
-          <td><%= bcr.costo %> </td>
-          <td><%= link_to 'Eliminar Bien de consumo', eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo_path(bcr), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
-        </tr>    
-        <%end%>
-    <% else %>
-        <tr>        
-          <td></td>
-          <td></td>
-        </tr>    
-    <% end %>      
-  </tbody>
-</table>
-</div>
- <%= f.submit "Actualizar Recepcion" %>  
 <% end %>
-<%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>
+
+
+
+
+
+

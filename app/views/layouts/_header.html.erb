@@ -42,7 +42,7 @@
   </li>
 
   <form class="navbar-form navbar-right" role="form">
-  <% if current_user %>
+  <% if signed_in? %>
         <%= link_to "Sacar a #{current_user.name} del Sistema", session_path(current_user), method: :delete %>
   <% else %>
         <div class="form-group">
