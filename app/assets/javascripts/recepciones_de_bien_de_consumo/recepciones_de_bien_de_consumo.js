@@ -50,11 +50,11 @@
             //Habria que traer los tipos de documento
             if($(this).val() == 1) 
               {
-              $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' ,autoUnmask: true});
+              $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0'});
               $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false);
               }            
             if($(this).val() == 2) 
-            {   $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0', autoUnmask: true });
+            {   $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'});
                 $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false); 
             }              
             if($(this).val() == "") 
@@ -67,12 +67,12 @@
             //Habria que traer los tipos de documento
             if($(this).val() == 1)
               {
-                $("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true , placeholder: '0', autoUnmask: true});
+                $("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true , placeholder: '0'});
                 $("#numero_doc_secundario").attr('readonly', false);
               }                         
             if($(this).val() == 2)
               {
-                $("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0', autoUnmask: true } );
+                $("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'} );
                 $("#numero_doc_secundario").attr('readonly', false);
               }   
 

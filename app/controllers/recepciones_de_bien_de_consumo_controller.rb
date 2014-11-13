@@ -133,13 +133,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   # PATCH/PUT /recepciones_de_bien_de_consumo/1
   # PATCH/PUT /recepciones_de_bien_de_consumo/1.json
-  #{}"documento_principal"=>"1111-11111111"},
-  #{}"tdp"=>{"tipo_de_documento_id"=>"1"},
-  #{}"tds"=>{"tipo_de_documento_secundario_id"=>""},
-  #{}"numero_doc_secundario"=>"",
   def update
-    @recepcion_de_bien_de_consumo.update(estado: params[:recepcion_de_bien_de_consumo][:estado], 
-                                descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
+    @recepcion_de_bien_de_consumo.update(estado: params[:recepcion_de_bien_de_consumo][:modificar_estado], 
+                                descripcion_provisoria: params[:descripcion_provisoria])  
     
     @tddp = TipoDeDocumento.find_by_id(params[:tdp][:tipo_de_documento_id])               
     @docRecepcion_p = DocumentoPrincipal.find(params[:documento_primario_id]).documento_de_recepcion
@@ -200,11 +196,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   def obtener_nombre_de_bien_de_consumo              
       @array_bien_de_consumo = BienDeConsumo.where(codigo: params[:codigo])
-      @id_de_bien = @array_bien_de_consumo[0].id
-      #@bien_de_consumo = BienDeConsumo.find(@id_de_bien)
+      @id_de_bien = @array_bien_de_consumo[0].id    
       
-      respond_to do | format |                  
-          #format.json { render :json => @bien_de_consumo }        
+      respond_to do | format |                                  
           format.json { render :json => @array_bien_de_consumo }        
       end
   end
@@ -218,14 +212,16 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     respond_to do |format|                                                                                       
       if @recepcion_de_bien_de_consumo.estado == 1                
           if @recepcion_de_bien_de_consumo.update(estado: "3")        
-            format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion fue enviada a evaluacion exitosamente.' }          
+            flash[:notice] = 'La Recepcion fue enviada a evaluacion exitosamente.'             
           else     
-            format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'Error. La Recepcion no pudo ser enviada a evaluar.' }          
+            flash[:notice] = 'Error. La Recepcion no pudo ser enviada a evaluar.'            
           end
+          format.html { redirect_to recepciones_de_bien_de_consumo_url }          
           format.json { head :no_content }            
       else
-        format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion no es definitiva. No puede ser enviada a evaluar.' }
+        flash[:notice] = 'La Recepcion no es definitiva. No puede ser enviada a evaluar.'      
       end
+      format.html { redirect_to recepciones_de_bien_de_consumo_url }          
     end 
   end
 

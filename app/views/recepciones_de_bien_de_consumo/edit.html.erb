@@ -20,10 +20,12 @@
 
   <div class="field">
     <%= f.label :estado %><br> 
-    <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS, :last, :first, { :include_blank => "Seleccione estado...", :selected => @recepcion_de_bien_de_consumo.estado }) %>       
+    <%= collection_select(:recepcion_de_bien_de_consumo, "modificar_estado", RecepcionDeBienDeConsumo::ESTADOS.first(2), :last, :first, { :include_blank => "Seleccione estado...", :selected => @recepcion_de_bien_de_consumo.estado }) %>       
   </div>
 
-   <div id="div_descripcion_provisoria">
+  <div class="field">
+    <%= label_tag :descripcion_provisoria %><br>
+    <%= text_area_tag 'descripcion_provisoria' , @recepcion_de_bien_de_consumo.descripcion_provisoria, size: '25x4'   %>     
   </div> 
 
   <div class="field">
@@ -76,9 +78,9 @@
       <% end %>      
     </tbody>
   </table>
-  </div>
-  <%= f.submit "Modificar Recepcion - cambiar por un boton con redirect " %>  
-   <!-- redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo -->
+  </div>  
+    <%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>   
+    <%= link_to 'Siguiente', agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo) %>     
 </div>
 <% end %>
 
