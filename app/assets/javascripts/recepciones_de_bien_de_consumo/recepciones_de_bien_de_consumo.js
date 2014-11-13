@@ -1,4 +1,7 @@
- $(document).ready(function(){
+//$(document).ready(ready);
+//$(document).on('page:load', ready)
+
+$(document).on("ready page:load", function() {
   $('#recepcion_de_bien_de_consumo_fecha').datepicker
   ({
     showOn: 'both',  
@@ -10,7 +13,7 @@
 
 
 /////////////////// Vista nueva recepcion. Agrear y quitar Documentos ///////////////////  
-  $(document).ready(function(){        
+  $(document).on("ready page:load", function() {
       $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' })      
       $('#numero_doc_secundario').attr('readonly', true)            
 
@@ -27,15 +30,15 @@
             + '<td id="col'+ gon.numeroDeFila +'"> <input type="button" value="Quitar" class="quitar_document" id="quitar_doc"> </td>'            
             + '<td id="col'+ gon.numeroDeFila +'"> <input type="hidden" name="ltds['+ gon.numeroDeFila +'_numero_doc_secundario]" value="'+$("#numero_doc_secundario").val()+'">  </td>'
             + '<td id="col'+ gon.numeroDeFila +'"> <input type="hidden" name="ltds['+ gon.numeroDeFila +'_tipo_de_documento_secundario_id]" value="'+$("#tds_tipo_de_documento_secundario_id").val()+'">  </td> </tr>';            
-                                                     
+            
+            $('#numero_doc_secundario').val("")     
+
             gon.numeroDeFila++;          
 
-            $(tableName + " tbody").append ( htmlToAppend );
-            
-            $('#numero_doc_secundario').val("")                    
-            }
-          else
-          {alert("Hay campos vacios. No se puede agregar documento\n")}
+            $(tableName + " tbody").append ( htmlToAppend );                                    
+          }
+          else            
+          { alert("Hay campos vacios. No se puede agregar documento\n") }
       });
 
       

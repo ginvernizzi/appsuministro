@@ -14,15 +14,14 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap
 //= require bootstrap.js
 //= require bootstrap-datepicker
-
 //= require jquery.inputmask
 //= require jquery.inputmask.extensions
 //= require jquery.inputmask.numeric.extensions
 //= require jquery.inputmask.date.extensions
+//= require turbolinks
 //= require_tree 
 
 
