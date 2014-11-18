@@ -1,0 +1,9 @@
+ <%= form_for(@recepcion_de_bien_de_consumo, url: rechazar_recepciones_de_bien_de_consumo_a_evaluar_path(@recepcion_de_bien_de_consumo), html: {method: "post"}) do |f| %>
+  	<div class="field">    
+    	<%= f.label :descripcion_rechazo %><br />    	
+    	<%= f.text_area :descripcion_rechazo, cols: 25, rows: 4 %>  
+    	<%= f.hidden_field :estado, :value => '4' %>    	  
+  	</div>      
+
+ <%= f.submit "Aceptar" %>
+ <% end %>

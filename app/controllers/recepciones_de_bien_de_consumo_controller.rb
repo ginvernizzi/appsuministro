@@ -4,8 +4,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   # GET /recepciones_de_bien_de_consumo
   # GET /recepciones_de_bien_de_consumo.json
   def index    
-    @estado_a_evaluar = 3 #numero de hash  perteneciente al estado de recepcion "a_evaluar"
-    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado != 3").order(:id)
+    # estado 1: provisorio 
+    # estado 2: definitivo
+    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 1 OR estado = 2").order(:id)
   end
 
   # GET /recepciones_de_bien_de_consumo/1
@@ -32,7 +33,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def create    
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new(fecha: params[:recepcion_de_bien_de_consumo][:fecha], 
                                                                  estado: params[:recepcion_de_bien_de_consumo][:estado], 
-                                                                 descripcion_provisoria: params[:recepcion_de_bien_de_consumo][:descripcion_provisoria])  
+                                                                 descripcion_provisoria: params[:descripcion_provisoria])  
     
     @tddp = TipoDeDocumento.find_by_id(params[:tdp][:tipo_de_documento_id])    
     
@@ -150,8 +151,13 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     end
                         
     if @recepcion_de_bien_de_consumo.save!               
-       flash[:notice] = 'La recepcion fue modificada exitosamente.'          
-       redirect_to edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)               
+       flash[:notice] = 'La recepcion fue modificada exitosamente.'    
+       puts "#{params[:commit]}" 
+        if  params[:commit] == 'Agregar documento'
+          redirect_to edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)               
+        else
+          redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo               
+        end
      else           
      respond_to do |format|                                 
        @tipos_de_documento = TipoDeDocumento.all

@@ -1,5 +1,7 @@
 <h1>Recepciones de bien de consumo a evaluar</h1>
 
+<div id="div_rechazar_recepcion" style="display:none" title="Rechazar Recepcion"></div>
+
 <table class="table">
   <thead>
     <tr>
@@ -7,7 +9,7 @@
       <th>Fecha</th>      
       <th>Tipo de Documento</th>
       <th>Documento principal</th>
-      <th colspan="1"> </th>
+      <th colspan="2"> </th>
     </tr>
   </thead>
 
@@ -23,11 +25,10 @@
         <td></td>
         <td></td>
       <% end %>      
-        <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td>
-      </td> 
+       <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td>            
+       <td><%= link_to "Rechazar", "#", :id => "rechazar", :"data-href" => ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td>
     </tr>
     <% end %>
   </tbody>
 </table>
-
 <br>

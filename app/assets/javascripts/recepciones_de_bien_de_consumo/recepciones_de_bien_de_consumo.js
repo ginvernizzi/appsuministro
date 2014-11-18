@@ -2,6 +2,7 @@
 //$(document).on('page:load', ready)
 
 $(document).on("ready page:load", function() {
+   var currentDate = new Date();
   $('#recepcion_de_bien_de_consumo_fecha').datepicker
   ({
     showOn: 'both',  
@@ -9,6 +10,8 @@ $(document).on("ready page:load", function() {
     format: 'dd/mm/yyyy',
     language: "es"
   });
+
+  $("#recepcion_de_bien_de_consumo_fecha").datepicker("setDate", currentDate);
 });
 
 

@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  get 'recepciones_de_bien_de_consumo_a_evaluar/:id/ver_rechazar' => 'recepciones_de_bien_de_consumo_a_evaluar#ver_rechazar', 
+                                        as: 'ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar'                                        
+
+  post 'recepciones_de_bien_de_consumo_a_evaluar/:id/rechazar', :to => 'recepciones_de_bien_de_consumo_a_evaluar#rechazar', 
+                                                                :as => 'rechazar_recepciones_de_bien_de_consumo_a_evaluar'
+
   resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show]
 
   get 'static_pages/home' , :as => 'home'
@@ -30,7 +36,6 @@ Rails.application.routes.draw do
 
   delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_documento_secundario/:documento_secundario_id' => 'recepciones_de_bien_de_consumo#eliminar_documento_secundario', 
                                         as: 'eliminar_documento_secundario_recepciones_de_bien_de_consumo'
-
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]

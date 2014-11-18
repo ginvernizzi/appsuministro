@@ -1,5 +1,5 @@
 <h1>Modificar recepción de bienes de consumo</h1>
-<h2> Modificar Documentos</h2>
+<h2>Modificar Documentos</h2>
 
 <%= form_for(@recepcion_de_bien_de_consumo) do |f| %>
   <% if @recepcion_de_bien_de_consumo.errors.any? %>  
@@ -46,7 +46,7 @@
 
     <%= f.label :numero %><br />         
     <%= text_field_tag :numero_doc_secundario, params[:numero], id: 'numero_doc_secundario' %> 
-    <%= f.submit "Agregar documento y actualizar recepcion" %>  
+    <%= f.submit "Agregar documento" %>  
   </div>        
 
  <div class="panel panel-default">
@@ -80,7 +80,7 @@
   </table>
   </div>  
     <%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>   
-    <%= link_to 'Siguiente', agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo) %>     
+    <%= f.submit "Siguiente" , { class: "btn btn-link btn-xs" } %>
 </div>
 <% end %>
 
