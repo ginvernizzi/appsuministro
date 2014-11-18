@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :obras_proyectos
+
   get 'recepciones_de_bien_de_consumo_a_evaluar/:id/ver_rechazar' => 'recepciones_de_bien_de_consumo_a_evaluar#ver_rechazar', 
                                         as: 'ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar'                                        
 
