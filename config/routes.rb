@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
 
-  resources :obras_proyectos
+  resources :consumos_directo
+
+  get 'consumos_directo/:recepcion_id/nuevo_consumo_directo_desde_recepcion/',  
+                                                            to: 'consumos_directo#nuevo_consumo_directo_desde_recepcion',
+                                                            as: 'nuevo_consumo_directo_desde_recepcion_consumos_directo'
+
+
+  resources :obras_proyectos  
 
   get 'recepciones_de_bien_de_consumo_a_evaluar/:id/ver_rechazar' => 'recepciones_de_bien_de_consumo_a_evaluar#ver_rechazar', 
                                         as: 'ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar'                                        

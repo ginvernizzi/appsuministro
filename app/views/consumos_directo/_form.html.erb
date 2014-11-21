@@ -1,0 +1,69 @@
+
+<%= form_for(@consumo_directo) do |f| %>
+  <% if @consumo_directo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@consumo_directo.errors.count, "error") %> prohibited this consumo from being saved:</h2>
+
+      <ul>
+      <% @consumo_directo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <div class="field">
+      <%= f.label :area%><br /> 
+      <%= f.text_field :area %>          
+  </div>
+
+
+   <div class="field">
+      <%= f.label :obra_proyecto%><br /> 
+      <%= f.collection_select :obra_proyecto_id, @obras_proyecto, :id, :descripcion, :prompt => "seleccione" %>  
+  </div>
+
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Bienes de consumo</div>
+  <table class="table">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Codigo</th>
+    <th>Cantidad</th>
+    <th>Costo</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
+      <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
+      <tr>        
+        <% if bcr.bien_de_consumo %>
+            <td><%= bcr.bien_de_consumo.nombre %> </td>
+            <td><%= bcr.bien_de_consumo.codigo %> </td>
+            <td><%= bcr.cantidad %> </td>
+            <td><%= bcr.costo %> </td>
+            <td><%= link_to 'Eliminar', eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo, bcr), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
+            
+        <% end %> 
+      </tr>            
+      <%end%>
+  <% else %>
+      <tr>        
+        <td></td>
+        <td></td>
+      </tr>    
+  <% end %>      
+  </tbody>
+  </table>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<%= link_to 'Show', @consumo_directo %> |

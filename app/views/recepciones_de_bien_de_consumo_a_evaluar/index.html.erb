@@ -9,7 +9,7 @@
       <th>Fecha</th>      
       <th>Tipo de Documento</th>
       <th>Documento principal</th>
-      <th colspan="2"> </th>
+      <th colspan="3"> </th>
     </tr>
   </thead>
 
@@ -25,7 +25,11 @@
         <td></td>
         <td></td>
       <% end %>      
-       <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td><td><%= link_to 'rechazar', ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) , data: { confirm: '¿Esta seguro?' } %></td>
+       <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td>
+       <td><%= link_to 'Consumo inmediato', nuevo_consumo_directo_desde_recepcion_consumos_directo_path(:recepcion_id => recepcion_de_bien_de_consumo.id) %>
+       </td>
+       <td><%= link_to 'rechazar', ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) , data: { confirm: '¿Esta seguro?' } %></td>
+
     </tr>
     <% end %>
   </tbody>

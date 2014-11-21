@@ -21,6 +21,9 @@ BienDeConsumo.create!(nombre: "fibron pizarra rojo", codigo: "5555").save
 BienDeConsumo.create!(nombre: "fibron pizarra verde", codigo: "6666").save
 BienDeConsumo.create!(nombre: "fibron pizarra azul", codigo: "7777").save
 
+ObraProyecto.create!(codigo: "01", descripcion: "gestion/proyecto").save
+ObraProyecto.create!(codigo: "54", descripcion: "cartas del ausente").save
+
 
 
 

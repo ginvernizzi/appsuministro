@@ -1,0 +1,29 @@
+<h1>Listing consumos_directo</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Area</th>
+      <th>Obra proyecto</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @consumos_directo.each do |consumo_directo| %>
+      <tr>
+        <td><%= consumo_directo.fecha %></td>
+        <td><%= consumo_directo.area %></td>
+        <td><%= consumo_directo.obra_proyecto %></td>
+        <td><%= link_to 'Show', consumo_directo %></td>
+        <td><%= link_to 'Edit', edit_consumo_directo_path(consumo_directo) %></td>
+        <td><%= link_to 'Destroy', consumo_directo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Consumo directo', new_consumo_directo_path %>

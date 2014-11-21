@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ObraProyectosController do
+describe ObrasProyectosController do
   describe "routing" do
 
     it "routes to #index" do

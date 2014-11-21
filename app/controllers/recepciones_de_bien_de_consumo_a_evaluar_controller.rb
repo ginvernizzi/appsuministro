@@ -1,5 +1,5 @@
 class RecepcionesDeBienDeConsumoAEvaluarController < ApplicationController
-  before_action :set_recepcion_de_bien_de_consumo_a_evaluar, only: [:show, :ver_rechazar]
+  before_action :set_recepcion_de_bien_de_consumo_a_evaluar, only: [:show, :ver_rechazar, :consumo_directo]
 
   def index
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where(estado: 3).order(:id)
@@ -7,6 +7,10 @@ class RecepcionesDeBienDeConsumoAEvaluarController < ApplicationController
 
   def show
   end
+
+  # def consumo_directo    
+  #   @consumo = Consumo.new 
+  # end
 
   def ver_rechazar
     respond_to do |format|

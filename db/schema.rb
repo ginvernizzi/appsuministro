@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141118152620) do
+ActiveRecord::Schema.define(version: 20141120211539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,28 @@ ActiveRecord::Schema.define(version: 20141118152620) do
 
   add_index "bienes_de_consumo_de_recepcion", ["bien_de_consumo_id"], name: "index_bienes_de_consumo_de_recep_on_bien_de_consumo_id", using: :btree
   add_index "bienes_de_consumo_de_recepcion", ["recepcion_de_bien_de_consumo_id"], name: "index_bienes_de_consumo_de_recep_on_recep_de_bien_de_consumo_id", using: :btree
+
+  create_table "bienes_de_consumo_para_consumir", force: true do |t|
+    t.integer  "cantidad"
+    t.decimal  "costo"
+    t.integer  "bien_de_consumo_id"
+    t.integer  "consumo_directo_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bienes_de_consumo_para_consumir", ["bien_de_consumo_id"], name: "index_bienes_de_consumo_para_consumir_on_bien_de_consumo_id", using: :btree
+  add_index "bienes_de_consumo_para_consumir", ["consumo_directo_id"], name: "index_bienes_de_consumo_para_consumir_on_consumo_directo_id", using: :btree
+
+  create_table "consumos_directo", force: true do |t|
+    t.date     "fecha"
+    t.string   "area"
+    t.integer  "obra_proyecto_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "consumos_directo", ["obra_proyecto_id"], name: "index_consumos_directo_on_obra_proyecto_id", using: :btree
 
   create_table "documentos_de_recepcion", force: true do |t|
     t.integer  "tipo_de_documento_id"

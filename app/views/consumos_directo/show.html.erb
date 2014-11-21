@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @consumo_directo.fecha %>
+</p>
+
+<p>
+  <strong>Area:</strong>
+  <%= @consumo_directo.area %>
+</p>
+
+<p>
+  <strong>Obra proyecto:</strong>
+  <%= @consumo_directo.obra_proyecto %>
+</p>
+
+<%= link_to 'Edit', edit_consumo_directo_path(@consumo_directo) %> |
+<%= link_to 'Back', consumos_directo_path %>
