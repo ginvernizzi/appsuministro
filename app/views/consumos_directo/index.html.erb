@@ -1,6 +1,6 @@
-<h1>Listing consumos_directo</h1>
+<h1>Consumos directos</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Fecha</th>
@@ -15,7 +15,7 @@
       <tr>
         <td><%= consumo_directo.fecha %></td>
         <td><%= consumo_directo.area %></td>
-        <td><%= consumo_directo.obra_proyecto %></td>
+        <td><%= consumo_directo.obra_proyecto.descripcion %></td>
         <td><%= link_to 'Show', consumo_directo %></td>
         <td><%= link_to 'Edit', edit_consumo_directo_path(consumo_directo) %></td>
         <td><%= link_to 'Destroy', consumo_directo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -25,5 +25,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New Consumo directo', new_consumo_directo_path %>

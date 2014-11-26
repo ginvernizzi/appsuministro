@@ -7,7 +7,7 @@ describe BienDeConsumoParaConsumir do
 
   		@consumo = ConsumoDirecto.create!(fecha:DateTime.now, area:"sistemas", obra_proyecto:@obra_proyecto)
   		@bien_de_consumo_para_consumir = @consumo.bienes_de_consumo_para_consumir.create!(cantidad: 21, costo:452)
-		@bien_de_consumo_para_consumir.bien_de_consumo = @bien_de_consumo
+	  	@bien_de_consumo_para_consumir.bien_de_consumo = @bien_de_consumo
   	}
 
 	subject { @bien_de_consumo_para_consumir }

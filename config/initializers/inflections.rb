@@ -29,5 +29,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'obra_proyecto', 'obras_proyectos'
   inflect.irregular 'bien_de_consumo_para_consumir', 'bienes_de_consumo_para_consumir'
   inflect.irregular 'consumo_directo', 'consumos_directo'
+  inflect.irregular 'costo_de_bien_de_consumo', 'costos_de_bien_de_consumo'
+  inflect.irregular 'costo_de_bien_de_consumo_historico', 'costos_de_bien_de_consumo_historico'
 
 end

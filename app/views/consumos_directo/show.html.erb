@@ -12,7 +12,8 @@
 
 <p>
   <strong>Obra proyecto:</strong>
-  <%= @consumo_directo.obra_proyecto %>
+  <%= @consumo_directo.obra_proyecto.descripcion %>
+
 </p>
 
 <%= link_to 'Edit', edit_consumo_directo_path(@consumo_directo) %> |

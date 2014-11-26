@@ -18,10 +18,9 @@ class ConsumosDirectoController < ApplicationController
   end
     
   def nuevo_consumo_directo_desde_recepcion
-    @consumo_directo = ConsumoDirecto.new    
-    @obras_proyecto = ObraProyecto.all
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_id])
-    @areas = ["sistemas", "compras", "tesoreria"]
+    @consumo_directo = ConsumoDirecto.new   
+    cargar_datos_controles_consumo_directo
   end
 
   # GET /consumos_directo/1/edit
@@ -30,15 +29,32 @@ class ConsumosDirectoController < ApplicationController
 
   # POST /consumos_directo
   # POST /consumos_directo.json
-  def create
+  def create    
     @consumo_directo = ConsumoDirecto.new(consumo_directo_params)
+    
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+
+    @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bien| 
+      @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad: bien.cantidad, costo: bien.costo, 
+                                                               bien_de_consumo_id: bien.bien_de_consumo_id)
+
+
+      @costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,        
+                                                usuario: "gonzalo", origen: "2" )
+
+      @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,
+                                                usuario: "gonzalo", origen: "2" )
+    end
+
 
     respond_to do |format|
       if @consumo_directo.save
-        format.html { redirect_to @consumo_directo, notice: 'Consumo directo was successfully created.' }
+        format.html { redirect_to @consumo_directo, notice: 'Consumo directo creado exitosamente' }
         format.json { render :show, status: :created, location: @consumo_directo }
       else
-        format.html { render :new }
+        @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+        cargar_datos_controles_consumo_directo
+        format.html { render :nuevo_consumo_directo_desde_recepcion }
         format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
       end
     end
@@ -77,5 +93,10 @@ class ConsumosDirectoController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def consumo_directo_params
       params.require(:consumo_directo).permit(:fecha, :area, :obra_proyecto_id)
+    end
+
+    def cargar_datos_controles_consumo_directo        
+      @obras_proyecto = ObraProyecto.all      
+      @areas = ["sistemas", "compras", "tesoreria"]
     end
 end
