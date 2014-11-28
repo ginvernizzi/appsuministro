@@ -48,7 +48,7 @@ class ConsumosDirectoController < ApplicationController
 
 
     respond_to do |format|
-      if @consumo_directo.save
+      if @consumo_directo.save && @recepcion_de_bien_de_consumo.update(estado: "5") && @costo_de_bien.save && @costo_de_bien_historico.save
         format.html { redirect_to @consumo_directo, notice: 'Consumo directo creado exitosamente' }
         format.json { render :show, status: :created, location: @consumo_directo }
       else

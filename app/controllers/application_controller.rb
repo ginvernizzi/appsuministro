@@ -6,5 +6,5 @@ class ApplicationController < ActionController::Base
   include SessionsHelper  
   
   ##### Perfecto solo que no logea bien la login screen, por so lo comento. ver con fincic.
-  #before_action :signed_in_user, except: [ :home ]  
+  before_action :signed_in_user, except: [ :home, :create ]    
 end

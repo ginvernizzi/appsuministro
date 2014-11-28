@@ -13,8 +13,38 @@
 <p>
   <strong>Obra proyecto:</strong>
   <%= @consumo_directo.obra_proyecto.descripcion %>
-
 </p>
+
+<div class="panel panel-default">
+<div class="panel-heading"> Bienes a consumir </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Codigo</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @consumo_directo.bienes_de_consumo_para_consumir.any? %>
+        <% @consumo_directo.bienes_de_consumo_para_consumir.each do |bcc| %>
+        <tr>        
+          <td><%= bcc.bien_de_consumo.nombre %> </td>
+          <td><%= bcc.bien_de_consumo.codigo %> </td>
+          <td><%= bcc.cantidad %> </td>
+          <td><%= bcc.costo %> </td>
+        </tr>    
+        <%end%>
+    <% else %>
+        <tr>        
+          <td></td>
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+</div>
 
 <%= link_to 'Edit', edit_consumo_directo_path(@consumo_directo) %> |
 <%= link_to 'Back', consumos_directo_path %>
