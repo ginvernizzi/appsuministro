@@ -24,6 +24,9 @@ BienDeConsumo.create!(nombre: "fibron pizarra azul", codigo: "7777").save
 ObraProyecto.create!(codigo: "01", descripcion: "gestion/proyecto").save
 ObraProyecto.create!(codigo: "54", descripcion: "cartas del ausente").save
 
+Area.create!(nombre: 'Sistemas', responsable:'Christian Fincic')
+Area.create!(nombre: 'Suministro', responsable:'Ana Salanitro')
+
 
 
 

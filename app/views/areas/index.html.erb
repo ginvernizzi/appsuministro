@@ -1,0 +1,27 @@
+<h1>Administracion de Areas</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Responsable</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @areas.each do |area| %>
+      <tr>
+        <td><%= area.nombre %></td>
+        <td><%= area.responsable %></td>
+        <td><%= link_to 'Mostrar', area %></td>
+        <td><%= link_to 'Modificar', edit_area_path(area) %></td>
+        <td><%= link_to 'Eliminar', area, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nueva Area', new_area_path %>

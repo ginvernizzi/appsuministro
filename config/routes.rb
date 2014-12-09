@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
 
+  resources :depositos
+
+  resources :items_stock
+
+  get 'items_stock/:recepcion_id/ver_ingresar_a_stock/',  
+                                                            to: 'items_stock#ver_ingresar_a_stock',
+                                                            as: 'ver_ingresar_a_stock_items_stock'
+
+  resources :areas do
+    resources :depositos , only: [:new, :destroy]
+  end
+
   resources :consumos_directo
 
   get 'consumos_directo/:recepcion_id/nuevo_consumo_directo_desde_recepcion/',  

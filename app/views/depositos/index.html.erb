@@ -1,0 +1,27 @@
+<h1>Listing depositos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Area</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @depositos.each do |deposito| %>
+      <tr>
+        <td><%= deposito.nombre %></td>
+        <td><%= deposito.area %></td>
+        <td><%= link_to 'Show', deposito %></td>
+        <td><%= link_to 'Edit', edit_deposito_path(deposito) %></td>
+        <td><%= link_to 'Destroy', deposito, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Deposito', new_deposito_path %>

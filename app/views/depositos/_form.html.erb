@@ -1,0 +1,57 @@
+<%= form_for(@deposito) do |f| %>
+  <% if @deposito.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@deposito.errors.count, "error") %> el deposito no pudo ser agregado:</h2>
+
+      <ul>
+      <% @deposito.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= f.text_field :nombre %>
+  </div>
+  <div class="field">  
+    <%= f.hidden_field :area_id%>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<div class="panel panel-default">
+   <div class="panel-heading">Deposito</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @area.depositos.any? %>
+        <% @area.depositos.each do |deposito| %>
+        <tr>        
+          <% if deposito %>
+              <td><%= deposito.nombre %> </td>              
+              <td><%= link_to 'Eliminar', area_deposito_path(@area, deposito), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
+              
+          <% end %> 
+        </tr>            
+        <%end%>
+    <% else %>
+        <tr>     
+          <td></td>   
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+</div>  
+
+
+
+

@@ -1,0 +1,28 @@
+<h1>stock de bienes de consumo</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>cantidad</th>
+      <th>costo</th>
+      <th>deposito</th>
+      <th>area</th>      
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items_stock.each do |item_stock| %>
+      <tr>
+        <td><%= item_stock.cantidad %></td>
+        <td><%= item_stock.cantidad %></td>        
+        <td><%= item_stock.cantidad %></td>
+        <td><%= item_stock.cantidad %></td>        
+        <td><%= item_stock.cantidad %></td>       
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

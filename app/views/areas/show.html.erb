@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @area.nombre %>
+</p>
+
+<p>
+  <strong>Responsable:</strong>
+  <%= @area.responsable %>
+</p>
+
+<br/>
+
+<div class="panel panel-default">
+   <div class="panel-heading">Deposito</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @area.depositos.any? %>
+        <% @area.depositos.each do |deposito| %>
+        <tr>        
+          <% if deposito %>
+              <td><%= deposito.nombre %> </td>              
+              <td><%= link_to 'Eliminar', area_deposito_path(@area, deposito), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
+              
+          <% end %> 
+        </tr>            
+        <%end%>
+    <% else %>
+        <tr>     
+          <td></td>   
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+</div>  
+
+<%= link_to 'Modificar', edit_area_path(@area) %> |
+<%= link_to 'Volver', areas_path %>

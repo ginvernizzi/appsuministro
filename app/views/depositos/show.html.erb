@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @deposito.nombre %>
+</p>
+
+<p>
+  <strong>Area:</strong>
+  <%= @deposito.area %>
+</p>
+
+<%= link_to 'Edit', edit_deposito_path(@deposito) %> |
+<%= link_to 'Back', depositos_path %>

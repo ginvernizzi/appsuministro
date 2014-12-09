@@ -1,0 +1,77 @@
+<%= form_for(@area , 
+             url: save_bienes_recepciones_de_bien_de_consumo_path(@area), 
+             html: {method: "put"}) do |f| %>
+
+  <% if @area.errors.any? %>    
+    <div id="error_explanation">
+      <h2><%= pluralize(@area.errors.count, "error/es") %> en el formulario. El area no pudo ser actualizada:</h2>      
+      <ul>
+      <% @area.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <h4>  Area:
+        <%= @area.nombre %>
+  </h4>
+
+  <div class="field">
+    <%= f.fields_for :bien_de_consumo_de_recepcion do |bcr| %> 
+       <div class="field">
+        <%= bcr.label :cantidad, "cantidad" %><br>
+        <%= bcr.text_field :cantidad %>
+      </div>
+      <div class="field">
+        <%= bcr.label :costo, "costo" %><br>
+        <%= bcr.text_field :costo %>
+      </div> 
+      <div class="field">
+        <%= bcr.fields_for :bien_de_consumo  do |bc| %> 
+          <%= bc.hidden_field :id %>
+        <% end %>
+      </div> 
+    <% end %>
+  </div>  
+
+  <div class="field">
+    <%= label(:costoTotal ,"costo total") %><br>
+    <%= text_field_tag 'costoTotal', nil,  readonly: true %>
+  </div>  
+  <div class="actions">           
+      <%= f.submit "Agregar Bien de consumo" %>
+  </div>
+
+<div class="panel panel-default">
+   <div class="panel-heading">Deposito</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @area.depositos.any? %>
+        <% @area.depositos.each do |deposito| %>
+        <tr>        
+          <% if deposito %>
+              <td><%= deposito.nombre %> </td>              
+              <td><%= link_to 'Eliminar', eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo_path(@area, deposito), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
+              
+          <% end %> 
+        </tr>            
+        <%end%>
+    <% else %>
+        <tr>        
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+</div>
+  <%= link_to 'volver', areas_path %>
+<% end %>
+
+

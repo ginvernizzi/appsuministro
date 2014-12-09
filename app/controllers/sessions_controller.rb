@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
-  
+  before_action :signed_in_user, except: [ :create ]  
+
   def new
   end
 
@@ -10,8 +11,7 @@ class SessionsController < ApplicationController
       sign_in user
       redirect_to recepciones_de_bien_de_consumo_path
     else
-      flash[:error] = 'email/password combinacion invalida' # Not quite right!
-      render 'new'
+      flash[:error] = 'email/password combinacion invalida' # Not quite right!      
     end
   end
 

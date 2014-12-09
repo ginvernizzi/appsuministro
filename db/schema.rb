@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141125221111) do
+ActiveRecord::Schema.define(version: 20141203201341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "areas", force: true do |t|
+    t.string   "nombre"
+    t.string   "responsable"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "bienes_de_consumo", force: true do |t|
     t.string   "nombre"
@@ -81,6 +88,15 @@ ActiveRecord::Schema.define(version: 20141125221111) do
 
   add_index "costos_de_bien_de_consumo_historico", ["bien_de_consumo_id"], name: "index_costos_de_bien_de_consumo_historico_on_bien_de_consumo_id", using: :btree
 
+  create_table "depositos", force: true do |t|
+    t.integer  "area_id"
+    t.string   "nombre"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "depositos", ["area_id"], name: "index_depositos_on_area_id", using: :btree
+
   create_table "documentos_de_recepcion", force: true do |t|
     t.integer  "tipo_de_documento_id"
     t.string   "numero_de_documento"
@@ -109,6 +125,18 @@ ActiveRecord::Schema.define(version: 20141125221111) do
 
   add_index "documentos_secundario", ["documento_de_recepcion_id"], name: "index_documentos_secundario_on_documento_de_recepcion_id", using: :btree
   add_index "documentos_secundario", ["recepcion_de_bien_de_consumo_id"], name: "index_documentos_secundario_on_recepcion_de_bien_de_consumo_id", using: :btree
+
+  create_table "items_stock", force: true do |t|
+    t.integer  "bien_de_consumo_id"
+    t.decimal  "cantidad"
+    t.decimal  "costo"
+    t.integer  "deposito_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "items_stock", ["bien_de_consumo_id"], name: "index_items_stock_on_bien_de_consumo_id", using: :btree
+  add_index "items_stock", ["deposito_id"], name: "index_items_stock_on_deposito_id", using: :btree
 
   create_table "obras_proyectos", force: true do |t|
     t.string   "codigo"
