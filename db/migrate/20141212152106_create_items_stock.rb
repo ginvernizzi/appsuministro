@@ -3,7 +3,7 @@ class CreateItemsStock < ActiveRecord::Migration
     create_table :items_stock do |t|
       t.references :bien_de_consumo, index: true
       t.decimal :cantidad
-      t.decimal :costo
+      t.references :costo_de_bien_de_consumo, index: true
       t.references :deposito, index: true
 
       t.timestamps

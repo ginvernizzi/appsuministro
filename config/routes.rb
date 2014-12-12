@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
 
   resources :depositos
-
-  resources :items_stock
+  resources :items_stock , only: [:index ]
 
   get 'items_stock/:recepcion_id/ver_ingresar_a_stock/',  
                                                             to: 'items_stock#ver_ingresar_a_stock',
@@ -27,7 +26,9 @@ Rails.application.routes.draw do
   post 'recepciones_de_bien_de_consumo_a_evaluar/:id/rechazar', :to => 'recepciones_de_bien_de_consumo_a_evaluar#rechazar', 
                                                                 :as => 'rechazar_recepciones_de_bien_de_consumo_a_evaluar'
 
-  resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show]
+  resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show] do 
+        resources :items_stock , only: [:new, :create]
+  end
 
   get 'static_pages/home' , :as => 'home'
   get 'static_pages/help'    

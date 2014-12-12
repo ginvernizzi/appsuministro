@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203201341) do
+ActiveRecord::Schema.define(version: 20141212152106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,13 +129,14 @@ ActiveRecord::Schema.define(version: 20141203201341) do
   create_table "items_stock", force: true do |t|
     t.integer  "bien_de_consumo_id"
     t.decimal  "cantidad"
-    t.decimal  "costo"
+    t.integer  "costo_de_bien_de_consumo_id"
     t.integer  "deposito_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "items_stock", ["bien_de_consumo_id"], name: "index_items_stock_on_bien_de_consumo_id", using: :btree
+  add_index "items_stock", ["costo_de_bien_de_consumo_id"], name: "index_items_stock_on_costo_de_bien_de_consumo_id", using: :btree
   add_index "items_stock", ["deposito_id"], name: "index_items_stock_on_deposito_id", using: :btree
 
   create_table "obras_proyectos", force: true do |t|

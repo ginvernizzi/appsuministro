@@ -118,8 +118,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     #@recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.create!(recepcion_de_bien_de_consumo_params[:bienes_de_consumo_de_recepcion_attributes])
     #@recepcion_de_bien_de_consumo.update_attributes(recepcion_de_bien_de_consumo_params)
 
-    if @recepcion_de_bien_de_consumo.save
-    #if @bien_de_consumo_de_recepcion.save
+    if @recepcion_de_bien_de_consumo.save      
       flash[:notice] = 'El Bien de consumo fue agregado exitosamente.'
       redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo
     else
@@ -217,7 +216,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])   
     respond_to do |format|                                                                                       
       if @recepcion_de_bien_de_consumo.estado == 1                
-          if @recepcion_de_bien_de_consumo.update(estado: "3")        
+          if @recepcion_de_bien_de_consumo.update(estado: "3")                 
             flash[:notice] = 'La Recepcion fue enviada a evaluacion exitosamente.'             
           else     
             flash[:notice] = 'Error. La Recepcion no pudo ser enviada a evaluar.'            
