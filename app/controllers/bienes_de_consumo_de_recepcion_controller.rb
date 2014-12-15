@@ -32,8 +32,8 @@ before_action :set_bien_de_consumo_de_recepcion, only: [:edit, :destroy]
     @bien_de_consumo_de_recepcion.destroy
 
     respond_to do |format|  
-      flash[:notice] = 'El bien de consumo fue eliminado exitosamente.' 
-      redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)       	
+      flash[:notice] = 'El bien de consumo fue eliminado exitosamente.'        
+      format.html { redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo) }
       format.json { head :no_content }
     end
   end

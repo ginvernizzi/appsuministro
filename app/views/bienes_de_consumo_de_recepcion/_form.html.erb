@@ -1,4 +1,4 @@
-<%= form_for([@recepcion_de_bien_de_consumo ,@bien_de_consumo_de_recepcion]) do |f| %>
+<%= form_for([@recepcion_de_bien_de_consumo ,@recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.build]) do |f| %>
   <% if @bien_de_consumo_de_recepcion.errors.any? %>    
     <div id="error_explanation">
       <h2><%= pluralize(@bien_de_consumo_de_recepcion.errors.count, "error/es") %> en el formulario. el bien no pudo ser agregado:</h2>      
