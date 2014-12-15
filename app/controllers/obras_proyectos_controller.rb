@@ -28,7 +28,7 @@ class ObrasProyectosController < ApplicationController
 
     respond_to do |format|
       if @obra_proyecto.save
-        format.html { redirect_to @obra_proyecto, notice: 'La obra/poryecto fue creada exitosamente.' }
+        format.html { redirect_to @obra_proyecto, notice: 'La obra/proyecto fue creada exitosamente.' }
         format.json { render :show, status: :created, location: @obra_proyecto }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class ObrasProyectosController < ApplicationController
   def update
     respond_to do |format|
       if @obra_proyecto.update(obra_proyecto_params)
-        format.html { redirect_to @obra_proyecto, notice: 'La obra/poryecto fue actualizada exitosamente.' }
+        format.html { redirect_to @obra_proyecto, notice: 'La obra/proyecto fue actualizada exitosamente.' }
         format.json { render :show, status: :ok, location: @obra_proyecto }
       else
         format.html { render :edit }
@@ -54,9 +54,16 @@ class ObrasProyectosController < ApplicationController
   # DELETE /obras_proyectos/1
   # DELETE /obras_proyectos/1.json
   def destroy
-    @obra_proyecto.destroy
+    @consumos = ConsumoDirecto.all
+    @relaciones = @consumos.find { |item| item[:obra_proyecto_id] == @obra_proyecto.id }    
+      if @relaciones.nil?
+        @obra_proyecto.destroy
+        flash[:notice] = 'La obra/proyecto fue eliminada exitosamente.'
+      else
+        flash[:notice] = 'La obra/proyecto tiene relaciones asociadas.No pudo ser eliminada'        
+      end            
     respond_to do |format|
-      format.html { redirect_to obras_proyectos_url, notice: 'La obra/poryecto fue eliminada exitosamente.' }
+      format.html { redirect_to obras_proyectos_url }
       format.json { head :no_content }
     end
   end
@@ -69,6 +76,6 @@ class ObrasProyectosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def obra_proyecto_params
-      params.require(:obra_proyecto).permit(:codigo, :descripcion)
+      params.require(:obra_proyecto).permit(:descripcion)
     end
 end

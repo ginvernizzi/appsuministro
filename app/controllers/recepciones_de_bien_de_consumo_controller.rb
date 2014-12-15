@@ -68,7 +68,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
         if @recepcion_de_bien_de_consumo.save                
           flash[:notice] = 'La recepcion fue creada exitosamente.'              
-          redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)        
+          #redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)  
+          redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)                      
         else                          
           respond_to do |format|  
             gon.numeroDeFila = 1;            
@@ -77,58 +78,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
             format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
         end
       end
-  end
-
-  def new_bienes
-    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])
-    @bien_de_consumo_de_recepcion  = BienDeConsumoDeRecepcion.new
-    @bien_de_consumo  = BienDeConsumo.new
-  end
-
-  def save_bienes        
-    puts "Datos Bien de consumo"
-    #puts params[:bien_de_consumo]
-    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])
-    #@bdc = BienDeConsumo.where(nombre: params[:nombre]) 
-
-
-    puts "Ver params"
-    puts params.inspect
-    puts "#####################"
-    puts "Ver params 2"
-    puts recepcion_de_bien_de_consumo_params[:bienes_de_consumo_de_recepcion].inspect
-    
-
-    @bien_de_consumo_de_recepcion = @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.create(
-          cantidad:params[:recepcion_de_bien_de_consumo][:bien_de_consumo_de_recepcion][:cantidad], 
-          costo:params[:recepcion_de_bien_de_consumo][:bien_de_consumo_de_recepcion][:costo], 
-          bien_de_consumo_id: params[:recepcion_de_bien_de_consumo][:bien_de_consumo_de_recepcion][:bien_de_consumo][:id])
-
-    #@bien_de_consumo_de_recepcion = @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.create!(recepcion_de_bien_de_consumo_params[:bien_de_consumo_de_recepcion])     
-    #@bien_de_consumo_de_recepcion = @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.create!(params[:recepcion_de_bien_de_consumo][:bien_de_consumo_de_recepcion])     
-    #@bien_de_consumo_de_recepcion = @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.create!(params[:recepcion_de_bien_de_consumo])     
-    #@bien_de_consumo_de_recepcion = @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.build(params[:recepcion_de_bien_de_consumo])     
-    #@recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.update(params[:recepcion_de_bien_de_consumo])
-    #@recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.update_attributes(params[:recepcion_de_bien_de_consumo])
-
-    #@bien_de_consumo_de_recepcion = @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.create!(recepcion_de_bien_de_consumo_params[:bienes_de_consumo_de_recepcion_attributes]['0'])    
-
-    #recepcion_de_bien_de_consumo.update_attributes(recepcion_de_bien_de_consumo_params[:bienes_de_consumo_de_recepcion_attributes]['0'])    
-
-    #@recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.create!(recepcion_de_bien_de_consumo_params[:bienes_de_consumo_de_recepcion_attributes])
-    #@recepcion_de_bien_de_consumo.update_attributes(recepcion_de_bien_de_consumo_params)
-
-    if @recepcion_de_bien_de_consumo.save      
-      flash[:notice] = 'El Bien de consumo fue agregado exitosamente.'
-      redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo
-    else
-      respond_to do |format|
-        @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.reload
-        #flash[:error] = 'Ha ocurrido un error.'
-        format.html { render :new_bienes }
-        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /recepciones_de_bien_de_consumo/1
@@ -154,8 +103,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
        puts "#{params[:commit]}" 
         if  params[:commit] == 'Agregar documento'
           redirect_to edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)               
-        else
-          redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo               
+        else          
+          redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)                                    
         end
      else           
      respond_to do |format|                                 
@@ -176,18 +125,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     end
   end
 
-  def eliminar_bien_de_recepcion
-    @bienes_de_consumo_de_recepcion = BienDeConsumoDeRecepcion.find(params[:bien_de_consumo_id])
-    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])                                                                                               
-    @bienes_de_consumo_de_recepcion.destroy
-    respond_to do |format|    
-      flash[:notice] ='El bien de consumo fue eliminado exitosamente.' 
-      format.html { redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo}                    
-
-      format.json { head :no_content }
-    end
-  end
-
   def eliminar_documento_secundario     
       @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])                 
       @documento_secundario = DocumentoSecundario.find(params[:documento_secundario_id])    
@@ -196,15 +133,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
         flash[:notice] ='El documento fue eliminado exitosamente.' 
         format.html { redirect_to edit_recepcion_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo) }                    
         format.json { head :no_content }
-      end
-  end
-
-  def obtener_nombre_de_bien_de_consumo              
-      @array_bien_de_consumo = BienDeConsumo.where(codigo: params[:codigo])
-      @id_de_bien = @array_bien_de_consumo[0].id    
-      
-      respond_to do | format |                                  
-          format.json { render :json => @array_bien_de_consumo }        
       end
   end
 
@@ -238,8 +166,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recepcion_de_bien_de_consumo_params
-      #params.require(:recepcion_de_bien_de_consumo).permit(:fecha, :estado, :descripcion_provisoria, :documento_principal, 
-      #:documentos_secundario, bienes_de_consumo_de_recepcion_attributes: [:cantidad, :costo, bien_de_consumo_attributes: [:id]]) 
       params.require(:recepcion_de_bien_de_consumo).permit!           
     end
 end

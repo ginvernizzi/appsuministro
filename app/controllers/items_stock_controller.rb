@@ -24,22 +24,8 @@ class ItemsStockController < ApplicationController
           @deposito = @areaArray[0].depositos.first       
 
           @recepcion.bienes_de_consumo_de_recepcion.each do |bdcdr|
-            #generar costos      
-            @costo = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
-            if @costo && @costo.count > 0
-              if bdcdr.costo > @costo[0].costo                   
-                @costo[0].update(costo: bdcdr.costo)        
-                @costo = @costo[0]
-              end
-            else
-              @costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                               fecha: DateTime.now, costo: bdcdr.costo, usuario: 'ana', origen: '2')       
-              @costo.save                  
-            end                                         
-            @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                                             fecha: DateTime.now, costo: bdcdr.costo, usuario: 'ana', origen: '2') 
-            @costo_historico.save               
-            ##############################  
+
+            @costo = guardar_costos(bdcdr)
 
             @item_stock = ItemStock.where(:bien_de_consumo_id => bdcdr.bien_de_consumo.id)
             if @item_stock[0]              
@@ -61,6 +47,25 @@ class ItemsStockController < ApplicationController
   end
 
   private 
+
+  def guardar_costos(bdcdr)
+    @costo = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
+    if @costo && @costo.count > 0
+      if bdcdr.costo > @costo[0].costo                   
+        @costo[0].update(costo: bdcdr.costo)        
+        @costo = @costo[0]
+      end
+    else
+      @costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
+                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: 'ana', origen: '2')       
+      @costo.save                  
+    end                                         
+    @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
+                                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: 'ana', origen: '2') 
+    @costo_historico.save
+
+    return @costo        
+  end
 
   def consumo_directo_params
     params.require(:item_stock).permit(:cantidad, :costo)

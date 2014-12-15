@@ -27,13 +27,15 @@ Rails.application.routes.draw do
                                                                 :as => 'rechazar_recepciones_de_bien_de_consumo_a_evaluar'
 
   resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show] do 
-        resources :items_stock , only: [:new, :create]
+    resources :items_stock , only: [:new, :create]
   end
 
   get 'static_pages/home' , :as => 'home'
   get 'static_pages/help'    
   
-  resources :recepciones_de_bien_de_consumo
+  resources :recepciones_de_bien_de_consumo do
+      resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy]
+  end
 
   get 'recepciones_de_bien_de_consumo/enviar_a_evaluar/:id', 
                                         :to => 'recepciones_de_bien_de_consumo#enviar_a_evaluar',
@@ -47,9 +49,9 @@ Rails.application.routes.draw do
                                         :as => 'save_bienes_recepciones_de_bien_de_consumo'
 
 
-  post 'recepciones_de_bien_de_consumo/obtener_nombre_de_bien_de_consumo', 
-                                        :to => 'recepciones_de_bien_de_consumo#obtener_nombre_de_bien_de_consumo',
-                                        :as => 'obtener_nombre_bien_de_consumo_recepciones_de_bien_de_consumo'  
+  post 'bienes_de_consumo_de_recepcion/obtener_nombre_de_bien_de_consumo', 
+                                        :to => 'bienes_de_consumo_de_recepcion#obtener_nombre_de_bien_de_consumo',
+                                        :as => 'obtener_nombre_bien_de_consumo_bienes_de_consumo_de_recepcion'  
 
   delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_bien_de_recepcion/:bien_de_consumo_id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
                                         as: 'eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo'

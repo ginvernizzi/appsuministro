@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212152106) do
+ActiveRecord::Schema.define(version: 20141212213224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,7 +140,6 @@ ActiveRecord::Schema.define(version: 20141212152106) do
   add_index "items_stock", ["deposito_id"], name: "index_items_stock_on_deposito_id", using: :btree
 
   create_table "obras_proyectos", force: true do |t|
-    t.string   "codigo"
     t.string   "descripcion"
     t.datetime "created_at"
     t.datetime "updated_at"

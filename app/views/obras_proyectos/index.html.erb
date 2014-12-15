@@ -12,7 +12,7 @@
   <tbody>
     <% @obras_proyectos.each do |obra_proyecto| %>
       <tr>
-        <td><%= obra_proyecto.codigo %></td>
+        <td><%= obra_proyecto.id %></td>
         <td><%= obra_proyecto.descripcion %></td>
         <td><%= link_to 'Ver', obra_proyecto %></td>
         <td><%= link_to 'Modificar', edit_obra_proyecto_path(obra_proyecto) %></td>

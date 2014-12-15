@@ -1,0 +1,88 @@
+<%= form_for([@recepcion_de_bien_de_consumo ,@bien_de_consumo_de_recepcion]) do |f| %>
+  <% if @bien_de_consumo_de_recepcion.errors.any? %>    
+    <div id="error_explanation">
+      <h2><%= pluralize(@bien_de_consumo_de_recepcion.errors.count, "error/es") %> en el formulario. el bien no pudo ser agregado:</h2>      
+      <ul>
+      <% @bien_de_consumo_de_recepcion.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h4>  Numero de Recepcion:
+    <%= @recepcion_de_bien_de_consumo.id %>
+  </h4>
+  
+  <div class="field">
+    <%= f.label :codigo %><br>
+    <%= text_field_tag :codigo%>      
+    <input type="button" value="Traer Bien de Consumo" class="" id="traer_bien_de_consumo">    
+  </div>  
+
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= text_field_tag :nombre, nil, readonly: true  %>
+  </div>  
+
+   <div class="field">
+    <%= f.label :cantidad, "cantidad" %><br>
+    <%= f.text_field :cantidad %>
+  </div>
+  <div class="field">
+    <%= f.label :costo, "costo" %><br>
+    <%= f.text_field :costo %>
+  </div> 
+  <div class="field">    
+    <%= f.hidden_field :bien_de_consumo_id %>    
+  </div>       
+  <div class="field">    
+    <%= f.hidden_field :recepcion_de_bien_de_consumo_id %>    
+  </div>       
+  <div class="field">
+    <%= label(:costoTotal ,"costo total") %><br>
+    <%= text_field_tag 'costoTotal', nil,  readonly: true %>
+  </div>  
+  <div class="actions">           
+      <%= f.submit "Agregar Bien de consumo" %>
+  </div>
+
+<div class="panel panel-default">
+   <div class="panel-heading">Bienes de consumo</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Codigo</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
+        <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
+        <tr>        
+          <% if bcr.bien_de_consumo %>
+              <td><%= bcr.bien_de_consumo.nombre %> </td>
+              <td><%= bcr.bien_de_consumo.codigo %> </td>
+              <td><%= bcr.cantidad %> </td>
+              <td><%= bcr.costo %> </td>
+              <td><%= link_to 'Eliminar', recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo, bcr), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
+              
+          <% end %> 
+        </tr>            
+        <%end%>
+    <% else %>
+        <tr>        
+          <td></td>
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+</div>
+  <%= link_to 'volver', recepciones_de_bien_de_consumo_path %>
+<% end %>
+
+
