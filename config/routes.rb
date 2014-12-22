@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
 
+  resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  
+
   resources :depositos
   resources :items_stock , only: [:index ]
+  
+  post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',  
+                                                            to: 'items_stock#imprimir_formulario',
+                                                            as: 'imprimir_items_stock_recepciones_de_bien_de_consumo_en_stock'
+
 
   get 'items_stock/:recepcion_id/ver_ingresar_a_stock/',  
                                                             to: 'items_stock#ver_ingresar_a_stock',
@@ -40,13 +47,6 @@ Rails.application.routes.draw do
   get 'recepciones_de_bien_de_consumo/enviar_a_evaluar/:id', 
                                         :to => 'recepciones_de_bien_de_consumo#enviar_a_evaluar',
                                         :as => 'enviar_a_evaluar_recepciones_de_bien_de_consumo'
-
-  get 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/new_bienes/' => 'recepciones_de_bien_de_consumo#new_bienes', 
-                                        as: 'agregar_bienes_recepciones_de_bien_de_consumo'
-
-  put 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/save_bienes/', 
-                                        :to => 'recepciones_de_bien_de_consumo#save_bienes',
-                                        :as => 'save_bienes_recepciones_de_bien_de_consumo'
 
 
   post 'bienes_de_consumo_de_recepcion/obtener_nombre_de_bien_de_consumo', 

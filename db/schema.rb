@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212213224) do
+ActiveRecord::Schema.define(version: 20141216185509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,18 @@ ActiveRecord::Schema.define(version: 20141212213224) do
   add_index "documentos_secundario", ["documento_de_recepcion_id"], name: "index_documentos_secundario_on_documento_de_recepcion_id", using: :btree
   add_index "documentos_secundario", ["recepcion_de_bien_de_consumo_id"], name: "index_documentos_secundario_on_recepcion_de_bien_de_consumo_id", using: :btree
 
+  create_table "item_stock_a_fechas", force: true do |t|
+    t.integer  "bien_de_consumo_id"
+    t.decimal  "costo"
+    t.integer  "cantidad"
+    t.integer  "deposito_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "item_stock_a_fechas", ["bien_de_consumo_id"], name: "index_item_stock_a_fechas_on_bien_de_consumo_id", using: :btree
+  add_index "item_stock_a_fechas", ["deposito_id"], name: "index_item_stock_a_fechas_on_deposito_id", using: :btree
+
   create_table "items_stock", force: true do |t|
     t.integer  "bien_de_consumo_id"
     t.decimal  "cantidad"
@@ -152,6 +164,13 @@ ActiveRecord::Schema.define(version: 20141212213224) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "descripcion_rechazo"
+  end
+
+  create_table "reporte_a_fechas", force: true do |t|
+    t.date     "fecha"
+    t.text     "stock_diario"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tipos_de_documentos", force: true do |t|

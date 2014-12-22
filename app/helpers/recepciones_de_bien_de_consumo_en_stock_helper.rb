@@ -1,0 +1,2 @@
+module RecepcionesDeBienDeConsumoEnStockHelper
+end
