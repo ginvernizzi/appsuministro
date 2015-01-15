@@ -2,7 +2,9 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
   before_action :set_recepcion_de_bien_de_consumo_en_stock, only: [:show]
 
   def index
-  	 @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where(estado: 6).order(:id)
+  	 #@recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where(estado: 6).order(:id)
+     #ver la lista de recepciones ingresadas a stock y en consumo directo.
+     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 5 OR estado = 6").order(:id)
   end
 
 

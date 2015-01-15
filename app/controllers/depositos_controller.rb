@@ -25,7 +25,7 @@ class DepositosController < ApplicationController
   # POST /depositos
   # POST /depositos.json
   def create
-    @area = Area.find(deposito_params[:area_id])
+    @area = Area.find(params[:area_id])
     @deposito = Deposito.new(deposito_params)
 
     respond_to do |format|
@@ -58,22 +58,24 @@ class DepositosController < ApplicationController
   # DELETE /depositos/1.json
   def destroy
     if @area.depositos
-    @area = Area.find(params[:area_id])
-    @deposito.destroy
-    respond_to do |format|      
-      format.html { redirect_to new_area_deposito_path(@area), notice: 'El deposito fue eliminado exitosamente.' } 
-      format.json { head :no_content }
+      @area = Area.find(params[:area_id])
+      @deposito.destroy
+      respond_to do |format|      
+        format.html { redirect_to new_area_deposito_path(@area), notice: 'El deposito fue eliminado exitosamente.' } 
+        format.json { head :no_content }
+      end
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deposito
-      @deposito = Deposito.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_deposito
+    @deposito = Deposito.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def deposito_params
-      params.require(:deposito).permit(:nombre, :area_id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def deposito_params
+    params.require(:deposito).permit(:nombre, :area_id)
+  end
+
 end

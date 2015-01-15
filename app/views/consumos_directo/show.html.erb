@@ -7,7 +7,7 @@
 
 <p>
   <strong>Area:</strong>
-  <%= @consumo_directo.area %>
+  <%= @consumo_directo.area.nombre %>
 </p>
 
 <p>
@@ -46,5 +46,5 @@
 </table>
 </div>
 
-<%= link_to 'Edit', edit_consumo_directo_path(@consumo_directo) %> |
-<%= link_to 'Back', consumos_directo_path %>
+<%= link_to 'Modificar', edit_consumo_directo_path(@consumo_directo) %> |
+<%= link_to 'volver', consumos_directo_path %>

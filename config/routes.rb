@@ -1,13 +1,17 @@
 Rails.application.routes.draw do
-
+  
   resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  
-
+  resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 
   resources :depositos
   resources :items_stock , only: [:index ]
   
   post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',  
                                                             to: 'items_stock#imprimir_formulario',
                                                             as: 'imprimir_items_stock_recepciones_de_bien_de_consumo_en_stock'
+
+  post 'recepciones_de_bienes_de_consumo_consumidas/:consumo_directo_id/consumos_directo/imprimir_formulario/',  
+                                                            to: 'consumos_directo#imprimir_formulario',
+                                                            as: 'imprimir_consumos_directo_recepciones_de_bien_de_consumo_consumidas'
 
 
   get 'items_stock/:recepcion_id/ver_ingresar_a_stock/',  

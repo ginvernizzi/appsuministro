@@ -1,4 +1,4 @@
-<h1>Recepciones de bien de consumo finalizadas (altas de stock, consumo directo, y transferencia) </h1>
+<h1>Recepciones de bien de consumo despachadas</h1>
 
 <table class="table">
   <thead>
@@ -23,9 +23,7 @@
         <td></td>
         <td></td>
       <% end %>      
-        <td><%= link_to 'Ver',  recepciones_de_bien_de_consumo_en_stock_path(recepcion_de_bien_de_consumo)%></td> 
-       <td><%= link_to 'Imprimir',  imprimir_items_stock_recepciones_de_bien_de_consumo_en_stock_path(recepcion_de_bien_de_consumo), method: :post, data: { confirm: '¿Esta seguro?' }  %>        
-       </td>
+        <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_consumida_path (recepcion_de_bien_de_consumo)%></td>        
     </tr>
     <% end %>
   </tbody>

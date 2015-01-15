@@ -56,12 +56,13 @@ ActiveRecord::Schema.define(version: 20141216185509) do
 
   create_table "consumos_directo", force: true do |t|
     t.date     "fecha"
-    t.string   "area"
+    t.integer  "area_id"
     t.integer  "obra_proyecto_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "consumos_directo", ["area_id"], name: "index_consumos_directo_on_area_id", using: :btree
   add_index "consumos_directo", ["obra_proyecto_id"], name: "index_consumos_directo_on_obra_proyecto_id", using: :btree
 
   create_table "costos_de_bien_de_consumo", force: true do |t|

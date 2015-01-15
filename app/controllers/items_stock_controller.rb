@@ -8,10 +8,10 @@ class ItemsStockController < ApplicationController
   end
 
   def ver_ingresar_a_stock
-	 @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_id])	
-	 @areas = Area.all
-	 @depositos = Deposito.all
-	 @item_stock = ItemStock.new   
+	  @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_id])	
+	  @areas = Area.all
+	  @depositos = Deposito.all
+	  @item_stock = ItemStock.new   
   end
 
   def create    
@@ -70,7 +70,7 @@ class ItemsStockController < ApplicationController
       end
     else
       @costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: 'ana', origen: '2')       
+                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')       
       @costo.save                  
     end                                         
     @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo, 

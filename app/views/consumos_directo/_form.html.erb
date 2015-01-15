@@ -17,9 +17,9 @@
     <%= f.text_field :fecha %>  
   </div> 
 
-   <div class="field">
+  <div class="field">
       <%= f.label :area%><br /> 
-      <%= f.text_field :area %>          
+      <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione" %>  
   </div>
 
    <div class="field">
