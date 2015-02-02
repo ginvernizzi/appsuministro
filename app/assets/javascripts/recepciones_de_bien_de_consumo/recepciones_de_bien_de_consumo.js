@@ -2,6 +2,10 @@
 //$(document).on('page:load', ready)
 
 $(document).on("ready page:load", function() {
+
+  $('#bien_de_consumo_de_recepcion_cantidad').inputmask('999999', { clearMaskOnLostFocus: true, placeholder: ' ' })      
+  //$('#bien_de_consumo_de_recepcion_costo').inputmask('99999.999', { clearMaskOnLostFocus: true, placeholder: ' ' , greedy: false})        
+
    var currentDate = new Date();
   $('#recepcion_de_bien_de_consumo_fecha').datepicker
   ({
@@ -99,7 +103,7 @@ $(document).on("ready page:load", function() {
                 type: "POST",
                 data: { },
                 success:function(result) 
-                      {  $("#div_descripcion_provisoria").html(result) }
+                    {  $("#div_descripcion_provisoria").html(result) }
                 });                        
               }      
       });                                           

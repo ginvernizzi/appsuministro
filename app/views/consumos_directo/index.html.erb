@@ -1,4 +1,4 @@
-<h1>Consumos directos</h1>
+<h1>Consumos realizados (Directos y por seleccion)</h1>
 
 <table class="table">
   <thead>
@@ -17,7 +17,7 @@
         <td><%= consumo_directo.area.nombre %></td>
         <td><%= consumo_directo.obra_proyecto.descripcion %></td>
         <td><%= link_to 'Ver', consumo_directo %></td>
-        <td><%= link_to 'Imprimir',  imprimir_consumos_directo_recepciones_de_bien_de_consumo_consumidas_path(consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+        <td><%= link_to 'Imprimir', imprimir_formulario_consumos_directo_path(consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %>        
        </td>
       </tr>
     <% end %>

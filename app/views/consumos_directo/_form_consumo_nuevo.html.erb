@@ -1,0 +1,89 @@
+<%= form_for(@consumo_directo, 
+             url:  crear_consumo_consumos_directo_path, 
+             html: { method: "post",  :id => "nuevo_consumo"} ) do |f| %>
+  <% if @consumo_directo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@consumo_directo.errors.count, "error") %> prohibited this consumo from being saved:</h2>
+
+      <ul>
+      <% @consumo_directo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+
+  <div class="field" id="impresion">        
+  </div> 
+
+  <div class="field">    
+    <%= f.label :fecha %><br />
+    <%= f.text_field :fecha %>  
+  </div> 
+
+  <div class="field">
+    <%= f.label :area%><br /> 
+    <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione" %>     
+  </div>
+  
+  <div class="field">
+    <%= f.label :responsable %> <br /> 
+    <%= text_field_tag :responsable, nil, readonly: true%>  
+  </div> 
+
+  <div class="field">
+    <%= f.label :obra_proyecto%><br /> 
+    <%= f.collection_select :obra_proyecto_id, @obras_proyecto, :id, :descripcion, :prompt => "seleccione" %>  
+  </div>
+
+    <div class="field">
+    <%= f.label :codigo %><br>
+    <%= text_field_tag :codigo%>      
+    <input type="button" value="Traer Bien de Consumo" class="" id="traer_bien_de_consumo_y_cantidad_stock">    
+  </div>  
+
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= text_field_tag :nombre, nil, readonly: true  %>
+  </div>  
+
+   <div class="field">
+    <%= f.label :cantidad_stock, "Cantidad en stock" %><br>
+    <%= text_field_tag :cantidad_stock , nil, readonly: true %>          
+  </div>  
+
+   <div class="field">
+    <%= f.label :cantidad_a_consumir, "Cantidad a consumir" %><br>
+    <%= text_field_tag :cantidad_a_consumir %>          
+    <input type="button" value="Agregar" class="" id="agregar_bien_a_consumir">    
+    <input type="button" value="Eliminar todos" class="" id="eliminar_todos_los_bienes"> 
+  </div>    
+  <div>
+       <%= hidden_field(:bien_de_consumo, :id)  %>
+  </div>
+
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Bienes consumidos</div>
+  <table id="bienes_table" class="table">
+  <thead>
+  <tr>            
+    <th style="display:none;">Id</th>
+    <th>Codigo</th>
+    <th>Nombre</th>
+    <th>Cantidad en stock</th>
+    <th>Cantidad a consumir</th>    
+    <th>Unidad</th>
+  </tr>
+  </thead>
+  <tbody>        
+
+  </tbody>
+  </table>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Aceptar" %>  
+  </div>
+<% end %>

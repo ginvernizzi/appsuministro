@@ -25,7 +25,7 @@ ObraProyecto.create!(descripcion: "gestion/proyecto").save
 ObraProyecto.create!(descripcion: "cartas del ausente").save
 
 areaSistemas = Area.create!(nombre: 'Sistemas', responsable:'Christian Fincic')
-areaSuministro = Area.create!(nombre: 'Suministro', responsable:'Ana Salanitro')
+areaSuministro = Area.create!(nombre: 'Patrimonio y Suministro', responsable:'Ana Salanitro')
 
 Deposito.create!(area_id: areaSuministro.id, nombre:'piso -1')
 

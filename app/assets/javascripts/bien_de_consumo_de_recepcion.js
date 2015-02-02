@@ -24,9 +24,9 @@
             $("#nombre").val(data[0].nombre)
             $("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val(data[0].id)                  
             },
-            error: function (request, status, error) {
-              alert("Bien de consumo inexistente");
-              }
+          error: function (request, status, error) {
+            alert("Bien de consumo inexistente");
+            }
           });
       });
 });

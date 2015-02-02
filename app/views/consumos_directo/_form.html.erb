@@ -22,7 +22,12 @@
       <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione" %>  
   </div>
 
-   <div class="field">
+  <div class="field">
+    <%= f.label :responsable %> <br /> 
+    <%= text_field_tag :responsable, nil, readonly: true%>  
+  </div> 
+
+  <div class="field">
       <%= f.label :obra_proyecto%><br /> 
       <%= f.collection_select :obra_proyecto_id, @obras_proyecto, :id, :descripcion, :prompt => "seleccione" %>  
   </div>

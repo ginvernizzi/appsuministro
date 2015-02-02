@@ -9,25 +9,34 @@ Rails.application.routes.draw do
                                                             to: 'items_stock#imprimir_formulario',
                                                             as: 'imprimir_items_stock_recepciones_de_bien_de_consumo_en_stock'
 
-  post 'recepciones_de_bienes_de_consumo_consumidas/:consumo_directo_id/consumos_directo/imprimir_formulario/',  
-                                                            to: 'consumos_directo#imprimir_formulario',
-                                                            as: 'imprimir_consumos_directo_recepciones_de_bien_de_consumo_consumidas'
+  # post 'recepciones_de_bienes_de_consumo_consumidas/:consumo_directo_id/consumos_directo/imprimir_formulario/',  
+  #                                                           to: 'consumos_directo#imprimir_formulario',
+  #                                                           as: 'imprimir_consumos_directo_recepciones_de_bien_de_consumo_consumidas'
+
+  post 'consumos_directo/imprimir_formulario/:consumo_directo_id',  to: 'consumos_directo#imprimir_formulario',
+                                                                    as: 'imprimir_formulario_consumos_directo'                                                               
 
 
-  get 'items_stock/:recepcion_id/ver_ingresar_a_stock/',  
-                                                            to: 'items_stock#ver_ingresar_a_stock',
-                                                            as: 'ver_ingresar_a_stock_items_stock'
+  get 'items_stock/:recepcion_id/ver_ingresar_a_stock/',  to: 'items_stock#ver_ingresar_a_stock',
+                                                          as: 'ver_ingresar_a_stock_items_stock'
 
   resources :areas do
     resources :depositos , only: [:new, :destroy]
   end
 
-  resources :consumos_directo
+  #resources :consumos_directo
+  resources :consumos_directo do 
+    collection do
+      get 'nuevo_consumo'
+      post 'crear_consumo'
+      post 'obtener_nombre_de_bien_de_consumo'  
+      post 'obtener_responsable_de_area'          
+    end
+  end
 
   get 'consumos_directo/:recepcion_id/nuevo_consumo_directo_desde_recepcion/',  
                                                             to: 'consumos_directo#nuevo_consumo_directo_desde_recepcion',
                                                             as: 'nuevo_consumo_directo_desde_recepcion_consumos_directo'
-
 
   resources :obras_proyectos  
 
@@ -72,6 +81,8 @@ Rails.application.routes.draw do
 
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
+
+  match '/consumos_directo/imprimir_formulario', to: 'consumos_directo#imprimir_formulario', via: :post
 
   root  'static_pages#home'  
 

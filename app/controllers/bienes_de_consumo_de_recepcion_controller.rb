@@ -12,15 +12,13 @@ before_action :set_bien_de_consumo_de_recepcion, only: [:edit, :destroy]
   def create
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])
 
-	@bien_de_consumo_de_recepcion = BienDeConsumoDeRecepcion.new(bien_de_consumo_de_recepcion_params)
+	  @bien_de_consumo_de_recepcion = BienDeConsumoDeRecepcion.new(bien_de_consumo_de_recepcion_params)
 
     if @bien_de_consumo_de_recepcion.save      
-      flash[:notice] = 'El Bien de consumo fue agregado exitosamente.'
-      #redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path @recepcion_de_bien_de_consumo
+      flash[:notice] = 'El Bien de consumo fue agregado exitosamente.'      
       redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)      
     else
-      respond_to do |format|        
-        #flash[:error] = 'Ha ocurrido un error.'
+      respond_to do |format|                
         format.html { render :new }
         format.json { render json: @bien_de_consumo_de_recepcion.errors, status: :unprocessable_entity }
       end
