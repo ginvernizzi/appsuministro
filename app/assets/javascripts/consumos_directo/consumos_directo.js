@@ -2,7 +2,6 @@ $(document).on("ready page:load", function() {
   //mascara entero, 6
   $('#cantidad_a_consumir').inputmask('999999', { clearMaskOnLostFocus: true, placeholder: ' ' })      
   
-
   var currentDate = new Date();
   $('#consumo_directo_fecha').datepicker
   ({
@@ -52,7 +51,7 @@ $(document).on("ready page:load", function() {
 
   $("#agregar_bien_a_consumir").click(function() {  
     var array_bienes = get_tabla_de_bienes() 
-    var bien_encontrado = array_bienes.filter(function( obj ) {  return obj.Codigo == $("#codigo").val(); })
+    var bien_encontrado = array_bienes.filter(function( obj ) { return obj.Codigo == $("#codigo").val(); })
     if (bien_encontrado.length > 0)
     { 
       // var nueva_cantidad = bien_encontrado[0]["Cantidad a consumir"] + $("#cantidad_a_consumir").val();
@@ -123,8 +122,8 @@ $(document).on("ready page:load", function() {
 
         error: function (request, status, error) { 
                 alert("Revise los campos incompletos. El consumo no fue realizado");                           
-                var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
-                $('#nuevo_consumo').replaceWith(form_consumo_directo); 
+                //var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
+                //$('#nuevo_consumo').replaceWith(form_consumo_directo); 
                 
               }                
       });                

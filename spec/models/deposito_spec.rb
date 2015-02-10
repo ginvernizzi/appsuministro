@@ -1,5 +1,12 @@
 require 'spec_helper'
 
 describe Deposito do
-  pending "add some examples to (or delete) #{__FILE__}"
+  	before do
+		@deposito = Deposito.create!(nombre:"piso10") 
+	end
+
+	subject { @deposito }
+
+	it { should validate_presence_of(:nombre) }		
+
 end

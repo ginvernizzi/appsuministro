@@ -28,10 +28,11 @@
        <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td>
        <td><%= link_to 'Ingresar a stock',  recepciones_de_bien_de_consumo_a_evaluar_items_stock_path(recepcion_de_bien_de_consumo), method: :post, data: { confirm: '¿Esta seguro?' }  %>
        </td>
-       <td><%= link_to 'Consumo inmediato', nuevo_consumo_directo_desde_recepcion_consumos_directo_path(:recepcion_id => recepcion_de_bien_de_consumo.id) %>
+       <td><%= link_to 'Consumo inmediato', nuevo_consumo_directo_desde_recepcion_consumos_directo_path(:recepcion_id => recepcion_de_bien_de_consumo.id), data: { confirm: '¿Esta seguro?' } %>
+       </td>
+        <td><%= link_to 'Transferencia inmediata', nueva_transferencia_desde_recepcion_transferencias_path(:recepcion_id => recepcion_de_bien_de_consumo.id), data: { confirm: '¿Esta seguro?' }  %>
        </td>
        <td><%= link_to 'rechazar', ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) , data: { confirm: '¿Esta seguro?' } %></td>
-
     </tr>
     <% end %>
   </tbody>

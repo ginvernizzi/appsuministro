@@ -25,7 +25,7 @@ class DepositosController < ApplicationController
   # POST /depositos
   # POST /depositos.json
   def create
-    @area = Area.find(params[:area_id])
+    @area = Area.find(deposito_params[:area_id])
     @deposito = Deposito.new(deposito_params)
 
     respond_to do |format|
@@ -45,7 +45,7 @@ class DepositosController < ApplicationController
   def update
     respond_to do |format|
       if @deposito.update(deposito_params)
-        format.html { redirect_to @deposito, notice: 'Deposito was successfully updated.' }
+        format.html { redirect_to  areas_path, notice: 'El deposito fue modificado exitosamente.' }
         format.json { render :show, status: :ok, location: @deposito }
       else
         format.html { render :edit }
@@ -56,9 +56,10 @@ class DepositosController < ApplicationController
 
   # DELETE /depositos/1
   # DELETE /depositos/1.json
-  def destroy
-    if @area.depositos
-      @area = Area.find(params[:area_id])
+  def destroy  
+    @area = Deposito.find(params[:area_id])
+    @desposito = Deposito.find(params[:id])
+    if @deposito      
       @deposito.destroy
       respond_to do |format|      
         format.html { redirect_to new_area_deposito_path(@area), notice: 'El deposito fue eliminado exitosamente.' } 

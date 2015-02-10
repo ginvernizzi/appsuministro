@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :transferencias
+
   resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 
   resources :depositos
@@ -16,6 +18,9 @@ Rails.application.routes.draw do
   post 'consumos_directo/imprimir_formulario/:consumo_directo_id',  to: 'consumos_directo#imprimir_formulario',
                                                                     as: 'imprimir_formulario_consumos_directo'                                                               
 
+  post 'transferencias/imprimir_formulario/:transferencia_id',  to: 'transferencias#imprimir_formulario',
+                                                                    as: 'imprimir_formulario_transferencias'                                                                     
+
 
   get 'items_stock/:recepcion_id/ver_ingresar_a_stock/',  to: 'items_stock#ver_ingresar_a_stock',
                                                           as: 'ver_ingresar_a_stock_items_stock'
@@ -23,8 +28,7 @@ Rails.application.routes.draw do
   resources :areas do
     resources :depositos , only: [:new, :destroy]
   end
-
-  #resources :consumos_directo
+  
   resources :consumos_directo do 
     collection do
       get 'nuevo_consumo'
@@ -37,6 +41,10 @@ Rails.application.routes.draw do
   get 'consumos_directo/:recepcion_id/nuevo_consumo_directo_desde_recepcion/',  
                                                             to: 'consumos_directo#nuevo_consumo_directo_desde_recepcion',
                                                             as: 'nuevo_consumo_directo_desde_recepcion_consumos_directo'
+
+  get 'transferencias/:recepcion_id/nueva_transferencia_desde_recepcion/',  
+                                                            to: 'transferencias#nueva_transferencia_desde_recepcion',
+                                                            as: 'nueva_transferencia_desde_recepcion_transferencias'
 
   resources :obras_proyectos  
 
@@ -82,6 +90,7 @@ Rails.application.routes.draw do
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
 
+  #esto lo hice para que machee la ruta llamandola desde una funcion en AJAX
   match '/consumos_directo/imprimir_formulario', to: 'consumos_directo#imprimir_formulario', via: :post
 
   root  'static_pages#home'  

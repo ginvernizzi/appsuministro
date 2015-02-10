@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ConsumoDirectosController do
+describe ConsumosDirectoController do
   describe "routing" do
 
     it "routes to #index" do

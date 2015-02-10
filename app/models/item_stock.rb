@@ -5,5 +5,5 @@ class ItemStock < ActiveRecord::Base
   belongs_to :deposito
   belongs_to :costo_de_bien_de_consumo  
 
-  accepts_nested_attributes_for :deposito
+  #accepts_nested_attributes_for :deposito
 end

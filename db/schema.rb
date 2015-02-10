@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216185509) do
+ActiveRecord::Schema.define(version: 20150202222834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,18 @@ ActiveRecord::Schema.define(version: 20141216185509) do
 
   add_index "bienes_de_consumo_para_consumir", ["bien_de_consumo_id"], name: "index_bienes_de_consumo_para_consumir_on_bien_de_consumo_id", using: :btree
   add_index "bienes_de_consumo_para_consumir", ["consumo_directo_id"], name: "index_bienes_de_consumo_para_consumir_on_consumo_directo_id", using: :btree
+
+  create_table "bienes_de_consumo_para_transferir", force: true do |t|
+    t.decimal  "costo"
+    t.integer  "cantidad"
+    t.integer  "bien_de_consumo_id"
+    t.integer  "transferencia_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bienes_de_consumo_para_transferir", ["bien_de_consumo_id"], name: "index_bienes_de_consumo_para_transferir_on_bien_de_consumo_id", using: :btree
+  add_index "bienes_de_consumo_para_transferir", ["transferencia_id"], name: "index_bienes_de_consumo_para_transferir_on_transferencia_id", using: :btree
 
   create_table "consumos_directo", force: true do |t|
     t.date     "fecha"
@@ -179,6 +191,17 @@ ActiveRecord::Schema.define(version: 20141216185509) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "transferencias", force: true do |t|
+    t.date     "fecha"
+    t.integer  "area_id"
+    t.integer  "deposito_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "transferencias", ["area_id"], name: "index_transferencias_on_area_id", using: :btree
+  add_index "transferencias", ["deposito_id"], name: "index_transferencias_on_deposito_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name"

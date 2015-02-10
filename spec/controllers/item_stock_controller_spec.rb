@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ItemStockController do
+describe ItemsStockController do
 
   describe "GET 'new'" do
     it "returns http success" do

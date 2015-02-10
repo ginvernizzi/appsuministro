@@ -1,0 +1,26 @@
+<h1>Transferencias realizadas (Directas y por seleccion)</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Area</th>
+      <th>Deposito</th>      
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transferencia.each do |transferencia| %>
+      <tr>
+        <td><%= transferencia.fecha %></td>
+        <td><%= transferencia.area.nombre %></td>
+        <td><%= transferencia.deposito.nombre %></td>        
+        <td><%= link_to 'Mostrar', transferencia %></td>
+        <td><%= link_to 'Imprimir', imprimir_formulario_transferencias_path(transferencia), method: :post, data: { confirm: '¿Esta seguro?' }  %>    
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

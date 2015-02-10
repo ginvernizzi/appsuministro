@@ -32,5 +32,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'costo_de_bien_de_consumo', 'costos_de_bien_de_consumo'
   inflect.irregular 'costo_de_bien_de_consumo_historico', 'costos_de_bien_de_consumo_historico'
   inflect.irregular 'item_stock', 'items_stock'
+  inflect.irregular 'transferencia', 'transferencias'
+  inflect.irregular 'bien_de_consumo_para_transferir', 'bienes_de_consumo_para_transferir'
 
 end

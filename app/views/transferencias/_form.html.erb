@@ -1,0 +1,74 @@
+<%= form_for(@transferencia) do |f| %>
+  <% if @transferencia.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transferencia.errors.count, "error") %> encontrados en la transferencia. No sera generada:</h2>
+
+      <ul>
+      <% @transferencia.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :fecha %><br>
+    <%= f.text_field :fecha %>
+  </div>
+
+   <div class="field">
+      <%= f.label :area%><br /> 
+      <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione" %>            
+  </div>
+
+  <div class="field">
+    <%= f.label :responsable %> <br /> 
+    <%= text_field_tag :responsable, nil, readonly: true%>  
+  </div> 
+
+  <div class="field">
+    <%= f.label :deposito %> <br />     
+    <%= f.grouped_collection_select("deposito_id", @areas, "depositos", "nombre", "id", "nombre", :include_blank => " Seleccione un deposito...") %>
+  </div> 
+
+  <div>
+    <%= hidden_field(:recepcion_de_bien_de_consumo, :id)  %>
+  </div>
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Bienes de consumo</div>
+  <table class="table">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Codigo</th>
+    <th>Cantidad</th>
+    <th>Costo</th>    
+  </tr>
+  </thead>
+  <tbody>
+  <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
+      <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
+      <tr>        
+        <% if bcr.bien_de_consumo %>
+            <td><%= bcr.bien_de_consumo.nombre %> </td>
+            <td><%= bcr.bien_de_consumo.codigo %> </td>
+            <td><%= bcr.cantidad %> </td>
+            <td><%= bcr.costo %> </td>                        
+        <% end %> 
+      </tr>            
+      <%end%>
+  <% else %>
+      <tr>        
+        <td></td>
+        <td></td>
+      </tr>    
+  <% end %>      
+  </tbody>
+  </table>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

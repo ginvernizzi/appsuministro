@@ -1,6 +1,6 @@
-<h1>Listing depositos</h1>
+<h1>Depositos</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Nombre</th>
@@ -13,15 +13,13 @@
     <% @depositos.each do |deposito| %>
       <tr>
         <td><%= deposito.nombre %></td>
-        <td><%= deposito.area %></td>
-        <td><%= link_to 'Show', deposito %></td>
-        <td><%= link_to 'Edit', edit_deposito_path(deposito) %></td>
-        <td><%= link_to 'Destroy', deposito, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= deposito.area.nombre %></td>
+        <td><%= link_to 'Ver', deposito %></td>
+        <td><%= link_to 'Modificar', edit_deposito_path(deposito) %></td>
+        <td><%= link_to 'Eliminar', deposito, method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Deposito', new_deposito_path %>

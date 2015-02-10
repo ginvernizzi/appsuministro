@@ -1,0 +1,55 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @transferencia.fecha %>
+</p>
+
+<p>
+  <strong>Area:</strong>
+  <%= @transferencia.area.nombre %>
+</p>
+
+<p>
+  <strong>Responsable:</strong>
+  <%= @transferencia.area.responsable %>
+</p>
+
+<p>
+  <strong>Deposito origen:</strong>
+  <%= @transferencia.deposito.nombre %>
+</p>
+
+<div class="panel panel-default">
+<div class="panel-heading"> Bienes transferidos </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Codigo</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @transferencia.bienes_de_consumo_para_transferir.any? %>
+        <% @transferencia.bienes_de_consumo_para_transferir.each do |bcc| %>
+        <tr>        
+          <td><%= bcc.bien_de_consumo.nombre %> </td>
+          <td><%= bcc.bien_de_consumo.codigo %> </td>
+          <td><%= bcc.cantidad %> </td>
+          <td><%= bcc.costo %> </td>
+        </tr>    
+        <%end%>
+    <% else %>
+        <tr>        
+          <td></td>
+          <td></td>
+        </tr>    
+    <% end %>      
+  </tbody>
+</table>
+</div>
+
+<%= link_to 'Modificar', edit_transferencia_path(@transferencia) %> |
+<%= link_to 'Volver', transferencias_path %>

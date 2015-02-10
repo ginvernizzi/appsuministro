@@ -40,8 +40,8 @@ class AreasController < ApplicationController
   # PATCH/PUT /areas/1.json
   def update
     respond_to do |format|
-      if @area.update(area_params)
-        format.html { redirect_to new_area_deposito_path(@area), notice: 'El area fue modificada exitosamente.' }  
+      if @area.update(area_params)        
+        format.html { redirect_to new_area_deposito_path(@area), notice: 'El area fue modificada exitosamente.' }                        
         format.json { render :show, status: :ok, location: @area }
       else
         format.html { render :edit }

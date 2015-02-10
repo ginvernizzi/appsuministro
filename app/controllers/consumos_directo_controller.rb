@@ -33,36 +33,36 @@ class ConsumosDirectoController < ApplicationController
     ConsumoDirecto.transaction do      
 
       #ingresar bienes a stock de suministro, y luego quitarlos.
-      @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+      recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
       
-      if (ingresar_bienes_a_stock(@recepcion_de_bien_de_consumo))
-        quitar_bienes_de_stock(@recepcion_de_bien_de_consumo)
+      if (ingresar_bienes_a_stock(recepcion_de_bien_de_consumo))
+        quitar_bienes_de_stock(recepcion_de_bien_de_consumo)
       
         @consumo_directo = ConsumoDirecto.new(consumo_directo_params)
             
-        @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bien| 
-          @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad: bien.cantidad, costo: bien.costo, 
-                                                                 bien_de_consumo_id: bien.bien_de_consumo_id)
+        recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bien| 
+           @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad: bien.cantidad, costo: bien.costo, 
+                                                                 bien_de_consumo: bien.bien_de_consumo)
 
 
-          @costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,        
+          costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,        
                                                 usuario: current_user.name, origen: "2" )
-          @costo_de_bien.save
+          costo_de_bien.save
 
-          @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,
+          costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,
                                                 usuario: current_user.name, origen: "2" )      
-          @costo_de_bien_historico.save
+          costo_de_bien_historico.save
         end    
 
         respond_to do |format|
-          if @consumo_directo.save && @recepcion_de_bien_de_consumo.update(estado: "5")
-            format.html { redirect_to @consumo_directo, notice: 'Consumo directo creado exitosamente' }
-            #format.json { render :show, status: :created, location: @consumo_directo }
+          if  @consumo_directo.save && recepcion_de_bien_de_consumo.update(estado: "5")
+            format.html { redirect_to  @consumo_directo, notice: 'Consumo directo creado exitosamente' }
+            #format.json { render :show, status: :created, location: consumo_directo }
           else
-            @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+            recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
             cargar_datos_controles_consumo_directo
             format.html { render :nuevo_consumo_directo_desde_recepcion }
-            format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
+            format.json { render json:  @consumo_directo.errors, status: :unprocessable_entity }
           end
         end
       else
@@ -82,19 +82,19 @@ class ConsumosDirectoController < ApplicationController
       #ingresar bienes a stock de suministro, y luego quitarlos.      
       if (quitar_bienes_de_stock_consumo_manual(@consumo_data["bienes_tabla"]))        
       
-        @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"])                
+         @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"])                
 
         @consumo_data["bienes_tabla"].each do |bien|           
           
           @bien_de_consumo = BienDeConsumoDeRecepcion.find(bien["Id"]) 
 
-          @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad:bien["Cantidad a consumir"], costo: @bien_de_consumo.costo, 
+           @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad:bien["Cantidad a consumir"], costo: @bien_de_consumo.costo, 
                                                                  bien_de_consumo_id: @bien_de_consumo.id)
 
 
-          @costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: @bien_de_consumo.costo,        
+          costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: @bien_de_consumo.costo,        
                                              usuario: current_user.name, origen: "2" )
-          @costo_de_bien.save
+          costo_de_bien.save
 
           @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id:  @bien_de_consumo.id, costo: @bien_de_consumo.costo,
                                                 usuario: current_user.name, origen: "2" )      
@@ -102,12 +102,12 @@ class ConsumosDirectoController < ApplicationController
         end    
 
         respond_to do |format|
-          if @consumo_directo.save                          
-            format.json { render json: @consumo_directo }
+          if  @consumo_directo.save                          
+            format.json { render json:  @consumo_directo }
           else              
             cargar_datos_controles_consumo_directo
-            format.html { render :nuevo_consumo }
-            #format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
+            format.html { render :nuevo_consumo }            
+            format.json { render json:  @consumo_directo.errors, status: :unprocessable_entity }
           end
         end
       else
@@ -141,25 +141,25 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def ingresar_bienes_a_stock(recepcion)
-    @recepcion = recepcion
-    @areaArray = Area.where(nombre: "Suministro")    
+
+    areaArray = Area.where(id: 1)    
         
-    if @areaArray.count > 0 && @areaArray[0].depositos.count > 0
+    if areaArray.count > 0 && areaArray[0].depositos.count > 0
         
-        @deposito = @areaArray[0].depositos.first       
+        deposito = areaArray[0].depositos.first       
 
-        @recepcion.bienes_de_consumo_de_recepcion.each do |bdcdr|
+        recepcion.bienes_de_consumo_de_recepcion.each do |bdcdr|
 
-          @costo = guardar_costos(bdcdr)
-
-          @item_stock = ItemStock.where(:bien_de_consumo_id => bdcdr.bien_de_consumo.id)
+          costo_de_bien = guardar_costos(bdcdr)
+          
+          @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr.bien_de_consumo.id, deposito.id)
           if @item_stock[0]              
             puts "existe el item"
             suma = @item_stock[0].cantidad + bdcdr.cantidad              
             @item_stock[0].update(cantidad: suma)              
           else             
             puts "NO existe el item"
-            @item_stock = ItemStock.new(bien_de_consumo: bdcdr.bien_de_consumo, cantidad: bdcdr.cantidad, costo_de_bien_de_consumo: @costo, deposito: @deposito)                                
+            @item_stock = ItemStock.new(bien_de_consumo: bdcdr.bien_de_consumo, cantidad: bdcdr.cantidad, costo_de_bien_de_consumo: costo_de_bien, deposito:deposito)                                
             @item_stock.save                                          
           end                        
         end                                    
@@ -170,18 +170,14 @@ class ConsumosDirectoController < ApplicationController
     end       
   end
 
-  def quitar_bienes_de_stock(recepcion)
-    @recepcion = recepcion
-    @areaArray = Area.where(nombre: "Suministro")
-    #@items = []
-        
-      if @areaArray.count > 0 && @areaArray[0].depositos.count > 0
-        
-          @deposito = @areaArray[0].depositos.first       
-
-          @recepcion.bienes_de_consumo_de_recepcion.each do |bdcdr|            
-
-            @item_stock = ItemStock.where(:bien_de_consumo_id => bdcdr.bien_de_consumo.id)
+  def quitar_bienes_de_stock(recepcion)    
+    areaArray = Area.where(id: 1)    
+      
+      if areaArray.count > 0 && areaArray[0].depositos.count > 0
+          deposito = areaArray[0].depositos.first   
+          recepcion.bienes_de_consumo_de_recepcion.each do |bdcdr|            
+            
+            @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr.bien_de_consumo.id, deposito.id)
             if @item_stock[0]
               resta = @item_stock[0].cantidad - bdcdr.cantidad              
               @item_stock[0].update(cantidad: resta)              
@@ -198,12 +194,12 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def quitar_bienes_de_stock_consumo_manual(bienes)    
-    @areaArray = Area.where(nombre: "Suministro")
+    areaArray = Area.where(id: 1)
     #@items = []    
 
-    if @areaArray.count > 0 && @areaArray[0].depositos.count > 0
+    if areaArray.count > 0 && areaArray[0].depositos.count > 0
         
-      @deposito = @areaArray[0].depositos.first       
+      deposito = areaArray[0].depositos.first       
 
       bienes.each do |bdcdr|                       
         @item_stock = ItemStock.where(:bien_de_consumo_id => bdcdr["Id"])            
@@ -215,7 +211,6 @@ class ConsumosDirectoController < ApplicationController
           return false    
         end                        
       end                                    
-
       return true
     else           
         return false
@@ -224,22 +219,23 @@ class ConsumosDirectoController < ApplicationController
 
   #Repetido en el controler de item_stock, ver la manera de usar el mismo metodo.
   def guardar_costos(bdcdr)
-    @costo = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
-    if @costo && @costo.count > 0
-      if bdcdr.costo > @costo[0].costo                   
-        @costo[0].update(costo: bdcdr.costo)        
-        @costo = @costo[0]
+    costo = CostoDeBienDeConsumo.new
+    costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
+    if costoArray && costoArray.count > 0
+      if bdcdr.costo > costoArray[0].costo                   
+        costoArray[0].update(costo:bdcdr.costo)        
       end
+      costo = costoArray[0]
     else
-      @costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')       
-      @costo.save                  
+      costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
+                                            fecha: DateTime.now, costo:bdcdr.costo, usuario: current_user.name, origen: '2')       
+      costo.save                  
     end                                         
     @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2') 
+                                                            fecha: DateTime.now, costo:bdcdr.costo, usuario: current_user.name, origen: '2') 
     @costo_historico.save
 
-    return @costo        
+    return costo        
   end
 
   def imprimir_formulario
