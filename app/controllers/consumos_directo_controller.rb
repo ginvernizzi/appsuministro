@@ -34,6 +34,7 @@ class ConsumosDirectoController < ApplicationController
 
       #ingresar bienes a stock de suministro, y luego quitarlos.
       recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+      deposito = Deposito.find(1) #deposito 1 = deposito de patrimonio y suministro
       
       if (ingresar_bienes_a_stock(recepcion_de_bien_de_consumo))
         quitar_bienes_de_stock(recepcion_de_bien_de_consumo)
@@ -42,7 +43,7 @@ class ConsumosDirectoController < ApplicationController
             
         recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bien| 
            @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad: bien.cantidad, costo: bien.costo, 
-                                                                 bien_de_consumo: bien.bien_de_consumo)
+                                                                 bien_de_consumo: bien.bien_de_consumo, deposito:deposito)
 
 
           costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,        
@@ -78,18 +79,19 @@ class ConsumosDirectoController < ApplicationController
 
   def crear_consumo          
     @consumo_data = ActiveSupport::JSON.decode(params[:consumo_directo])    
-    ConsumoDirecto.transaction do      
+    ConsumoDirecto.transaction do          
       #ingresar bienes a stock de suministro, y luego quitarlos.      
-      if (quitar_bienes_de_stock_consumo_manual(@consumo_data["bienes_tabla"]))        
+      if (quitar_bienes_de_stock_consumo_manual(@consumo_data["bienes_tabla"]))      
       
-         @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"])                
+        @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"])                
 
         @consumo_data["bienes_tabla"].each do |bien|           
           
           @bien_de_consumo = BienDeConsumoDeRecepcion.find(bien["Id"]) 
+          deposito = Deposito.find(bien["DepoId"]) 
 
            @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad:bien["Cantidad a consumir"], costo: @bien_de_consumo.costo, 
-                                                                 bien_de_consumo_id: @bien_de_consumo.id)
+                                                                 bien_de_consumo_id: @bien_de_consumo.id, deposito: deposito)
 
 
           costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: @bien_de_consumo.costo,        
@@ -107,7 +109,7 @@ class ConsumosDirectoController < ApplicationController
           else              
             cargar_datos_controles_consumo_directo
             format.html { render :nuevo_consumo }            
-            format.json { render json:  @consumo_directo.errors, status: :unprocessable_entity }
+            #format.json { render json:  @consumo_directo.errors, status: :unprocessable_entity }
           end
         end
       else
@@ -154,7 +156,7 @@ class ConsumosDirectoController < ApplicationController
           
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr.bien_de_consumo.id, deposito.id)
           if @item_stock[0]              
-            puts "existe el item"
+            puts "existe el item" 
             suma = @item_stock[0].cantidad + bdcdr.cantidad              
             @item_stock[0].update(cantidad: suma)              
           else             
@@ -193,28 +195,19 @@ class ConsumosDirectoController < ApplicationController
       end       
   end
 
-  def quitar_bienes_de_stock_consumo_manual(bienes)    
-    areaArray = Area.where(id: 1)
-    #@items = []    
-
-    if areaArray.count > 0 && areaArray[0].depositos.count > 0
-        
-      deposito = areaArray[0].depositos.first       
-
-      bienes.each do |bdcdr|                       
-        @item_stock = ItemStock.where(:bien_de_consumo_id => bdcdr["Id"])            
-        if @item_stock[0]
-          resta = @item_stock[0].cantidad - bdcdr["Cantidad a consumir"].to_i              
-          @item_stock[0].update(cantidad: resta)              
-        else             
-          #Es imposible que no exista, ya que fue creado en el metodo del controller al ingresar stock              
-          return false    
-        end                        
+  def quitar_bienes_de_stock_consumo_manual(bienes)                
+      bienes.each do |bdcdr|                                           
+          @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], bdcdr["DepoId"])           
+          if @item_stock[0]
+            resta = @item_stock[0].cantidad - bdcdr["Cantidad a consumir"].to_i              
+            @item_stock[0].update(cantidad: resta)              
+          else             
+            #Es imposible que no exista, ya que fue creado en el metodo del controller al ingresar stock              
+            return false            
+          end               
+        #end
       end                                    
-      return true
-    else           
-        return false
-    end       
+      return true      
   end
 
   #Repetido en el controler de item_stock, ver la manera de usar el mismo metodo.
@@ -259,21 +252,25 @@ class ConsumosDirectoController < ApplicationController
 
   def obtener_nombre_de_bien_de_consumo   
     @array_bien_de_consumo = BienDeConsumo.where(codigo: params[:codigo])
-    @item_stock = ItemStock.where(bien_de_consumo_id: @array_bien_de_consumo[0].id)
 
-    @resp_json = Hash.new
-    @resp_json["bien_de_consumo_id"] = @array_bien_de_consumo[0].id  
-    @resp_json["nombre"] = @array_bien_de_consumo[0].nombre 
+      @deposito = Deposito.where(id: params[:deposito_id])
+              
+      @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", @array_bien_de_consumo[0].id, @deposito[0].id)      
 
-    if(@item_stock[0])
-      @resp_json["cantidad_en_stock"] = @item_stock[0].cantidad
-    else
-      @resp_json["cantidad_en_stock"] = 0.0
-    end
+      @resp_json = Hash.new
+      @resp_json["bien_de_consumo_id"] = @array_bien_de_consumo[0].id  
+      @resp_json["nombre"] = @array_bien_de_consumo[0].nombre 
 
-    respond_to do | format |                                  
-        format.json { render :json => @resp_json }        
-    end
+      if(@item_stock[0])
+        #@resp_json["cantidad_en_stock"] = @item_stock.sum("cantidad")
+        @resp_json["cantidad_en_stock"] = @item_stock[0].cantidad
+      else
+        @resp_json["cantidad_en_stock"] = 0.0
+      end
+
+      respond_to do | format |                                  
+          format.json { render :json => @resp_json }        
+      end
   end
 
   def obtener_responsable_de_area   

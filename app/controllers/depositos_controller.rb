@@ -57,7 +57,7 @@ class DepositosController < ApplicationController
   # DELETE /depositos/1
   # DELETE /depositos/1.json
   def destroy  
-    @area = Deposito.find(params[:area_id])
+    @area = Area.find(params[:area_id])
     @desposito = Deposito.find(params[:id])
     if @deposito      
       @deposito.destroy

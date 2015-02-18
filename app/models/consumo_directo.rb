@@ -1,6 +1,7 @@
 class ConsumoDirecto < ActiveRecord::Base
   belongs_to :obra_proyecto
   belongs_to :area
+  belongs_to :deposito
   
   has_many :bienes_de_consumo_para_consumir
   

@@ -28,11 +28,15 @@ ObraProyecto.create!(descripcion: "gestion/proyecto").save
 ObraProyecto.create!(descripcion: "cartas del ausente").save
 
 areaSuministro = Area.create!(nombre: 'Patrimonio y Suministro', responsable:'Ana Salanitro')
+	Deposito.create!(area_id: areaSuministro.id, nombre:'piso -1')
 areaSistemas = Area.create!(nombre: 'Sistemas', responsable:'Christian Fincic')
+	Deposito.create!(area_id: areaSistemas.id, nombre:'piso 10')
+	Deposito.create!(area_id: areaSistemas.id, nombre:'piso 3')
+areaAuditoria = Area.create!(nombre: 'Auditoria', responsable:'Fernandez')
+areaSistemas = Area.create!(nombre: 'Legales', responsable:'lopez')
 
-Deposito.create!(area_id: areaSuministro.id, nombre:'piso -1')
-Deposito.create!(area_id: areaSistemas.id, nombre:'piso 10')
-Deposito.create!(area_id: areaSistemas.id, nombre:'piso 3')
+
+
 
 ###########################
 

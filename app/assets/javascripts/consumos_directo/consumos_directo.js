@@ -12,15 +12,25 @@ $(document).on("ready page:load", function() {
   });
   $("#consumo_directo_fecha").datepicker("setDate", currentDate);
 
-  $("#consumo_directo_area_id").change(function() {  
-    var id = $("#consumo_directo_area_id").val();        
-    
+
+  $("#consumo_directo_area_id").change(function() { 
+    identificador_del_control = $("#consumo_directo_area_id").val(); 
+    traer_responsable(identificador_del_control)    
+  });
+
+  $("#area_origen_area_id").change(function() {  
+    identificador_del_control = $("#area_origen_area_id").val();
+    traer_responsable(identificador_del_control)    
+  });
+
+  function traer_responsable(id_del_control)
+  {            
     $.ajax({
       url: "/consumos_directo/obtener_responsable_de_area",
       dataType: "json",
       //contentType: "application/json", no va, si no envias un json!!!
       type: "post",
-      data: { area_id: id },                
+      data: { area_id: id_del_control },                
       success:function(data){                  
           $("#responsable").val(data.responsable)              
         },
@@ -29,25 +39,32 @@ $(document).on("ready page:load", function() {
           //alert("Bien de consumo inexistente"); 
           }
       });
-  });
+   } 
 
-  $("#traer_bien_de_consumo_y_cantidad_stock").click(function() {  
-    var cod = $("#codigo").val();        
+    $("#traer_bien_de_consumo_y_cantidad_stock").click(function() {  
+    var cod = $("#codigo").val();          
+    var depositoId = $("#consumo_directo_deposito_deposito_id").val();  
     $.ajax({
       url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
       dataType: "json",
       //contentType: "application/json", no va, si no envias un json!!!
       type: "post",
-      data: { codigo: cod },                
+      data: { codigo: cod , deposito_id: depositoId },                
       success:function(data){                  
           $("#nombre").val(data.nombre)
           $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
           $("#cantidad_stock").val(data.cantidad_en_stock)           
         },
         error: function (request, status, error) 
-          { alert("Bien de consumo inexistente"); }
+          { 
+            if($("#consumo_directo_deposito_id").val() != "")
+            { alert("Bien de consumo inexistente."); }
+            else
+            { alert("Seleccione un deposito origen")}
+          }
       });
   });
+
 
   $("#agregar_bien_a_consumir").click(function() {  
     var array_bienes = get_tabla_de_bienes() 
@@ -74,6 +91,8 @@ $(document).on("ready page:load", function() {
     var nom = $("#nombre").val();    
     var cant_stock = $("#cantidad_stock").val();
     var cant_consumir = $("#cantidad_a_consumir").val();
+    var depo_id = $("#consumo_directo_deposito_deposito_id").val();
+    var depo = $("#consumo_directo_deposito_deposito_id option:selected").text();
 
     if(cant_consumir)
     {
@@ -81,7 +100,8 @@ $(document).on("ready page:load", function() {
       { alert("El stock es insufuciente para consumir.") }
       else
       {
-        $('#bienes_table').append('<tr id='+bien_id+'> <td style="display:none;">'+bien_id+'</td> <td>'+cod+'</td> <td>'+nom+'</td> <td>'+cant_stock+'</td> <td>'+cant_consumir+'</td> <td> Ud </td> <td> <a href="javascript:void(0);" class="remCF">Eliminar</a> </td> </tr>'); 
+        $('#bienes_table').append('<tr id='+bien_id+'> <td style="display:none;">'+bien_id+'</td> <td style="display:none;">'+depo_id+'</td> <td>'+cod+'</td> <td>'+nom+'</td> <td>'+depo+'</td><td>'+cant_stock+'</td><td>'+cant_consumir+'</td><td> Ud </td><td> <a href="javascript:void(0);" class="remCF">Eliminar</a> </td> </tr>'); 
+
         blanquear_campos()
       }
     }
@@ -121,10 +141,9 @@ $(document).on("ready page:load", function() {
             },
 
         error: function (request, status, error) { 
-                alert("Revise los campos incompletos. El consumo no fue realizado");                           
+                alert("Revise los campos incompletos. El consumo no fue realizado");
                 //var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
-                //$('#nuevo_consumo').replaceWith(form_consumo_directo); 
-                
+                //$('#nuevo_consumo').html(form_consumo_directo);                 
               }                
       });                
     }
@@ -183,7 +202,32 @@ $(document).on("ready page:load", function() {
     $("#nombre").val("");    
     $("#cantidad_stock").val("");
     $("#cantidad_a_consumir").val("");
+    $("#consumo_directo_deposito_id").val("");
+    //$("#consumo_directo_deposito_id option:selected" ).text("");
   }
+
+  (function() {
+    jQuery(function() {
+      var depositos, llenarDepositos;
+      llenarDepositos = function(depositos) {
+        var area, options;
+        area = $('#area_origen_area_id :selected').text();
+        options = $(depositos).filter("optgroup[label='" + area + "']").html();
+        if (options) {
+          $('#consumo_directo_deposito_deposito_id').html('<option value="">seleccione...</option>');
+          return $('#consumo_directo_deposito_deposito_id').append(options);
+        } 
+        else {
+          return $('#consumo_directo_deposito_deposito_id').empty();
+        }
+      };
+      depositos = $('#consumo_directo_deposito_deposito_id').html();
+      llenarDepositos(depositos);
+      return $('#area_origen_area_id').change(function() {
+        return llenarDepositos(depositos);
+      });
+    }); 
+  }).call(this);
 }); 
 
 //Id      Codigo  Nombre        Cantidad en stock   Cantidad a consumir   

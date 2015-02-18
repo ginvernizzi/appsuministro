@@ -23,9 +23,14 @@
   </div> 
 
   <div class="field">
-    <%= f.label :area%><br /> 
-    <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione" %>     
+      <%= label :area , "Area origen" %><br /> 
+      <%= collection_select(:area_origen, "area_id", @areas, "id", "nombre", :include_blank => "Seleccione un area...") %>
   </div>
+
+  <div class="field">
+    <%= label :deposito, "Deposito origen" %> <br />     
+    <%= grouped_collection_select(:consumo_directo_deposito, :deposito_id, @areas, :depositos, :nombre, :id, :nombre, :include_blank => " Seleccione un deposito...") %>
+  </div>         
   
   <div class="field">
     <%= f.label :responsable %> <br /> 
@@ -33,11 +38,16 @@
   </div> 
 
   <div class="field">
-    <%= f.label :obra_proyecto%><br /> 
+    <%= f.label :obra_proyecto%> <br /> 
     <%= f.collection_select :obra_proyecto_id, @obras_proyecto, :id, :descripcion, :prompt => "seleccione" %>  
   </div>
 
-    <div class="field">
+  <div class="field">
+    <%= label :area, "Area destino" %><br /> 
+    <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione un area" %>     
+  </div>
+
+  <div class="field">
     <%= f.label :codigo %><br>
     <%= text_field_tag :codigo%>      
     <input type="button" value="Traer Bien de Consumo" class="" id="traer_bien_de_consumo_y_cantidad_stock">    
@@ -70,8 +80,10 @@
   <thead>
   <tr>            
     <th style="display:none;">Id</th>
+    <th style="display:none;">DepoId</th> 
     <th>Codigo</th>
     <th>Nombre</th>
+    <th>Deposito</th>
     <th>Cantidad en stock</th>
     <th>Cantidad a consumir</th>    
     <th>Unidad</th>
