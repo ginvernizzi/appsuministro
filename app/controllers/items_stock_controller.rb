@@ -1,6 +1,6 @@
 class ItemsStockController < ApplicationController  
   def index
-    @items_stock = ItemStock.all
+    @items_stock = ItemStock.order(:bien_de_consumo_id)    
 
     #@items_stock = ItemStock.find(:all,:include => [:bien_de_consumo], :order=>'bien_de_consumo.nombre DESC' )
     #@items_stock = ItemStock.find(:all, :include => :bien_de_consumo, :order => "bien_de_consumo.nombre DESC")

@@ -104,12 +104,13 @@ class ConsumosDirectoController < ApplicationController
         end    
 
         respond_to do |format|
-          if  @consumo_directo.save                          
-            format.json { render json:  @consumo_directo }
+          if @consumo_directo.save                          
+            format.json { render json: @consumo_directo }
           else              
             cargar_datos_controles_consumo_directo
-            format.html { render :nuevo_consumo }            
-            #format.json { render json:  @consumo_directo.errors, status: :unprocessable_entity }
+            #format.html { render :nuevo_consumo }                        
+            format.html { render action: 'nuevo_consumo' }
+            #format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
           end
         end
       else
@@ -251,9 +252,9 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def obtener_nombre_de_bien_de_consumo   
-    @array_bien_de_consumo = BienDeConsumo.where(codigo: params[:codigo])
+      @array_bien_de_consumo = BienDeConsumo.where(codigo: params[:codigo])
 
-      @deposito = Deposito.where(id: params[:deposito_id])
+      @deposito = Deposito.where(id: params[:deposito_id])      
               
       @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", @array_bien_de_consumo[0].id, @deposito[0].id)      
 
@@ -261,8 +262,7 @@ class ConsumosDirectoController < ApplicationController
       @resp_json["bien_de_consumo_id"] = @array_bien_de_consumo[0].id  
       @resp_json["nombre"] = @array_bien_de_consumo[0].nombre 
 
-      if(@item_stock[0])
-        #@resp_json["cantidad_en_stock"] = @item_stock.sum("cantidad")
+      if(@item_stock[0])        
         @resp_json["cantidad_en_stock"] = @item_stock[0].cantidad
       else
         @resp_json["cantidad_en_stock"] = 0.0
@@ -274,9 +274,13 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def obtener_responsable_de_area   
-    @area = Area.where(id: params[:area_id])    
     @resp_json = Hash.new
-    @resp_json["responsable"] = @area[0].responsable          
+    if params[:area_id] != ""
+      @area = Area.where(id: params[:area_id])        
+      @resp_json["responsable"] = @area[0].responsable          
+    else
+      @resp_json["responsable"] = ""
+    end
     respond_to do | format |                                  
         format.json { render :json => @resp_json }        
     end

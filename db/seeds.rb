@@ -35,10 +35,7 @@ areaSistemas = Area.create!(nombre: 'Sistemas', responsable:'Christian Fincic')
 areaAuditoria = Area.create!(nombre: 'Auditoria', responsable:'Fernandez')
 areaSistemas = Area.create!(nombre: 'Legales', responsable:'lopez')
 
-
-
-
-###########################
+########################################################################################################
 
 # @recepcion_de_bien_de_consumo_1 = RecepcionDeBienDeConsumo.create!(fecha:DateTime.now, estado:3) 
     
@@ -50,8 +47,7 @@ areaSistemas = Area.create!(nombre: 'Legales', responsable:'lopez')
 # @recepcion_de_bien_de_consumo_1.build_documento_principal(documento_de_recepcion:@docRecepcion_p, 
 #                                                           recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo_1)
 
-# @recepcion_de_bien_de_consumo_1.bienes_de_consumo_de_recepcion.create!(cantidad: 100, costo:34, bien_de_consumo: @bien_de_consumo_1)
-# @recepcion_de_bien_de_consumo_1.bienes_de_consumo_de_recepcion.create!(cantidad: 200, costo:35, bien_de_consumo: @bien_de_consumo_2)
+
 
 
 

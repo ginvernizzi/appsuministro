@@ -134,16 +134,15 @@ $(document).on("ready page:load", function() {
         data: { "consumo_directo": JSON.stringify({ fecha: $("#consumo_directo_fecha").val() ,area_id: $("#consumo_directo_area_id").val(),
                                                     obra_proyecto_id: $("#consumo_directo_obra_proyecto_id").val(),bienes_tabla: bienes})  },
         success:function(result) {       
-
               alert("El Consumo fue realizado exitosamente");
               //ImprimirFormulario(result.id);              
               window.location.replace("/consumos_directo");   
             },
 
-        error: function (request, status, error) { 
+        error: function (request, status, error) {                 
                 alert("Revise los campos incompletos. El consumo no fue realizado");
                 //var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
-                //$('#nuevo_consumo').html(form_consumo_directo);                 
+                //$('#nuevo_consumo').html(form_consumo_directo);
               }                
       });                
     }

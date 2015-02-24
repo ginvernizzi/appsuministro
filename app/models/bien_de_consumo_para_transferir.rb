@@ -1,6 +1,7 @@
 class BienDeConsumoParaTransferir < ActiveRecord::Base
   belongs_to :bien_de_consumo
   belongs_to :transferencia
+  belongs_to :deposito
 
   validates :cantidad, presence: true   
 

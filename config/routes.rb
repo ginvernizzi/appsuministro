@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   
-  resources :transferencias
+  resources :transferencias do
+    collection do
+      get 'nueva_transferencia'
+      post 'crear_transferencia'
+    end
+  end
 
   resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 

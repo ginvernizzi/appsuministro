@@ -3,7 +3,7 @@
              html: { method: "post",  :id => "nuevo_consumo"} ) do |f| %>
   <% if @consumo_directo.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@consumo_directo.errors.count, "error") %> prohibited this consumo from being saved:</h2>
+      <h2><%= pluralize(@consumo_directo.errors.count, "error/es") %> prohibe/en que el Consumo sea guardado</h2>
 
       <ul>
       <% @consumo_directo.errors.full_messages.each do |message| %>
@@ -13,7 +13,6 @@
     </div>
   <% end %>
   
-
   <div class="field" id="impresion">        
   </div> 
 
@@ -36,16 +35,6 @@
     <%= f.label :responsable %> <br /> 
     <%= text_field_tag :responsable, nil, readonly: true%>  
   </div> 
-
-  <div class="field">
-    <%= f.label :obra_proyecto%> <br /> 
-    <%= f.collection_select :obra_proyecto_id, @obras_proyecto, :id, :descripcion, :prompt => "seleccione" %>  
-  </div>
-
-  <div class="field">
-    <%= label :area, "Area destino" %><br /> 
-    <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione un area" %>     
-  </div>
 
   <div class="field">
     <%= f.label :codigo %><br>
@@ -73,9 +62,8 @@
        <%= hidden_field(:bien_de_consumo, :id)  %>
   </div>
 
-
-  <div class="panel panel-default">
-   <div class="panel-heading">Bienes consumidos</div>
+    <div class="panel panel-default">
+   <div class="panel-heading">Bienes a consumir</div>
   <table id="bienes_table" class="table">
   <thead>
   <tr>            
@@ -94,6 +82,16 @@
 
   </tbody>
   </table>
+  </div>
+
+   <div class="field">
+    <%= label :area, "Area destino" %><br /> 
+    <%= f.collection_select :area_id, @areas, :id, :nombre, :prompt => "seleccione un area" %>     
+  </div>
+
+  <div class="field">
+    <%= f.label :obra_proyecto%> <br /> 
+    <%= f.collection_select :obra_proyecto_id, @obras_proyecto, :id, :descripcion, :prompt => "seleccione una obra" %>  
   </div>
 
   <div class="actions">
