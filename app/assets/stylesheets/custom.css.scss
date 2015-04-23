@@ -113,7 +113,7 @@ footer {
 
 input, password, textarea, select, .uneditable-input {
   border: 1px solid #bbb;
-  width: 30%;
+  width: 20%;
   margin-bottom: 15px;
   @include box_sizing;
 }
@@ -164,4 +164,10 @@ input {
       border-bottom: 1px solid $grayLighter;
     }
   }
+}
+
+/* navigator */
+.nav-tabs {
+    border-bottom: 1px solid #DDD;
+    background-color: #fff;
 }

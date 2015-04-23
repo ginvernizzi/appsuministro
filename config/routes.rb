@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
-  
+    
+  resources :reportes_a_fecha do
+    member do
+      post 'imprimir_formulario'
+    end
+    collection do
+      get 'traer_items_stock'
+    end            
+  end  
+
+  resources :personas
+
   resources :transferencias do
     collection do
       get 'nueva_transferencia'
@@ -10,7 +21,15 @@ Rails.application.routes.draw do
   resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 
   resources :depositos
-  resources :items_stock , only: [:index ]
+  resources :items_stock , only: [:index ] do
+    collection do 
+       get 'guardar_stock_a_fecha'    
+       get 'traer_items_stock_por_bien'  
+       get 'autocomplete_bien_de_consumo_nombre'      
+     end        
+  end  
+
+  #get 'items_stock/autocomplete_bien_de_consumo_nombre'
   
   post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',  
                                                             to: 'items_stock#imprimir_formulario',
@@ -39,7 +58,9 @@ Rails.application.routes.draw do
       get 'nuevo_consumo'
       post 'crear_consumo'
       post 'obtener_nombre_de_bien_de_consumo'  
-      post 'obtener_responsable_de_area'          
+      post 'obtener_responsable_de_area'
+      get 'ver_consumos_por_codigo_y_deposito'  
+      get 'traer_consumos_por_codigo_y_deposito'            
     end
   end
 

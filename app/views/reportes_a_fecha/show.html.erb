@@ -1,0 +1,31 @@
+<h1>stock de bienes de consumo suministro</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Cantidad</th>      
+      <th>Deposito</th>
+      <th>Costo unitario</th>      
+      <th>Costo total</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items_stock.each do |item_stock| %>
+      <tr>
+        <td><%= item_stock.bien_de_consumo.codigo %></td>
+        <td><%= item_stock.bien_de_consumo.nombre %></td>
+        <td><%= item_stock.cantidad %></td>        
+        <td><%= item_stock.deposito.nombre %></td>
+        <td><%= item_stock.costo %></td>
+        <td><%= item_stock.costo.to_f * item_stock.cantidad %></td>                            
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Volver', reportes_a_fecha_path %>

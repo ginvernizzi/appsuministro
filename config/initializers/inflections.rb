@@ -34,5 +34,8 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'item_stock', 'items_stock'
   inflect.irregular 'transferencia', 'transferencias'
   inflect.irregular 'bien_de_consumo_para_transferir', 'bienes_de_consumo_para_transferir'
+  inflect.irregular 'persona', 'personas'
+  inflect.irregular 'item_stock_a_fechas', 'items_stock_a_fechas'
+  inflect.irregular 'reporte_a_fecha', 'reportes_a_fecha'
 
 end

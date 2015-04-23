@@ -1,11 +1,25 @@
 class ItemsStockController < ApplicationController  
+
+  autocomplete :bien_de_consumo, :nombre , :full => true
+
   def index
     @items_stock = ItemStock.order(:bien_de_consumo_id)    
+  end
 
-    #@items_stock = ItemStock.find(:all,:include => [:bien_de_consumo], :order=>'bien_de_consumo.nombre DESC' )
-    #@items_stock = ItemStock.find(:all, :include => :bien_de_consumo, :order => "bien_de_consumo.nombre DESC")
-    #@subcategories = Subcategory.find(:all, :include => [:categories], :order => 'categories.category')
+  def traer_items_stock_por_bien
+    bien_de_consumo_id = params[:bien_de_consumo_id]    
 
+    if !bien_de_consumo_id.nil? && !bien_de_consumo_id.empty? 
+      @items_stock = ItemStock.where("bien_de_consumo_id = ?", bien_de_consumo_id)       
+    else
+      @items_stock = ItemStock.all           
+    end
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js {}
+    end 
   end
 
   def new
@@ -18,7 +32,7 @@ class ItemsStockController < ApplicationController
 	  @depositos = Deposito.all
 	  @item_stock = ItemStock.new   
   end
-
+  
   def create    
     @recepcion = RecepcionDeBienDeConsumo.find(params[:recepciones_de_bien_de_consumo_a_evaluar_id])
     areaArray = Area.where(id: 1)
@@ -62,6 +76,39 @@ class ItemsStockController < ApplicationController
     @generador.generar_pdf(@recepcion)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )    
+  end
+
+  ########### stock a fecha #############
+  def guardar_stock_a_fecha    
+    @items_stock_a_fecha = Array.new
+    deposito = Deposito.find(1) #deposito suministro "piso -1" 
+    @items_stock = ItemStock.where("deposito_id = ?", deposito.id)
+    
+    @items_stock.each do |item_stock|
+      item_stock_a_fecha = ItemStockAFecha.new(
+        bien_de_consumo_id: item_stock.bien_de_consumo.id, 
+        costo: item_stock.costo_de_bien_de_consumo.costo, 
+        cantidad: item_stock.cantidad, 
+        deposito_id: item_stock.deposito.id
+      )
+      item_stock_a_fecha.save
+      @items_stock_a_fecha << item_stock_a_fecha
+    end
+
+    @reporte_a_fecha = ReporteAFecha.new(
+      fecha: DateTime.now,
+      stock_diario: @items_stock_a_fecha.to_json
+    )
+    
+    respond_to do |format|    
+      if @reporte_a_fecha.save
+        flash[:notice] = 'el reporte se guardo ok'        
+      else  
+        #loguear error en disco, o en algun lado
+        flash[:notice] = 'el reporte fallo' 
+      end
+      format.html { redirect_to   reportes_a_fecha_path }  
+    end
   end
 
   private 

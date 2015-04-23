@@ -1,0 +1,102 @@
+<%= form_for(@transferencia, 
+             url:   crear_transferencia_transferencias_path, 
+             html: { method: "post",  :id => "nueva_transferencia"} ) do |f| %>
+  <% if @transferencia.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transferencia.errors.count, "error") %> prohibited this consumo from being saved:</h2>
+      <ul>
+      <% @transferencia.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="field" id="impresion">        
+  </div> 
+
+  <div class="field">    
+    <%= f.label :fecha %><br />
+    <%= f.text_field :fecha %>  
+  </div> 
+
+  <div class="field">
+      <%= label :area , "Area origen" %><br /> 
+      <%= collection_select(:transferencia_area_origen, "area_id", @areas, "id", "nombre", :include_blank => "Seleccione un area...") %>
+  </div>
+
+  <div class="field">
+    <%= label :deposito, "Deposito origen" %> <br />     
+    <%= grouped_collection_select(:transferencia_deposito_origen, :deposito_id, @areas, :depositos, :nombre, :id, :nombre, :include_blank => " Seleccione un deposito...") %>
+  </div>         
+  
+  <div class="field">
+    <%= f.label :responsable %> <br /> 
+    <%= text_field_tag :responsable, nil, readonly: true%>  
+  </div> 
+
+  <div class="field">
+    <%= f.label :codigo %><br>
+    <%= text_field_tag :codigo%>      
+    <input type="button" value="Traer Bien de Consumo" class="" id="traer_bien_de_consumo_y_cantidad_stock_tranferencia">    
+  </div>  
+
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= text_field_tag :nombre, nil, readonly: true  %>
+  </div>  
+
+   <div class="field">
+    <%= f.label :cantidad_stock, "Cantidad en stock" %><br>
+    <%= text_field_tag :cantidad_stock , nil, readonly: true %>          
+  </div>  
+
+   <div class="field">
+    <%= f.label :cantidad_a_transferir, "Cantidad a transferir" %><br>
+    <%= text_field_tag :cantidad_a_transferir %>          
+    <input type="button" value="Agregar" class="" id="agregar_bien_a_transferir">       
+  </div>    
+
+  <div>
+       <%= hidden_field(:bien_de_consumo, :id)  %>
+  </div>
+
+  <div class="panel panel-default">
+   <div class="panel-heading">Bienes a transferir</div>
+  <table id="bienes_table" class="table">
+  <thead>
+  <tr>            
+    <th style="display:none;">Id</th>
+    <th style="display:none;">DepoId</th> 
+    <th>Codigo</th>
+    <th>Nombre</th>
+    <th>Deposito</th>
+    <th>Cantidad en stock</th>
+    <th>Cantidad a transferir</th>    
+    <th>Unidad</th>
+    <th>Accion</th>
+  </tr>
+  </thead>
+  <tbody>        
+
+  </tbody>    
+  </table>  
+  </div>  
+  <div style="text-align: right;">
+    <input type="button" value="Eliminar todos" class="" id="eliminar_todos_los_bienes">     
+  </div>
+
+  <div class="field">
+    <%= label :area , "Area destino" %><br /> 
+    <%= collection_select(:transferencia_area_destino, "area_id", @areas, "id", "nombre", :include_blank => "Seleccione un area...") %>
+  </div>
+
+  <div class="field">
+    <%= label :deposito, "Deposito destino" %> <br />     
+    <%= grouped_collection_select(:transferencia_deposito_destino, :deposito_id, @areas, :depositos, :nombre, :id, :nombre, :include_blank => " Seleccione un deposito...") %>
+  </div> 
+
+  <div class="actions">
+    <%= f.submit "Aceptar" %>  
+  </div>
+<% end %>

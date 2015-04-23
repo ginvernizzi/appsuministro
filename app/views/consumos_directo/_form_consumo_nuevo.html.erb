@@ -55,15 +55,14 @@
    <div class="field">
     <%= f.label :cantidad_a_consumir, "Cantidad a consumir" %><br>
     <%= text_field_tag :cantidad_a_consumir %>          
-    <input type="button" value="Agregar" class="" id="agregar_bien_a_consumir">    
-    <input type="button" value="Eliminar todos" class="" id="eliminar_todos_los_bienes"> 
+    <input type="button" value="Agregar" class="" id="agregar_bien_a_consumir">        
   </div>    
   <div>
        <%= hidden_field(:bien_de_consumo, :id)  %>
   </div>
 
-    <div class="panel panel-default">
-   <div class="panel-heading">Bienes a consumir</div>
+  <div class="panel panel-default">
+  <div class="panel-heading">Bienes a consumir</div>
   <table id="bienes_table" class="table">
   <thead>
   <tr>            
@@ -82,6 +81,9 @@
 
   </tbody>
   </table>
+  </div>
+  <div style="text-align: right;">
+    <input type="button" value="Eliminar todos" class="" id="eliminar_todos_los_bienes"> 
   </div>
 
    <div class="field">

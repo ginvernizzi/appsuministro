@@ -7,7 +7,7 @@ class GeneradorDeImpresionTransferencia
 
 	def generar_pdf_transferencia(transferencia)
 		@bienes = transferencia.bienes_de_consumo_para_transferir		
-
+		
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_transferencia.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
@@ -18,7 +18,9 @@ class GeneradorDeImpresionTransferencia
 			
 			r.add_table("TABLA_TRANSFERENCIA", @bienes, :header=>true) do |s|								
 				s.add_column("CODIGO") { |i| i.bien_de_consumo.codigo }
-				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
+				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
+				s.add_column("AREA_ORIGEN") { |i| i.deposito.area.nombre }							
+				s.add_column("DEPOSITO_ORIGEN") { |i| i.deposito.nombre }
 				s.add_column("DESCRIPCION_ADICIONAL") { |i| "Traer desc arbol del bien" }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }				
 			end

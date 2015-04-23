@@ -1,6 +1,6 @@
-class CreateReporteAFechas < ActiveRecord::Migration
+class CreateReportesAFecha < ActiveRecord::Migration
   def change
-    create_table :reporte_a_fechas do |t|
+    create_table :reportes_a_fecha do |t|
       t.date :fecha
       t.text :stock_diario
 

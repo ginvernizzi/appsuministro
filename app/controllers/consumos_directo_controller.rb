@@ -232,6 +232,33 @@ class ConsumosDirectoController < ApplicationController
     return costo        
   end
 
+  def ver_consumos_por_codigo_y_deposito
+    @bienes_de_consumo = BienDeConsumo.all
+    @depositos = Deposito.all
+    @areas = Area.all
+  end
+
+  def traer_consumos_por_codigo_y_deposito
+    deposito_id = params[:deposito_id]
+    bien_id = params[:bien_id]
+
+    if !deposito_id.nil? && !bien_id.nil?
+      puts "deposito id *************** #{ deposito_id }"
+      puts "bien id *************** #{ bien_id }"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo).where("bien_de_consumo_id = ? AND deposito_id = ?", bien_id, deposito_id)               
+
+      puts "#{@bien_de_consumo_para_consumir }"
+    else
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
+    end
+          
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
+
+
   def imprimir_formulario
     @consumo = ConsumoDirecto.find(params[:consumo_directo_id])      
     @generador = GeneradorDeImpresion.new

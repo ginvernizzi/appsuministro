@@ -1,0 +1,26 @@
+<h1>Listado de Consumos por Bien y Destino</h1>
+
+<div class="field">  
+  <%= label(:bien_de_consumo ,"Bien de consumo") %><br>
+  <%= collection_select(:bdc, "bien_de_consumo_id", @bienes_de_consumo, "id", "nombre", :include_blank => "Seleccione...") %>
+</div>
+
+ <div class="field">
+      <%= label :area , "Area" %><br /> 
+      <%= collection_select(:area_origen, "area_id", @areas, "id", "nombre", :include_blank => "Seleccione un area...") %>
+  </div>
+
+  <div class="field">
+    <%= label :deposito, "Deposito destino" %> <br />     
+    <%= grouped_collection_select(:consumo_directo_deposito, :deposito_id, @areas, :depositos, :nombre, :id, :nombre, :include_blank => " Seleccione un deposito...") %>
+  </div>          
+
+<div class="field">
+  <input type="button" value="Obtener" class="" id="obtener_lista_de_consumos_por_codigo_y_deposito">        
+</div>
+
+<div id="tabla_bienes">    
+  <%= render 'form_tabla_bienes' %>   
+</div> 
+
+

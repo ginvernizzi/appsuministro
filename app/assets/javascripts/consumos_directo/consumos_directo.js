@@ -140,9 +140,9 @@ $(document).on("ready page:load", function() {
             },
 
         error: function (request, status, error) {                 
-                alert("Revise los campos incompletos. El consumo no fue realizado");
-                //var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
-                //$('#nuevo_consumo').html(form_consumo_directo);
+                //alert("Revise los campos incompletos. El consumo no fue realizado");
+                var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
+                $('#nuevo_consumo').html(form_consumo_directo);
               }                
       });                
     }
@@ -227,7 +227,22 @@ $(document).on("ready page:load", function() {
       });
     }); 
   }).call(this);
-}); 
+
+  $("#obtener_lista_de_consumos_por_codigo_y_deposito").click(function() {        
+    var bien_id = $("#bdc_bien_de_consumo_id").val();
+    var deposito_id = $("#consumo_directo_deposito_deposito_id").val();
+
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      url: "/consumos_directo/traer_consumos_por_codigo_y_deposito",        
+      data: { bien_id: bien_id, deposito_id: deposito_id },
+      success: function(data){            
+            $('#tabla_bienes').html(data)
+      }
+    });         
+  }); 
+});
 
 //Id      Codigo  Nombre        Cantidad en stock   Cantidad a consumir   
 //        1111    mouse optico  100.0               100                    

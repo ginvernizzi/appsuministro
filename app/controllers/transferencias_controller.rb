@@ -153,7 +153,7 @@ class TransferenciasController < ApplicationController
     end
   end
 
-  def imprimir_formulario
+  def imprimir_formulario()
     @transferencia = Transferencia.find(params[:transferencia_id])      
     @generador = GeneradorDeImpresionTransferencia.new
     @generador.generar_pdf_transferencia(@transferencia)

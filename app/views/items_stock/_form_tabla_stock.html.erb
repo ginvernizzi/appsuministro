@@ -1,0 +1,27 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Cantidad</th>
+      <th>Costo</th>
+      <th>Deposito</th>
+      <th>Area</th>      
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items_stock.each do |item_stock| %>
+      <tr>
+        <td><%= item_stock.bien_de_consumo.codigo %></td>
+        <td><%= item_stock.bien_de_consumo.nombre %></td>
+        <td><%= item_stock.cantidad %></td>        
+        <td><%= item_stock.costo_de_bien_de_consumo.costo %></td>
+        <td><%= item_stock.deposito.nombre %></td>        
+        <td><%= item_stock.deposito.area.nombre %></td>       
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

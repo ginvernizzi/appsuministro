@@ -10,6 +10,11 @@ User.create!(name: "ana", email: "ana@tnc.gob.ar", password: "123456").save
 User.create!(name: "jorge", email: "jorge@tnc.gob.ar", password: "123456").save
 User.create!(name: "ricardo", email: "ricardo@tnc.gob.ar", password: "123456").save
 
+Persona.create!(nombre: "Christian", apellido:" Fincic" ).save
+Persona.create!(nombre: "Ana", apellido:"Salanitro").save
+Persona.create!(nombre: "Diego", apellido:"Tanel").save
+Persona.create!(nombre: "Paula", apellido:"Trabatoni").save
+
 TipoDeDocumento.new(nombre: "factura").save
 TipoDeDocumento.new(nombre: "orden de compra").save
 
