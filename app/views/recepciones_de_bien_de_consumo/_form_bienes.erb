@@ -74,7 +74,7 @@
         <tr>        
           <% if bcr.bien_de_consumo %>
               <td><%= bcr.bien_de_consumo.nombre %> </td>
-              <td><%= bcr.bien_de_consumo.codigo %> </td>
+              <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
               <td><%= bcr.cantidad %> </td>
               <td><%= bcr.costo %> </td>
               <td><%= link_to 'Eliminar', eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo, bcr), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>

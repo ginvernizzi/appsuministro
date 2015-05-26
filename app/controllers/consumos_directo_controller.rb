@@ -1,6 +1,7 @@
 class ConsumosDirectoController < ApplicationController
   before_action :set_consumo_directo, only: [:show, :edit, :update, :destroy]
 
+
   # GET /consumos_directo
   # GET /consumos_directo.json
   def index
@@ -25,6 +26,8 @@ class ConsumosDirectoController < ApplicationController
  
   # GET /consumos_directo/1/edit
   def edit    
+    @areas = Area.all
+    @obras_proyecto = ObraProyecto.all
   end
 
   # POST /consumos_directo
@@ -121,7 +124,7 @@ class ConsumosDirectoController < ApplicationController
 
     # PATCH/PUT /consumos_directo/1
     # PATCH/PUT /consumos_directo/1.json
-    def update
+  def update
     respond_to do |format|
       if @consumo_directo.update(consumo_directo_params)
         format.html { redirect_to @consumo_directo, notice: 'Consumo directo was successfully updated.' }
@@ -137,10 +140,10 @@ class ConsumosDirectoController < ApplicationController
   # DELETE /consumos_directo/1.json
   def destroy
     @consumo_directo.destroy
-    respond_to do |format|
-      format.html { redirect_to consumos_directo_url, notice: 'Consumo directo was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+      respond_to do |format|
+        format.html { redirect_to consumos_directo_url, notice: 'Consumo directo was successfully destroyed.' }
+        format.json { head :no_content }
+      end
   end
 
   def ingresar_bienes_a_stock(recepcion)
@@ -232,22 +235,22 @@ class ConsumosDirectoController < ApplicationController
     return costo        
   end
 
-  def ver_consumos_por_codigo_y_deposito
-    @bienes_de_consumo = BienDeConsumo.all
-    @depositos = Deposito.all
-    @areas = Area.all
+  def ver_consumos_por_codigo_destino_fecha
+    
   end
 
-  def traer_consumos_por_codigo_y_deposito
-    deposito_id = params[:deposito_id]
+  def traer_consumos_por_codigo_destino_y_fecha
+    area_id = params[:area_id]
     bien_id = params[:bien_id]
+    fecha_inicio = params[:fecha_inicio]
+    fecha_fin = params[:fecha_fin]
 
-    if !deposito_id.nil? && !bien_id.nil?
-      puts "deposito id *************** #{ deposito_id }"
-      puts "bien id *************** #{ bien_id }"
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo).where("bien_de_consumo_id = ? AND deposito_id = ?", bien_id, deposito_id)               
-
-      puts "#{@bien_de_consumo_para_consumir }"
+    if !area_id.nil? && !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
+        if @bien_de_consumo_para_consumir.count > 0
+           @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
+           @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+        end
     else
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
     end
@@ -257,6 +260,30 @@ class ConsumosDirectoController < ApplicationController
     end 
   end
 
+  def imprimir_formulario_consumos_por_codigo_destino_y_fecha    
+    area_id = params[:area_id]
+    bien_id = params[:bien_id]
+    fecha_inicio = params[:fecha_inicio]
+    fecha_fin = params[:fecha_fin]
+    @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
+
+    if !area_id.nil? && !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
+      @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
+    end
+
+    @generador = GeneradorDeImpresion.new
+    @generador.generar_pdf_items_consumo_directo(@bienes_de_consumo_para_consumir)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
+    send_file ( file )         
+  end
+
+  def imprimir_formulario_items_consumo
+    @consumo = ConsumoDirecto.find(params[:consumo_directo_id])      
+    @generador = GeneradorDeImpresion.new
+    @generador.generar_pdf_consumo_directo(@consumo.bienes_de_consumo_para_consumir)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
+    send_file ( file )         
+  end
 
 
   def imprimir_formulario
@@ -265,21 +292,31 @@ class ConsumosDirectoController < ApplicationController
     @generador.generar_pdf_consumo_directo(@consumo)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_pdf)
     send_file ( file )         
-
-    # respond_to do |format|
-    #   @java_url = "/consumos_directo/ajax_download?file=#{file}"
-    #   puts "===============>>>>> #{@java_url}"
-    #   format.js { render :partial => "downloadFile" }
-    #   format.json { render :partial => "downloadFile" }
-    # end
   end
 
   def ajax_download
     send_file params[:file]
   end
 
-  def obtener_nombre_de_bien_de_consumo   
-      @array_bien_de_consumo = BienDeConsumo.where(codigo: params[:codigo])
+  def obtener_nombre_de_bien_de_consumo
+       ############
+      @cod_inciso = params[:codigo].to_s.split('.')[0]                   
+      @cod_p_principal = params[:codigo].to_s.split('.')[1]       
+      @cod_p_parcial = params[:codigo].to_s.split('.')[2]       
+      @cod_clase = params[:codigo].to_s.split('.')[3]       
+      @cod_bien_de_consumo = params[:codigo].to_s.split('.')[4]     
+
+      @inciso = Inciso.where(codigo: @cod_inciso)
+      
+      @p_principal = @inciso[0].partidas_principales.where(codigo: @cod_p_principal)
+
+      @p_parcial = @p_principal[0].partidas_parciales.where(codigo: @cod_p_parcial)
+
+      @clase = @p_parcial[0].clases.where(codigo: @cod_clase)
+
+      @array_bien_de_consumo = @clase[0].bienes_de_consumo.where(codigo: @cod_bien_de_consumo)
+
+      #############
 
       @deposito = Deposito.where(id: params[:deposito_id])      
               

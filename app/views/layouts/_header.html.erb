@@ -25,7 +25,7 @@
       <li><%= link_to "Recepciones finalizadas", recepciones_de_bien_de_consumo_en_stock_index_path %></li>  
       <li><%= link_to "Stock total",items_stock_path %></li> 
       <li><%= link_to "Stock por fecha",reportes_a_fecha_path %></li> 
-      <li><%= link_to "Consumos por Bien y Deposito ",ver_consumos_por_codigo_y_deposito_consumos_directo_path %></li> 
+      <li><%= link_to "Consumos por Bien y Destino ",ver_consumos_por_codigo_destino_fecha_consumos_directo_path %></li> 
       <li><%= link_to "Consumos", consumos_directo_path %></li>    
       <li><%= link_to "Tranferencias", transferencias_path %></li>    
       <li><a href="#">Por tipo de Consumo</a></li>
@@ -36,21 +36,28 @@
     </ul>
   </li>
 
-    <li class="dropdown">
+  <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
       Datos Fijos <span class="caret"></span>
     </a>
-    <ul class="dropdown-menu" role="menu">
-      <li><a href="#">Catálogo</a></li>      
+      
+    <ul class="dropdown-menu" role="menu"> 
+      <li role="presentation" class="dropdown-header">Arbol de bienes</li>      
+      <li><%= link_to "Incisos", incisos_path %></li>  
+      <li><%= link_to "Partidas principales", partidas_principales_path %></li>            
+      <li><%= link_to "Partidas parciales", partidas_parciales_path %></li>  
+      <li><%= link_to "Clases", clases_path %></li>             
+      <li><%= link_to "Bienes de consumo", bienes_de_consumo_path %></li>  
+      <li class="divider"></li>
       <li><%= link_to "Obra / proyecto", obras_proyectos_path %></li>  
       <li><%= link_to "Areas", areas_path %></li>            
       <li><a href="#">Depósitos</a></li>
       <li><a href="#">Documentos</a></li>
-    </ul>
-  </li>
+    </ul>      
+</li>
 <div class="navbar-form navbar-right" >
   <% if current_user %>
-        <%= link_to "#{current_user.name} - salir del sistema", session_path(current_user), method: :delete %>
+        <%= link_to "Conectado como: #{current_user.name} - salir del sistema", session_path(current_user), method: :delete %>
   <% else %>
         <%= form_for(:session, url: sessions_path) do |f| %>
           <%= f.label :email %>

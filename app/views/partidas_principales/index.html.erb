@@ -1,0 +1,29 @@
+<h1>Lista de Partidas Principales</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Inciso</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @partidas_principales.each do |partida_principal| %>
+      <tr>
+        <td><%= partida_principal.codigo %></td>
+        <td><%= partida_principal.nombre %></td>
+        <td><%= partida_principal.inciso.nombre %></td>
+        <td><%= link_to 'Ver', partida_principal %></td>
+        <td><%= link_to 'Modificar', edit_partida_principal_path(partida_principal) %></td>
+        <td><%= link_to 'Eliminar', partida_principal, method: :delete, data: { confirm: 'Esta seguro?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nueva Partida principal', new_partida_principal_path %>

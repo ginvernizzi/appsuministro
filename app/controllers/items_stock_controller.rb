@@ -1,19 +1,28 @@
 class ItemsStockController < ApplicationController  
 
   autocomplete :bien_de_consumo, :nombre , :full => true
+  autocomplete :area, :nombre , :full => true
 
   def index
-    @items_stock = ItemStock.order(:bien_de_consumo_id)    
+    #@items_stock = ItemStock.order(:bien_de_consumo_id)    
+    @bienes_de_consumo = BienDeConsumo.all   
   end
 
-  def traer_items_stock_por_bien
-    bien_de_consumo_id = params[:bien_de_consumo_id]    
+  def traer_todos_los_items_stock
+    @items_stock = ItemStock.all           
+         
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
 
-    if !bien_de_consumo_id.nil? && !bien_de_consumo_id.empty? 
-      @items_stock = ItemStock.where("bien_de_consumo_id = ?", bien_de_consumo_id)       
-    else
-      @items_stock = ItemStock.all           
-    end
+  def traer_items_stock_por_bien_y_area
+    bien_de_consumo_id = params[:bien_de_consumo_id]    
+    area_id = params[:area_id] 
+
+    @items_stock = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id)      
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
@@ -74,6 +83,33 @@ class ItemsStockController < ApplicationController
     @recepcion = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])      
     @generador = GeneradorDeImpresion.new
     @generador.generar_pdf(@recepcion)
+    file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
+    send_file ( file )    
+  end
+
+
+  def imprimir_formulario_stock_total_por_bien_y_area    
+    bien_de_consumo_id = params[:bien_de_consumo_id]
+    area_id = params[:area_id]      
+
+    if !bien_de_consumo_id.nil? && !area_id.nil?
+      @items = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id)  
+    else
+      @items = ItemStock.all
+    end
+    
+    @generador = GeneradorDeImpresionItemStock.new
+
+    @generador.generar_pdf(@items)
+    file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
+    send_file ( file )    
+  end
+
+      
+  def imprimir_formulario_stock_total_todos_los_bienes
+    @generador = GeneradorDeImpresionItemStock.new
+    @items = ItemStock.all
+    @generador.generar_pdf(@items)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )    
   end

@@ -1,0 +1,28 @@
+<h1>Lista de Bienes de Consumo</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Clase</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bienes_de_consumo.each do |bien_de_consumo| %>
+      <tr>
+        <td><%= obtener_codigo_completo_bien_de_consumo(bien_de_consumo.nombre) %></td>
+        <td><%= bien_de_consumo.nombre %></td>
+        <td><%= bien_de_consumo.clase.nombre %></td>
+        <td><%= link_to 'Ver', bien_de_consumo %></td>
+        <td><%= link_to 'Modificar', edit_bien_de_consumo_path(bien_de_consumo) %></td>        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nuevo Bien de consumo', new_bien_de_consumo_path %>

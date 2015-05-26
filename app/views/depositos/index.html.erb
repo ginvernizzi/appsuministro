@@ -1,4 +1,13 @@
 <h1>Depositos</h1>
+<% if @inciso.errors.any? %>
+    <div id="error_explanation">      
+      <ul>
+      <% @inciso.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 
 <table class="table">
   <thead>

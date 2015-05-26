@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
     
+  resources :clases
+
+  resources :partidas_parciales
+
+  resources :partidas_principales
+
+  resources :incisos
+
   resources :reportes_a_fecha do
     member do
       post 'imprimir_formulario'
@@ -8,6 +16,20 @@ Rails.application.routes.draw do
       get 'traer_items_stock'
     end            
   end  
+
+  resources :bienes_de_consumo do
+    collection do
+      get 'traer_vista_de_categoria'     
+    end
+    resources :areas  do
+      resources :items_stock do
+        post 'imprimir_formulario_stock_total_por_bien_y_area' 
+      end
+      # resources :consumos_directo do
+      #   post 'imprimir_formulario_consumos_por_codigo_destino_y_fecha' 
+      # end
+    end
+  end
 
   resources :personas
 
@@ -18,29 +40,39 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  
+  get 'transferencias/:recepcion_id/nueva_transferencia_desde_recepcion/',  
+                                                            to: 'transferencias#nueva_transferencia_desde_recepcion',
+                                                            as: 'nueva_transferencia_desde_recepcion_transferencias'
+
+  resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  do 
+    collection do 
+       get 'autocomplete_documento_principal_nombre'             
+       get 'traer_recepciones_por_fecha'                   
+    end
+  end
+
+  post 'recepciones_de_bien_de_consumo_en_stock/documento_principal/:documento_principal/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_por_documento_principal_fecha/',  
+                                                            to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_por_documento_principal_fecha',
+                                                            as: 'imprimir_formulario_recepciones_por_documento_principal_fecha'
+
+
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 
   resources :depositos
   resources :items_stock , only: [:index ] do
     collection do 
        get 'guardar_stock_a_fecha'    
-       get 'traer_items_stock_por_bien'  
+       get 'traer_todos_los_items_stock'  
+       get 'traer_items_stock_por_bien_y_area'
        get 'autocomplete_bien_de_consumo_nombre'      
+       get 'autocomplete_area_nombre'
+       post 'imprimir_formulario_stock_total_todos_los_bienes'                    
      end        
   end  
 
-  #get 'items_stock/autocomplete_bien_de_consumo_nombre'
-  
   post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',  
                                                             to: 'items_stock#imprimir_formulario',
                                                             as: 'imprimir_items_stock_recepciones_de_bien_de_consumo_en_stock'
-
-  # post 'recepciones_de_bienes_de_consumo_consumidas/:consumo_directo_id/consumos_directo/imprimir_formulario/',  
-  #                                                           to: 'consumos_directo#imprimir_formulario',
-  #                                                           as: 'imprimir_consumos_directo_recepciones_de_bien_de_consumo_consumidas'
-
-  post 'consumos_directo/imprimir_formulario/:consumo_directo_id',  to: 'consumos_directo#imprimir_formulario',
-                                                                    as: 'imprimir_formulario_consumos_directo'                                                               
+                                     
 
   post 'transferencias/imprimir_formulario/:transferencia_id',  to: 'transferencias#imprimir_formulario',
                                                                     as: 'imprimir_formulario_transferencias'                                                                     
@@ -59,8 +91,8 @@ Rails.application.routes.draw do
       post 'crear_consumo'
       post 'obtener_nombre_de_bien_de_consumo'  
       post 'obtener_responsable_de_area'
-      get 'ver_consumos_por_codigo_y_deposito'  
-      get 'traer_consumos_por_codigo_y_deposito'            
+      get 'ver_consumos_por_codigo_destino_fecha'  
+      get 'traer_consumos_por_codigo_destino_y_fecha'      
     end
   end
 
@@ -68,21 +100,26 @@ Rails.application.routes.draw do
                                                             to: 'consumos_directo#nuevo_consumo_directo_desde_recepcion',
                                                             as: 'nuevo_consumo_directo_desde_recepcion_consumos_directo'
 
-  get 'transferencias/:recepcion_id/nueva_transferencia_desde_recepcion/',  
-                                                            to: 'transferencias#nueva_transferencia_desde_recepcion',
-                                                            as: 'nueva_transferencia_desde_recepcion_transferencias'
+  post 'consumos_directo/imprimir_formulario/:consumo_directo_id',  to: 'consumos_directo#imprimir_formulario',
+                                                                    as: 'imprimir_formulario_consumos_directo'                                                               
+
+  post 'consumos_directo/bien_de_consumo/:bien_id/area/:area_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_codigo_destino_y_fecha/',  
+                                                            to: 'consumos_directo#imprimir_formulario_consumos_por_codigo_destino_y_fecha',
+                                                            as: 'imprimir_formulario_consumos_por_codigo_destino_y_fecha'
 
   resources :obras_proyectos  
+  
+
+  resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show] do 
+    resources :items_stock , only: [:new, :create]
+  end
 
   get 'recepciones_de_bien_de_consumo_a_evaluar/:id/ver_rechazar' => 'recepciones_de_bien_de_consumo_a_evaluar#ver_rechazar', 
                                         as: 'ver_rechazar_recepciones_de_bien_de_consumo_a_evaluar'                                        
 
   post 'recepciones_de_bien_de_consumo_a_evaluar/:id/rechazar', :to => 'recepciones_de_bien_de_consumo_a_evaluar#rechazar', 
                                                                 :as => 'rechazar_recepciones_de_bien_de_consumo_a_evaluar'
-
-  resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show] do 
-    resources :items_stock , only: [:new, :create]
-  end
+                                                                
 
   get 'static_pages/home' , :as => 'home'
   get 'static_pages/help'    
@@ -99,6 +136,10 @@ Rails.application.routes.draw do
   post 'bienes_de_consumo_de_recepcion/obtener_nombre_de_bien_de_consumo', 
                                         :to => 'bienes_de_consumo_de_recepcion#obtener_nombre_de_bien_de_consumo',
                                         :as => 'obtener_nombre_bien_de_consumo_bienes_de_consumo_de_recepcion'  
+
+  post 'bienes_de_consumo_de_recepcion/obtener_codigo_de_bien_de_consumo', 
+                                        :to => 'bienes_de_consumo_de_recepcion#obtener_codigo_de_bien_de_consumo',
+                                        :as => 'obtener_codigo_bien_de_consumo_bienes_de_consumo_de_recepcion'                                                
 
   delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_bien_de_recepcion/:bien_de_consumo_id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
                                         as: 'eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo'

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Codigo:</strong>
+  <%= obtener_codigo_completo_bien_de_consumo(@bien_de_consumo.nombre) %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @bien_de_consumo.nombre %>
+</p>
+
+<p>
+  <strong>Unidad:</strong>
+  <%= @bien_de_consumo.unidad_de_medida %>
+</p>
+
+<p>
+  <strong>Detalle:</strong>
+  <%= @bien_de_consumo.detalle_adicional %>
+</p>
+
+<p>
+  <strong>Clase:</strong>
+  <%= @bien_de_consumo.clase.nombre %>
+</p>
+
+<%= link_to 'Modificar', edit_bien_de_consumo_path(@bien_de_consumo) %> |
+<%= link_to 'Volver', bienes_de_consumo_path %>

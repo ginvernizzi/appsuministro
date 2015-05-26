@@ -38,4 +38,9 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'item_stock_a_fechas', 'items_stock_a_fechas'
   inflect.irregular 'reporte_a_fecha', 'reportes_a_fecha'
 
+  inflect.irregular 'inciso', 'incisos'
+  inflect.irregular 'partida_principal', 'partidas_principales'
+  inflect.irregular 'partida_parcial', 'partidas_parciales'
+  inflect.irregular 'clase', 'clases'
+
 end

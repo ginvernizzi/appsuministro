@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Codigo:</strong>
+  <%= @inciso.codigo %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @inciso.nombre %>
+</p>
+
+<%= link_to 'Modificar', edit_inciso_path(@inciso) %> |
+<%= link_to 'Volver', incisos_path %>

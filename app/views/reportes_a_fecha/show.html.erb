@@ -15,7 +15,7 @@
   <tbody>
     <% @items_stock.each do |item_stock| %>
       <tr>
-        <td><%= item_stock.bien_de_consumo.codigo %></td>
+        <td><%= obtener_codigo_completo_bien_de_consumo(item_stock.bien_de_consumo.nombre) %></td>
         <td><%= item_stock.bien_de_consumo.nombre %></td>
         <td><%= item_stock.cantidad %></td>        
         <td><%= item_stock.deposito.nombre %></td>

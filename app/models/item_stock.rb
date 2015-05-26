@@ -1,6 +1,4 @@
-class ItemStock < ActiveRecord::Base
-  #default_scope { order('bien_de_consumo DESC') }
-
+class ItemStock < ActiveRecord::Base  
   belongs_to :bien_de_consumo
   belongs_to :deposito
   belongs_to :costo_de_bien_de_consumo  

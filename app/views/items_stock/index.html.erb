@@ -5,20 +5,31 @@
   <div class="span6 offset3">   
   <div> 
     <div class="field">
-      <%= label_tag 'obtener por bien de consumo' %>
+      <%= label_tag 'Bien de consumo' %>
     </div>
     <div class="field">
       <%= autocomplete_field_tag 'bien_de_consumo_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75 %>
-      <input type="button" value="Eliminar filtro" id="traer_todos_los_items">   
     </div>    
 
+    <div class="field">
+      <%= label_tag 'Area' %>
+    </div>
+    <div class="field">
+      <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>      
+    </div>  
+    
+    <input type="button" value="Buscar" id="traer_por_bien_de_consumo_y_area"> 
+    <input type="button" value="Eliminar filtro" id="traer_todos_los_items_stock">   
+
     <%= hidden_field_tag 'bien_de_consumo_id' %>
+
+    <%= hidden_field_tag 'area_id' %>
   </div>
 
   <div id="tabla_items">    
-    <%= render 'form_tabla_stock' %>   
-  </div> 
-
+    <%= render 'form_tabla_stock' %>       
+  </div>   
+  
 </div> 
 
 

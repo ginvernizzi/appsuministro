@@ -3,7 +3,6 @@
   <% if @item_stock.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@item_stock.errors.count, "error") %> Los items no pudieron ser ingresados a stock:</h2>
-
       <ul>
       <% @item_stock.errors.full_messages.each do |message| %>
         <li><%= message %></li>

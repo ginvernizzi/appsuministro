@@ -8,5 +8,6 @@ class ConsumoDirecto < ActiveRecord::Base
   
   validates :fecha, presence: true
   validates :area, presence: true    
-  validates :obra_proyecto, presence: true       
+  validates :obra_proyecto, presence: true   
+   
 end

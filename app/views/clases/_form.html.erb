@@ -1,0 +1,29 @@
+<%= form_for(@clase) do |f| %>
+  <% if @clase.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@clase.errors.count, "error/es") %> La clase no puso ser guardada:</h2>
+
+      <ul>
+      <% @clase.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+      <%= f.label :partida_parcial%><br /> 
+      <%= f.collection_select :partida_parcial_id, @partidas_parciales, :id, :nombre, :prompt => "seleccione..." %>  
+  </div>
+  <div class="field">
+    <%= f.label :codigo, "Codigo (5 caracteres)" %><br>
+    <%= f.text_field :codigo %>
+  </div>
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= f.text_area :nombre %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

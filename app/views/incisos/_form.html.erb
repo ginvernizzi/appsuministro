@@ -1,0 +1,25 @@
+<%= form_for(@inciso) do |f| %>
+  <% if @inciso.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@inciso.errors.count, "error/es") %> El inciso no puede ser guardado:</h2>
+
+      <ul>
+      <% @inciso.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :codigo, "Codigo (1 caracter)" %><br>
+    <%= f.text_field :codigo %>
+  </div>
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= f.text_area :nombre %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

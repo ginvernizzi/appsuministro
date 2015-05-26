@@ -15,15 +15,20 @@
           <tr>
             <td><%= bien.consumo_directo.fecha %></td>
             <td><%= bien.consumo_directo.id %></td>            
-            <td><%= bien.bien_de_consumo.codigo %></td>
+            <td><%= obtener_codigo_completo_bien_de_consumo(bien.bien_de_consumo.nombre) %></td>
             <td><%= bien.bien_de_consumo.nombre %></td>
             <td><%= bien.consumo_directo.obra_proyecto.descripcion  %></td>        
             <td><%= bien.cantidad %></td>        
           </tr>
         <% end %>    
-    </tbody>  
+        <% if(@bien_de_consumo_para_consumir.length > 0) %>              
+            <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_codigo_destino_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_de_consumo.id, @bien_de_consumo_para_consumir.first().deposito.area.id, @bien_de_consumo_para_consumir.first().fecha_inicio, @bien_de_consumo_para_consumir.first().fecha_fin) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+            </td>   
+        <% end %>
+    </tbody>      
 </table>
-<br>
 <% else %>
-    <h2> No hay resultados de la busqueda </h2>
+  <h3> No hay resultados para mostrar </h3>  
 <% end %>
+<br>
+

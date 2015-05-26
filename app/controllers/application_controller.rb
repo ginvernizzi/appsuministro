@@ -3,8 +3,10 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception     
   
-  include SessionsHelper  
+  include SessionsHelper 
+  include ApplicationHelper 
   
   ##### Perfecto solo que no logea bien la login screen, por so lo comento. ver con fincic.
-  before_action :signed_in_user, except: [ :home ]    
+  before_action :signed_in_user, except: [ :home ]   
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224204322) do
+ActiveRecord::Schema.define(version: 20150505162119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,10 +25,15 @@ ActiveRecord::Schema.define(version: 20150224204322) do
 
   create_table "bienes_de_consumo", force: true do |t|
     t.string   "nombre"
-    t.string   "codigo"
+    t.string   "codigo",            limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "detalle_adicional"
+    t.string   "unidad_de_medida"
+    t.integer  "clase_id"
   end
+
+  add_index "bienes_de_consumo", ["clase_id"], name: "index_bienes_de_consumo_on_clase_id", using: :btree
 
   create_table "bienes_de_consumo_de_recepcion", force: true do |t|
     t.integer  "bien_de_consumo_id"
@@ -69,6 +74,16 @@ ActiveRecord::Schema.define(version: 20150224204322) do
   add_index "bienes_de_consumo_para_transferir", ["bien_de_consumo_id"], name: "index_bienes_de_consumo_para_transferir_on_bien_de_consumo_id", using: :btree
   add_index "bienes_de_consumo_para_transferir", ["deposito_id"], name: "index_bienes_de_consumo_para_transferir_on_deposito_id", using: :btree
   add_index "bienes_de_consumo_para_transferir", ["transferencia_id"], name: "index_bienes_de_consumo_para_transferir_on_transferencia_id", using: :btree
+
+  create_table "clases", force: true do |t|
+    t.string   "codigo",             limit: 5
+    t.string   "nombre"
+    t.integer  "partida_parcial_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clases", ["partida_parcial_id"], name: "index_clases_on_partida_parcial_id", using: :btree
 
   create_table "consumos_directo", force: true do |t|
     t.date     "fecha"
@@ -143,6 +158,13 @@ ActiveRecord::Schema.define(version: 20150224204322) do
   add_index "documentos_secundario", ["documento_de_recepcion_id"], name: "index_documentos_secundario_on_documento_de_recepcion_id", using: :btree
   add_index "documentos_secundario", ["recepcion_de_bien_de_consumo_id"], name: "index_documentos_secundario_on_recepcion_de_bien_de_consumo_id", using: :btree
 
+  create_table "incisos", force: true do |t|
+    t.string   "codigo",     limit: 1
+    t.string   "nombre"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "item_stock_a_fechas", force: true do |t|
     t.integer  "bien_de_consumo_id"
     t.decimal  "costo"
@@ -173,6 +195,26 @@ ActiveRecord::Schema.define(version: 20150224204322) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "partidas_parciales", force: true do |t|
+    t.string   "codigo",               limit: 1
+    t.string   "nombre"
+    t.integer  "partida_principal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "partidas_parciales", ["partida_principal_id"], name: "index_partidas_parciales_on_partida_principal_id", using: :btree
+
+  create_table "partidas_principales", force: true do |t|
+    t.string   "codigo",     limit: 1
+    t.string   "nombre"
+    t.integer  "inciso_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "partidas_principales", ["inciso_id"], name: "index_partidas_principales_on_inciso_id", using: :btree
 
   create_table "personas", force: true do |t|
     t.string   "nombre"

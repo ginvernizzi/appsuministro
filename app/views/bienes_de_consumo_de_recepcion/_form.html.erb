@@ -9,23 +9,31 @@
       </ul>
     </div>
   <% end %>
+      
+<div class="row">
+  <div class="col-md-4">  
+    <h3> Ingresar codigo </h3>
+    <div class="field">
+      <%= f.label :codigo%><br>
+      <%= text_field_tag :codigo %>
+    </div>  
+    <div class="field">
+        <input type="button" value="Traer Bien de Consumo" class="" id="traer_bien_de_consumo">            
+    </div>
 
-  <h4>  Numero de Recepcion:
-    <%= @recepcion_de_bien_de_consumo.id %>
-  </h4>
-  
+    <div class="field">
+      <%= f.label :nombre %><br>
+      <%= text_field_tag :nombre, nil, readonly: true %>
+    </div>       
+  </div>       
+  <div class="col-md-6">
+      <h3> Seleccionar arbol </h3>
+      <%= render 'shared/form_arbol_bienes' %>
+  </div>      
+</div>        
+
+<row class="row">  
   <div class="field">
-    <%= f.label :codigo %><br>
-    <%= text_field_tag :codigo%>      
-    <input type="button" value="Traer Bien de Consumo" class="" id="traer_bien_de_consumo">    
-  </div>  
-
-  <div class="field">
-    <%= f.label :nombre %><br>
-    <%= text_field_tag :nombre, nil, readonly: true  %>
-  </div>  
-
-   <div class="field">
     <%= f.label :cantidad, "cantidad" %><br>
     <%= f.text_field :cantidad %>
   </div>
@@ -46,6 +54,7 @@
   <div class="actions">           
       <%= f.submit "Agregar Bien de consumo" %>
   </div>
+</row>
 
 <div class="panel panel-default">
    <div class="panel-heading">Bienes de consumo</div>
@@ -64,8 +73,8 @@
         <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
         <tr>        
           <% if bcr.bien_de_consumo %>
-              <td><%= bcr.bien_de_consumo.nombre %> </td>
-              <td><%= bcr.bien_de_consumo.codigo %> </td>
+              <td><%=  bcr.bien_de_consumo.nombre %> </td>
+              <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
               <td><%= bcr.cantidad %> </td>
               <td><%= bcr.costo %> </td>
               <td><%= link_to 'Eliminar', recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo, bcr), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>

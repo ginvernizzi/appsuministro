@@ -1,0 +1,29 @@
+<%= form_for(@partida_parcial) do |f| %>
+  <% if @partida_parcial.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@partida_parcial.errors.count, "error/es") %> La Partida Parcial no puedo ser guardada:</h2>
+
+      <ul>
+      <% @partida_parcial.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+      <%= f.label :partida_principal%><br /> 
+      <%= f.collection_select :partida_principal_id, @partidas_principales, :id, :nombre, :prompt => "seleccione..." %>  
+  </div>
+  <div class="field">
+    <%= f.label :codigo, "Codigo (1 caracter)" %><br>
+    <%= f.text_field :codigo %>
+  </div>
+  <div class="field">
+    <%= f.label :nombre %><br>
+    <%= f.text_area :nombre %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

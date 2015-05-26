@@ -1,0 +1,26 @@
+
+	<div class="field">	
+		<%= label_tag :inciso %><br>
+	 	<%= collection_select(:categoria, "inciso_id", @incisos, "id", "nombre", :include_blank => "Seleccione...") %>   	
+	</div> 
+
+	<div class="field">			
+	  <%= label_tag :partida_principal, "Partida principal" %><br>
+	  <%= grouped_collection_select(:categoria, :partida_principal_id, @incisos, :partidas_principales, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>
+	</div> 
+
+	<div class="field">			
+	  <%= label_tag :partida_parcial, "Partida parcial" %><br>
+	  <%= grouped_collection_select(:categoria, :partida_parcial_id, @partidas_principales, :partidas_parciales, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>  
+	</div> 
+
+	<div class="field">	
+		<%= label_tag :clase, "Clase" %><br>
+	  <%= grouped_collection_select(:categoria, :clase_id, @partidas_parciales, :clases, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>  
+	</div>  
+
+	<div class="field">			
+		<%= label_tag :bien_de_consumo, "Bien de consumo" %><br>
+	  <%= grouped_collection_select(:categoria, :bien_de_consumo_id, @clases, :bienes_de_consumo, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>
+	</div>
+

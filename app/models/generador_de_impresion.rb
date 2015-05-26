@@ -1,9 +1,10 @@
 #encoding: utf-8
 class GeneradorDeImpresion
+	include ApplicationHelper 
 
-  def initialize
-    @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
-  end
+	def initialize
+	    @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
+	end
 
 	def generar_pdf(recepcion)
 		@bienes = recepcion.bienes_de_consumo_de_recepcion		
@@ -30,7 +31,6 @@ class GeneradorDeImpresion
 		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
 	end
 
-
 	def generar_pdf_consumo_directo(consumo)
 		@bienes = consumo.bienes_de_consumo_para_consumir		
 
@@ -46,7 +46,7 @@ class GeneradorDeImpresion
 			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
 				s.add_column("CODIGO") { |i| i.bien_de_consumo.codigo }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
-				s.add_column("DESCRIPCION_ADICIONAL") { |i| "Traer desc arbol del bien" }							
+				s.add_column("DESCRIPCION_ADICIONAL") { |i| i.bien_de_consumo.detalle_adicional }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }				
 			end
 		end
@@ -56,12 +56,43 @@ class GeneradorDeImpresion
 		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
 	end
 
+	def generar_pdf_items_consumo_directo(bienes_de_consumo_para_consumir)
+		@bienes = bienes_de_consumo_para_consumir		
+
+		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_consumo_directo_items.odt")
+
+		report = ODFReport::Report.new(@ruta_plantilla) do |r|
+			r.add_field("FECHA", I18n.l(DateTime.now))
+			r.add_field("AREA", @bienes.first().deposito.area.nombre)							
+								
+			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
+				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha }
+				s.add_column("COMPROBANTE") { |i| i.consumo_directo.id }							
+				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }							
+				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }				
+				s.add_column("OBRA_PROYECTO") { |i| i.consumo_directo.obra_proyecto.descripcion }							
+				s.add_column("CANTIDAD") { |i| i.cantidad }				
+			end
+		end
+
+		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_consumo_items_odt)
+		report.generate(@ruta_formulario_interno_odt)
+		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
+		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`					
+	end
+
+
 	def nombre_formulario_pdf
 		nombre_formulario + ".pdf"
 	end
 
 	def nombre_formulario_consumo_pdf
 		nombre_formulario_consumo + ".pdf"
+	end
+
+	######
+	def nombre_formulario_consumo_items_pdf
+		nombre_formulario_consumo_items + ".pdf"
 	end
 
 	private
@@ -82,5 +113,12 @@ class GeneradorDeImpresion
 		"comprobante_consumo_directo_" + @fecha_inicializacion
 	end
 
+	############
+	def nombre_formulario_consumo_items_odt
+		nombre_formulario_consumo_items + ".odt"
+	end
 
+	def nombre_formulario_consumo_items
+		"comprobante_consumo_directo_items_" + @fecha_inicializacion
+	end
 end

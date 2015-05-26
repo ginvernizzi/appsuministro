@@ -1,0 +1,27 @@
+<h1>Lista de Incisos</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @incisos.each do |inciso| %>
+      <tr>
+        <td><%= inciso.codigo %></td>
+        <td><%= inciso.nombre %></td>
+        <td><%= link_to 'Ver', inciso %></td>
+        <td><%= link_to 'Modificar', edit_inciso_path(inciso) %></td>
+        <td><%= link_to 'Eliminar', inciso, method: :delete, data: { confirm: 'Esta seguro?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Crear Inciso', new_inciso_path %>

@@ -1,0 +1,2 @@
+module BienDeConsumoHelper
+end

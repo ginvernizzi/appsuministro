@@ -1,0 +1,29 @@
+<h1>Lista de Partidas Parciales</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Partida principal</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @partidas_parciales.each do |partida_parcial| %>
+      <tr>
+        <td><%= partida_parcial.codigo %></td>
+        <td><%= partida_parcial.nombre %></td>
+        <td><%= partida_parcial.partida_principal.nombre %></td>
+        <td><%= link_to 'Ver', partida_parcial %></td>
+        <td><%= link_to 'Modificar', edit_partida_parcial_path(partida_parcial) %></td>
+        <td><%= link_to 'Eliminar', partida_parcial, method: :delete, data: { confirm: 'Esta seguro?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nueva Partida Parcial', new_partida_parcial_path %>

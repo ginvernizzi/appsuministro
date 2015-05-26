@@ -36,7 +36,7 @@
         <% @transferencia.bienes_de_consumo_para_transferir.each do |bcc| %>
         <tr>        
           <td><%= bcc.bien_de_consumo.nombre %> </td>
-          <td><%= bcc.bien_de_consumo.codigo %> </td>
+          <td><%= obtener_codigo_completo_bien_de_consumo(bcc.bien_de_consumo.nombre) %> </td>
           <td><%= bcc.cantidad %> </td>
           <td><%= bcc.costo %> </td>
         </tr>    
