@@ -12,7 +12,8 @@ class Clase < ActiveRecord::Base
   validates_numericality_of :codigo, :only_integer => true, :allow_nil => true, 
     :message => "admite solo numeros."
 
-  validates_uniqueness_of :codigo, scope: :partida_parcial_id
+  validates_uniqueness_of :codigo, scope: :partida_parcial_id, :message => "de clase ya existe para esa partida parcial"  
+  validates_uniqueness_of :nombre, scope: :partida_parcial_id, :message => "de clase ya existe para esa partida parcial"  
 
   before_destroy :check_for_bienes_de_consumo
   private 

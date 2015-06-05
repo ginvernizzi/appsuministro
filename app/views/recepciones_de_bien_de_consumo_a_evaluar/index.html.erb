@@ -17,7 +17,7 @@
     <% @recepciones_de_bien_de_consumo.each do |recepcion_de_bien_de_consumo| %>      
     <tr>
       <td><%= recepcion_de_bien_de_consumo.id %></td>
-      <td><%= recepcion_de_bien_de_consumo.fecha %></td>        
+      <td><%= recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") %></td>        
       <% if (recepcion_de_bien_de_consumo.documento_principal) %>
         <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.nombre %></td>
         <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento %></td>

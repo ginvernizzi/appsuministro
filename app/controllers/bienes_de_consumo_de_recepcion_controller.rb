@@ -75,29 +75,6 @@ before_action :setear_fijos_arbol, only: [:new]
       end
   end
 
-  # def obtener_codigo_completo_bien_de_consumo(nombre_de_bien_de_consumo)
-  #   @array_bien_de_consumo = BienDeConsumo.where(nombre: nombre_de_bien_de_consumo)    
-
-  #   bien = @array_bien_de_consumo[0]
-  #   cod_bien = bien.codigo
-
-  #   clase = bien.clase 
-  #   cod_clase  = clase.codigo
-
-  #   partida_parcial = clase.partida_parcial
-  #   cod_partida_parcial = partida_parcial.codigo
-    
-  #   partida_principal = partida_parcial.partida_principal
-  #   cod_partida_principal = partida_principal.codigo      
-
-  #   inciso = partida_principal.inciso
-  #   cod_inciso = inciso.codigo    
-
-  #   codigo_completo = "#{cod_inciso}" + "." + "#{cod_partida_principal}" + "." + "#{cod_partida_parcial}" + "." + "#{cod_clase}" + "." + "#{cod_bien}"      
-
-  #   return codigo_completo
-  # end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def setear_fijos_arbol

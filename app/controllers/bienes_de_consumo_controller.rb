@@ -64,6 +64,30 @@ class BienesDeConsumoController < ApplicationController
     end
   end
 
+
+  def traer_clases_con_codigo_de_bien_existente
+    codigo = params[:codigo]        
+    @clases = Clase.joins(:bienes_de_consumo).where("bienes_de_consumo.codigo = ?", codigo)      
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js { }
+    end 
+  end
+
+  
+  def traer_clases_con_nombre_de_bien_de_consumo_similar
+    nombre = params[:nombre]        
+    @clases = Clase.joins(:bienes_de_consumo).where("bienes_de_consumo.nombre ILIKE ?", "%#{nombre}%")      
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js { }
+    end 
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_bien_de_consumo

@@ -9,7 +9,7 @@
   <tbody>   
       <% @reportes_a_fecha.each do |reporte| %>
         <tr>
-          <td><%= reporte['fecha'] %></td>
+          <td><%= reporte['fecha'].strftime("%d/%m/%Y") %></td>
           <td><%= link_to 'Ver',  reporte_a_fecha_path(reporte) %></td> 
           <td><%= link_to 'Imprimir', imprimir_formulario_reporte_a_fecha_path(reporte), method: :post, data: {confirm: '¿Esta seguro?' }  %>        
           </td>          

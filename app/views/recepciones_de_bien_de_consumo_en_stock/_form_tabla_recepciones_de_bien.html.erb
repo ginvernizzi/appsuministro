@@ -14,7 +14,7 @@
     <% @recepciones_de_bien_de_consumo.each do |recepcion_de_bien_de_consumo| %>      
     <tr>
       <td><%= recepcion_de_bien_de_consumo.id %></td>
-      <td><%= recepcion_de_bien_de_consumo.fecha %></td>        
+      <td><%= recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") %></td>        
       <% if (recepcion_de_bien_de_consumo.documento_principal) %>
         <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.nombre %></td>
         <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento %></td>
@@ -25,11 +25,6 @@
         <td><%= link_to 'Ver',  recepciones_de_bien_de_consumo_en_stock_path(recepcion_de_bien_de_consumo)%></td>       
     </tr>
     <% end %>
-
-    <% if(@recepciones_de_bien_de_consumo.length > 0) %>              
-            <td><%= link_to 'Imprimir', imprimir_formulario_recepciones_por_documento_principal_fecha_path(@recepciones_de_bien_de_consumo.first().documento_principal.documento_de_recepcion.numero_de_documento, @recepciones_de_bien_de_consumo.first().fecha_inicio, @recepciones_de_bien_de_consumo.first().fecha_fin) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
-            </td>   
-        <% end %>      
   </tbody>
 </table>
 <% else %>

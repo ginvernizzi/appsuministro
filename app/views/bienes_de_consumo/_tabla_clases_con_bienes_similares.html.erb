@@ -1,0 +1,23 @@
+<% if !@clases.nil? && @clases.length > 0 %>
+<table class="table">
+  <thead>
+    <tr>      
+      <th>Nombre</th>
+      <th>codigo</th>    
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @clases.each do |clase| %>
+      <tr>        
+        <td><%= clase.nombre %></td>
+        <td><%= clase.codigo %></td>               
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<% else %>
+  <b> No se encontraron items <b>
+<% end %>
+

@@ -4,7 +4,7 @@ class CreateBienesDeConsumoParaConsumir < ActiveRecord::Migration
       t.integer :cantidad
       t.decimal :costo
       t.references :bien_de_consumo, index: true
-      t.references :consumo_directo, index: true
+      t.references :consumo_directo, index: true      
 
       t.timestamps
     end

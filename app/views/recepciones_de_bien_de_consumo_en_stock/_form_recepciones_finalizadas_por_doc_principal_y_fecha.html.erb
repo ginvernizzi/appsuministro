@@ -1,0 +1,10 @@
+<% if !@recepciones_de_bien_de_consumo.nil? && @recepciones_de_bien_de_consumo.length > 0 %>
+  <%= render "form_tabla_recepciones_de_bien" %>
+    <% if(@recepciones_de_bien_de_consumo.length > 0) %>              
+            <td><%= link_to 'Imprimir', imprimir_formulario_recepciones_por_documento_principal_fecha_path(@recepciones_de_bien_de_consumo.first().documento_principal.documento_de_recepcion.numero_de_documento, @recepciones_de_bien_de_consumo.first().fecha_inicio, @recepciones_de_bien_de_consumo.first().fecha_fin) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+            </td>   
+    <% end %>  
+<% else %>
+  <h3> No hay resultados para mostrar </h3>  
+<% end %>
+<br>

@@ -10,5 +10,6 @@ class BienDeConsumo < ActiveRecord::Base
 	validates_numericality_of :codigo, :only_integer => true, :allow_nil => true, 
     :message => "admite solo numeros."
 
-    validates_uniqueness_of :codigo, scope: :clase_id
+    validates_uniqueness_of :codigo, scope: :clase_id, :message => "de Item ya existe para esa Clase"     
+  	validates_uniqueness_of :nombre, scope: :clase_id, :message => "de Item ya existe para esa Clase"     
 end

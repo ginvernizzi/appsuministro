@@ -11,7 +11,7 @@ class GeneradorDeImpresionTransferencia
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_transferencia.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
-			r.add_field("FECHA", I18n.l(transferencia.fecha))	
+			r.add_field("FECHA", transferencia.fecha.strftime("%d/%m/%Y"))	
 			r.add_field("AREA", transferencia.area.nombre)				
 			r.add_field("NUMERO", transferencia.id)
 			r.add_field("DEPOSITO", transferencia.deposito.nombre)

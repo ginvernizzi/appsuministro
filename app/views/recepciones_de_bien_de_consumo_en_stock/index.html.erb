@@ -1,5 +1,5 @@
 
-<h1>Recepciones de bien de consumo finalizadas (altas de stock, consumo directo, y transferencia) </h1>
+<h1>Recepciones de bien de consumo finalizadas por Documento principal (altas de stock, consumo directo, y transferencia) </h1>
 
 <div class="row">
   <form class="navbar-form navbar-left" role="search">    
@@ -8,18 +8,28 @@
         <%= label_tag 'seleccione un rango de fechas'%>  
       </div>
       <br />
-      <%= label :fecha_inicio, "Desde" %>
-      <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
+      <div class"field">
+        <%= label :fecha_inicio, "Desde" %>
+      </div>
+      <div class"field">
+        <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
+      </div>
+      <div class"field">
       <%= label :fecha_fin, "Hasta" %>
+      </div>
+      <div class"field">
       <%= text_field_tag :fecha_fin, nil, readonly: true %>        
+      </div>
     </div>
   </form>  
 </div> 
-
+<br />
 <div class="field">
    <%= label :doc_principal,"Documento principal" %>     
-    <%= text_field_tag :documento_principal %>  
-  </div> 
+</div>
+<div class="field">
+  <%= text_field_tag :documento_principal %>  
+</div> 
 
 <div>
   <%= hidden_field_tag 'documento_principal_id' %>  

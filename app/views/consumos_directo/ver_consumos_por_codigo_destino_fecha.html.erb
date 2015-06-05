@@ -7,10 +7,21 @@
         <%= label_tag 'seleccione un rango de fechas'%>  
       </div>
       <br />
-      <%= label :fecha_inicio, "Desde" %>
-      <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
-      <%= label :fecha_fin, "Hasta" %>
-      <%= text_field_tag :fecha_fin, nil, readonly: true %>        
+      <div class"field">
+        <%= label :fecha_inicio, "Desde" %>
+      </div>
+
+      <div class"field">
+        <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
+      </div>
+
+      <div class"field">
+       <%= label :fecha_fin, "Hasta" %>
+      </div>
+
+      <div class"field">
+       <%= text_field_tag :fecha_fin, nil, readonly: true %>        
+      </div>
     </div>
   </form>  
 </div> 

@@ -49,6 +49,11 @@ $(document).on("ready page:load", function() {
     $("#area_id").val(data.item.id);       
   });
 
+
+ $('#obra_proyecto_descripcion').on('railsAutocomplete.select', function(event, data){ 
+  $("#obra_proyecto_id").val(data.item.id);         
+ })
+
   ////////////////////////////////////////////////////////////////////////
 
   $("#area_origen_area_id").change(function() {  
@@ -77,7 +82,7 @@ $(document).on("ready page:load", function() {
     $("#traer_bien_de_consumo_y_cantidad_stock").click(function() {  
     var cod = $("#codigo").val();          
     var depositoId = $("#consumo_directo_deposito_deposito_id").val();  
-      if($("#codigo").val() != "" && $("#consumo_directo_deposito_deposito_id").val() != null)
+      if($("#codigo").val() != "" && $("#consumo_directo_deposito_deposito_id").val() != "")
       {
         $.ajax({
           url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
@@ -245,6 +250,8 @@ $(document).on("ready page:load", function() {
     $("#cantidad_stock").val("");
     $("#cantidad_a_consumir").val("");
     $("#consumo_directo_deposito_id").val("");
+    $("#consumo_directo_deposito_deposito_id").val("");
+    
     //$("#consumo_directo_deposito_id option:selected" ).text("");
   }
 
@@ -300,7 +307,30 @@ $(document).on("ready page:load", function() {
         $("#area_nombre").val("");          
         $("#bien_de_consumo_id").val("");
         $("#area_id").val("");  
+        $("#obra_proyecto_id").val(""); 
     }
+
+    $("#obtener_lista_de_consumos_por_obra_proyecto_y_fecha").click(function() {        
+      var obra_proyecto_id = $("#obra_proyecto_id").val();      
+      var fecha_inicio = $("#fecha_inicio").val();
+      var fecha_fin = $("#fecha_fin").val();
+
+      $.ajax({
+        type: "get",
+        dataType: "json",
+        url: "/consumos_directo/traer_consumos_por_obra_proyecto_destino_y_fecha",        
+        data: { obra_proyecto_id: obra_proyecto_id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+        success: function(data){            
+              blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
+              $('#tabla_bienes').html(data)            
+        },
+        error: function (request, status, error) 
+            {             
+              alert("Debe seleccionar todos los campos");
+              blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
+            }                          
+        });     
+    });
 });
 
 //Id      Codigo  Nombre        Cantidad en stock   Cantidad a consumir   

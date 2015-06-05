@@ -60,15 +60,36 @@ class ClasesController < ApplicationController
   def destroy
     respond_to do |format|
       if @clase.destroy    
-        format.html { redirect_to clases_url, notice: 'La Clase fue eliminada exitosamnte.' }
+        format.html { redirect_to clases_url, notice: 'La Clase fue eliminada exitosamente.' }
         format.json { head :no_content }
       else
         format.html { redirect_to clases_url, notice: @clase.errors[:base].to_s }
       end
     end
   end
+      
+  def traer_partidas_parciales_con_codigo_de_clase_existente
+    codigo = params[:codigo]        
+    @partidas_parciales = PartidaParcial.joins(:clases).where("clases.codigo = ?", codigo)      
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js { }
+    end 
+  end
 
-
+  
+  def traer_partidas_parciales_con_nombre_de_clase_similar
+    nombre = params[:nombre]        
+    @partidas_parciales = PartidaParcial.joins(:clases).where("clases.nombre ILIKE ?", "%#{nombre}%")      
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js { }
+    end 
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

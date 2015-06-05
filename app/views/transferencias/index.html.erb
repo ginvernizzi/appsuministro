@@ -13,7 +13,7 @@
   <tbody>
     <% @transferencia.each do |transferencia| %>
       <tr>
-        <td><%= transferencia.fecha %></td>
+        <td><%= transferencia.fecha.strftime("%d/%m/%Y") %></td>
         <td><%= transferencia.area.nombre %></td>
         <td><%= transferencia.deposito.nombre %></td>        
         <td><%= link_to 'Mostrar', transferencia %></td>

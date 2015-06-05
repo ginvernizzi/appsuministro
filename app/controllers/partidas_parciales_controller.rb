@@ -63,7 +63,7 @@
         format.html { redirect_to partidas_parciales_url, notice: 'La Partida parcial fue eliminada exitosamente.' }
         format.json { head :no_content }      
       else
-        format.html { redirect_to partidas_principales_url, notice: @clase.errors[:base].to_s }
+        format.html { redirect_to partidas_principales_url, notice: @partida_parcial.errors[:base].to_s }
       end  
     end    
   end

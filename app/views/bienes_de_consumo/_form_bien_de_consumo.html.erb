@@ -1,5 +1,3 @@
-<h3> Agregar Bien de consumo </h3>
-<br />
 <%= form_for(@bien_de_consumo) do |f| %>
   <% if @bien_de_consumo.errors.any? %>
     <div id="error_explanation">
@@ -13,27 +11,37 @@
     </div>
   <% end %>
   
-  <div class="field">
-    <%= f.label :clase%><br /> 
-    <%= f.collection_select :clase_id, @clases, :id, :nombre, :prompt => "seleccione..." %>  
-  </div>
-  <div class="field">
-    <%= f.label :codigo, "Codigo (4 caracter)" %><br>
-    <%= f.text_field :codigo %>
-  </div>
-  <div class="field">
-    <%= f.label :nombre %><br>
-    <%= f.text_area :nombre %>
-  </div>
-  <div class="field">
-    <%= f.label :unidad_de_medida %><br>
-    <%= f.text_field :unidad_de_medida %>
-  </div>
-  <div class="field">
-    <%= f.label :detalle_adicional %><br>
-    <%= f.text_area :detalle_adicional %>    
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="row">
+    <div class="col-md-4">  
+      <div class="field">
+        <%= f.label :clase%><br /> 
+        <%= f.collection_select :clase_id, @clases, :id, :nombre, :prompt => "seleccione..." %>  
+      </div>
+      <div class="field">
+        <%= f.label :codigo, "Codigo (4 caracter)" %><br>
+        <%= f.text_field :codigo %>
+      </div>
+      <div class="field">
+        <%= f.label :nombre %><br>
+        <%= f.text_area :nombre %>
+        <input type="button" value="Buscar similares" id="buscar_clases_con_nombres_bienes_repetidos">  
+      </div>
+      <div class="field">
+        <%= f.label :unidad_de_medida %><br>
+        <%= f.text_field :unidad_de_medida %>
+      </div>
+      <div class="field">
+        <%= f.label :detalle_adicional %><br>
+        <%= f.text_area :detalle_adicional %>    
+      </div>
+      <div class="actions">
+        <%= f.submit %>
+      </div>      
+    </div>
+
+    <div class="col-md-4">  
+      <div id="titulo"> </div> 
+      <div id="tabla_items_existentes"> </div>   
+    </div>   
   </div>
 <% end %>

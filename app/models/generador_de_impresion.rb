@@ -37,7 +37,7 @@ class GeneradorDeImpresion
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_consumo_directo.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
-			r.add_field("FECHA", I18n.l(consumo.fecha))	
+			r.add_field("FECHA", I18n.l(consumo.fecha).strftime("%d/%m/%Y"))	
 			r.add_field("AREA", consumo.area.nombre)				
 			r.add_field("NUMERO", consumo.id)
 			r.add_field("OBRAPROYECTO", consumo.obra_proyecto.descripcion)
@@ -63,10 +63,10 @@ class GeneradorDeImpresion
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", I18n.l(DateTime.now))
-			r.add_field("AREA", @bienes.first().deposito.area.nombre)							
+			r.add_field("AREA", @bienes.first().consumo_directo.area.nombre)							
 								
 			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
-				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha }
+				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha.strftime("%d/%m/%Y") }
 				s.add_column("COMPROBANTE") { |i| i.consumo_directo.id }							
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }							
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }				

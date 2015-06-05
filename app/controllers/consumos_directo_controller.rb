@@ -1,6 +1,7 @@
 class ConsumosDirectoController < ApplicationController
   before_action :set_consumo_directo, only: [:show, :edit, :update, :destroy]
 
+  autocomplete :obra_proyecto, :descripcion , :full => true
 
   # GET /consumos_directo
   # GET /consumos_directo.json
@@ -176,6 +177,9 @@ class ConsumosDirectoController < ApplicationController
     end       
   end
 
+  def ver_consumos_directos_por_obra_proyecto_y_fecha
+  end
+
   def quitar_bienes_de_stock(recepcion)    
     areaArray = Area.where(id: 1)    
       
@@ -246,7 +250,7 @@ class ConsumosDirectoController < ApplicationController
     fecha_fin = params[:fecha_fin]
 
     if !area_id.nil? && !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
            @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
            @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
@@ -268,7 +272,7 @@ class ConsumosDirectoController < ApplicationController
     @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
 
     if !area_id.nil? && !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
+      @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
     end
 
     @generador = GeneradorDeImpresion.new
@@ -348,6 +352,27 @@ class ConsumosDirectoController < ApplicationController
     respond_to do | format |                                  
         format.json { render :json => @resp_json }        
     end
+  end
+
+  
+  def traer_consumos_por_obra_proyecto_destino_y_fecha
+    obra_proyecto_id = params[:obra_proyecto_id]    
+    fecha_inicio = params[:fecha_inicio]
+    fecha_fin = params[:fecha_fin]
+
+    if !obra_proyecto_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", obra_proyecto_id, fecha_inicio, fecha_fin)
+        if @bien_de_consumo_para_consumir.count > 0
+           @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
+           @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+        end
+    else
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
+    end
+          
+    respond_to do |format|   
+      format.js {}
+    end 
   end
 
   private
