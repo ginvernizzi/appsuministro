@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-    
+   
+  resources :foo  
   resources :clases
 
   resources :partidas_parciales

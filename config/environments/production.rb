@@ -75,4 +75,29 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'mail.teatrocervantes.gob.ar',
+    port:                  587,
+    domain:               'teatrocervantes.gob.ar',
+    user_name:            'suministros_excepcion@teatrocervantes.gob.ar',
+    password:             'pandavelo2015',
+    authentication:       'plain',
+    enable_starttls_auto: true  }
+
+  config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[TNC Suministro Excepciones] ",
+    :sender_address => %{"TNC Suministro" <suministro_excepcion@teatrocervantes.gob.ar>},
+    :exception_recipients => %w{dtanel@gmail.com dtanel@teatrocervantes.gob.ar gsantacruz@teatrocervantes.gob.ar gonzalo.invernizzi@gmail.com},
+    :smtp_settings => {
+      address:              'mail.teatrocervantes.gob.ar',
+      port:                  587,
+      domain:               'teatrocervantes.gob.ar',
+      user_name:            'suministros_excepcion@teatrocervantes.gob.ar',
+      password:             'pandavelo2015',
+      authentication:       'plain',
+      enable_starttls_auto: true  }
+  }
 end
