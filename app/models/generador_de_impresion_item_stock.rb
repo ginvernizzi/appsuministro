@@ -11,7 +11,7 @@ class GeneradorDeImpresionItemStock
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_items_stock.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
-			r.add_field("FECHA", I18n.l(DateTime.now))				
+			r.add_field("FECHA", I18n.l(DateTime.now).strftime("%d/%m/%Y"))				
 
 			r.add_table("TABLA_ITEM_STOCK", @items, :header=>true) do |s|
 				s.add_column("CODIGO") { |i| i.bien_de_consumo.codigo }

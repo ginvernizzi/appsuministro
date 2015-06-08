@@ -17,5 +17,7 @@ class RecepcionDeBienDeConsumo < ActiveRecord::Base
   validates_associated :documento_principal  
 
   attr_accessor :fecha_inicio
-  attr_accessor :fecha_fin    
+  attr_accessor :fecha_fin 
+  attr_accessor :bien_de_consumo_id 
+     
 end

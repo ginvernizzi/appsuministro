@@ -1,6 +1,7 @@
 class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
   before_action :set_recepcion_de_bien_de_consumo_en_stock, only: [:show]
 
+  autocomplete :bien_de_consumo, :nombre , :full => true
   #autocomplete :documento_principal, :nombre , :full => true
 
   # def autocomplete_documento_principal_nombre
@@ -11,10 +12,7 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
   #   end    
   # end
   
-  def index
-  	 #@recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where(estado: 6).order(:id)
-     #ver la lista de recepciones ingresadas a stock y en consumo directo.
-     #@recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 5 OR estado = 6").order(:id)
+  def index  	 
   end
 
 
@@ -27,7 +25,7 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     fecha_fin = params[:fecha_fin]   
 
    if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND estado = ? OR estado = ? AND fecha >= ? AND fecha <= ?", documento_principal, 5, 6,fecha_inicio, fecha_fin)
+      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin);
         if @recepciones_de_bien_de_consumo.count > 0
            @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
            @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
@@ -41,7 +39,6 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     end 
   end
 
-  
   def imprimir_formulario_recepciones_por_documento_principal_fecha    
     documento_principal = params[:documento_principal]    
     fecha_inicio = params[:fecha_inicio]  
@@ -50,7 +47,7 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
 
     if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND estado = ? OR estado = ? AND fecha >= ? AND fecha <= ?", documento_principal, 5, 6,fecha_inicio, fecha_fin)        
+      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin)
     end
 
     @generador = GeneradorDeImpresionRecepcion.new
@@ -59,7 +56,74 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     send_file ( file )         
   end
 
+  def imprimir_detalle_recepcion
+    recepcion_id = params[:recepciones_de_bien_de_consumo_en_stock_id]  
+    @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+
+    if !recepcion_id.nil?
+      @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(recepcion_id)      
+    end
+
+    @generador = GeneradorDeImpresionRecepcion.new
+    @generador.generar_pdf_detalle_de_recepcion(@recepcion_de_bien_de_consumo)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_detalle_de_recepcion_pdf)
+    send_file ( file ) 
+
+  end
+
+
+  def ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha
+
+  end
+
+  def traer_recepciones_por_bien_y_fecha
+    bien_id = params[:bien_id]    
+    fecha_inicio = params[:fecha_inicio]  
+    fecha_fin = params[:fecha_fin]   
+
+   if !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
+      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin);
+        if @recepciones_de_bien_de_consumo.count > 0
+           @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
+           @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
+           @recepciones_de_bien_de_consumo[0].bien_de_consumo_id = params[:bien_id];
+        end
+    else
+      @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+    end
+          
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
+  def imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha
+    bien_id = params[:bien_id]    
+    fecha_inicio = params[:fecha_inicio]  
+    fecha_fin = params[:fecha_fin]   
+
+    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+
+    if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
+      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin);
+    end
+
+    @generador = GeneradorDeImpresionRecepcion.new
+    @generador.generar_pdf_recepcion(@recepciones_de_bien_de_consumo)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_recepcion_pdf)
+    send_file ( file )  
+  end
+
   private
+
+  def query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin)
+    RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND fecha BETWEEN ? AND ? AND estado BETWEEN ? AND ? ", documento_principal, fecha_inicio, fecha_fin, 5, 6)        
+  end
+
+  def query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin)
+    RecepcionDeBienDeConsumo.joins(:bienes_de_consumo_de_recepcion).where("bienes_de_consumo_de_recepcion.bien_de_consumo_id = ? AND fecha BETWEEN ? AND ? AND estado BETWEEN ? AND ? ", bien_id, fecha_inicio, fecha_fin, 5, 6)
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_recepcion_de_bien_de_consumo_en_stock
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])

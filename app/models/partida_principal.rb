@@ -8,6 +8,10 @@ class PartidaPrincipal < ActiveRecord::Base
   validates_length_of :codigo, :minimum => 1, :maximum => 1, :allow_blank => false
 	
 	before_destroy :check_for_partidas_parciales
+
+validates_uniqueness_of :codigo, scope: :inciso_id, :message => "de partida principal ya existe para ese Inciso"  
+validates_uniqueness_of :nombre, scope: :inciso_id, :message => "de partida principal ya existe para ese Inciso"  
+
   private 
 
 	def check_for_partidas_parciales

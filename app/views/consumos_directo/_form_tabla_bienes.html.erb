@@ -13,7 +13,7 @@
     <tbody>    
         <% @bien_de_consumo_para_consumir.each do |bien| %>
           <tr>
-            <td><%= bien.consumo_directo.fecha %></td>
+            <td><%= bien.consumo_directo.fecha.strftime("%d/%m/%Y") %></td>
             <td><%= bien.consumo_directo.id %></td>            
             <td><%= obtener_codigo_completo_bien_de_consumo(bien.bien_de_consumo.nombre) %></td>
             <td><%= bien.bien_de_consumo.nombre %></td>
@@ -22,7 +22,7 @@
           </tr>
         <% end %>    
         <% if(@bien_de_consumo_para_consumir.length > 0) %>              
-            <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_codigo_destino_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_de_consumo.id, @bien_de_consumo_para_consumir.first().deposito.area.id, @bien_de_consumo_para_consumir.first().fecha_inicio, @bien_de_consumo_para_consumir.first().fecha_fin) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+            <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_codigo_destino_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_de_consumo.id, @bien_de_consumo_para_consumir.first().consumo_directo.area.id, @bien_de_consumo_para_consumir.first().fecha_inicio, @bien_de_consumo_para_consumir.first().fecha_fin) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
             </td>   
         <% end %>
     </tbody>      

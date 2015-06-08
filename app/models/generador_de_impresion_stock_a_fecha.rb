@@ -14,7 +14,7 @@ class GeneradorDeImpresionStockAFecha
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_stock_a_fecha.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
-			r.add_field("FECHA", fecha)				
+			r.add_field("FECHA", fecha.strftime("%d/%m/%Y"))				
 			r.add_field("AREA", deposito.area.nombre)
 			r.add_field("DEPOSITO", deposito.nombre)
 

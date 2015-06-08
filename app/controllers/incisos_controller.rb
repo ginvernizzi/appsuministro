@@ -59,7 +59,7 @@ class IncisosController < ApplicationController
         format.html { redirect_to incisos_url, notice: 'El Inciso fue eliminado exitosamente.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to incisos_url, notice: @clase.errors[:base].to_s }
+        format.html { redirect_to incisos_url, notice: @inciso.errors[:base].to_s }
         format.json { render json: @inciso.errors, status: :unprocessable_entity }
       end
     end

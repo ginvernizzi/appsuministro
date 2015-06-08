@@ -63,7 +63,7 @@ class PartidasPrincipalesController < ApplicationController
         format.html { redirect_to partidas_principales_url, notice: 'La partida principal fue eliminada exitosamnte.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to partidas_principales_url, notice: @clase.errors[:base].to_s }
+        format.html { redirect_to partidas_principales_url, notice: @partida_principal.errors[:base].to_s }
       end
     end
   end

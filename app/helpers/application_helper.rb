@@ -9,6 +9,18 @@ module ApplicationHelper
     end
   end
 
+  def obtener_costo_total(cantidad_unitario, costo_unitario)
+      cantidad_unitario * costo_unitario      
+  end 
+
+  def obtener_total_general_de_bienes_de_consumo(bienes_de_consumo)
+    sum = 0.0
+    bienes_de_consumo.each do |bien|
+      sum = sum + obtener_costo_total(bien.costo, bien.cantidad)      
+    end
+    return sum
+  end
+
   def obtener_codigo_completo_bien_de_consumo(nombre_de_bien_de_consumo)
     @array_bien_de_consumo = BienDeConsumo.where(nombre: nombre_de_bien_de_consumo)    
 
@@ -31,4 +43,13 @@ module ApplicationHelper
 
     return codigo_completo
   end 
+
+  def flash_class(level)
+    case level
+    when "notice" then "alert alert-info"
+    when "success" then "alert alert-success"
+    when "error" then 'alert alert-warning'
+    when "alert" then "alert alert-danger"
+    end
+  end
 end

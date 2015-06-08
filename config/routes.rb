@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
    
   resources :foo  
-  resources :clases
+    
+  resources :clases do 
+    collection do
+      get 'traer_partidas_parciales_con_codigo_de_clase_existente'
+      get 'traer_partidas_parciales_con_nombre_de_clase_similar'
+    end
+  end
 
   resources :partidas_parciales
 
@@ -20,7 +26,9 @@ Rails.application.routes.draw do
 
   resources :bienes_de_consumo do
     collection do
-      get 'traer_vista_de_categoria'     
+      get 'traer_vista_de_categoria'    
+      get 'traer_clases_con_codigo_de_bien_existente' 
+      get 'traer_clases_con_nombre_de_bien_de_consumo_similar'
     end
     resources :areas  do
       resources :items_stock do
@@ -45,16 +53,23 @@ Rails.application.routes.draw do
                                                             to: 'transferencias#nueva_transferencia_desde_recepcion',
                                                             as: 'nueva_transferencia_desde_recepcion_transferencias'
 
-  resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  do 
+  resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  do     
+       get 'imprimir_detalle_recepcion'       
     collection do 
        get 'autocomplete_documento_principal_nombre'             
-       get 'traer_recepciones_por_fecha'                   
+       get 'traer_recepciones_por_fecha'  
+       get 'ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha'                 
+       get 'traer_recepciones_por_bien_y_fecha'                         
     end
   end
 
   post 'recepciones_de_bien_de_consumo_en_stock/documento_principal/:documento_principal/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_por_documento_principal_fecha/',  
                                                             to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_por_documento_principal_fecha',
                                                             as: 'imprimir_formulario_recepciones_por_documento_principal_fecha'
+
+  post 'recepciones_de_bien_de_consumo_en_stock/bien_de_consumo/:bien_de_consumo_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha/',  
+        to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha',
+        as: 'imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha'
 
 
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 
@@ -88,12 +103,15 @@ Rails.application.routes.draw do
   
   resources :consumos_directo do 
     collection do
+      get 'autocomplete_obra_proyecto_descripcion'
       get 'nuevo_consumo'
       post 'crear_consumo'
       post 'obtener_nombre_de_bien_de_consumo'  
       post 'obtener_responsable_de_area'
       get 'ver_consumos_por_codigo_destino_fecha'  
-      get 'traer_consumos_por_codigo_destino_y_fecha'      
+      get 'traer_consumos_por_codigo_destino_y_fecha' 
+      get 'traer_consumos_por_obra_proyecto_destino_y_fecha'
+      get 'ver_consumos_por_obra_proyecto_y_fecha' 
     end
   end
 

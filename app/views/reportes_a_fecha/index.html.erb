@@ -7,17 +7,28 @@
         <%= label_tag 'seleccione un rango de fechas'%>  
       </div>
       <br />
+      <div class"label">
       <%= label :fecha_inicio, "Desde" %>
+      </div>
+
+      <div class"field">
       <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
+      </div>
+
+      <div class"label">
       <%= label :fecha_fin, "Hasta" %>
+      </div>
+
+      <div class"field">
       <%= text_field_tag :fecha_fin, nil, readonly: true %>  
+      </div>
       <input type="button" value="Obtener" id="traer_items_stock">   
     </div>
-
-    <div id="tabla_items">    
-      <%= render 'form_tabla_stock' %>   
-    </div> 
-    <input type="button" value="Obtener todos" id="reportes_a_fecha_traer_todos_los_items">     
-  </form>  
+  </form>    
 </div> 
+
+<div id="tabla_items">    
+      <%= render 'form_tabla_stock' %>   
+</div> 
+<input type="button" value="Obtener todos" id="reportes_a_fecha_traer_todos_los_items">     
 

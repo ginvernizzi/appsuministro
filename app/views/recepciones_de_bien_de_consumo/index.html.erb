@@ -17,7 +17,7 @@
     <% @recepciones_de_bien_de_consumo.each do |recepcion_de_bien_de_consumo| %>      
       <tr>
         <td><%= recepcion_de_bien_de_consumo.id %></td>
-        <td><%= recepcion_de_bien_de_consumo.fecha %></td>
+        <td><%= recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") %></td>
         <td><%= RecepcionDeBienDeConsumo::ESTADOS.key(recepcion_de_bien_de_consumo.estado)%></td>
         <td><%= recepcion_de_bien_de_consumo.descripcion_provisoria %></td>
 

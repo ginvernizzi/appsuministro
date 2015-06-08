@@ -11,7 +11,8 @@ class SessionsController < ApplicationController
       sign_in user
       redirect_to recepciones_de_bien_de_consumo_path
     else
-      flash[:error] = 'email/password combinacion invalida' # Not quite right!      
+      flash[:alert] = 'email/password combinacion invalida' # Not quite right!      
+      redirect_to home_path 
     end
   end
 

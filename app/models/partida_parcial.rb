@@ -12,11 +12,14 @@ class PartidaParcial < ActiveRecord::Base
 
   before_destroy :check_for_clases
 
+  validates_uniqueness_of :codigo, scope: :partida_principal_id, :message => "de partida parcial ya existe para esa partida principal"  
+  validates_uniqueness_of :nombre, scope: :partida_principal_id, :message => "de partida parcial ya existe para esa partida principal"  
+
   private 
 
   def check_for_clases
   	if self.clases.any?  		
- 	  self.errors[:base] << "No se puede eliminar el item mientras tenga elementos asociados"
+ 	    self.errors[:base] << "No se puede eliminar el item mientras tenga elementos asociados"
       return false
   	end
   end  

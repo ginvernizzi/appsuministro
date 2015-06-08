@@ -1,0 +1,23 @@
+<% if !@partidas_parciales.nil? && @partidas_parciales.length > 0 %>
+<table class="table">
+  <thead>
+    <tr>      
+      <th>Nombre</th>
+      <th>codigo</th>    
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @partidas_parciales.each do |partida| %>
+      <tr>        
+        <td><%= partida.nombre %></td>
+        <td><%= partida.codigo %></td>               
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<% else %>
+  <b> No se encontraron items <b>
+<% end %>
+
