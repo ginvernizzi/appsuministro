@@ -8,6 +8,7 @@
       <th>Nombre</th>
       <th>Obra o Proyecto</th>
       <th>Cantidad</th>
+      <th> Ver </th>
     </tr>
   </thead>  
     <tbody>    
@@ -18,7 +19,8 @@
             <td><%= obtener_codigo_completo_bien_de_consumo(bien.bien_de_consumo.nombre) %></td>
             <td><%= bien.bien_de_consumo.nombre %></td>
             <td><%= bien.consumo_directo.obra_proyecto.descripcion  %></td>        
-            <td><%= bien.cantidad %></td>        
+            <td><%= bien.cantidad %></td>    
+            <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>    
           </tr>
         <% end %>            
     </tbody>      

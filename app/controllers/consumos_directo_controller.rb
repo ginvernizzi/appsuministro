@@ -249,16 +249,21 @@ class ConsumosDirectoController < ApplicationController
     fecha_inicio = params[:fecha_inicio]
     fecha_fin = params[:fecha_fin]
 
-    if !area_id.nil? && !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
-        if @bien_de_consumo_para_consumir.count > 0
-           @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
-           @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
-        end
-    else
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
-    end
-          
+    @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new    
+
+    if !area_id.blank? && !fecha_inicio.blank? && !fecha_fin.nil? 
+      if bien_id.blank?
+        puts "************ SIN BIEN!!"
+        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", area_id, fecha_inicio, fecha_fin)      
+      else
+        puts "************ Con BIEN!!"
+        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)        
+      end
+      if @bien_de_consumo_para_consumir.count > 0
+          @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
+          @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+      end    
+    end      
     respond_to do |format|   
       format.js {}
     end 

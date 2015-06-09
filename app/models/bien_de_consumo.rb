@@ -5,6 +5,7 @@ class BienDeConsumo < ActiveRecord::Base
 
 	validates :nombre, presence: true, uniqueness: true	
 	validates :clase, presence: true 
+	validates :stock_minimo, presence: true 
 
 	validates_length_of :codigo, :minimum => 4, :maximum => 4, :allow_blank => false	   
 	validates_numericality_of :codigo, :only_integer => true, :allow_nil => true, 

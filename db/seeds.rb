@@ -51,16 +51,16 @@ TipoDeDocumento.new(nombre: "orden de compra").save
 
 #######################################################
 
-@bien_de_consumo_1 = BienDeConsumo.create!(nombre: "mouse optico", codigo: "1111", clase:@clase_1).save
-@bien_de_consumo_2 = BienDeConsumo.create!(nombre: "tijera", codigo: "2222", clase:@clase_1).save
-@bien_de_consumo_3 = BienDeConsumo.create!(nombre: "resma hojas A4 x 5", codigo: "3333", clase:@clase_1).save
-@bien_de_consumo_4 = BienDeConsumo.create!(nombre: "indebleble negro", codigo: "4444", clase:@clase_1).save
-@bien_de_consumo_5 = BienDeConsumo.create!(nombre: "fibron pizarra rojo", codigo: "5555", clase:@clase_1).save
-@bien_de_consumo_6 = BienDeConsumo.create!(nombre: "fibron pizarra verde", codigo: "6666", clase:@clase_1).save
-@bien_de_consumo_7 = BienDeConsumo.create!(nombre: "fibron pizarra azul", codigo: "7777", clase:@clase_1).save
-@bien_de_consumo_8 = BienDeConsumo.create!(nombre: "Goma lapiz", codigo: "8888", clase:@clase_1).save
-@bien_de_consumo_9 = BienDeConsumo.create!(nombre: "abrochadora", codigo: "9999", clase:@clase_1).save
-@bien_de_consumo_000 = BienDeConsumo.create!(nombre: "escuadra", codigo: "0000", clase:@clase_1).save
+@bien_de_consumo_1 = BienDeConsumo.create!(nombre: "mouse optico", codigo: "1111", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_2 = BienDeConsumo.create!(nombre: "tijera", codigo: "2222", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_3 = BienDeConsumo.create!(nombre: "resma hojas A4 x 5", codigo: "3333", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_4 = BienDeConsumo.create!(nombre: "indebleble negro", codigo: "4444", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_5 = BienDeConsumo.create!(nombre: "fibron pizarra rojo", codigo: "5555", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_6 = BienDeConsumo.create!(nombre: "fibron pizarra verde", codigo: "6666", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_7 = BienDeConsumo.create!(nombre: "fibron pizarra azul", codigo: "7777", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_8 = BienDeConsumo.create!(nombre: "Goma lapiz", codigo: "8888", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_9 = BienDeConsumo.create!(nombre: "abrochadora", codigo: "9999", clase:@clase_1, stock_minimo: 0).save
+@bien_de_consumo_000 = BienDeConsumo.create!(nombre: "escuadra", codigo: "0000", clase:@clase_1, stock_minimo: 0).save
 
 ######################################################################################################
 

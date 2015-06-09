@@ -14,7 +14,7 @@ class GeneradorDeImpresionItemStock
 			r.add_field("FECHA", I18n.l(DateTime.now).strftime("%d/%m/%Y"))				
 
 			r.add_table("TABLA_ITEM_STOCK", @items, :header=>true) do |s|
-				s.add_column("CODIGO") { |i| i.bien_de_consumo.codigo }
+				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
 				s.add_column("CANTIDAD") { |i| i.cantidad }
 				s.add_column("COSTO") { |i| i.costo_de_bien_de_consumo.costo  }

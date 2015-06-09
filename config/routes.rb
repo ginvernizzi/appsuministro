@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     collection do
       get 'traer_vista_de_categoria'    
       get 'traer_clases_con_codigo_de_bien_existente' 
-      get 'traer_clases_con_nombre_de_bien_de_consumo_similar'
+      get 'traer_clases_con_nombre_de_bien_de_consumo_similar'      
     end
     resources :areas  do
       resources :items_stock do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505162119) do
+ActiveRecord::Schema.define(version: 20150608233047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20150505162119) do
     t.text     "detalle_adicional"
     t.string   "unidad_de_medida"
     t.integer  "clase_id"
+    t.datetime "fecha"
+    t.integer  "stock_minimo"
   end
 
   add_index "bienes_de_consumo", ["clase_id"], name: "index_bienes_de_consumo_on_clase_id", using: :btree
@@ -81,6 +83,7 @@ ActiveRecord::Schema.define(version: 20150505162119) do
     t.integer  "partida_parcial_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "fecha_de_baja"
   end
 
   add_index "clases", ["partida_parcial_id"], name: "index_clases_on_partida_parcial_id", using: :btree

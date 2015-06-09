@@ -17,7 +17,7 @@ class GeneradorDeImpresionTransferencia
 			r.add_field("DEPOSITO", transferencia.deposito.nombre)
 			
 			r.add_table("TABLA_TRANSFERENCIA", @bienes, :header=>true) do |s|								
-				s.add_column("CODIGO") { |i| i.bien_de_consumo.codigo }
+				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
 				s.add_column("AREA_ORIGEN") { |i| i.deposito.area.nombre }							
 				s.add_column("DEPOSITO_ORIGEN") { |i| i.deposito.nombre }

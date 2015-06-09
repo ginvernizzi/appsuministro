@@ -37,17 +37,18 @@ class GeneradorDeImpresion
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_consumo_directo.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
-			r.add_field("FECHA", I18n.l(consumo.fecha).strftime("%d/%m/%Y"))	
+			r.add_field("FECHA", consumo.fecha.strftime("%d/%m/%Y"))	
 			r.add_field("AREA", consumo.area.nombre)				
 			r.add_field("NUMERO", consumo.id)
 			r.add_field("OBRAPROYECTO", consumo.obra_proyecto.descripcion)
 			
 
 			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
-				s.add_column("CODIGO") { |i| i.bien_de_consumo.codigo }
+				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				s.add_column("DESCRIPCION_ADICIONAL") { |i| i.bien_de_consumo.detalle_adicional }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }				
+				s.add_column("COSTO") { |i| i.costo }	
 			end
 		end
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_consumo_odt)

@@ -303,11 +303,11 @@ $(document).on("ready page:load", function() {
 
     function blanquear_campos_en_consumos_por_codigo_destino_y_fecha() 
     {
-        $("#bien_de_consumo_nombre").val("");        
-        $("#area_nombre").val("");          
-        $("#bien_de_consumo_id").val("");
-        $("#area_id").val("");  
-        $("#obra_proyecto_id").val(""); 
+      $("#bien_de_consumo_nombre").val("");       
+      $("#bien_de_consumo_id").val(""); 
+      $("#area_nombre").val("");                  
+      $("#area_id").val("");  
+      $("#obra_proyecto_id").val(""); 
     }
 
     $("#obtener_lista_de_consumos_por_obra_proyecto_y_fecha").click(function() {        

@@ -14,14 +14,15 @@
   <strong>Obra proyecto:</strong>
   <%= @consumo_directo.obra_proyecto.descripcion %>
 </p>
-
+<br />
 <div class="panel panel-default">
 <div class="panel-heading"> Bienes consumidos </div>
 <table class="table">
   <thead>
     <tr>
-      <th>Nombre</th>
       <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Descripcion adicional</th>
       <th>Cantidad</th>
       <th>Costo</th>
     </tr>
@@ -30,8 +31,9 @@
     <% if @consumo_directo.bienes_de_consumo_para_consumir.any? %>
         <% @consumo_directo.bienes_de_consumo_para_consumir.each do |bcc| %>
         <tr>        
-          <td><%= bcc.bien_de_consumo.nombre %> </td>
           <td><%= obtener_codigo_completo_bien_de_consumo(bcc.bien_de_consumo.nombre) %> </td>
+          <td><%= bcc.bien_de_consumo.nombre %> </td>          
+          <td><%= bcc.bien_de_consumo.detalle_adicional %> </td>       
           <td><%= bcc.cantidad %> </td>
           <td><%= bcc.costo %> </td>
         </tr>    
@@ -45,6 +47,10 @@
   </tbody>
 </table>
 </div>
+<br />
+  <div>    
+     <td><%= link_to 'Imprimir', imprimir_formulario_consumos_directo_path(@consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+       </td>
+  </div>
+<br />
 
-<%= link_to 'Modificar', edit_consumo_directo_path(@consumo_directo) %> |
-<%= link_to 'volver', consumos_directo_path %>
