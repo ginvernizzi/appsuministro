@@ -14,7 +14,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -27,6 +27,10 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = true
 
+  # Asset digests allow you to set far-future HTTP expiration dates on all assets,
+  # yet still be able to expire them through the digest params.
+  config.assets.digest = true
+
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
@@ -34,4 +38,23 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  config.action_mailer.default_url_options = { :host => "localhost:3000" }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'mail.teatrocervantes.gob.ar',
+    port:                  587,
+    domain:               'teatrocervantes.gob.ar',
+    user_name:            'suministros_excepcion@teatrocervantes.gob.ar',
+    password:             'pandavelo2015',
+    authentication:       'plain',
+  enable_starttls_auto: true  }
+
+  config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[TNC Suministro Excepciones] ",
+    :sender_address => %{"TNC Suministro" <suministro_excepcion@teatrocervantes.gob.ar>},
+    :exception_recipients => %w{dtanel@gmail.com dtanel@teatrocervantes.gob.ar gsantacruz@teatrocervantes.gob.ar gonzalo.invernizzi@gmail.com}
+  }
+
 end
