@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 # Pick the frameworks you want:
+require 'rails/all'
 require "active_model/railtie"
 require "active_record/railtie"
 require "action_controller/railtie"
@@ -27,8 +28,12 @@ module Appsuministro
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+
     I18n.enforce_available_locales = true
+
     config.time_zone = 'Buenos Aires'
+    # Do not swallow errors in after_commit/after_rollback callbacks.
+    config.active_record.raise_in_transactional_callbacks = true
     config.i18n.default_locale = :"es-AR"
     config.encoding = "utf-8"
   end

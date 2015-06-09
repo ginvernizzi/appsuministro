@@ -13,8 +13,8 @@
  *= require_tree . 
  *= require_self
 
- *= require jquery.ui.theme
- *= require jquery.ui.all 
+ *= require jquery-ui/theme
+ *= require jquery-ui/all 
 	
 
  *= require bootstrap-datepicker3
