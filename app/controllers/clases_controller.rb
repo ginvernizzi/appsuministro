@@ -1,10 +1,10 @@
 class ClasesController < ApplicationController
-  before_action :set_clase, only: [:show, :edit, :update, :destroy]
+  before_action :set_clase, only: [:show, :edit, :update, :destroy]    
 
   # GET /clases
   # GET /clases.json
   def index
-    @clases = Clase.includes(:partida_parcial).order("partidas_parciales.nombre")      
+    @clases = Clase.includes(:partida_parcial).where("clases.fecha_de_baja IS NULL").order("partidas_parciales.nombre")      
   end
 
   # GET /clases/1
@@ -58,14 +58,19 @@ class ClasesController < ApplicationController
   # DELETE /clases/1
   # DELETE /clases/1.json
   def destroy
-    respond_to do |format|
-      if @clase.destroy    
-        format.html { redirect_to clases_url, notice: 'La Clase fue eliminada exitosamente.' }
+     respond_to do |format|
+        if !@clase.tiene_items_asociados 
+          if @clase.update(fecha_de_baja: DateTime.now)       
+            flash[:notice] = 'La Clase fue dada de baja exitosamente.'
+          else      
+            flash[:notice] =  @clase.errors[:base].to_s            
+          end 
+        else 
+          flash[:notice] =  @clase.errors[:base].to_s            
+        end
+        format.html { redirect_to clases_path }
         format.json { head :no_content }
-      else
-        format.html { redirect_to clases_url, notice: @clase.errors[:base].to_s }
-      end
-    end
+      end 
   end
       
   def traer_partidas_parciales_con_codigo_de_clase_existente
@@ -101,4 +106,5 @@ class ClasesController < ApplicationController
     def clase_params
       params.require(:clase).permit(:codigo, :nombre, :partida_parcial_id)
     end
+
 end

@@ -1,9 +1,8 @@
 class PartidaParcial < ActiveRecord::Base
   belongs_to :partida_principal    
 
-  has_many :clases
-  
-  validates :nombre, presence: true , uniqueness: true
+  has_many :clases, -> { where("clases.fecha_de_baja IS NULL") }
+    
   validates :partida_principal, presence: true
 
   validates_length_of :codigo, :minimum => 1, :maximum => 1, :allow_blank => false

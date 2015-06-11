@@ -39,6 +39,7 @@ TipoDeDocumento.new(nombre: "orden de compra").save
 @partida_parcial_10 = PartidaParcial.create!(nombre: "Otros n.e.p.", codigo:"9", partida_principal:@partida_principal_2)
 
 @partida_principal_3 = PartidaPrincipal.create!(nombre: "Productos de papel, carton e impresos", codigo:"3", inciso:@inciso_2)
+
 @partida_parcial_11 = PartidaParcial.create!(nombre: "Papel de escritorio y carton", codigo:"1", partida_principal:@partida_principal_3)
 @partida_parcial_12 = PartidaParcial.create!(nombre: "Papel de computacion", codigo:"2", partida_principal:@partida_principal_3)
 @partida_parcial_13 = PartidaParcial.create!(nombre: "Prdocutos de artes graficas", codigo:"3", partida_principal:@partida_principal_3)
@@ -48,9 +49,11 @@ TipoDeDocumento.new(nombre: "orden de compra").save
 @partida_parcial_17 = PartidaParcial.create!(nombre: "Especies timbradas y valores", codigo:"7", partida_principal:@partida_principal_3)
 @partida_parcial_18 = PartidaParcial.create!(nombre: "Otros n.e.p.", codigo:"9", partida_principal:@partida_principal_3)
 
-@clase_1 = Clase.create!(nombre: "clase 1", codigo:"00000", partida_parcial:@partida_parcial_1)
+##############################################################################################################
 
-#######################################################
+@clase_1 = Clase.create!(nombre: "clase 1", codigo:"00000", partida_parcial:@partida_parcial_6)
+
+##############################################################################################################
 
 @bien_de_consumo_1 = BienDeConsumo.create!(nombre: "mouse optico", codigo: "1111", clase:@clase_1, stock_minimo: 0).save
 @bien_de_consumo_2 = BienDeConsumo.create!(nombre: "tijera", codigo: "2222", clase:@clase_1, stock_minimo: 0).save

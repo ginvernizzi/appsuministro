@@ -1,8 +1,7 @@
 class PartidaPrincipal < ActiveRecord::Base
   belongs_to :inciso
   has_many :partidas_parciales
-
-  validates :nombre, presence: true , uniqueness: true
+  
   validates :inciso, presence: true
 
   validates_length_of :codigo, :minimum => 1, :maximum => 1, :allow_blank => false

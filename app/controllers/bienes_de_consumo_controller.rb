@@ -2,13 +2,13 @@ class BienesDeConsumoController < ApplicationController
   before_action :set_bien_de_consumo, only: [:show, :destroy]
 
   def index
-    @bienes_de_consumo = BienDeConsumo.includes(:clase).where("bienes_de_consumo.fecha != null").order("clases.nombre")      
+    @bienes_de_consumo = BienDeConsumo.includes(:clase).where("bienes_de_consumo.fecha_de_baja IS NULL").order("clases.nombre")      
   end
 
   def new
   	@bien_de_consumo = BienDeConsumo.new
   	@incisos = Inciso.all
-	@partidas_principales = PartidaPrincipal.all
+	  @partidas_principales = PartidaPrincipal.all
   	@partidas_parciales = PartidaParcial.all
   	@clases = Clase.all
   	@bienes_de_consumo = BienDeConsumo.all
@@ -90,7 +90,7 @@ class BienesDeConsumoController < ApplicationController
 
   def destroy    
     respond_to do |format|
-      if @bien_de_consumo.update(fecha: DateTime.now)       
+      if @bien_de_consumo.update(fecha_de_baja: DateTime.now)       
         flash[:notice] = 'El Bien de consumo fue dado de baja exitosamente.'
       else      
         flash[:notice] = 'Ha ocurrido un error. El Bien de consumo no pudo ser dado de baja'     
@@ -108,6 +108,6 @@ class BienesDeConsumoController < ApplicationController
   end
 
   def bien_de_consumo_params
-	params.require(:bien_de_consumo).permit(:nombre, :codigo, :detalle_adicional, :unidad_de_medida, :clase_id, :fecha)
+	params.require(:bien_de_consumo).permit(:nombre, :codigo, :detalle_adicional, :unidad_de_medida, :clase_id, :fecha, :stock_minimo)
   end
 end

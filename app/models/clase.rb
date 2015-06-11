@@ -1,7 +1,7 @@
 class Clase < ActiveRecord::Base
   belongs_to :partida_parcial
 
-  has_many :bienes_de_consumo
+  has_many :bienes_de_consumo, -> { where("bienes_de_consumo.fecha_de_baja IS NULL") }
 
   validates :codigo, presence: true
   validates :nombre, presence: true 
@@ -16,13 +16,11 @@ class Clase < ActiveRecord::Base
   validates_uniqueness_of :nombre, scope: :partida_parcial_id, :message => "de clase ya existe para esa partida parcial"  
 
   before_destroy :check_for_bienes_de_consumo
-  private 
 
-	def check_for_bienes_de_consumo
+	def tiene_items_asociados
 	  if self.bienes_de_consumo.count > 0 		
-	   self.errors[:base] << "No se puede eliminar el item mientras tenga elementos asociados"
-	   return false
+	   self.errors[:base] << "No se puede dar de baja el item mientras tenga elementos asociados"
+	   return true
 	  end
 	end  
-
 end

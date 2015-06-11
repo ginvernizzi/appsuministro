@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20150608233047) do
     t.text     "detalle_adicional"
     t.string   "unidad_de_medida"
     t.integer  "clase_id"
-    t.datetime "fecha"
+    t.datetime "fecha_de_baja"
     t.integer  "stock_minimo"
   end
 

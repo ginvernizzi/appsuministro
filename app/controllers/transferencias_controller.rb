@@ -98,18 +98,18 @@ class TransferenciasController < ApplicationController
 
         @transferencia_data["bienes_tabla"].each do |bien|           
           
-          @bien_de_consumo = BienDeConsumoDeRecepcion.find(bien["Id"]) 
+          @bien_de_consumo = BienDeConsumo.find(bien["Id"]) 
           deposito = Deposito.find(bien["DepoId"]) 
 
-          @transferencia.bienes_de_consumo_para_transferir.build(cantidad:bien["Cantidad a transferir"], costo: @bien_de_consumo.costo, 
+          @transferencia.bienes_de_consumo_para_transferir.build(cantidad:bien["Cantidad a transferir"], costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo, 
                                                                  bien_de_consumo_id: @bien_de_consumo.id, deposito: deposito)
 
 
-          costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: @bien_de_consumo.costo,        
+          costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,        
                                              usuario: current_user.name, origen: "2" )
           costo_de_bien.save
 
-          @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id:  @bien_de_consumo.id, costo: @bien_de_consumo.costo,
+          @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id:  @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,
                                                 usuario: current_user.name, origen: "2" )      
           @costo_de_bien_historico.save
         end    

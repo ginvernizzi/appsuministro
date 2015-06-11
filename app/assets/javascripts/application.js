@@ -33,9 +33,9 @@ $(document).on("ready page:load", function() {
     jQuery(function() {
       var bienes, llenarBienes;
       llenarBienes = function(bienes) {
-        var inciso, options;
-        inciso = $('#categoria_clase_id :selected').text();
-        options = $(bienes).filter("optgroup[label='" + inciso + "']").html();
+        var clase, options;
+        clase = $('#categoria_clase_id :selected').text();
+        options = $(bienes).filter("optgroup[label='" + clase + "']").html();
         if (options) {
           $('#categoria_bien_de_consumo_id').html('<option value="">seleccione...</option>');
           return $('#categoria_bien_de_consumo_id').append(options);

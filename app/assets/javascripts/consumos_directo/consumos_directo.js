@@ -252,7 +252,6 @@ $(document).on("ready page:load", function() {
     $("#consumo_directo_deposito_id").val("");
     $("#consumo_directo_deposito_deposito_id").val("");
     
-    //$("#consumo_directo_deposito_id option:selected" ).text("");
   }
 
   (function() {

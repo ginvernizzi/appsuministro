@@ -80,9 +80,9 @@ before_action :setear_fijos_arbol, only: [:new]
     def setear_fijos_arbol
         # @incisos = Inciso.all
         # @partidas_principales = PartidaPrincipal.all
-        # @partidas_parciales = PartidaParcial.all
+        # @partidas_parciales = PartidaParcial.all       
         @clases = Clase.all
-        @bienes_de_consumo = BienDeConsumo.all
+        @bienes_de_consumo = BienDeConsumo.where("fecha_de_baja IS NULL")
     end
 
     def set_bien_de_consumo_de_recepcion      
