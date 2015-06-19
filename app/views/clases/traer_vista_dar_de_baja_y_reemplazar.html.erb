@@ -1,0 +1,11 @@
+<h1>Dar de baja y reemplazar por nueva Clase</h1>
+<h4  align="center">  
+  <strong>Codigo:</strong>
+  <%= Clase.find(params[:clase_id]).codigo %>
+  <strong>Nombre:</strong>
+  <%= Clase.find(params[:clase_id]).nombre %>
+</h4>
+</br>
+</br>
+
+<%= render 'form_reemplazar_clase' %>

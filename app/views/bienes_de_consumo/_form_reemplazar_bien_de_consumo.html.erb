@@ -1,0 +1,54 @@
+<%= form_for(@bien_de_consumo, 
+             url:  dar_de_baja_y_reemplazar_bienes_de_consumo_path, 
+             html: {method: "put"}) do |f| %>
+  <% if @bien_de_consumo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bien_de_consumo.errors.count, "error") %> el Bien no pudo ser reemplzado correctamente:</h2>
+
+      <ul>
+      <% @bien_de_consumo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="row">
+    <div class="col-md-4">  
+      <div class="field">
+        <%= f.label :clase%><br /> 
+        <%= f.collection_select :clase_id, @clases, :id, :nombre, :prompt => "seleccione..." %>  
+      </div>
+      <div class="field">
+        <%= f.label :codigo, "Codigo (4 caracter)" %><br>
+        <%= f.text_field :codigo %>
+      </div>
+      <div class="field">
+        <%= f.label :nombre %><br>
+        <%= f.text_area :nombre %>
+        <input type="button" value="Buscar similares" id="buscar_clases_con_nombres_bienes_repetidos">  
+      </div>
+      <div class="field">
+        <%= f.label :unidad_de_medida %><br>
+        <%= f.text_field :unidad_de_medida %>
+      </div>
+      <div class="field">
+        <%= f.label :detalle_adicional %><br>
+        <%= f.text_area :detalle_adicional %>    
+      </div>
+      <div class="field">
+        <%= f.label :stock_minimo %><br>
+        <%= f.text_field :stock_minimo %>
+      </div>
+    </div>
+
+    <div class="col-md-4">  
+      <div id="titulo"> </div> 
+      <div id="tabla_items_existentes"> </div>   
+    </div>      
+  </div>
+
+   <div class="actions">
+        <%= f.submit %>
+      </div>   
+<% end %>
