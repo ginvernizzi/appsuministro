@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608233047) do
+ActiveRecord::Schema.define(version: 20150618204822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -234,6 +234,28 @@ ActiveRecord::Schema.define(version: 20150608233047) do
     t.datetime "updated_at"
     t.text     "descripcion_rechazo"
   end
+
+  create_table "reemplazos_bdc", force: :cascade do |t|
+    t.integer  "bdc_viejo_id"
+    t.integer  "bdc_nuevo_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "reemplazos_bdc", ["bdc_nuevo_id"], name: "index_reemplazos_bdc_on_bdc_nuevo_id", using: :btree
+  add_index "reemplazos_bdc", ["bdc_viejo_id", "bdc_nuevo_id"], name: "index_reemplazos_bdc_on_bdc_viejo_id_and_bdc_nuevo_id", unique: true, using: :btree
+  add_index "reemplazos_bdc", ["bdc_viejo_id"], name: "index_reemplazos_bdc_on_bdc_viejo_id", using: :btree
+
+  create_table "reemplazos_clase", force: :cascade do |t|
+    t.integer  "clase_vieja_id"
+    t.integer  "clase_nueva_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "reemplazos_clase", ["clase_nueva_id"], name: "index_reemplazos_clase_on_clase_nueva_id", using: :btree
+  add_index "reemplazos_clase", ["clase_vieja_id", "clase_nueva_id"], name: "index_reemplazos_clase_on_clase_vieja_id_and_clase_nueva_id", unique: true, using: :btree
+  add_index "reemplazos_clase", ["clase_vieja_id"], name: "index_reemplazos_clase_on_clase_vieja_id", using: :btree
 
   create_table "reportes_a_fecha", force: :cascade do |t|
     t.date     "fecha"

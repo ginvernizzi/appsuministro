@@ -187,9 +187,9 @@ class TransferenciasController < ApplicationController
         puts "**********SUMA************** #{@item_stock[0].cantidad} + #{bdcdr["Cantidad a transferir"].to_i}"           
         @item_stock[0].update(cantidad: suma)              
       else             
-        bien_de_consumo = BienDeConsumoDeRecepcion.find(bdcdr["Id"]) 
+        bien_de_consumo = BienDeConsumoDeRecepcion.where(bien_de_consumo: bdcdr["Id"]) 
         costo_nuevo = guardar_costos(bien_de_consumo)          
-        @item_stock = ItemStock.create!(bien_de_consumo: bien_de_consumo.bien_de_consumo, cantidad: bdcdr["Cantidad a transferir"].to_i, costo_de_bien_de_consumo:costo_nuevo, deposito: deposito)                                
+        @item_stock = ItemStock.create!(bien_de_consumo: bien_de_consumo[0].bien_de_consumo, cantidad: bdcdr["Cantidad a transferir"].to_i, costo_de_bien_de_consumo:costo_nuevo, deposito: deposito)                                
         @item_stock.save                                          
       end                        
     end                                    
@@ -233,19 +233,19 @@ class TransferenciasController < ApplicationController
 
     def guardar_costos(bdcdr)
       costo = CostoDeBienDeConsumo.new
-      costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
+      costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr[0].bien_de_consumo.id)
       if costoArray && costoArray.count > 0
-        if bdcdr.costo > costoArray[0].costo                   
-          costoArray[0].update(costo: bdcdr.costo)                
+        if bdcdr[0].costo > costoArray[0].costo                   
+          costoArray[0].update(costo: bdcdr[0].costo)                
         end
         costo = costoArray[0]
       else      
-        costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                              fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')       
+        costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr[0].bien_de_consumo, 
+                                              fecha: DateTime.now, costo: bdcdr[0].costo, usuario: current_user.name, origen: '2')       
         costo.save                 
       end                                         
-      @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                                              fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2') 
+      @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr[0].bien_de_consumo, 
+                                                              fecha: DateTime.now, costo: bdcdr[0].costo, usuario: current_user.name, origen: '2') 
       @costo_historico.save
 
       return costo        

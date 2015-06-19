@@ -43,4 +43,7 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'partida_parcial', 'partidas_parciales'
   inflect.irregular 'clase', 'clases'
 
+  inflect.irregular 'reemplazo_bdc', 'reemplazos_bdc'
+  inflect.irregular 'reemplazo_clase', 'reemplazos_clase'
+
 end

@@ -62,12 +62,11 @@ class BienesDeConsumoController < ApplicationController
         format.json { render json: @bien_de_consumo.errors, status: :unprocessable_entity }
       end
     end
-  end
-
+  end  
 
   def traer_clases_con_codigo_de_bien_existente
     codigo = params[:codigo]        
-    @clases = Clase.joins(:bienes_de_consumo).where("bienes_de_consumo.codigo = ?", codigo)      
+    @clases = Clase.joins(:bienes_de_consumo).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.codigo = ?", codigo)      
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
@@ -79,7 +78,7 @@ class BienesDeConsumoController < ApplicationController
   
   def traer_clases_con_nombre_de_bien_de_consumo_similar
     nombre = params[:nombre]        
-    @clases = Clase.joins(:bienes_de_consumo).where("bienes_de_consumo.nombre ILIKE ?", "%#{nombre}%")      
+    @clases = Clase.joins(:bienes_de_consumo).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.nombre ILIKE ?", "%#{nombre}%")      
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
@@ -99,6 +98,29 @@ class BienesDeConsumoController < ApplicationController
       format.html { redirect_to bienes_de_consumo_path }
       format.json { head :no_content }
     end 
+  end
+
+  def traer_vista_dar_de_baja_y_reemplazar   
+    @clases = Clase.where("clases.fecha_de_baja IS NULL")
+    @bien_de_consumo = BienDeConsumo.new
+  end
+
+  def dar_de_baja_y_reemplazar_bienes_de_consumo      
+    @bien_de_consumo_erroneo = BienDeConsumo.find(params[:bien_de_consumo_id])        
+    @bien_de_consumo = BienDeConsumo.new(bien_de_consumo_params)       
+    @reemplazo_bdc = ReemplazoBdc.new(bdc_viejo_id:@bien_de_consumo_erroneo.id, bdc_nuevo_id:@bien_de_consumo.id)
+    
+    respond_to do |format|      
+        if @bien_de_consumo.save && @bien_de_consumo_erroneo.update(fecha_de_baja: DateTime.now) && @reemplazo_bdc.save                                  
+          format.html { redirect_to bienes_de_consumo_path, notice: 'Se ha reemplazado el Bien de consumo exitosamente.' }
+        else            
+          @clases = Clase.where("clases.fecha_de_baja IS NULL")
+          @bienes_de_consumo = BienDeConsumo.where("bienes_de_consumo.fecha_de_baja IS NULL")
+                        
+          format.html { render :traer_vista_dar_de_baja_y_reemplazar }        
+          format.json { render json: @bien_de_consumo.errors, status: :unprocessable_entity }      
+        end      
+    end
   end
 
   private

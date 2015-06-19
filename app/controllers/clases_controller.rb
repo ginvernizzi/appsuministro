@@ -55,22 +55,22 @@ class ClasesController < ApplicationController
     end
   end
 
-  # DELETE /clases/1
-  # DELETE /clases/1.json
-  def destroy
-     respond_to do |format|
-        if !@clase.tiene_items_asociados 
-          if @clase.update(fecha_de_baja: DateTime.now)       
-            flash[:notice] = 'La Clase fue dada de baja exitosamente.'
-          else      
-            flash[:notice] =  @clase.errors[:base].to_s            
-          end 
-        else 
-          flash[:notice] =  @clase.errors[:base].to_s            
+
+    def destroy    
+    respond_to do |format|
+      if !@clase.tiene_items_asociados
+        if @clase.update(fecha_de_baja: DateTime.now)       
+          flash[:notice] = 'La clase fue dada de baja exitosamente.'
+        else      
+          flash[:notice] = 'Ha ocurrido un error. La clase no pudo ser dado de baja'     
         end
-        format.html { redirect_to clases_path }
-        format.json { head :no_content }
-      end 
+      else
+        flash[:alert] = 'La clase tiene items asociados. No se puedo eliminar'        
+        #@clase.errors[:error] << "This person is invalid because ..."          
+      end        
+
+      format.html { redirect_to clases_path }      
+    end 
   end
       
   def traer_partidas_parciales_con_codigo_de_clase_existente
@@ -94,6 +94,28 @@ class ClasesController < ApplicationController
     respond_to do |format|   
       format.js { }
     end 
+  end
+
+def traer_vista_dar_de_baja_y_reemplazar   
+    @partidas_parciales = PartidaParcial.all
+    @clase = Clase.new
+  end
+
+  def dar_de_baja_y_reemplazar      
+    @clase_erronea = Clase.find(params[:clase_id])        
+    @clase = Clase.new(clase_params) 
+    @clase.bienes_de_consumo = @clase_erronea.bienes_de_consumo
+    
+    respond_to do |format|            
+      if @clase_erronea.update(fecha_de_baja: DateTime.now) && @clase.save              
+        @reemplazo_clase = ReemplazoClase.new(clase_vieja_id:@clase_erronea.id, clase_nueva_id:@clase.id).save        
+        format.html { redirect_to clases_path, notice: 'Se ha reemplazado la clase exitosamente.' }
+      else            
+        @partidas_parciales = PartidaParcial.all                                
+        format.html { render :traer_vista_dar_de_baja_y_reemplazar }        
+        format.json { render json: @clase.errors, status: :unprocessable_entity }      
+      end      
+    end
   end
 
   private

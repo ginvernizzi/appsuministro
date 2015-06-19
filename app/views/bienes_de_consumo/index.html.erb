@@ -17,8 +17,9 @@
         <td><%= bien_de_consumo.nombre %></td>
         <td><%= bien_de_consumo.clase.nombre %></td>
         <td><%= link_to 'Ver', bien_de_consumo %></td>
-        <td><%= link_to 'Modificar', edit_bien_de_consumo_path(bien_de_consumo) %></td>        
-       <td><%= link_to 'Eliminar', bien_de_consumo, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>        
+        <td><%= link_to 'Modificar', edit_bien_de_consumo_path(bien_de_consumo) %></td>                
+       <td><%= link_to 'Dar de baja', bien_de_consumo, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>
+       <td><%= link_to 'Dar de baja y reemplazar', traer_vista_dar_de_baja_y_reemplazar_bienes_de_consumo_path(bien_de_consumo), data: { confirm: '¿Estas seguro?' } %></td>        
       </tr>
     <% end %>
   </tbody>

@@ -9,6 +9,14 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'clases/:clase_id/traer_vista_dar_de_baja_y_reemplazar/',  
+                                to: 'clases#traer_vista_dar_de_baja_y_reemplazar',
+                                as: 'traer_vista_dar_de_baja_y_reemplazar_clases'  
+                                
+  put 'clases/:clase_id/dar_de_baja_y_reemplazar/',  
+                                to: 'clases#dar_de_baja_y_reemplazar',
+                                as: 'dar_de_baja_y_reemplazar_clases'      
+
   resources :partidas_parciales
 
   resources :partidas_principales
@@ -34,11 +42,17 @@ Rails.application.routes.draw do
       resources :items_stock do
         post 'imprimir_formulario_stock_total_por_bien_y_area' 
       end
-      # resources :consumos_directo do
-      #   post 'imprimir_formulario_consumos_por_codigo_destino_y_fecha' 
-      # end
     end
   end
+
+
+  get 'bienes_de_consumo/:bien_de_consumo_id/traer_vista_dar_de_baja_y_reemplazar/',  
+                                to: 'bienes_de_consumo#traer_vista_dar_de_baja_y_reemplazar',
+                                as: 'traer_vista_dar_de_baja_y_reemplazar_bienes_de_consumo'  
+                                
+  put 'bienes_de_consumo/:bien_de_consumo_id/dar_de_baja_y_reemplazar_bienes_de_consumo/',  
+                                to: 'bienes_de_consumo#dar_de_baja_y_reemplazar_bienes_de_consumo',
+                                as: 'dar_de_baja_y_reemplazar_bienes_de_consumo'                              
 
   resources :personas
 
