@@ -1,0 +1,33 @@
+<h1>Items dados de baja y sus reemplazos</h1>
+
+<table class="table">
+  <thead>  	
+  	 <tr>     				
+			     <th>Items dados de baja</th>         						      								
+			     <th></th>      
+								<th>Items dados de alta</th>    
+    </tr>       
+    <tr>    				
+			     <th>Codigo</th>      
+			     <th>Nombre</th> 
+			     <th>Codigo</th>
+			     <th>Nombre</th>     
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reemplazos_bdc.each do |reemplazo| %>
+      <tr>
+        <td><%= reemplazo.bdc_viejo.codigo %></td>
+        <td><%= reemplazo.bdc_viejo.nombre %></td>     
+        <td><%= reemplazo.bdc_nuevo.codigo %></td>
+        <td><%= reemplazo.bdc_nuevo.nombre %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nueva asociacion', new_reemplazo_bdc_path %>
+

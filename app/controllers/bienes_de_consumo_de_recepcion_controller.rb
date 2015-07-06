@@ -81,7 +81,7 @@ before_action :setear_fijos_arbol, only: [:new]
         # @incisos = Inciso.all
         # @partidas_principales = PartidaPrincipal.all
         # @partidas_parciales = PartidaParcial.all       
-        @clases = Clase.all
+        @clases = Clase.where("fecha_de_baja IS NULL")
         @bienes_de_consumo = BienDeConsumo.where("fecha_de_baja IS NULL")
     end
 

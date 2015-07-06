@@ -1,0 +1,65 @@
+<div id="form_reemplazo_bdc">  
+    <% if @reemplazo_bdc.errors.any? %>
+      <div id="error_explanation">
+      <h2><%= pluralize(@reemplazo_bdc.errors.count, "error") %> la asociacion no pudo ser creada:</h2>
+      <ul>
+      <% @reemplazo_bdc.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>  
+      </div>     
+    <% end %>  
+
+  <div class="row">
+    <div class="col-md-4">  
+      <p> Seleccionar Item dado de baja por nombre o codigo <p>
+        <div class="field"> 
+          <%= label_tag :clase, "Clase" %><br>
+          <%= collection_select(:clase_seleccionada, "id", Clase.where("fecha_de_baja IS NULL"), "id", "nombre", :include_blank => "Seleccione...") %>        
+        </div>                            
+        <div>         
+            <%= hidden_field_tag 'bien_de_consumo_viejo_id' %>
+        </div>
+        <div class="field">
+          <%= label :Bien_de_consumo, "Bien de consumo" %> <br />   
+        </div> 
+        <input id="bien_de_consumo_viejo"></input>             
+
+        <div class="field">        
+          <%= label(:codigo_viejo ,"Codigo (4 caracteres)") %><br>        
+          <%= text_field_tag :codigo_viejo, nil %>
+        </div>    
+        <div class="field">  
+          <input type="button" id="obtener_bien_de_consumo_viejo" value="Obtener"/>
+        </div>   
+    </div>      
+
+
+    <div class="col-md-6">  
+      <p> Seleccionar Item dado de alta por nombre o codigo <p>
+        <div class="field"> 
+          <%= label_tag :clase, "Clase" %><br>
+          <%= collection_select(:clase_seleccionada_nueva, "id", Clase.where("fecha_de_baja IS NULL"), "id", "nombre", :include_blank => "Seleccione...") %>        
+        </div>                            
+        <div class="field">
+          <%= label :Bien_de_consumo, "Bien de consumo" %> <br />   
+        </div> 
+        <div>         
+            <%= hidden_field_tag 'bien_de_consumo_nuevo_id' %>
+        </div>
+            <input id="bien_de_consumo_nuevo"> </input>             
+        <div class="field">        
+          <%= label(:codigo_nuevo ,"Codigo (4 caracteres)") %><br>        
+          <%= text_field_tag :codigo_nuevo, nil %>
+        </div>    
+        <div class="field">  
+          <input type="button" id="obtener_bien_de_consumo_nuevo" value="Obtener"/>
+        </div>   
+
+    </div>         
+  </div>
+
+     <div class="actions">
+      <input type="button" value="Aceptar" class="" id="crear_reemplazo_item">
+    </div>   
+  </div>

@@ -1,4 +1,4 @@
-$(document).on("ready page:load", function() {
+$(document).on("ready page:load", function() {  
  
   //$("#clase_codigo").keypress(function(){   
   $("#bien_de_consumo_codigo").on("keyup", function(e) {
@@ -12,7 +12,7 @@ $(document).on("ready page:load", function() {
         $('#titulo').html("")          
         $('#tabla_items_existentes').html("") 
       }         
-  }); 
+  });   
 
   function buscar_codigos_existentes(codigo)
   {   

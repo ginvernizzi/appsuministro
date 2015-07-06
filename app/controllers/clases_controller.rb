@@ -54,31 +54,28 @@ class ClasesController < ApplicationController
       end
     end
   end
-
-
-    def destroy    
+  
+  def destroy    
     respond_to do |format|
-      if !@clase.tiene_items_asociados
-        if @clase.update(fecha_de_baja: DateTime.now)       
-          flash[:notice] = 'La clase fue dada de baja exitosamente.'
-        else      
-          flash[:notice] = 'Ha ocurrido un error. La clase no pudo ser dado de baja'     
+      if @clase.update(fecha_de_baja: DateTime.now)     
+        if @clase.tiene_items_asociados          
+            @clase.bienes_de_consumo.each do |bien|
+               bien.update(fecha_de_baja: DateTime.now) 
+            end            
         end
-      else
-        flash[:alert] = 'La clase tiene items asociados. No se puedo eliminar'        
-        #@clase.errors[:error] << "This person is invalid because ..."          
-      end        
-
-      format.html { redirect_to clases_path }      
+        flash[:notice] = 'La clase fue dada de baja exitosamente.'  
+      else    
+         flash[:notice] = 'La clase no pudo ser dada de baja.'      
+      end  
+      format.html { redirect_to clases_path }            
+      format.json { head :no_content }  
     end 
   end
       
   def traer_partidas_parciales_con_codigo_de_clase_existente
     codigo = params[:codigo]        
-    @partidas_parciales = PartidaParcial.joins(:clases).where("clases.codigo = ?", codigo)      
+    @partidas_parciales = PartidaParcial.joins(:clases).where("clases.fecha_de_baja IS NULL AND clases.codigo = ?", codigo)      
           
-    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
-    #render :partial => 'form_tabla_stock'
     respond_to do |format|   
       format.js { }
     end 
@@ -87,7 +84,7 @@ class ClasesController < ApplicationController
   
   def traer_partidas_parciales_con_nombre_de_clase_similar
     nombre = params[:nombre]        
-    @partidas_parciales = PartidaParcial.joins(:clases).where("clases.nombre ILIKE ?", "%#{nombre}%")      
+    @partidas_parciales = PartidaParcial.joins(:clases).where("clases.fecha_de_baja IS NULL AND clases.nombre ILIKE ?", "%#{nombre}%")      
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'

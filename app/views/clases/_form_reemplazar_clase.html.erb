@@ -13,7 +13,7 @@
     </div>
   <% end %>
   
- <div class="row">
+<div class="row">
   <div class="col-md-4">  
       <div class="field">
           <%= f.label :partida_parcial%><br /> 
@@ -27,16 +27,16 @@
         <%= f.label :nombre %><br>
         <%= f.text_area :nombre %>
         <input type="button" value="Buscar similares" id="buscar_nombres_repetidos">   
-      </div>
-
-      <div class="actions">
-        <%= f.submit %>
-      </div>
-      <%= link_to 'Volver', clases_path %>
-    </div>
-    <div class="col-md-4">  
-      <div id="titulo"> </div> 
-      <div id="tabla_items_existentes"> </div>   
-    </div>   
+      </div>      
   </div>
+
+  <div class="col-md-4">  
+    <div id="titulo"> </div> 
+    <div id="tabla_items_existentes"> </div>   
+  </div>   
+</div>
+
+<div class="actions">
+  <%= f.submit %>
+</div>      
 <% end %>

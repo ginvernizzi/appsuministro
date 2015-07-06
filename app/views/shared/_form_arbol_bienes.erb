@@ -1,11 +1,11 @@
 	<div class="field">	
 	<%= label_tag :clase, "Clase" %><br>
- 	<%= collection_select(:categoria, "clase_id", @clases, "id", "nombre", :include_blank => "Seleccione...") %> 
+ 	<%= collection_select(:categoria, "clase_id", Clase.where("fecha_de_baja IS NULL"), "id", "nombre", :include_blank => "Seleccione...") %> 
  		   
 	</div>  	
 
 	<div class="field">			
 		<%= label_tag :bien_de_consumo, "Bien de consumo" %><br>
-	  <%= grouped_collection_select(:categoria, :bien_de_consumo_id, @clases, :bienes_de_consumo, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>
+	  <%= grouped_collection_select(:categoria, :bien_de_consumo_id, Clase.where("fecha_de_baja IS NULL"), :bienes_de_consumo, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>
 	</div>
 

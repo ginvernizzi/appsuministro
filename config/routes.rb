@@ -1,5 +1,31 @@
 Rails.application.routes.draw do
    
+  get 'reemplazo_clase/index'
+
+  resources :reemplazo_bdc , only: [:index, :new] do
+    collection do       
+      get 'autocomplete_bien_de_consumo_dado_de_baja_nombre_by_clase'
+      get 'autocomplete_bien_de_consumo_dado_de_alta_nombre_by_clase'
+      post 'traer_item_dado_de_baja_por_nombre'
+      post 'traer_item_dado_de_alta_por_nombre'      
+      post 'traer_bien_dado_de_baja_por_clase'
+      post 'traer_bien_dado_de_alta_por_clase'      
+      post 'crear_reemplazo_de_bien_manual'
+    end    
+  end
+
+  resources :reemplazo_clase , only: [:index, :new] do
+    collection do       
+      get 'autocomplete_clase_dada_de_baja_nombre_por_partida_parcial'
+      get 'autocomplete_clase_dada_de_alta_nombre_por_partida_parcial'
+      post 'traer_clase_dada_de_baja_por_nombre'
+      post 'traer_clase_dada_de_alta_por_nombre'      
+      post 'traer_clase_dada_de_baja_por_partida_parcial'
+      post 'traer_clase_dada_de_alta_por_partida_parcial'      
+      post 'crear_reemplazo_de_clase_manual'
+    end    
+  end
+
   resources :foo  
     
   resources :clases do 
@@ -141,7 +167,7 @@ Rails.application.routes.draw do
                                                             as: 'imprimir_formulario_consumos_por_codigo_destino_y_fecha'
 
   resources :obras_proyectos  
-  
+
 
   resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show] do 
     resources :items_stock , only: [:new, :create]

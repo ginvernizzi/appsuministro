@@ -10,7 +10,7 @@ class BienesDeConsumoController < ApplicationController
   	@incisos = Inciso.all
 	  @partidas_principales = PartidaPrincipal.all
   	@partidas_parciales = PartidaParcial.all
-  	@clases = Clase.all
+  	@clases = Clase.where('clases.fecha_de_baja IS NULL')
   	@bienes_de_consumo = BienDeConsumo.all
   end
 
@@ -24,8 +24,7 @@ class BienesDeConsumoController < ApplicationController
     respond_to do |format|   
 		case categoria
 		when "inciso"
-	  		@inciso = Inciso.new	  	 	      
-	   
+	  		@inciso = Inciso.new	  	 	      	   
 		when "partida_principal"
 	  		@partida_principal = PartidaPrincipal.new 
 		when "partida_parcial"
@@ -107,12 +106,13 @@ class BienesDeConsumoController < ApplicationController
 
   def dar_de_baja_y_reemplazar_bienes_de_consumo      
     @bien_de_consumo_erroneo = BienDeConsumo.find(params[:bien_de_consumo_id])        
-    @bien_de_consumo = BienDeConsumo.new(bien_de_consumo_params)       
-    @reemplazo_bdc = ReemplazoBdc.new(bdc_viejo_id:@bien_de_consumo_erroneo.id, bdc_nuevo_id:@bien_de_consumo.id)
+    @bien_de_consumo = BienDeConsumo.new(bien_de_consumo_params)           
     
     respond_to do |format|      
-        if @bien_de_consumo.save && @bien_de_consumo_erroneo.update(fecha_de_baja: DateTime.now) && @reemplazo_bdc.save                                  
-          format.html { redirect_to bienes_de_consumo_path, notice: 'Se ha reemplazado el Bien de consumo exitosamente.' }
+        if @bien_de_consumo_erroneo.update(fecha_de_baja: DateTime.now) && @bien_de_consumo.save
+           @reemplazo_bdc = ReemplazoBdc.new(bdc_viejo_id:@bien_de_consumo_erroneo.id, bdc_nuevo_id:@bien_de_consumo.id)
+           @reemplazo_bdc.save                                              
+           format.html { redirect_to bienes_de_consumo_path, notice: 'Se ha reemplazado el Bien de consumo exitosamente.' }                    
         else            
           @clases = Clase.where("clases.fecha_de_baja IS NULL")
           @bienes_de_consumo = BienDeConsumo.where("bienes_de_consumo.fecha_de_baja IS NULL")

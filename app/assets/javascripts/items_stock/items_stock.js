@@ -8,6 +8,7 @@ $(document).on("ready page:load", function() {
   $("#area_id").val(data.item.id);         
  })
 
+
    $("#traer_todos_los_items_stock").on('click', function() {                
     traer_todos_los_items_de_stock();
    });

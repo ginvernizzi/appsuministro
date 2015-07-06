@@ -1,0 +1,65 @@
+<div id="form_reemplazo_clase">
+  <% if @reemplazo_clase.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@reemplazo_clase.errors.count, "error") %> la asociacion no pudo ser creada:</h2>
+      <ul>
+      <% @reemplazo_clase.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-4">  
+      <p> Seleccionar Clase dada de baja por nombre o codigo <p>
+        <div class="field"> 
+          <%= label_tag :partida_parcial, "Partida parcial" %><br>
+          <%= collection_select(:partida_parcial_seleccionada_vieja, "id", PartidaParcial.all, "id", "nombre", :include_blank => "Seleccione...") %>        
+        </div>                            
+        <div>         
+            <%= hidden_field_tag 'clase_vieja_id' %>
+        </div>
+        <div class="field">
+          <%= label :clase, "Clase" %> <br />   
+        </div> 
+        <input id="clase_vieja"></input>             
+
+        <div class="field">        
+          <%= label(:codigo_viejo ,"Codigo (4 caracteres)") %><br>        
+          <%= text_field_tag :codigo_viejo, nil %>
+        </div>    
+        <div class="field">  
+          <input type="button" id="obtener_clase_vieja" value="Obtener"/>
+        </div>   
+    </div>      
+
+
+    <div class="col-md-6">  
+      <p> Seleccionar Clase dada de alta por nombre o codigo <p>
+        <div class="field"> 
+          <%= label_tag :partida_parcial, "Partida parcial" %><br>
+          <%= collection_select(:partida_parcial_seleccionada_nueva, "id", PartidaParcial.all, "id", "nombre", :include_blank => "Seleccione...") %>        
+        </div>                            
+        <div class="field">
+          <%= label :clase, "Clase" %> <br />   
+        </div> 
+        <div>         
+            <%= hidden_field_tag 'clase_nueva_id' %>
+        </div>
+            <input id="clase_nueva"> </input>             
+        <div class="field">        
+          <%= label(:codigo_nuevo ,"Codigo (4 caracteres)") %><br>        
+          <%= text_field_tag :codigo_nuevo, nil %>
+        </div>    
+        <div class="field">  
+          <input type="button" id="obtener_clase_nueva" value="Obtener"/>
+        </div>   
+
+    </div>         
+  </div>
+
+     <div class="actions">
+      <input type="button" value="Aceptar" class="" id="crear_reemplazo">
+    </div>   
+  </div>

@@ -3,6 +3,13 @@ class Clase < ActiveRecord::Base
 
   has_many :bienes_de_consumo, -> { where("bienes_de_consumo.fecha_de_baja IS NULL") }
 
+
+  has_one :reemplazo_nuevo, class_name: "ReemplazoClase", foreign_key: "clase_vieja_id"
+  has_one :reemplazo_viejo, class_name: "ReemplazoClase", foreign_key: "clase_nueva_id"
+  has_one :clase_vieja, through: :reemplazo_viejo, source: :clase_vieja
+  has_one :clase_nueva, through: :reemplazo_nuevo, source: :clase_nueva    
+
+
   validates :codigo, presence: true
   validates :nombre, presence: true 
 
@@ -12,26 +19,9 @@ class Clase < ActiveRecord::Base
   validates_numericality_of :codigo, :only_integer => true, :allow_nil => true, 
     :message => "admite solo numeros."  
 
-  #validates :codigo, :uniqueness => {:message => 'existente para la Partida Parcial', :scope => :partida_parcial_id, if :fecha_de_baja?}
-  #validates :nombre, :uniqueness => {:message => 'existente para la Partida Parcial', :scope => :partida_parcial_id, if :fecha_de_baja?}
-
-  #validates_uniqueness_of :codigo, scope: :partida_parcial_id, :message => "de clase ya existe para esa partida parcial", :if => :valFecha_baja?0  
-  #validates_uniqueness_of :nombre, scope: :partida_parcial_id, :message => "de clase ya existe para esa partida parcial", :if => :valFecha_baja?
-
-  validates_uniqueness_of :codigo, scope: :partida_parcial_id, :message => "de clase ya existe para esa partida parcial", conditions: -> { where('fecha_de_baja: IS NULL') }
-  validates_uniqueness_of :nombre, scope: :partida_parcial_id, :message => "de clase ya existe para esa partida parcial", conditions: -> { where('fecha_de_baja: IS NULL') }
-
-
-  def valFecha_baja?
-      if fecha_de_baja? 
-        puts "TRUEEEEEEEEEEEE"
-        return true # skip the validation        
-      else 
-        puts "FAAAAALSEEEEEEE"
-        return false # run the validation
-      end
-  end
-
+  validates :codigo, :uniqueness => {:message => 'existente para la Partida Parcial', :scope => [:partida_parcial_id, :fecha_de_baja] }
+  validates :nombre, :uniqueness => {:message => 'existente para la Partida Parcial', :scope => [:partida_parcial_id, :fecha_de_baja] }  
+  
   before_destroy :check_for_bienes_de_consumo
 
 	def tiene_items_asociados
