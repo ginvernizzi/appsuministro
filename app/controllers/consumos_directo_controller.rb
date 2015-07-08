@@ -308,7 +308,8 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def obtener_nombre_de_bien_de_consumo
-       ############
+          
+      ############
       @cod_inciso = params[:codigo].to_s.split('.')[0]                   
       @cod_p_principal = params[:codigo].to_s.split('.')[1]       
       @cod_p_parcial = params[:codigo].to_s.split('.')[2]       

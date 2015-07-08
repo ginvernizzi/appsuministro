@@ -40,10 +40,10 @@
               $("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val(data[0].id)                  
             }
             else
-              {  
-                alert("Bien de consumo inexistente");                
-                 blanquear_campos();  
-              }
+            {  
+              alert("Bien de consumo inexistente");                
+              blanquear_campos();  
+            }
           },
         error: function (request, status, error) {
           alert("Bien de consumo inexistente");

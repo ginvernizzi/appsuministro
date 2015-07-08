@@ -3,7 +3,7 @@ class CreateClases < ActiveRecord::Migration
     create_table :clases do |t|
       t.string :codigo, limit: 5
       t.string :nombre
-      t.references :partida_parcial, index: true
+      t.references :partida_parcial, index: true, foreign_key: true
 
       t.timestamps
     end

@@ -293,4 +293,8 @@ ActiveRecord::Schema.define(version: 20150618204822) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
+  add_foreign_key "bienes_de_consumo", "clases"
+  add_foreign_key "clases", "partidas_parciales"
+  add_foreign_key "partidas_parciales", "partidas_principales"
+  add_foreign_key "partidas_principales", "incisos"
 end

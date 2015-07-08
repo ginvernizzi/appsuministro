@@ -39,28 +39,45 @@ before_action :setear_fijos_arbol, only: [:new]
   end
 
   def obtener_nombre_de_bien_de_consumo               
-      ############
-      @cod_inciso = params[:codigo].to_s.split('.')[0]                   
-      @cod_p_principal = params[:codigo].to_s.split('.')[1]       
-      @cod_p_parcial = params[:codigo].to_s.split('.')[2]       
-      @cod_clase = params[:codigo].to_s.split('.')[3]       
-      @cod_bien_de_consumo = params[:codigo].to_s.split('.')[4]     
 
-      @inciso = Inciso.where(codigo: @cod_inciso)
-      
-      @p_principal = @inciso[0].partidas_principales.where(codigo: @cod_p_principal)
+        puts ">>>>>>>>>>>>>> #{params[:codigo].to_s}"
+        ############
+        @cod_inciso = params[:codigo].to_s.split('.')[0]                   
+        puts ">>>>>>>>>>>>>> #{@cod_inciso}"
+        @cod_p_principal = params[:codigo].to_s.split('.')[1]       
+        puts ">>>>>>>>>>>>>> #{@cod_p_principal}"
+        @cod_p_parcial = params[:codigo].to_s.split('.')[2] 
+        puts ">>>>>>>>>>>>>> #{@cod_p_parcial}"      
+        @cod_clase = params[:codigo].to_s.split('.')[3]   
+        puts ">>>>>>>>>>>>>> #{@cod_clase}"
+        @cod_bien_de_consumo = params[:codigo].to_s.split('.')[4]     
+        puts ">>>>>>>>>>>>>> #{@cod_bien_de_consumo}"
 
-      @p_parcial = @p_principal[0].partidas_parciales.where(codigo: @cod_p_parcial)
+        begin          
+          @inciso = Inciso.where(codigo: @cod_inciso)                                          
+          puts ">>>>>>>>>>>>>> #{@inciso[0].codigo}"
+                            
+          @p_principal = @inciso[0].partidas_principales.where(codigo: @cod_p_principal)                  
+          puts ">>>>>>>>>>>>>> #{@p_principal[0].codigo}"
 
-      @clase = @p_parcial[0].clases.where(codigo: @cod_clase)
+          @p_parcial = @p_principal[0].partidas_parciales.where(codigo: @cod_p_parcial)        
+          puts ">>>>>>>>>>>>>> #{@p_parcial[0].codigo}"
 
-      @array_bien_de_consumo = @clase[0].bienes_de_consumo.where(codigo: @cod_bien_de_consumo)
+          @clase = @p_parcial[0].clases.where('clases.fecha_de_baja IS NULL AND codigo = ?', @cod_clase)        
+          puts ">>>>>>>>>>>>>> #{@clase[0].codigo}"
+
+          @array_bien_de_consumo = @clase[0].bienes_de_consumo.where(codigo: @cod_bien_de_consumo)
+
+        rescue Exception
+          @array_bien_de_consumo = BienDeConsumo.new
+        end
 
       #############
       
       respond_to do | format |                                  
           format.json { render :json => @array_bien_de_consumo }        
       end
+
   end
 
   def obtener_codigo_de_bien_de_consumo              

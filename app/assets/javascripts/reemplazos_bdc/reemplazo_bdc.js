@@ -165,11 +165,11 @@ $(document).on("ready page:load", function() {
 
                         var container = jQuery(request.responseText).find('#error_explanation').html()
                         $('#error_explanation').html(container);
-                        eval(data);
+                        //eval(data);
 				}
 		    });       
     }); 
-
+    
 }); //FIN	
 
 							// <div id="form_reemplazo_bdc">  
