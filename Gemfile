@@ -14,7 +14,12 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
-group :development, :test do  
+group :development, :test do 
+  gem 'capistrano-rails'
+  gem 'capistrano-ssh-doctor'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rvm'
+  gem 'capistrano-passenger'
   gem 'minitest'
   gem 'shoulda-matchers'
   gem 'rspec-rails', '2.13.1'
