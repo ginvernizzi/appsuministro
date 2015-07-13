@@ -34,7 +34,7 @@ role :db,  %w{deploy@192.168.2.25}
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
-
+set :deploy_to, '/home/deploy/appsuministro'
 
 # Custom SSH Options
 # ==================

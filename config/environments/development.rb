@@ -50,11 +50,11 @@ Rails.application.configure do
     authentication:       'plain',
   enable_starttls_auto: true  }
 
-  config.middleware.use ExceptionNotification::Rack,
-  :email => {
-    :email_prefix => "[TNC Suministro Excepciones] ",
-    :sender_address => %{"TNC Suministro" <suministro_excepcion@teatrocervantes.gob.ar>},
-    :exception_recipients => %w{dtanel@gmail.com dtanel@teatrocervantes.gob.ar gsantacruz@teatrocervantes.gob.ar gonzalo.invernizzi@gmail.com}
-  }
+  # config.middleware.use ExceptionNotification::Rack,
+  # :email => {
+  #   :email_prefix => "[TNC Suministro Excepciones] ",
+  #   :sender_address => %{"TNC Suministro" <suministro_excepcion@teatrocervantes.gob.ar>},
+  #   :exception_recipients => %w{dtanel@gmail.com dtanel@teatrocervantes.gob.ar gsantacruz@teatrocervantes.gob.ar gonzalo.invernizzi@gmail.com}
+  # }
 
 end

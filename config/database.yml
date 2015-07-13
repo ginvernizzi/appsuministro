@@ -100,3 +100,10 @@ production:
   username: suministro
   #password: <%= ENV['APPSUMINISTRO_DATABASE_PASSWORD'] %>
   password: 123456
+
+staging:
+  <<: *default
+  database: appsuministro_staging
+  username: suministro
+  #password: <%= ENV['APPSUMINISTRO_DATABASE_PASSWORD'] %>
+  password: 123456

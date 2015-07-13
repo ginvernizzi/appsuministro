@@ -11,7 +11,6 @@ set :rvm_ruby_version, '2.2.2'
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, '/var/www/my_app_name'
-set :deploy_to, '/home/deploy/appsuministro'
 
 # Default value for :scm is :git
 # set :scm, :git

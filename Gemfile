@@ -20,6 +20,7 @@ group :development, :test do
   gem 'capistrano-bundler'
   gem 'capistrano-rvm'
   gem 'capistrano-passenger'
+  gem 'capistrano-postgresql'
   gem 'minitest'
   gem 'shoulda-matchers'
   gem 'rspec-rails', '2.13.1'
