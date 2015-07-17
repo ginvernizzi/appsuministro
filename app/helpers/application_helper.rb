@@ -39,7 +39,7 @@ module ApplicationHelper
     inciso = partida_principal.inciso
     cod_inciso = inciso.codigo    
 
-    codigo_completo = "#{cod_inciso}" + "." + "#{cod_partida_principal}" + "." + "#{cod_partida_parcial}" + "." + "#{cod_clase}" + "." + "#{cod_bien}"      
+    codigo_completo = "#{cod_inciso}" + "#{cod_partida_principal}" + "#{cod_partida_parcial}" + "." + "#{cod_clase}" + "." + "#{cod_bien}"      
 
     return codigo_completo
   end 
@@ -69,7 +69,7 @@ module ApplicationHelper
       codigo_partida_parcial = "#{clase.partida_parcial.codigo}"
       codigo_clase = "#{clase.codigo}" 
 
-      codigo_completo =  codigo_inciso +codigo_partida_principal+codigo_partida_parcial+codigo_clase
+      codigo_completo =  codigo_inciso +codigo_partida_principal+codigo_partida_parcial+ "." +codigo_clase
 
       return codigo_completo
     end 
