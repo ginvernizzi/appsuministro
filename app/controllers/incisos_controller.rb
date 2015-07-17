@@ -4,7 +4,7 @@ class IncisosController < ApplicationController
   # GET /incisos
   # GET /incisos.json
   def index
-    @incisos = Inciso.all
+    @incisos = Inciso.all.order("codigo")    
   end
 
   # GET /incisos/1

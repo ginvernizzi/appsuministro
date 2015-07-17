@@ -13,7 +13,7 @@
   <tbody>
     <% @partidas_parciales.each do |partida_parcial| %>
       <tr>
-        <td><%= partida_parcial.codigo %></td>
+        <td><%= obtener_codigo_de_partida_parcial(partida_parcial.id) %></td>
         <td><%= partida_parcial.nombre %></td>
         <td><%= partida_parcial.partida_principal.nombre %></td>
         <td><%= link_to 'Ver', partida_parcial %></td>

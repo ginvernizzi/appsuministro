@@ -13,7 +13,7 @@
   <tbody>
     <% @clases.each do |clase| %>
       <tr>
-        <td><%= clase.codigo %></td>
+        <td><%= obtener_codigo_de_clase(clase.id) %></td>
         <td><%= clase.nombre %></td>
         <td><%= clase.partida_parcial.nombre %></td>
         <td><%= link_to 'Ver', clase %></td>

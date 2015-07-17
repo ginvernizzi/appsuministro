@@ -44,6 +44,37 @@ module ApplicationHelper
     return codigo_completo
   end 
 
+    def obtener_codigo_de_partida_principal(id)      
+
+      partida_principal = PartidaPrincipal.find(id)  
+      codigo_completo = "#{partida_principal.inciso.codigo}" + "#{partida_principal.codigo}"
+      return codigo_completo
+    end 
+
+    def obtener_codigo_de_partida_parcial(id)
+      partida_parcial = PartidaParcial.find(id)  
+      codigo_inciso = "#{partida_parcial.partida_principal.inciso.codigo}"
+      codigo_partida_principal = "#{partida_parcial.partida_principal.codigo}" 
+      codigo_partida_parcial = "#{partida_parcial.codigo}"
+
+      codigo_completo =  codigo_inciso+codigo_partida_principal+codigo_partida_parcial 
+
+      return codigo_completo
+    end 
+
+    def obtener_codigo_de_clase(id)
+      clase = Clase.find(id) 
+      codigo_inciso = "#{clase.partida_parcial.partida_principal.inciso.codigo}"
+      codigo_partida_principal = "#{clase.partida_parcial.partida_principal.codigo}" 
+      codigo_partida_parcial = "#{clase.partida_parcial.codigo}"
+      codigo_clase = "#{clase.codigo}" 
+
+      codigo_completo =  codigo_inciso +codigo_partida_principal+codigo_partida_parcial+codigo_clase
+
+      return codigo_completo
+    end 
+
+
   def flash_class(level)
     case level
     when "notice" then "alert alert-info"

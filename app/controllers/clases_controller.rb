@@ -4,8 +4,10 @@ class ClasesController < ApplicationController
   # GET /clases
   # GET /clases.json
   def index
-    @clases = Clase.includes(:partida_parcial).where("clases.fecha_de_baja IS NULL").order("partidas_parciales.nombre")      
-  end
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo")
+
+          #joins(:raga_contest_applicants => [:raga_content_rounds], :contest_cat).
+  end       
 
   # GET /clases/1
   # GET /clases/1.json
