@@ -1,4 +1,4 @@
-<h1>Recepciones de bien de consumo a evaluar</h1>
+<h1>Evaluación</h1>
 
 <div id="div_rechazar_recepcion" style="display:none" title="Rechazar Recepcion"></div>
 
@@ -9,7 +9,7 @@
       <th>Fecha</th>      
       <th>Tipo de Documento</th>
       <th>Documento principal</th>
-      <th colspan="3"> </th>
+      <th colspan="2"> </th>
     </tr>
   </thead>
 
@@ -24,8 +24,7 @@
       <% else %>
         <td></td>
         <td></td>
-      <% end %>      
-       <td><%= link_to 'Ver', recepciones_de_bien_de_consumo_a_evaluar_path(recepcion_de_bien_de_consumo) %></td>
+      <% end %>             
        <td><%= link_to 'Ingresar a stock',  recepciones_de_bien_de_consumo_a_evaluar_items_stock_path(recepcion_de_bien_de_consumo), method: :post, data: { confirm: '¿Esta seguro?' }  %>
        </td>
        <td><%= link_to 'Consumo inmediato', nuevo_consumo_directo_desde_recepcion_consumos_directo_path(:recepcion_id => recepcion_de_bien_de_consumo.id), data: { confirm: '¿Esta seguro?' } %>

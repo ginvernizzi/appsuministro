@@ -52,8 +52,10 @@ $(document).on("ready page:load", function() {
         url: "/recepciones_de_bien_de_consumo_en_stock/traer_recepciones_por_fecha",        
         data: { documento_principal: documento_principal, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
         success: function(data){            
-              blanquear_campos();
-              $('#tabla_recepciones').html(data)            
+              blanquear_campos();              
+              if (data  == "")
+                { alert("No se encontraron resultados") }
+              $('#tabla_recepciones').html(data)
         },
         error: function (request, status, error) 
             {             
@@ -76,11 +78,13 @@ $(document).on("ready page:load", function() {
         data: { bien_id: bien_id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
         success: function(data){            
               blanquear_campos();
+              if (data  == "")
+                { alert("No se encontraron resultados") }
               $('#tabla_recepciones').html(data)            
         },
         error: function (request, status, error) 
             {             
-              alert("Debe seleccionar todos los campos");
+              alert("Hay campos incompletos");
               blanquear_campos();
             }                          
         });     

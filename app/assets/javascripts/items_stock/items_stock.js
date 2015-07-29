@@ -34,6 +34,7 @@ $(document).on("ready page:load", function() {
       url: "/items_stock/traer_todos_los_items_stock",              
       success: function(data){            
             BlanquearCampos();
+
             $('#tabla_items').html(data)
       },
       error: function (request, status, error) 
@@ -51,7 +52,9 @@ $(document).on("ready page:load", function() {
       dataType: "json",
       url: "/items_stock/traer_items_stock_por_bien_y_area",        
       data: { bien_de_consumo_id: bien_id, area_id: area_id },
-      success: function(data){            
+      success: function(data){         
+            if (data  == "")
+              { alert("No se encontraron resultados") }   
             $('#tabla_items').html(data)
       },
       error: function (request, status, error) 

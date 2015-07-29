@@ -44,42 +44,6 @@ $(document).on("ready page:load", function() {
       traer_bien_de_consumo(cod, deposito_id)
   });
 
-  function traer_bien_de_consumo(codigo, deposito_id)
-  {                 
-    var cod = codigo;
-    var depositoId = deposito_id;
-
-    if($("#codigo").val() != "" && $("#transferencia_deposito_origen_deposito_id").val() != null)
-    {
-      $.ajax({
-        url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
-        dataType: "json",
-        //contentType: "application/json", no va, si no envias un json!!!
-        type: "post",
-        data: { codigo: cod , deposito_id: depositoId },                
-        success:function(data){                  
-            $("#nombre").val(data.nombre)
-            $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
-            $("#cantidad_stock").val(data.cantidad_en_stock)           
-          },
-          error: function (request, status, error) 
-            { 
-              if($("#transferencia_deposito_origen_deposito_id").val() != "")
-              { alert("Bien de consumo inexistente."); }
-              else
-              { alert("Seleccione un deposito origen")}
-
-              blanquear_campos();
-            }
-        });
-    }
-    else
-    { 
-      alert("Debe seleccionar Codigo y Deposito")
-          blanquear_campos(); 
-    }        
-  }
-
   $("#agregar_bien_a_transferir").click(function() {  
     var array_bienes = get_tabla_de_bienes() 
     var bien_encontrado = array_bienes.filter(function( obj ) { return obj.Codigo == $("#codigo").val(); })
@@ -180,6 +144,9 @@ $(document).on("ready page:load", function() {
     $("#cantidad_a_transferir").val("");
     $("#transferencia_area_origen_area_id").val("");    
     $("#transferencia_deposito_origen_deposito_id").val(""); 
+    $("#categoria_clase_id").val(""); 
+    //$("#categoria_bien_de_consumo_id").val("");  
+    document.getElementById('categoria_bien_de_consumo_id').options.length = 0;   
   }
 
   (function() {
@@ -250,6 +217,86 @@ $(document).on("ready page:load", function() {
       });
     }); 
   }).call(this);
+
+
+  $("#categoria_bien_de_consumo_id").change(function() { 
+      alert("DESDE transferencias");
+      var id = $("#categoria_bien_de_consumo_id").val();                
+      var deposito_id = $("#transferencia_deposito_origen_deposito_id").val();  
+
+      if(deposito_id != null)
+      {
+        traer_bien_de_consumo_por_id_y_deposito(id, deposito_id) 
+      }
+      else
+      { 
+        alert("Debe seleccionar Codigo y Deposito")
+        blanquear_campos(); 
+      }           
+  }); 
+
+  function traer_bien_de_consumo_por_id_y_deposito(id, deposito_id)
+  {                 
+    var id = id;
+    var depositoId = deposito_id;
+
+      $.ajax({
+        url: "/consumos_directo/obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito",
+        dataType: "json",
+        //contentType: "application/json", no va, si no envias un json!!!
+        type: "post",
+        data: { bien_id: id , deposito_id: depositoId },                
+        success:function(data){                  
+            $("#nombre").val(data.nombre)
+            $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
+            $("#cantidad_stock").val(data.cantidad_en_stock)           
+          }, 
+          error: function (request, status, error) 
+            { 
+              if($("#transferencia_deposito_origen_deposito_id").val() != "")
+              { alert("Bien de consumo inexistente."); }
+              else
+              { alert("Seleccione un deposito origen") }
+              blanquear_campos();
+            }
+        });    
+  }
+
+  function traer_bien_de_consumo(codigo, deposito_id)
+  {                 
+    var cod = codigo;
+    var depositoId = deposito_id;
+
+    if($("#codigo").val() != "" && $("#transferencia_deposito_origen_deposito_id").val() != null)
+    {
+      $.ajax({
+        url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
+        dataType: "json",
+        //contentType: "application/json", no va, si no envias un json!!!
+        type: "post",
+        data: { codigo: cod , deposito_id: depositoId },                
+        success:function(data){                  
+            $("#nombre").val(data.nombre)
+            $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
+            $("#cantidad_stock").val(data.cantidad_en_stock)           
+          }, 
+          error: function (request, status, error) 
+            { 
+              if($("#transferencia_deposito_origen_deposito_id").val() != "")
+              { alert("Bien de consumo inexistente."); }
+              else
+              { alert("Seleccione un deposito origen") }
+              blanquear_campos();
+            }
+        });
+    }
+      else
+    { 
+      alert("Debe seleccionar Codigo y Deposito")
+          blanquear_campos(); 
+    }        
+  }
+
 }); 
 
 

@@ -63,7 +63,7 @@ $(document).on("ready page:load", function() {
         dataType: "json",
         url: "/bienes_de_consumo/traer_vista_de_categoria",        
         data: { categoria: categoria, id: id },
-        success: function(data){            
+        success: function(data){           
             $('#form_categoria').html(data)
         }
       });         

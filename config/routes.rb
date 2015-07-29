@@ -147,9 +147,10 @@ Rails.application.routes.draw do
       get 'nuevo_consumo'
       post 'crear_consumo'
       post 'obtener_nombre_de_bien_de_consumo'  
+      post 'obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito'
       post 'obtener_responsable_de_area'
       get 'ver_consumos_por_codigo_destino_fecha'  
-      get 'traer_consumos_por_codigo_destino_y_fecha' 
+      get 'traer_consumos_por_codigo_destino_y_fecha'       
       get 'traer_consumos_por_obra_proyecto_destino_y_fecha'
       get 'ver_consumos_por_obra_proyecto_y_fecha' 
     end
@@ -219,7 +220,7 @@ Rails.application.routes.draw do
   #esto lo hice para que machee la ruta llamandola desde una funcion en AJAX
   match '/consumos_directo/imprimir_formulario', to: 'consumos_directo#imprimir_formulario', via: :post
 
-  root  'static_pages#home'  
+  root  'static_pages#home'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

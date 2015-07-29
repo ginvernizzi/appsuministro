@@ -15,18 +15,20 @@
 
       //$("#costo").inputmask("9999999.9999")    
       
-      $("#traer_bien_de_consumo").click(function() {  
+      $("#traer_bien_de_consumo").click(function() {         
         var cod = $("#codigo").val();     
         ObtenerNombreEIdentificadorDeBien(cod);        
       });
 
-      $('#categoria_bien_de_consumo_id').change(function() {        
+      $('#categoria_bien_de_consumo_id').change(function() {    
+        alert("Desde bien de consumo de recepcion")  ;  
         var nom = this.options[this.selectedIndex].innerHTML 
         ObtenerCodigoEIdentificadorDeBien(nom);        
       });
 
       function ObtenerNombreEIdentificadorDeBien(cod)
       {
+
         $.ajax({
         url: "/bienes_de_consumo_de_recepcion/obtener_nombre_de_bien_de_consumo",
         dataType: "json",

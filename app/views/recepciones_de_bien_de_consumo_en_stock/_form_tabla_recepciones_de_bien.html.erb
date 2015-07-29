@@ -1,4 +1,4 @@
-<% if !@recepciones_de_bien_de_consumo.nil? && @recepciones_de_bien_de_consumo.length > 0 %>
+<% if !@recepciones_de_bien_de_consumo.nil? && @recepciones_de_bien_de_consumo.any? %>
 <table class="table">
   <thead>
     <tr>
@@ -27,7 +27,5 @@
     <% end %>
   </tbody>
 </table>
-<% else %>
-  <h3> No hay resultados para mostrar </h3>  
+
 <% end %>
-<br>

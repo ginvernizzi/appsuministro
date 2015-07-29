@@ -40,7 +40,9 @@ $(document).on("ready page:load", function() {
         dataType: "json",
         url: "/reportes_a_fecha/traer_items_stock",        
         data: { fecha_inicio: fecha_inicio, fecha_fin:fecha_fin },
-        success: function(data){            
+        success: function(data){          
+              if(data == "")  
+                {alert ("No hay resultados")}
               $('#tabla_items').html(data)
         }
     });
