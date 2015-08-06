@@ -4,7 +4,9 @@ class IncisosController < ApplicationController
   # GET /incisos
   # GET /incisos.json
   def index
-    @incisos = Inciso.all.order("codigo")    
+    #@incisos = Inciso.all.order("codigo")    
+    #@incisos = Inciso.order("codigo").paginate(:page => params[:page])
+    @incisos = Inciso.order("codigo").paginate(:page => params[:page], :per_page => 5)
   end
 
   # GET /incisos/1
@@ -19,6 +21,7 @@ class IncisosController < ApplicationController
 
   # GET /incisos/1/edit
   def edit
+          
   end
 
   # POST /incisos

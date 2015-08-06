@@ -53,11 +53,18 @@
       </div>       
     </div>       
     <div class="col-md-6">
-        <h3> Traer item por arbol </h3>
-        <%= render 'shared/form_arbol_bienes' %>
-    </div>      
+        <h3> Traer item por arbol </h3>            
+        <div class="field"> 
+        <%= label_tag :clase, "Clase" %><br>
+        <%= collection_select(:categoria, "clase_id", Clase.where("fecha_de_baja IS NULL"), "id", "nombre", :include_blank => "Seleccione...") %> 
+             
+        </div>    
+        <div class="field">     
+          <%= label_tag :bien_de_consumo, "Bien de consumo" %><br>
+          <%= grouped_collection_select(:consumos_directo, :bien_de_consumo_id, Clase.where("fecha_de_baja IS NULL"), :bienes_de_consumo, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>
+        </div>
+    </div>     
   </div>       
-
    <div class="field">
     <%= f.label :cantidad_stock, "Cantidad en stock" %><br>
     <%= text_field_tag :cantidad_stock , nil, readonly: true %>          
@@ -65,7 +72,7 @@
 
    <div class="field">
     <%= f.label :cantidad_a_consumir, "Cantidad a consumir" %><br>
-    <%= text_field_tag :cantidad_a_consumir %>          
+    <%= text_field_tag :cantidad_a_consumir %><br>          
     <input type="button" value="Agregar" class="" id="agregar_bien_a_consumir">        
   </div>    
   <div>

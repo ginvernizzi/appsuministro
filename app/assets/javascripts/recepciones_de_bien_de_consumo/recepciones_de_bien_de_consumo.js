@@ -91,20 +91,20 @@ $(document).on("ready page:load", function() {
       
 
       $('#recepcion_de_bien_de_consumo_estado').change(function() {
-            var urlToSubmit = ""
-            //Habria que traer los tipos de documento            
-            if($(this).val() != 2)              
-              {  $( ".field_descripcion_provisoria" ).remove(); }
-            else
-              { 
-                urlToSubmit = "/recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria"               
-                $.ajax({  
-                url: urlToSubmit,
-                type: "POST",
-                data: { },
-                success:function(result) 
-                    {  $("#div_descripcion_provisoria").html(result) }
-                });                        
-              }      
+          var urlToSubmit = ""
+          //Habria que traer los tipos de documento            
+          if($(this).val() != 2)              
+            {  $( ".field_descripcion_provisoria" ).remove(); }
+          else
+            { 
+              urlToSubmit = "/recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria"               
+              $.ajax({  
+              url: urlToSubmit,
+              type: "POST",
+              data: { },
+              success:function(result) 
+                  {  $("#div_descripcion_provisoria").html(result) }
+              });                        
+            }      
       });                                           
   });

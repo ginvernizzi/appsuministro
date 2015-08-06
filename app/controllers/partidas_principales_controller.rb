@@ -4,7 +4,7 @@ class PartidasPrincipalesController < ApplicationController
   # GET /partidas_principales
   # GET /partidas_principales.json
   def index
-    @partidas_principales = PartidaPrincipal.includes(:inciso).order("incisos.codigo").order("partidas_principales.codigo")      
+    @partidas_principales = PartidaPrincipal.includes(:inciso).order("incisos.codigo").order("partidas_principales.codigo").paginate(:page => params[:page], :per_page => 5)      
   end
 
   # GET /partidas_principales/1

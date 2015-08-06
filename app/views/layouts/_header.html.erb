@@ -43,7 +43,7 @@
     </a>
       
     <ul class="dropdown-menu" role="menu"> 
-      <li role="presentation" class="dropdown-header">Arbol de bienes</li>      
+      <li role="presentation" class="dropdown-menu">Arbol de bienes</li>      
       <li><%= link_to "Incisos", incisos_path %></li>  
       <li><%= link_to "Partidas principales", partidas_principales_path %></li>            
       <li><%= link_to "Partidas parciales", partidas_parciales_path %></li>  
@@ -54,8 +54,27 @@
       <li><%= link_to "Areas", areas_path %></li>            
       <li><%= link_to "Reemplazo de items", reemplazo_bdc_index_path %></li> 
       <li><a href="#">Depósitos</a></li>
-      <li><a href="#">Documentos</a></li>
-    </ul>      
+      <li><a href="#">Documentos</a></li>    
+
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        Datos Fijos <span class="caret"></span>
+      </a>
+        
+      <ul class="dropdown-menu" role="menu"> 
+        <li role="presentation" class="dropdown-menu">Arbol de bienes</li>      
+        <li><%= link_to "Incisos", incisos_path %></li>  
+        <li><%= link_to "Partidas principales", partidas_principales_path %></li>            
+        <li><%= link_to "Partidas parciales", partidas_parciales_path %></li>  
+        <li><%= link_to "Clases", clases_path %></li>             
+        <li><%= link_to "Items", bienes_de_consumo_path %></li>  
+        <li class="divider"></li>
+        <li><%= link_to "Obra / proyecto", obras_proyectos_path %></li>  
+        <li><%= link_to "Areas", areas_path %></li>            
+        <li><%= link_to "Reemplazo de items", reemplazo_bdc_index_path %></li> 
+        <li><a href="#">Depósitos</a></li>
+        <li><a href="#">Documentos</a></li>    
+      </ul>   
+    </ul>                
 </li>
 <div class="container">
   <div class="navbar-form navbar-right" >

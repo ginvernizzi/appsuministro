@@ -13,6 +13,29 @@
       
       });          
 
+      (function() {
+        jQuery(function() {
+          var bienes, llenarBienes;
+          llenarBienes = function(bienes) {
+            var clase, options;
+            clase = $('#categoria_clase_id :selected').text();
+            options = $(bienes).filter("optgroup[label='" + clase + "']").html();
+            if (options) {
+              $('#categoria_bien_de_consumo_id').html('<option value="">seleccione...</option>');
+              return $('#categoria_bien_de_consumo_id').append(options);
+            } 
+            else {
+              return $('#categoria_bien_de_consumo_id').empty();
+            }
+          };
+          bienes = $('#categoria_bien_de_consumo_id').html();
+          llenarBienes(bienes);
+          return $('#categoria_clase_id').change(function() {
+            return llenarBienes(bienes);
+          });
+        }); 
+      }).call(this);
+
       //$("#costo").inputmask("9999999.9999")    
       
       $("#traer_bien_de_consumo").click(function() {         
@@ -20,8 +43,7 @@
         ObtenerNombreEIdentificadorDeBien(cod);        
       });
 
-      $('#categoria_bien_de_consumo_id').change(function() {    
-        alert("Desde bien de consumo de recepcion")  ;  
+      $('#categoria_bien_de_consumo_id').change(function() {            
         var nom = this.options[this.selectedIndex].innerHTML 
         ObtenerCodigoEIdentificadorDeBien(nom);        
       });

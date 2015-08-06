@@ -23,7 +23,7 @@
     <% end %>
   </tbody>
 </table>
-
+<%= will_paginate @partidas_parciales, renderer: BootstrapPagination::Rails %>
 <br>
 
 <%= link_to 'Nueva Partida Parcial', new_partida_parcial_path %>

@@ -15,13 +15,14 @@
         <td><%= inciso.codigo %></td>
         <td><%= inciso.nombre %></td>
         <td><%= link_to 'Ver', inciso %></td>
-        <td><%= link_to 'Modificar', edit_inciso_path(inciso) %></td>
+        <td><%= link_to 'Modificar', edit_inciso_path(inciso), :id => "inciso_modificar" %></td>
         <td><%= link_to 'Eliminar', inciso, method: :delete, data: { confirm: 'Esta seguro?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
+<%= will_paginate @incisos %>
+                  
 
 <%= link_to 'Crear Inciso', new_inciso_path %>

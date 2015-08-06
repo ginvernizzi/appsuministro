@@ -1,6 +1,6 @@
 #encoding: utf-8
 class GeneradorDeImpresionTransferencia
-
+include ApplicationHelper 
   def initialize
     @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
   end
