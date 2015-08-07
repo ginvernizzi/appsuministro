@@ -4,7 +4,8 @@ class BienesDeConsumoController < ApplicationController
   def index
     #@bienes_de_consumo = BienDeConsumo.includes(:clase).where("bienes_de_consumo.fecha_de_baja IS NULL").order("clases.nombre")      
 
-    @bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    #@bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    @bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 5)
   end
 
   def new

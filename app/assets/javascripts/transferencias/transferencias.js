@@ -9,6 +9,30 @@ $(document).on("ready page:load", function() {
   	});
   	$("#transferencia_fecha").datepicker("setDate", currentDate);
 
+  (function() {
+    jQuery(function() {
+      var bienes, llenarBienes;
+      llenarBienes = function(bienes) {
+        var clase, options;
+        clase = $('#categoria_clase_id :selected').text();
+        options = $(bienes).filter("optgroup[label='" + clase + "']").html();
+        if (options) {
+          $('#transferencias_bien_de_consumo_id').html('<option value="">seleccione...</option>');
+          return $('#transferencias_bien_de_consumo_id').append(options);
+        } 
+        else {
+          return $('#transferencias_bien_de_consumo_id').empty();
+        }
+      };
+      bienes = $('#transferencias_bien_de_consumo_id').html();
+      llenarBienes(bienes);
+      return $('#categoria_clase_id').change(function() {
+        return llenarBienes(bienes);
+      });
+    }); 
+  }).call(this);
+
+
 
   $("#transferencia_area_origen_area_id").change(function() { 
     identificador_del_control = $("#transferencia_area_origen_area_id").val(); 
@@ -38,47 +62,11 @@ $(document).on("ready page:load", function() {
       });
    } 
 
-   $("#traer_bien_de_consumo_y_cantidad_stock_tranferencia").click(function() {  
+  $("#traer_bien_de_consumo_y_cantidad_stock_tranferencia").click(function() {  
       var cod = $("#codigo").val();          
       var deposito_id = $("#transferencia_deposito_origen_deposito_id").val();  
       traer_bien_de_consumo(cod, deposito_id)
   });
-
-  function traer_bien_de_consumo(codigo, deposito_id)
-  {                 
-    var cod = codigo;
-    var depositoId = deposito_id;
-
-    if($("#codigo").val() != "" && $("#transferencia_deposito_origen_deposito_id").val() != null)
-    {
-      $.ajax({
-        url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
-        dataType: "json",
-        //contentType: "application/json", no va, si no envias un json!!!
-        type: "post",
-        data: { codigo: cod , deposito_id: depositoId },                
-        success:function(data){                  
-            $("#nombre").val(data.nombre)
-            $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
-            $("#cantidad_stock").val(data.cantidad_en_stock)           
-          },
-          error: function (request, status, error) 
-            { 
-              if($("#transferencia_deposito_origen_deposito_id").val() != "")
-              { alert("Bien de consumo inexistente."); }
-              else
-              { alert("Seleccione un deposito origen")}
-
-              blanquear_campos();
-            }
-        });
-    }
-    else
-    { 
-      alert("Debe seleccionar Codigo y Deposito")
-          blanquear_campos(); 
-    }        
-  }
 
   $("#agregar_bien_a_transferir").click(function() {  
     var array_bienes = get_tabla_de_bienes() 
@@ -180,6 +168,10 @@ $(document).on("ready page:load", function() {
     $("#cantidad_a_transferir").val("");
     $("#transferencia_area_origen_area_id").val("");    
     $("#transferencia_deposito_origen_deposito_id").val(""); 
+    $("#categoria_clase_id").val(""); 
+    
+    $("#transferencias_bien_de_consumo_id").val("");  
+    document.getElementById('transferencias_bien_de_consumo_id').options.length = 0;   
   }
 
   (function() {
@@ -250,6 +242,83 @@ $(document).on("ready page:load", function() {
       });
     }); 
   }).call(this);
+
+
+  $("#transferencias_bien_de_consumo_id").change(function() {       
+      var id = $("#transferencias_bien_de_consumo_id").val();                
+      var deposito_id = $("#transferencia_deposito_origen_deposito_id").val();  
+
+      if(deposito_id != null)
+      {
+        traer_bien_de_consumo_por_id_y_deposito(id, deposito_id) 
+      }
+      else
+      { 
+        alert("Debe seleccionar un deposito")
+        blanquear_campos(); 
+      }           
+  }); 
+
+  function traer_bien_de_consumo_por_id_y_deposito(id, deposito_id)
+  {                     
+      $.ajax({
+        url: "/consumos_directo/obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito",
+        dataType: "json",
+        //contentType: "application/json", no va, si no envias un json!!!
+        type: "post",
+        data: { bien_id: id , deposito_id: deposito_id },                
+        success:function(data){                  
+            $("#nombre").val(data.nombre);
+            $("#codigo").val(data.codigo);
+            $("#bien_de_consumo_id").val(data.bien_de_consumo_id);
+            $("#cantidad_stock").val(data.cantidad_en_stock);     
+          }, 
+          error: function (request, status, error) 
+            { 
+              if($("#transferencia_deposito_origen_deposito_id").val() != "")
+              { alert("Bien de consumo inexistente."); }
+              else
+              { alert("Seleccione un deposito origen") }
+              blanquear_campos();
+            }
+        });    
+  }
+
+  function traer_bien_de_consumo(codigo, deposito_id)
+  {                 
+    var cod = codigo;
+    var depositoId = deposito_id;
+
+    if($("#codigo").val() != "" && $("#transferencia_deposito_origen_deposito_id").val() != null)
+    {
+      $.ajax({
+        url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
+        dataType: "json",
+        //contentType: "application/json", no va, si no envias un json!!!
+        type: "post",
+        data: { codigo: cod , deposito_id: depositoId },                
+        success:function(data){                  
+            $("#nombre").val(data.nombre)
+            $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
+            $("#cantidad_stock").val(data.cantidad_en_stock)           
+          }, 
+          error: function (request, status, error) 
+            { 
+              if($("#transferencia_deposito_origen_deposito_id").val() != "")
+              { alert("Bien de consumo inexistente."); }
+              else
+              { alert("Seleccione un deposito origen") }
+              blanquear_campos();
+            }
+        });
+    }
+      else
+    { 
+      alert("Debe seleccionar Codigo y Deposito")
+          blanquear_campos(); 
+    }        
+  }
+
 }); 
 
 

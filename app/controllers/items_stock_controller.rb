@@ -33,6 +33,7 @@ class ItemsStockController < ApplicationController
 
   def new
   	@item_stock = ItemStock.new
+    
   end
 
   def ver_ingresar_a_stock

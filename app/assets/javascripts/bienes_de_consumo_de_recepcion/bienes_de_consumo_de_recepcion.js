@@ -13,20 +13,44 @@
       
       });          
 
+      (function() {
+        jQuery(function() {
+          var bienes, llenarBienes;
+          llenarBienes = function(bienes) {
+            var clase, options;
+            clase = $('#categoria_clase_id :selected').text();
+            options = $(bienes).filter("optgroup[label='" + clase + "']").html();
+            if (options) {
+              $('#categoria_bien_de_consumo_id').html('<option value="">seleccione...</option>');
+              return $('#categoria_bien_de_consumo_id').append(options);
+            } 
+            else {
+              return $('#categoria_bien_de_consumo_id').empty();
+            }
+          };
+          bienes = $('#categoria_bien_de_consumo_id').html();
+          llenarBienes(bienes);
+          return $('#categoria_clase_id').change(function() {
+            return llenarBienes(bienes);
+          });
+        }); 
+      }).call(this);
+
       //$("#costo").inputmask("9999999.9999")    
       
-      $("#traer_bien_de_consumo").click(function() {  
+      $("#traer_bien_de_consumo").click(function() {         
         var cod = $("#codigo").val();     
         ObtenerNombreEIdentificadorDeBien(cod);        
       });
 
-      $('#categoria_bien_de_consumo_id').change(function() {        
+      $('#categoria_bien_de_consumo_id').change(function() {            
         var nom = this.options[this.selectedIndex].innerHTML 
         ObtenerCodigoEIdentificadorDeBien(nom);        
       });
 
       function ObtenerNombreEIdentificadorDeBien(cod)
       {
+
         $.ajax({
         url: "/bienes_de_consumo_de_recepcion/obtener_nombre_de_bien_de_consumo",
         dataType: "json",

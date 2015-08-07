@@ -24,7 +24,7 @@
     <% end %>
   </tbody>
 </table>
-
+<%= will_paginate @clases, renderer: BootstrapPagination::Rails %>
 <br>
 
 <%= link_to 'Nueva Clase', new_clase_path %>

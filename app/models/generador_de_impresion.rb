@@ -64,7 +64,7 @@ class GeneradorDeImpresion
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", I18n.l(DateTime.now))
-			r.add_field("AREA", @bienes.first().consumo_directo.area.nombre)							
+			r.add_field("AREA", @bienes.first().consumo_directo.area.nombre)										
 								
 			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
 				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha.strftime("%d/%m/%Y") }

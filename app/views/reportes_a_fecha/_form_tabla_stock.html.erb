@@ -1,5 +1,5 @@
-<table class="table">  
-   <% if @reportes_a_fecha.count > 0 %>
+<% if @reportes_a_fecha.count > 0 %>
+   <table class="table">  
   <thead>
     <tr>
       <th>Fecha</th>
@@ -16,9 +16,5 @@
         </tr>          
     <% end %>
   </tbody>  
-    <% else %>
-      <h3> No hay reportes en esa fecha </h3>
-    <% end %>
-</table>
-
-<br>
+  </table>
+<% end %>

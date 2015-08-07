@@ -26,12 +26,12 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
    if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
       @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin);
-        if @recepciones_de_bien_de_consumo.count > 0
-           @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
-           @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
-        end
+      if @recepciones_de_bien_de_consumo.count > 0
+         @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
+         @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
+      end
     else
-      @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+      @recepciones_de_bien_de_consumo = nil
     end
           
     respond_to do |format|   
@@ -68,7 +68,6 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     @generador.generar_pdf_detalle_de_recepcion(@recepcion_de_bien_de_consumo)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_detalle_de_recepcion_pdf)
     send_file ( file ) 
-
   end
 
 
@@ -80,16 +79,19 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     bien_id = params[:bien_id]    
     fecha_inicio = params[:fecha_inicio]  
     fecha_fin = params[:fecha_fin]   
+    @recepciones_de_bien_de_consumo = nil
 
-   if !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin);
-        if @recepciones_de_bien_de_consumo.count > 0
-           @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
-           @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
-           @recepciones_de_bien_de_consumo[0].bien_de_consumo_id = params[:bien_id];
-        end
-    else
-      @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+    begin
+      if !bien_id.nil? && !bien_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
+          @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin);
+          if @recepciones_de_bien_de_consumo.count > 0
+             @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
+             @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
+             @recepciones_de_bien_de_consumo[0].bien_de_consumo_id = params[:bien_id];
+          end     
+      end
+
+      rescue Exception
     end
           
     respond_to do |format|   

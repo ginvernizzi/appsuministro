@@ -1,7 +1,15 @@
 class ConsumosDirectoController < ApplicationController
   before_action :set_consumo_directo, only: [:show, :edit, :update, :destroy]
 
-  autocomplete :obra_proyecto, :descripcion , :full => true
+  
+  #autocomplete :obra_proyecto, :descripcion , :full => true
+
+  def autocomplete_obra_proyecto_descripcion
+    @obras = ObraProyecto.where("descripcion ILIKE ?", "%#{params[:term]}%")
+    respond_to do |format|      
+      format.json { render json: @obras.map{ |x| x.descripcion } }
+    end    
+  end
 
   # GET /consumos_directo
   # GET /consumos_directo.json
@@ -249,27 +257,38 @@ class ConsumosDirectoController < ApplicationController
     fecha_inicio = params[:fecha_inicio]
     fecha_fin = params[:fecha_fin]
 
-    @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new    
+    puts "HOLAAA"
+    puts "area_id blanco? #{area_id.blank?} #{area_id}" 
+    puts "bien_id blanco? #{bien_id.blank?} #{bien_id}"
+   
+    @bien_de_consumo_para_consumir = nil
 
-    if !area_id.blank? && !fecha_inicio.blank? && !fecha_fin.nil? 
-      if bien_id.blank?
-        puts "************ SIN BIEN!!"
-        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", area_id, fecha_inicio, fecha_fin)      
-      else
-        puts "************ Con BIEN!!"
-        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)        
-      end
-      if @bien_de_consumo_para_consumir.count > 0
-          @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
-          @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
-      end    
-    end      
+    if !area_id.blank? && !bien_id.blank? 
+      puts "************ LOS DOS!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)        
+    end
+
+    if bien_id.blank? && !area_id.blank? 
+      puts "************ solo el AREA!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", area_id, fecha_inicio, fecha_fin)      
+    end
+      
+    if area_id.blank? && !bien_id.blank?
+      puts "************ Solo el BIEN!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, fecha_inicio, fecha_fin)        
+    end
+            
+    if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
+      @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
+      @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+    end    
+     
     respond_to do |format|   
       format.js {}
     end 
   end
 
-  def imprimir_formulario_consumos_por_codigo_destino_y_fecha    
+  def imprimir_formulario_consumos_por_codigo_dsetino_y_fecha    
     area_id = params[:area_id]
     bien_id = params[:bien_id]
     fecha_inicio = params[:fecha_inicio]
@@ -307,6 +326,27 @@ class ConsumosDirectoController < ApplicationController
     send_file params[:file]
   end
 
+  def obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito
+
+      @array_bien_de_consumo = BienDeConsumo.where(id: params[:bien_id]) 
+      @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", params[:bien_id], params[:deposito_id])      
+
+      @resp_json = Hash.new
+      @resp_json["bien_de_consumo_id"] = @array_bien_de_consumo[0].id  
+      @resp_json["nombre"] = @array_bien_de_consumo[0].nombre 
+      @resp_json["codigo"] = obtener_codigo_completo_bien_de_consumo(@array_bien_de_consumo[0].nombre ) 
+
+      if(@item_stock[0])        
+        @resp_json["cantidad_en_stock"] = @item_stock[0].cantidad
+      else
+        @resp_json["cantidad_en_stock"] = 0.0
+      end
+
+      respond_to do | format |                                  
+          format.json { render :json => @resp_json }        
+      end
+  end
+
   def obtener_nombre_de_bien_de_consumo
           
       ############
@@ -317,7 +357,7 @@ class ConsumosDirectoController < ApplicationController
       @cod_bien_de_consumo = params[:codigo].to_s.split('.')[4]     
 
       @inciso = Inciso.where(codigo: @cod_inciso)
-      
+
       @p_principal = @inciso[0].partidas_principales.where(codigo: @cod_p_principal)
 
       @p_parcial = @p_principal[0].partidas_parciales.where(codigo: @cod_p_parcial)
@@ -366,14 +406,14 @@ class ConsumosDirectoController < ApplicationController
     fecha_inicio = params[:fecha_inicio]
     fecha_fin = params[:fecha_fin]
 
-    if !obra_proyecto_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
+    @bien_de_consumo_para_consumir = nil
+
+    if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", obra_proyecto_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
            @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
            @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
         end
-    else
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
     end
           
     respond_to do |format|   
