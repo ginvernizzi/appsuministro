@@ -6,7 +6,7 @@ class IncisosController < ApplicationController
   def index
     #@incisos = Inciso.all.order("codigo")    
     #@incisos = Inciso.order("codigo").paginate(:page => params[:page])
-    @incisos = Inciso.order("codigo").paginate(:page => params[:page], :per_page => 5)
+    @incisos = Inciso.order("codigo").paginate(:page => params[:page], :per_page => 30)
   end
 
   # GET /incisos/1

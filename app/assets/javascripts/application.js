@@ -29,29 +29,7 @@
 
 $(document).on("ready page:load", function() {
 
-  // (function() {
-  //   jQuery(function() {
-  //     var bienes, llenarBienes;
-  //     llenarBienes = function(bienes) {
-  //       var clase, options;
-  //       clase = $('#categoria_clase_id :selected').text();
-  //       options = $(bienes).filter("optgroup[label='" + clase + "']").html();
-  //       if (options) {
-  //         $('#categoria_bien_de_consumo_id').html('<option value="">seleccione...</option>');
-  //         return $('#categoria_bien_de_consumo_id').append(options);
-  //       } 
-  //       else {
-  //         return $('#categoria_bien_de_consumo_id').empty();
-  //       }
-  //     };
-  //     bienes = $('#categoria_bien_de_consumo_id').html();
-  //     llenarBienes(bienes);
-  //     return $('#categoria_clase_id').change(function() {
-  //       return llenarBienes(bienes);
-  //     });
-  //   }); 
-  // }).call(this);
-
+ 
   $("#traer_vista_de_bien_de_consumo").click(function() {        
     var categoria = "Bien_de_consumo"
     var id = $("#categoria_clase_id").val();

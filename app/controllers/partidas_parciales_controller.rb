@@ -4,7 +4,7 @@
   # GET /partidas_parciales
   # GET /partidas_parciales.json
   def index
-    @partidas_parciales = PartidaParcial.includes(:partida_principal).order("partidas_principales.codigo").order("partidas_parciales.codigo").paginate(:page => params[:page], :per_page => 5)                          
+    @partidas_parciales = PartidaParcial.includes(:partida_principal).order("partidas_principales.codigo").order("partidas_parciales.codigo").paginate(:page => params[:page], :per_page => 30)                          
   end
 
   # GET /partidas_parciales/1

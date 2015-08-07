@@ -4,7 +4,7 @@ class ClasesController < ApplicationController
   # GET /clases
   # GET /clases.json
   def index
-    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 5)
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
   end       
 
   # GET /clases/1
