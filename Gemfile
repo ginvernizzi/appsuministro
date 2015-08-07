@@ -14,6 +14,8 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
+gem 'capistrano-rails-console'
+
 group :development, :test do 
   gem 'capistrano-rails'
   gem 'capistrano-ssh-doctor'
