@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     
   resources :clases do 
     collection do
+      get 'autocomplete_clase_nombre'
       get 'traer_partidas_parciales_con_codigo_de_clase_existente'
       get 'traer_partidas_parciales_con_nombre_de_clase_similar'
     end
@@ -43,9 +44,13 @@ Rails.application.routes.draw do
                                 to: 'clases#dar_de_baja_y_reemplazar',
                                 as: 'dar_de_baja_y_reemplazar_clases'      
 
-  resources :partidas_parciales
+  resources :partidas_parciales do
+    collection do      
+      get 'autocomplete_partida_parcial_nombre'
+    end
+  end
 
-  resources :partidas_principales
+  resources :partidas_principales 
 
   resources :incisos
 

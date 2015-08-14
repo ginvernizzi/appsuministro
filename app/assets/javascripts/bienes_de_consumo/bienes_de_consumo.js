@@ -1,5 +1,6 @@
-$(document).on("ready page:load", function() {  
- 
+//USE ESTA
+var ready = function() {
+
   //$("#clase_codigo").keypress(function(){   
   $("#bien_de_consumo_codigo").on("keyup", function(e) {
       var str = this.value;
@@ -9,8 +10,8 @@ $(document).on("ready page:load", function() {
       { buscar_codigos_existentes(str); }
       else
       { 
-        $('#titulo').html("")          
-        $('#tabla_items_existentes').html("") 
+        $('#titulo').html("");
+        $('#tabla_items_existentes').html(""); 
       }         
   });   
 
@@ -54,5 +55,7 @@ $(document).on("ready page:load", function() {
           }
     });       
   }
+};
 
-});
+$(document).ready(ready);
+$(document).on('page:load', ready);

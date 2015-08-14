@@ -1,5 +1,7 @@
 class ClasesController < ApplicationController
-  before_action :set_clase, only: [:show, :edit, :update, :destroy]    
+  before_action :set_clase, only: [:show, :edit, :update, :destroy]   
+
+  autocomplete :clase, :nombre , :full => true 
 
   # GET /clases
   # GET /clases.json
@@ -15,7 +17,7 @@ class ClasesController < ApplicationController
   # GET /clases/new
   def new
     @clase = Clase.new
-    @partidas_parciales = PartidaParcial.all
+    @partidas_parciales = PartidaParcial.includes(:partida_principal).order("partidas_principales.codigo").order("partidas_parciales.codigo")
   end
 
   # GET /clases/1/edit

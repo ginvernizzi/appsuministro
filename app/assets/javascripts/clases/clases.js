@@ -57,4 +57,9 @@ $(document).on("ready page:load", function() {
     });       
   }
 
+  $('#clase_nombre').bind('railsAutocomplete.select', function(event, data){          
+    $("#categoria_clase_id").val(data.item.id);    
+    $("#categoria_clase_id").change();
+  });
+
 });

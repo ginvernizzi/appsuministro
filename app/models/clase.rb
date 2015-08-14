@@ -1,4 +1,6 @@
 class Clase < ActiveRecord::Base
+  include ApplicationHelper
+
   belongs_to :partida_parcial
 
   has_many :bienes_de_consumo, -> { where("bienes_de_consumo.fecha_de_baja IS NULL") }
@@ -29,5 +31,9 @@ class Clase < ActiveRecord::Base
 	   self.errors[:base] << "No se puede dar de baja el item mientras tenga elementos asociados"
 	   return true
 	  end
-	end  
+	end 
+
+  def combinar_codigo_nombre
+    " #{obtener_codigo_de_clase(id)}" +" - "+ "#{nombre}"
+  end 
 end

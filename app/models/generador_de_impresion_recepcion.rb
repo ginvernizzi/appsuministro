@@ -50,6 +50,7 @@ class GeneradorDeImpresionRecepcion
 			end
 
 			r.add_table("TABLA_BIENES", @bienes, :header=>true) do |r|			
+				r.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				r.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }
 				r.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				r.add_column("CANTIDAD") { |i| i.cantidad }

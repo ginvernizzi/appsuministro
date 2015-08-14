@@ -20,6 +20,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Clase</th>
       <th>Codigo</th>
       <th>Nombre</th>
       <th>Descripcion adicional</th>
@@ -31,6 +32,7 @@
     <% if @consumo_directo.bienes_de_consumo_para_consumir.any? %>
         <% @consumo_directo.bienes_de_consumo_para_consumir.each do |bcc| %>
         <tr>        
+          <td><%= bcc.bien_de_consumo.clase.nombre %> </td>          
           <td><%= obtener_codigo_completo_bien_de_consumo(bcc.bien_de_consumo.nombre) %> </td>
           <td><%= bcc.bien_de_consumo.nombre %> </td>          
           <td><%= bcc.bien_de_consumo.detalle_adicional %> </td>       

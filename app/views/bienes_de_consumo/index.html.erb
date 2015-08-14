@@ -3,9 +3,9 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Codigo</th>
-      <th>Nombre</th>
       <th>Clase</th>
+      <th>Codigo</th>
+      <th>Nombre</th>      
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -13,9 +13,9 @@
   <tbody>
     <% @bienes_de_consumo.each do |bien_de_consumo| %>
       <tr>
-        <td><%= obtener_codigo_completo_bien_de_consumo(bien_de_consumo.nombre) %></td>
-        <td><%= bien_de_consumo.nombre %></td>
         <td><%= bien_de_consumo.clase.nombre %></td>
+        <td><%= obtener_codigo_completo_bien_de_consumo(bien_de_consumo.nombre) %></td>
+        <td><%= bien_de_consumo.nombre %></td>        
         <td><%= link_to 'Ver', bien_de_consumo %></td>
         <td><%= link_to 'Modificar', edit_bien_de_consumo_path(bien_de_consumo) %></td>                
        <td><%= link_to 'Dar de baja', bien_de_consumo, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>

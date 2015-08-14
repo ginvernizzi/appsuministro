@@ -1,6 +1,11 @@
 <h1>Item</h1>
 
-  <strong>Codigo:</strong>
+<p>
+  <strong>Clase:</strong>
+  <%= @bien_de_consumo.clase.nombre %>
+</p>
+
+<strong>Codigo:</strong>
   <%= obtener_codigo_completo_bien_de_consumo(@bien_de_consumo.nombre) %>
 </p>
 
@@ -20,8 +25,8 @@
 </p>
 
 <p>
-  <strong>Clase:</strong>
-  <%= @bien_de_consumo.clase.nombre %>
+  <strong>Stock minimo:</strong>
+  <%= @bien_de_consumo.stock_minimo %>
 </p>
 
 <%= link_to 'Modificar', edit_bien_de_consumo_path(@bien_de_consumo) %> |

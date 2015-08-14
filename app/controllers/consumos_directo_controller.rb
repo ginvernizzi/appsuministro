@@ -2,14 +2,14 @@ class ConsumosDirectoController < ApplicationController
   before_action :set_consumo_directo, only: [:show, :edit, :update, :destroy]
 
   
-  #autocomplete :obra_proyecto, :descripcion , :full => true
+  autocomplete :obra_proyecto, :descripcion , :full => true
 
-  def autocomplete_obra_proyecto_descripcion
-    @obras = ObraProyecto.where("descripcion ILIKE ?", "%#{params[:term]}%")
-    respond_to do |format|      
-      format.json { render json: @obras.map{ |x| x.descripcion } }
-    end    
-  end
+  # def autocomplete_obra_proyecto_descripcion
+  #   @obras = ObraProyecto.where("descripcion ILIKE ?", "%#{params[:term]}%")
+  #   respond_to do |format|      
+  #     format.json { render json: @obras.map{ |x| x.descripcion } }
+  #   end    
+  # end
 
   # GET /consumos_directo
   # GET /consumos_directo.json
@@ -288,7 +288,7 @@ class ConsumosDirectoController < ApplicationController
     end 
   end
 
-  def imprimir_formulario_consumos_por_codigo_dsetino_y_fecha    
+  def imprimir_formulario_consumos_por_codigo_destino_y_fecha    
     area_id = params[:area_id]
     bien_id = params[:bien_id]
     fecha_inicio = params[:fecha_inicio]

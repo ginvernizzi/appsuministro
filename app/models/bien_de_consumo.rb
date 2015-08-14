@@ -1,4 +1,5 @@
 class BienDeConsumo < ActiveRecord::Base	
+	include ApplicationHelper
 	belongs_to :clase
 	has_many :items_stock
 	has_many :depositos
@@ -23,4 +24,8 @@ class BienDeConsumo < ActiveRecord::Base
 
 	validates :codigo, :uniqueness => { :message => 'existente para la Clase', :scope => [:clase_id, :fecha_de_baja] }
 	validates :nombre, :uniqueness => { :message => 'existente para la Clase', :scope => [:clase_id, :fecha_de_baja] }
+
+	 def combinar_codigo_nombre
+    "#{obtener_codigo_completo_bien_de_consumo(id)}" +" - "+ "#{nombre}"
+ 	 end 
 end

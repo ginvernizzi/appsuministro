@@ -1,4 +1,6 @@
 class Inciso < ActiveRecord::Base
+	include ApplicationHelper
+
 	validates :codigo, presence: true , uniqueness: true 
 	validates :nombre, presence: true , uniqueness: true	
 
@@ -16,4 +18,8 @@ class Inciso < ActiveRecord::Base
 	   return false
 	  end
 	end  
+
+def combinar_codigo_nombre
+    " #{obtener_codigo_de_inciso(id)}" +" - "+ "#{nombre}"
+  end 
 end

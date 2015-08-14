@@ -1,5 +1,5 @@
 /////////////////// Vista nueva recepcion. Agrear y quitar Bienes de consumo ///////////////////        
- $(document).ready(function(){
+var ready = function() {
   $("#codigo").inputmask("9.9.9.99999.9999", { clearMaskOnLostFocus: true }) 
 
   $( "#bien_de_consumo_de_recepcion_costo" ).blur(function() {
@@ -15,7 +15,7 @@
 
       (function() {
         jQuery(function() {
-          var bienes, llenarBienes;
+          var bienes, llenarBienes; 
           llenarBienes = function(bienes) {
             var clase, options;
             clase = $('#categoria_clase_id :selected').text();
@@ -108,4 +108,11 @@
           }
         });
       }
-});
+
+    $('#clase_nombre').bind('railsAutocomplete.select', function(event, data){              
+      $("#bien_de_consumo_clase_id").val(data.item.id);
+    });
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

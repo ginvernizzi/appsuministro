@@ -1,6 +1,7 @@
 #encoding: utf-8
 class GeneradorDeImpresionItemStock
-
+	include ApplicationHelper
+	
   def initialize
     @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
   end
@@ -11,9 +12,10 @@ class GeneradorDeImpresionItemStock
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_items_stock.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
-			r.add_field("FECHA", I18n.l(DateTime.now).strftime("%d/%m/%Y"))				
+			r.add_field("FECHA", DateTime.now.strftime("%d/%m/%Y"))				
 
 			r.add_table("TABLA_ITEM_STOCK", @items, :header=>true) do |s|
+				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
 				s.add_column("CANTIDAD") { |i| i.cantidad }

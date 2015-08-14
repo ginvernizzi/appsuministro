@@ -44,6 +44,7 @@ class GeneradorDeImpresion
 			
 
 			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
+				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				s.add_column("DESCRIPCION_ADICIONAL") { |i| i.bien_de_consumo.detalle_adicional }							
@@ -69,6 +70,7 @@ class GeneradorDeImpresion
 			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
 				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha.strftime("%d/%m/%Y") }
 				s.add_column("COMPROBANTE") { |i| i.consumo_directo.id }							
+				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }							
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }				
 				s.add_column("OBRA_PROYECTO") { |i| i.consumo_directo.obra_proyecto.descripcion }							

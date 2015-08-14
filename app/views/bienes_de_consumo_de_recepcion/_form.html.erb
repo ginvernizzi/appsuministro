@@ -28,6 +28,12 @@
   </div>       
   <div class="col-md-6">
       <h3> Seleccionar arbol </h3>
+      <div class="field">
+         <%= label :clase, "Clase (nombre)" %> <br />   
+      </div>   
+      <div class="field">
+          <%= autocomplete_field_tag 'clase_nombre', '', autocomplete_clase_nombre_clases_path , :size => 75 %>
+      </div> 
       <%= render 'shared/form_arbol_bienes' %>
   </div>      
 </div>        
@@ -61,6 +67,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>clase</th>
       <th>Nombre</th>
       <th>Codigo</th>
       <th>Cantidad</th>
@@ -73,6 +80,7 @@
         <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
         <tr>        
           <% if bcr.bien_de_consumo %>
+              <td><%=  bcr.bien_de_consumo.clase.nombre %> </td>
               <td><%=  bcr.bien_de_consumo.nombre %> </td>
               <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
               <td><%= bcr.cantidad %> </td>

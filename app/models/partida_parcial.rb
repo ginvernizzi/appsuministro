@@ -1,4 +1,6 @@
 class PartidaParcial < ActiveRecord::Base
+  include ApplicationHelper
+
   belongs_to :partida_principal    
 
   has_many :clases, -> { where("clases.fecha_de_baja IS NULL") }
@@ -21,5 +23,9 @@ class PartidaParcial < ActiveRecord::Base
  	    self.errors[:base] << "No se puede eliminar el item mientras tenga elementos asociados"
       return false
   	end
+  end 
+
+  def combinar_codigo_nombre
+    " #{obtener_codigo_de_partida_parcial(id)}" +" - "+ "#{nombre}"
   end  
 end

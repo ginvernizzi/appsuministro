@@ -61,6 +61,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Clase</th>
       <th>Nombre</th>
       <th>Codigo</th>
       <th>Cantidad</th>
@@ -73,6 +74,7 @@
         <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
         <tr>        
           <% if bcr.bien_de_consumo %>
+              <td><%= bcr.bien_de_consumo.clase.nombre %> </td>
               <td><%= bcr.bien_de_consumo.nombre %> </td>
               <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
               <td><%= bcr.cantidad %> </td>

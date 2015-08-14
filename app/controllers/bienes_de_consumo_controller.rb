@@ -1,5 +1,5 @@
 class BienesDeConsumoController < ApplicationController
-  before_action :set_bien_de_consumo, only: [:show, :destroy]
+  before_action :set_bien_de_consumo, only: [:show, :destroy, :edit]
 
   def index
     #@bienes_de_consumo = BienDeConsumo.includes(:clase).where("bienes_de_consumo.fecha_de_baja IS NULL").order("clases.nombre")      
@@ -12,9 +12,13 @@ class BienesDeConsumoController < ApplicationController
   	@bien_de_consumo = BienDeConsumo.new
   	@incisos = Inciso.all
 	  @partidas_principales = PartidaPrincipal.all
-  	@partidas_parciales = PartidaParcial.all
-  	@clases = Clase.where('clases.fecha_de_baja IS NULL')
+  	@partidas_parciales = PartidaParcial.all  	
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo")
   	@bienes_de_consumo = BienDeConsumo.all
+  end
+
+  def edit
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo")
   end
 
   def show
@@ -54,7 +58,7 @@ class BienesDeConsumoController < ApplicationController
         @incisos = Inciso.all
   		  @partidas_principales = PartidaPrincipal.all
     		@partidas_parciales = PartidaParcial.all
-    		@clases = Clase.all
+    		@clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo")
     		@bienes_de_consumo = BienDeConsumo.all
 
   		#format.html { render :new }

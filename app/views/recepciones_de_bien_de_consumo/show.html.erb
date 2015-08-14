@@ -1,18 +1,28 @@
 <h1>Recepcion de bien de consumo</h1>
-<p>
-  <strong>Recepcion numero:</strong>
-  <%= @recepcion_de_bien_de_consumo.id %>
-</p>
+  <div class="row">
+    <div class="col-md-3">  
+    <p>
+      <strong>Recepcion numero:</strong>
+      <%= @recepcion_de_bien_de_consumo.id %>
+    </p>
 
-<p>
-  <strong>Fecha:</strong>
-  <%= @recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") %>
-</p>
+    <p>
+      <strong>Fecha:</strong> 
+      <%= @recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") %>
+    </p>
 
-<p>
-  <strong>Estado:</strong>
-  <%= RecepcionDeBienDeConsumo::ESTADOS.key(@recepcion_de_bien_de_consumo.estado)%>
-</p>
+    <p>
+      <strong>Estado:</strong>
+      <%= RecepcionDeBienDeConsumo::ESTADOS.key(@recepcion_de_bien_de_consumo.estado)%>
+    </p>
+  </div>
+    <div class="col-md-3">  
+      <p>
+      <strong>Detalle:</strong>
+      <%= @recepcion_de_bien_de_consumo.descripcion_provisoria %>
+      </p> 
+    </div>  
+   </div> 
 
 <% if !@recepcion_de_bien_de_consumo.descripcion_provisoria %>
   <p>
@@ -73,6 +83,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Clase</th>
       <th>Nombre</th>
       <th>Codigo</th>
       <th>Cantidad</th>
@@ -83,6 +94,7 @@
     <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
         <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
         <tr>        
+          <td><%= bcr.bien_de_consumo.clase.nombre %> </td>
           <td><%= bcr.bien_de_consumo.nombre %> </td>
           <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
           <td><%= bcr.cantidad %> </td>
@@ -98,5 +110,9 @@
   </tbody>
 </table>
 </div>
+<br />
+  <div>
+    <td><%= link_to 'Imprimir', recepciones_de_bien_de_consumo_en_stock_imprimir_detalle_recepcion_path(@recepcion_de_bien_de_consumo.id) %></td>
+  </div>
 
 <%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>

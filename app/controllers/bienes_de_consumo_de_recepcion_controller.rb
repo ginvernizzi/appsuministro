@@ -5,8 +5,10 @@ before_action :setear_fijos_arbol, only: [:new]
   def new
   	@recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])
     @bien_de_consumo_de_recepcion  = BienDeConsumoDeRecepcion.new(recepcion_de_bien_de_consumo_id: @recepcion_de_bien_de_consumo.id)    
-    @clases = Clase.where("fecha_de_baja IS NULL") 
-    #@clases = Clase.where("fecha_de_baja IS NULL").map{ |c| { :nombre => c.codigo + "-" + c.nombre }  }     
+    #@clases = Clase.where("fecha_de_baja IS NULL") 
+    #@clases = Clase.where("fecha_de_baja IS NULL").map{ |c| { :nombre => c.setear_codigo_mas_nombre } }  
+    #@clases = Clase.where("fecha_de_baja IS NULL AND concat_ws(' ', codigo, nombre)")
+    @clases = Clase.where("fecha_de_baja IS NULL")
   end
 
   def edit

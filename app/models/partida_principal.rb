@@ -1,4 +1,6 @@
 class PartidaPrincipal < ActiveRecord::Base
+  include ApplicationHelper
+
   belongs_to :inciso
   has_many :partidas_parciales
   
@@ -19,4 +21,8 @@ validates_uniqueness_of :nombre, scope: :inciso_id, :message => "de partida prin
 	   return false
 	  end
 	end  
+
+  def combinar_codigo_nombre
+    "#{obtener_codigo_de_partida_principal(id)}" +" - "+ "#{nombre}"
+  end 
 end

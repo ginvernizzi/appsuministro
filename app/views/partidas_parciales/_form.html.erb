@@ -13,7 +13,7 @@
 
   <div class="field">
       <%= f.label :partida_principal%><br /> 
-      <%= f.collection_select :partida_principal_id, @partidas_principales, :id, :nombre, :prompt => "seleccione..." %>  
+      <%= f.collection_select :partida_principal_id, @partidas_principales, :id, "combinar_codigo_nombre", :prompt => "seleccione..." %>  
   </div>
   <div class="field">
     <%= f.label :codigo, "Codigo (1 caracter)" %><br>

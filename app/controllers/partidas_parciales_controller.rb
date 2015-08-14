@@ -1,6 +1,8 @@
  class PartidasParcialesController < ApplicationController
   before_action :set_partida_parcial, only: [:show, :edit, :update, :destroy]
 
+  autocomplete :partida_parcial, :nombre , :full => true
+
   # GET /partidas_parciales
   # GET /partidas_parciales.json
   def index
@@ -14,8 +16,8 @@
 
   # GET /partidas_parciales/new
   def new
-    @partida_parcial = PartidaParcial.new
-    @partidas_principales = PartidaPrincipal.all    
+    @partida_parcial = PartidaParcial.new    
+    @partidas_principales = PartidaPrincipal.includes(:inciso).order("incisos.codigo").order("partidas_principales.codigo")
   end
 
   # GET /partidas_parciales/1/edit

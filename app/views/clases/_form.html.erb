@@ -15,7 +15,7 @@
   <div class="col-md-4">  
     <div class="field">
         <%= f.label :partida_parcial%><br /> 
-        <%= f.collection_select :partida_parcial_id, @partidas_parciales, :id, :nombre, :prompt => "seleccione..." %>  
+        <%= f.collection_select :partida_parcial_id, @partidas_parciales, :id, "combinar_codigo_nombre", :prompt => "seleccione..." %>  
     </div>
     <div class="field">
       <%= f.label :codigo, "Codigo (5 caracteres)" %><br>
@@ -32,7 +32,14 @@
     </div>
     <%= link_to 'Volver', clases_path %>
   </div>
-  <div class="col-md-4">  
+  <div class="col-md-4">          
+    <div class="field">
+       <%= label :partida_parcial, "Partida parcial (nombre)" %> <br />   
+    </div>   
+    <div class="field">
+        <%= autocomplete_field_tag 'partida_parcial_nombre', '', autocomplete_partida_parcial_nombre_partidas_parciales_path , :size => 75 %>
+    </div> 
+
     <div id="titulo"> </div> 
     <div id="tabla_items_existentes"> </div>   
   </div>   
