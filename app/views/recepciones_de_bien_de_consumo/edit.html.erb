@@ -15,7 +15,7 @@
     
   <div class="field">    
     <%= f.label :fecha %><br />
-    <%= f.text_field :fecha , { disabled: 'disabled' }%>  
+    <%= f.text_field :fecha , { :value => @recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y"), disabled: 'disabled' }%>  
   </div> 
 
   <div class="field">

@@ -12,7 +12,8 @@
     
   <div class="field">    
     <%= f.label :fecha %><br />
-    <%= f.text_field :fecha %>  
+    <%= f.text_field :fecha , { :value => DateTime.now.strftime("%d/%m/%Y")} %> 
+
   </div> 
 
   <div class="field">

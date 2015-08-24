@@ -11,29 +11,28 @@
   <% end %>
       
 <div class="row">
-  <div class="col-md-4">  
-    <h3> Ingresar codigo </h3>
+  <div class="col-md-3">      
+    <h3> Buscar por nombre </h3>   
+    <div class="field">
+         <%= f.label :nombre%><br>  
+      </div>   
+      <div class="field">
+          <%= autocomplete_field_tag 'bien_de_consumo_de_recepcion_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75 %>
+      </div>  
+  </div>  
+  <div class="col-md-3">      
+      <h3> Ingresar codigo </h3>   
     <div class="field">
       <%= f.label :codigo%><br>
       <%= text_field_tag :codigo %>
     </div>  
     <div class="field">
         <input type="button" value="Traer Bien de Consumo" class="" id="traer_bien_de_consumo">            
-    </div>
+    </div>    
+  </div>
 
-    <div class="field">
-      <%= f.label :nombre %><br>
-      <%= text_field_tag :nombre, nil, readonly: true %>
-    </div>       
-  </div>       
-  <div class="col-md-6">
-      <h3> Seleccionar arbol </h3>
-      <div class="field">
-         <%= label :clase, "Clase (nombre)" %> <br />   
-      </div>   
-      <div class="field">
-          <%= autocomplete_field_tag 'clase_nombre', '', autocomplete_clase_nombre_clases_path , :size => 75 %>
-      </div> 
+  <div class="col-md-3">
+      <h3> Seleccionar arbol </h3>      
       <%= render 'shared/form_arbol_bienes' %>
   </div>      
 </div>        

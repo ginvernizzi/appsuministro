@@ -29,7 +29,7 @@
 
 $(document).on("ready page:load", function() {
 
- 
+
   $("#traer_vista_de_bien_de_consumo").click(function() {        
     var categoria = "Bien_de_consumo"
     var id = $("#categoria_clase_id").val();
@@ -51,6 +51,7 @@ $(document).on("ready page:load", function() {
       alert("Debe seleccionar la categoria anterior primero");
     } 
   }); 
+  
 
   // $('.dropdown-submenu > a').submenupicker();
 });

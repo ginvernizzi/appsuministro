@@ -34,6 +34,6 @@ class Clase < ActiveRecord::Base
 	end 
 
   def combinar_codigo_nombre
-    " #{obtener_codigo_de_clase(id)}" +" - "+ "#{nombre}"
+    "#{obtener_codigo_de_clase(id)}" +" - "+ "#{nombre}"
   end 
 end

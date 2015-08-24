@@ -15,7 +15,7 @@ $(document).on("ready page:load", function() {
     language: "es"
   });
 
-  $("#recepcion_de_bien_de_consumo_fecha").datepicker("setDate", currentDate);
+  //$("#recepcion_de_bien_de_consumo_fecha").datepicker("setDate", currentDate);
 });
 
 

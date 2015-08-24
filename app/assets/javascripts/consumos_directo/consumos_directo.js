@@ -51,15 +51,16 @@ $(document).on("ready page:load", function() {
     $("#obra_proyecto_id").val(data.item.id);         
   })
 
-  ////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////
 
-  $("#area_origen_area_id").change(function() {  
+  $("#area_origen_area_id").change(function() 
+  {
     identificador_del_control = $("#area_origen_area_id").val();
     traer_responsable(identificador_del_control)    
   });
 
   function traer_responsable(id_del_control)
-  {            
+  {
     $.ajax({
       url: "/consumos_directo/obtener_responsable_de_area",
       dataType: "json",
@@ -78,40 +79,13 @@ $(document).on("ready page:load", function() {
 
     $("#traer_bien_de_consumo_y_cantidad_stock").click(function() {  
     var cod = $("#codigo").val();          
-    var depositoId = $("#consumo_directo_deposito_deposito_id").val();  
-      if($("#codigo").val() != "" && $("#consumo_directo_deposito_deposito_id").val() != null)
-      {
-        $.ajax({
-          url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
-          dataType: "json",
-          //contentType: "application/json", no va, si no envias un json!!!
-          type: "post",
-          data: { codigo: cod , deposito_id: depositoId },                
-          success:function(data){                  
-              $("#nombre").val(data.nombre)
-              $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
-              $("#cantidad_stock").val(data.cantidad_en_stock)           
-            },
-            error: function (request, status, error) 
-              { 
-                if($("#consumo_directo_deposito_id").val() != "")
-                { alert("Bien de consumo inexistente."); }
-                else
-                { alert("Seleccione un deposito origen")}
+    var depositoId = $("#consumo_directo_deposito_deposito_id").val();
 
-                blanquear_campos();
-              }
-          });
-      }
-      else
-      { 
-        alert("Debe seleccionar Codigo y Deposito")
-            blanquear_campos(); 
-      }      
+    ObtenerBienDeConsumoYcantidadEnStock(cod, depositoId)
   });
 
 
-  $("#agregar_bien_a_consumir").click(function() {  
+  $("#agregar_bien_a_consumir").click(function() {
     var array_bienes = get_tabla_de_bienes() 
     var bien_encontrado = array_bienes.filter(function( obj ) { return obj.Codigo == $("#codigo").val(); })
     if (bien_encontrado.length > 0)
@@ -147,13 +121,13 @@ $(document).on("ready page:load", function() {
   });
 
 
-  $("#eliminar_todos_los_bienes").click(function() {  
+  $("#eliminar_todos_los_bienes").click(function() {
     //$('#bienes_table').empty();       
     $("#bienes_table tbody tr").remove(); 
   });
 
 
-  $('#nuevo_consumo').submit(function() {  
+  $('#nuevo_consumo').submit(function() {
     var columns = $('#bienes_table thead th').map(function() {
       return $(this).text();
     });
@@ -189,7 +163,7 @@ $(document).on("ready page:load", function() {
   });            
 
   function ImprimirFormulario(consumo_id) 
-  {        
+  {
     $.ajax({
       url: "imprimir_formulario/?consumo_directo_id=" + consumo_id,    
       //url: "/consumos_directo/imprimir_formulario/?consumo_directo_id=" + consumo_id,      
@@ -228,7 +202,7 @@ $(document).on("ready page:load", function() {
   }
 
   $("#bienes_table").on('click','.remCF',function(){
-        $(this).parent().parent().remove();
+    $(this).parent().parent().remove();
   });
 
   function blanquear_campos()
@@ -246,65 +220,73 @@ $(document).on("ready page:load", function() {
     
   }
 
-    $("#obtener_lista_de_consumos_por_codigo_destino_y_fecha").click(function() {        
-      var bien_de_consumo__id = $("#bien_de_consumo_id").val();
-      var area__id = $("#area_id").val();
-      var fecha_inicio = $("#fecha_inicio").val();
-      var fecha_fin = $("#fecha_fin").val();
+  $("#obtener_lista_de_consumos_por_codigo_destino_y_fecha").click(function() {
+    var bien_de_consumo__id = $("#bien_de_consumo_id").val();
+    var area__id = $("#area_id").val();
+    var fecha_inicio = $("#fecha_inicio").val();
+    var fecha_fin = $("#fecha_fin").val();
 
-      $.ajax({
-        type: "get",
-        dataType: "json",
-        url: "/consumos_directo/traer_consumos_por_codigo_destino_y_fecha",        
-        data: { bien_id: bien_de_consumo__id, area_id: area__id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
-        success: function(data){            
-              blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
-              $('#tabla_bienes').html(data)            
-              if(data == "")
-              { alert("No se encontraron resultados") }
-        },
-        error: function (request, status, error) 
-            {             
-              alert("Ha ocurrido un error.");
-              blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
-            }                          
-        });     
-    });
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      url: "/consumos_directo/traer_consumos_por_codigo_destino_y_fecha",        
+      data: { bien_id: bien_de_consumo__id, area_id: area__id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+      success: function(data){            
+            blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
+            $('#tabla_bienes').html(data)            
+            if(data == "")
+            { alert("No se encontraron resultados") }
+      },
+      error: function (request, status, error) 
+          {             
+            alert("Ha ocurrido un error.");
+            blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
+          }                          
+      });     
+  });
 
-    function blanquear_campos_en_consumos_por_codigo_destino_y_fecha() 
-    {
-      $("#bien_de_consumo_nombre").val("");       
-      $("#bien_de_consumo_id").val(""); 
-      $("#area_nombre").val("");                  
-      $("#area_id").val("");  
-      $("#obra_proyecto_id").val(""); 
-    }
+  function blanquear_campos_en_consumos_por_codigo_destino_y_fecha() 
+  {
+    $("#bien_de_consumo_nombre").val("");       
+    $("#bien_de_consumo_id").val(""); 
+    $("#area_nombre").val("");                  
+    $("#area_id").val("");  
+    $("#obra_proyecto_id").val(""); 
+  }
 
-    $("#obtener_lista_de_consumos_por_obra_proyecto_y_fecha").click(function() {        
-      var obra_proyecto_id = $("#obra_proyecto_id").val();      
-      var fecha_inicio = $("#fecha_inicio").val();
-      var fecha_fin = $("#fecha_fin").val();
+  $("#obtener_lista_de_consumos_por_obra_proyecto_y_fecha").click(function() {
+    var obra_proyecto_id = $("#obra_proyecto_id").val();      
+    var fecha_inicio = $("#fecha_inicio").val();
+    var fecha_fin = $("#fecha_fin").val();
 
-      $.ajax({
-        type: "get",
-        dataType: "json",        
-        url: "/consumos_directo/traer_consumos_por_obra_proyecto_destino_y_fecha",        
-        data: { obra_proyecto_id: obra_proyecto_id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
-        success: function(data){            
-              blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
-              $('#tabla_bienes').html(data)            
-              if(data == "")
-                {alert("No se encontraron resultados")}
-        },
-        error: function (request, status, error) 
-            {                         
-              alert("Debe seleccionar todos los campos");
-              blanquear_campos_en_consumos_por_codigo_destino_y_fecha();              
-            }                          
-        });     
-    });
+    $.ajax({
+      type: "get",
+      dataType: "json",        
+      url: "/consumos_directo/traer_consumos_por_obra_proyecto_destino_y_fecha",        
+      data: { obra_proyecto_id: obra_proyecto_id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+      success: function(data){            
+            blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
+            $('#tabla_bienes').html(data)            
+            if(data == "")
+              {alert("No se encontraron resultados")}
+      },
+      error: function (request, status, error) 
+          {                         
+            alert("Debe seleccionar todos los campos");
+            blanquear_campos_en_consumos_por_codigo_destino_y_fecha();              
+          }                          
+      });     
+  });
 
-  $("#consumos_directo_bien_de_consumo_id").change(function() { 
+
+  $('#consumo_directo_nombre').bind('railsAutocomplete.select', function(event, data){
+    $("#codigo").val(ObtenerCodigoEIdentificadorDeBien(data.item.value,"consumos_directo_bien_de_consumo_id"));      
+    var id = data.item.id;                
+    var deposito_id = $("#consumo_directo_deposito_deposito_id").val();  
+    traer_bien_de_consumo_por_id_y_deposito(id, deposito_id);
+  });     
+
+  $("#consumos_directo_bien_de_consumo_id").change(function() {
       
         var id = $("#consumos_directo_bien_de_consumo_id").val();                
         var deposito_id = $("#consumo_directo_deposito_deposito_id").val();          
@@ -320,31 +302,94 @@ $(document).on("ready page:load", function() {
         }        
   }); 
 
-  function traer_bien_de_consumo_por_id_y_deposito(id, deposito_id)
-  {                 
-      
-    $.ajax({
-      url: "/consumos_directo/obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito",
-      dataType: "json",
-      //contentType: "application/json", no va, si no envias un json!!!
-      type: "post",
-      data: { bien_id: id , deposito_id: deposito_id },                
-      success:function(data){                  
-          $("#nombre").val(data.nombre)
-          $("#codigo").val(data.codigo)
-          $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
-          $("#cantidad_stock").val(data.cantidad_en_stock)           
-        }, 
-        error: function (request, status, error) 
-          { 
-            // if($("#consumo_deposito_origen_deposito_id").val() != "")
-            // { alert("Bien de consumo inexistente."); }
-            // else
-            // { alert("Seleccione un deposito origen") }
-            blanquear_campos();
-          }
-      });   
+  function traer_bien_de_consumo_por_id_y_deposito(id, deposito_id)  
+  {
+    if(deposito_id != null || deposito_id == "")
+    { 
+      $.ajax({
+        url: "/consumos_directo/obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito",
+        dataType: "json",
+        //contentType: "application/json", no va, si no envias un json!!!
+        type: "post",
+        data: { bien_id: id , deposito_id: deposito_id },                
+        success:function(data){                           
+            $("#consumo_directo_nombre").val(data.nombre)
+            $("#codigo").val(data.codigo)
+            $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
+            $("#cantidad_stock").val(data.cantidad_en_stock)           
+          }, 
+          error: function (request, status, error) 
+            { 
+
+              blanquear_campos();
+            }
+        });   
+    }
+    else
+      {alert("Debe seleccionar el deposito")}
   }
+
+  function ObtenerBienDeConsumoYcantidadEnStock(codigo, deposito_id)
+  {
+    if(codigo != "" && deposito_id != null)
+    {
+      $.ajax({
+        url: "/consumos_directo/obtener_nombre_de_bien_de_consumo",
+        dataType: "json",
+        //contentType: "application/json", no va, si no envias un json!!!
+        type: "post",
+        data: { codigo: codigo , deposito_id: deposito_id },                
+        success:function(data){                  
+            $("#consumo_directo_nombre").val(data.nombre)
+            $("#bien_de_consumo_id").val(data.bien_de_consumo_id)                 
+            $("#cantidad_stock").val(data.cantidad_en_stock)           
+          },
+          error: function (request, status, error) 
+            { 
+              if($("#consumo_directo_deposito_id").val() != "")
+              { alert("Bien de consumo inexistente."); }
+              else
+              { alert("Seleccione un deposito origen")}
+
+              blanquear_campos();
+            }
+        });
+    }
+    else
+    { 
+      alert("Debe seleccionar Codigo y Deposito")
+          blanquear_campos(); 
+    }            
+  }  
+
+  function ObtenerCodigoEIdentificadorDeBien(nom, etiqueta_bien_de_consumo_id)
+  {
+    $.ajax({
+    url: "/bienes_de_consumo_de_recepcion/obtener_codigo_de_bien_de_consumo",
+    dataType: "json",
+    //contentType: "application/json", no va, si no envias un json!!!
+    type: "post",
+    data: { nombre: nom },                
+    success:function(data){           
+        if(data.length > 0)       
+        {
+          $("#codigo").val(data[0].detalle_adicional)          
+          $("#nombre").val(data[0].nombre)
+          //$("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val(data[0].id) 
+          $("#"+etiqueta_bien_de_consumo_id).val(data[0].id) 
+          etiqueta_bien_de_consumo_id                 
+        }
+        else
+        {
+          alert("Bien de consumo inexistente");              
+        }
+      },
+    error: function (request, status, error) {
+      alert("Bien de consumo inexistente");
+      }
+    });
+  }
+
 });           
 
   (function() {
@@ -371,26 +416,29 @@ $(document).on("ready page:load", function() {
   }).call(this);  
 
   (function() {
-        jQuery(function() {
-          var bienes, llenarBienes;
-          llenarBienes = function(bienes) {
-            var clase, options;
-            clase = $('#categoria_clase_id :selected').text();
-            options = $(bienes).filter("optgroup[label='" + clase + "']").html();
-            if (options) {
-              $('#consumos_directo_bien_de_consumo_id').html('<option value="">seleccione...</option>');
-              return $('#consumos_directo_bien_de_consumo_id').append(options);
-            } 
-            else {
-              return $('#consumos_directo_bien_de_consumo_id').empty();
-            }
-          };
-          bienes = $('#consumos_directo_bien_de_consumo_id').html();
-          llenarBienes(bienes);
-          return $('#categoria_clase_id').change(function() {
-            return llenarBienes(bienes);
-          });
-        }); 
+    jQuery(function() {
+      var bienes, llenarBienes;
+      llenarBienes = function(bienes) {
+        var clase, options;
+        clase = $('#categoria_clase_id :selected').text();
+        if(clase.indexOf("-") >= 0 )        
+        { clase = clase.split("-")[1].trim() }
+
+        options = $(bienes).filter("optgroup[label='" + clase + "']").html();
+        if (options) {
+          $('#consumos_directo_bien_de_consumo_id').html('<option value="">seleccione...</option>');
+          return $('#consumos_directo_bien_de_consumo_id').append(options);
+        } 
+        else {
+          return $('#consumos_directo_bien_de_consumo_id').empty();
+        }
+      };
+      bienes = $('#consumos_directo_bien_de_consumo_id').html();
+      llenarBienes(bienes);
+      return $('#categoria_clase_id').change(function() {
+        return llenarBienes(bienes);
+      });
+    }); 
   }).call(this);
 
 

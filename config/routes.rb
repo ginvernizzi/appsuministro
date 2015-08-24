@@ -190,7 +190,10 @@ Rails.application.routes.draw do
   get 'static_pages/help'    
   
   resources :recepciones_de_bien_de_consumo do
-      resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy]
+      collection do
+        get 'ver_rechazadas' 
+      end
+      resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy]      
   end
 
   get 'recepciones_de_bien_de_consumo/enviar_a_evaluar/:id', 

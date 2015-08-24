@@ -1,6 +1,6 @@
 class ItemsStockController < ApplicationController  
 
-  autocomplete :bien_de_consumo, :nombre , :full => true
+  autocomplete :bien_de_consumo, :nombre , :full => true, :extra_data => [:codigo]
   autocomplete :area, :nombre , :full => true
 
   def index

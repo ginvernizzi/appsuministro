@@ -9,6 +9,11 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 1 OR estado = 2").order(:id)
   end
 
+  def ver_rechazadas    
+    # estado 4: rechazadas
+    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 4").order(:id)
+  end
+
   # GET /recepciones_de_bien_de_consumo/1
   # GET /recepciones_de_bien_de_consumo/1.json
   def show
@@ -25,7 +30,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
 
   # GET /recepciones_de_bien_de_consumo/1/edit
   def edit    
-    @tipos_de_documento = TipoDeDocumento.all
+    @tipos_de_documento = TipoDeDocumento.all    
   end
 
   # POST /recepciones_de_bien_de_consumo
@@ -65,8 +70,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
             end
             }
       end
-
-        if @recepcion_de_bien_de_consumo.save                
+if
+         @recepcion_de_bien_de_consumo.save                
           flash[:notice] = 'La recepcion fue creada exitosamente.'              
           #redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)  
           redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)                      
@@ -115,7 +120,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     end
   end
 
-  # DELETE /recepciones_de_bien_de_consumo/1
+  #  /recepciones_de_bien_de_consumo/1
   # DELETE /recepciones_de_bien_de_consumo/1.json
   def destroy
     @recepcion_de_bien_de_consumo.destroy
@@ -161,7 +166,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recepcion_de_bien_de_consumo
-      @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])
+      @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])          
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

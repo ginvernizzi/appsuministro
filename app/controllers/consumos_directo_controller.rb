@@ -327,7 +327,6 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito
-
       @array_bien_de_consumo = BienDeConsumo.where(id: params[:bien_id]) 
       @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", params[:bien_id], params[:deposito_id])      
 

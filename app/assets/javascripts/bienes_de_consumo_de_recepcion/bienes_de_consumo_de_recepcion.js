@@ -45,10 +45,18 @@ var ready = function() {
 
       $('#categoria_bien_de_consumo_id').change(function() {            
         var nom = this.options[this.selectedIndex].innerHTML 
-        ObtenerCodigoEIdentificadorDeBien(nom);        
+        ObtenerCodigoEIdentificadorDeBien(nom, "bien_de_consumo_de_recepcion_bien_de_consumo_id");        
       });
 
-      function ObtenerNombreEIdentificadorDeBien(cod)
+
+    function blanquear_campos()
+    {
+      $("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val("");
+      $("#codigo").val("");    
+      $("#nombre").val("");    
+    }
+
+    function ObtenerNombreEIdentificadorDeBien(cod)
       {
 
         $.ajax({
@@ -74,44 +82,15 @@ var ready = function() {
               blanquear_campos();
           }
         });
-      }
-
-    function blanquear_campos()
-    {
-      $("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val("");
-      $("#codigo").val("");    
-      $("#nombre").val("");    
-    }
-
-      function ObtenerCodigoEIdentificadorDeBien(nom)
-      {
-        $.ajax({
-        url: "/bienes_de_consumo_de_recepcion/obtener_codigo_de_bien_de_consumo",
-        dataType: "json",
-        //contentType: "application/json", no va, si no envias un json!!!
-        type: "post",
-        data: { nombre: nom },                
-        success:function(data){           
-            if(data.length > 0)       
-            {
-              $("#codigo").val(data[0].detalle_adicional)          
-              $("#nombre").val(data[0].nombre)
-              $("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val(data[0].id)                  
-            }
-            else
-            {
-              alert("Bien de consumo inexistente");              
-            }
-          },
-        error: function (request, status, error) {
-          alert("Bien de consumo inexistente");
-          }
-        });
-      }
+      }     
 
     $('#clase_nombre').bind('railsAutocomplete.select', function(event, data){              
       $("#bien_de_consumo_clase_id").val(data.item.id);
     });
+
+    $('#bien_de_consumo_de_recepcion_nombre').bind('railsAutocomplete.select', function(event, data){                  
+      $("#codigo").val(ObtenerCodigoEIdentificadorDeBien(data.item.value, "bien_de_consumo_de_recepcion_bien_de_consumo_id"));
+    });     
 };
 
 $(document).ready(ready);
