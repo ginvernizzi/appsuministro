@@ -9,9 +9,9 @@
 
   <tbody>
     <% @documentos.each do |doc| %>
-      <tr>        
+      <tr>                
+        <td><%= doc.tipo_de_documento.nombre %></td>               
         <td><%= doc.numero_de_documento %></td>
-        <td><%= doc.tipo_de_documento %></td>               
       </tr>
     <% end %>
   </tbody>

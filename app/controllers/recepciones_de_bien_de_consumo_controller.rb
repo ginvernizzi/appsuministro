@@ -169,7 +169,7 @@ if
 
   def traer_documentos_con_numero_existente
     numero = params[:numero]        
-    @documentos = DocumentosDeRecepcion.joins(:tipos_de_documento).where("numero_de_documento = ?", numero)      
+    @documentos = DocumentoDeRecepcion.joins(:tipo_de_documento).where("numero_de_documento = ?", numero)      
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
