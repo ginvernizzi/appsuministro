@@ -1,0 +1,25 @@
+<div class='row'>
+ 	<div class='col-sm-1'>    
+		<%= hidden_field_tag dom_id(@bien_de_consumo_para_consumir.bien_de_consumo), @consumo_directo.bienes_de_consumo_para_consumir.first().bien_de_consumo.id %>
+	</div>
+	<div class='col-sm-1'>    
+		<%= label_tag dom_id(@bien_de_consumo_para_consumir.bien_de_consumo), @consumo_directo.bienes_de_consumo_para_consumir.first().bien_de_consumo.codigo %>
+	</div>
+	<div class='col-sm-1'>    
+		<%= label_tag dom_id(@bien_de_consumo_para_consumir.bien_de_consumo), @consumo_directo.bienes_de_consumo_para_consumir.first().bien_de_consumo.nombre %>
+	</div>
+	<div class='col-sm-1'>    
+		<%= label_tag dom_id(@bien_de_consumo_para_consumir.deposito), @consumo_directo.bienes_de_consumo_para_consumir.first().deposito.nombre %>	
+	</div>
+	<div class='col-sm-1'>    
+		<%= label_tag dom_id(@bien_de_consumo_para_consumir), @bien_de_consumo_para_consumir.cantidad %>
+	</div>
+	<div class='col-sm-1'>    
+		<%= label_tag dom_id(@bien_de_consumo_para_consumir.bien_de_consumo), @bien_de_consumo.unidad_de_medida %>
+	</div>
+	<div class='col-sm-1'>    
+		<button>Eliminar</button>
+	</div>
+</div>
+
+

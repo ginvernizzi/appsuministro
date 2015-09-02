@@ -9,6 +9,10 @@ class ClasesController < ApplicationController
     @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
   end       
 
+  def ver_clases_dadas_de_baja
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NOT NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
+  end
+
   # GET /clases/1
   # GET /clases/1.json
   def show

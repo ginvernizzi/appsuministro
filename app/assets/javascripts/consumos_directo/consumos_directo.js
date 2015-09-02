@@ -84,6 +84,53 @@ $(document).on("ready page:load", function() {
     ObtenerBienDeConsumoYcantidadEnStock(cod, depositoId)
   });
 
+  //////////////////////// Nuevo consumo por seleccion  (prueba commit no borre tabla) ////////////////////  
+  // do stuff here.
+  // $("#traer_item").click(function() {    
+  //   var bien_id = $("#bien_de_consumo_id").val();
+  //   var deposito_id = $("#consumo_directo_deposito_deposito_id").val();
+  //   var cantidad_a_consumir = $("#cantidad_a_consumir").val();
+  //   var nombre = $("#nombre").val();
+
+  //   //comparar hidden con el mail ingresado
+  //   //usuarios = [dtanel@gmail.com, ginvernizzi@gmail.com]    
+  //   if (bien_id != "" && bien_id != null)
+  //   {    
+  //     if(El_item_existe(bien_id))        
+  //     {        
+  //       alert("El item ya fue agregado");  
+  //       $(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + true + "&deposito_id=" + deposito_id + "&cantidad_a_consumir=" + cantidad_a_consumir);
+  //       //$(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + true );
+  //     }                          
+  //     else 
+  //     {  
+  //       $(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + false + "&deposito_id=" + deposito_id + "&cantidad_a_consumir=" + cantidad_a_consumir);                
+  //       //$(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + false );                
+  //     }                      
+  //     blanquear_campos();
+  //   }
+  //   else
+  //   {
+  //     alert("Debe seleccionar el bien de consumo")
+  //   }
+  // });
+
+  // function El_item_existe(bien_id)
+  //   {
+  //     var resp = false
+  //     $('div.items_agregados>div').each(function(){           
+  //       var hijos = $(this).context.children;
+  //       for(var i = 0; i < hijos.length; i++) {        
+  //         if (hijos[i].firstElementChild.value == bien_id)
+  //         { 
+  //           resp = true; 
+  //           break;
+  //         }                                
+  //       }
+  //     });
+  //     return resp;
+  //   }
+  ///////////////////////////////////////////////////////
 
   $("#agregar_bien_a_consumir").click(function() {
     var array_bienes = get_tabla_de_bienes() 
@@ -126,7 +173,7 @@ $(document).on("ready page:load", function() {
     $("#bienes_table tbody tr").remove(); 
   });
 
-
+  ////////////////// Commit Nuevo consumo, se borra la tabla si hay error. 
   $('#nuevo_consumo').submit(function() {
     var columns = $('#bienes_table thead th').map(function() {
       return $(this).text();
@@ -209,12 +256,13 @@ $(document).on("ready page:load", function() {
   {
     $("#bien_de_consumo_id").val("");
     $("#codigo").val("");    
-    $("#nombre").val("");    
+    $("#consumo_directo_nombre").val("");    
     $("#cantidad_stock").val("");
-    $("#cantidad_a_consumir").val("");
+    $("#cantidad_a_consumir").val("");    
+    $("#area_origen_area_id").val("");
     $("#consumo_directo_deposito_id").val("");
-    $("#consumo_directo_deposito_deposito_id").val("");
-    
+    $("#responsable").val("");
+    $("#consumo_directo_deposito_deposito_id").val("");    
     $("#categoria_clase_id").val("");   
     document.getElementById('consumos_directo_bien_de_consumo_id').options.length = 0; 
     
@@ -328,6 +376,38 @@ $(document).on("ready page:load", function() {
     else
       {alert("Debe seleccionar el deposito")}
   }
+
+  
+  $("#obtener_lista_de_consumos_y_transferencias_por_bien_y_fecha").click(function() {
+    var bien_id = $("#bien_de_consumo_id").val();      
+    var fecha_inicio = $("#fecha_inicio").val();
+    var fecha_fin = $("#fecha_fin").val();
+
+    if(bien_id == "")
+      { 
+        alert("Debe completar todos los campos") 
+        return;
+      } 
+
+    $.ajax({
+      type: "get",
+      dataType: "json",        
+      url: "/consumos_directo/traer_consumos_y_transferencias_por_nombre_y_fecha",        
+      data: { bien_id: bien_id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+      success: function(data){            
+            blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
+            $('#tabla_bienes').html(data)            
+            if(data == "")
+              {alert("No se encontraron resultados")}
+      },
+      error: function (request, status, error) 
+          {                         
+            alert("Ha ocurrido un error. Informe al administrador del sistema");
+            blanquear_campos_en_consumos_por_codigo_destino_y_fecha();              
+          }                          
+      });     
+  });
+
 
   function ObtenerBienDeConsumoYcantidadEnStock(codigo, deposito_id)
   {

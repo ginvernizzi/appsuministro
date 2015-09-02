@@ -1,0 +1,4 @@
+<% if @mensaje_error.blank? %>
+	$("#items").append("<%= j (render  "items", consumo_directo: @consumo_directo, bien_de_consumo: @bien_de_consumo, item_stock:@item_stock)  %>")
+<% else %>	
+<% end %>

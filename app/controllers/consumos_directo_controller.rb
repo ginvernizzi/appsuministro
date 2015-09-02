@@ -131,6 +131,28 @@ class ConsumosDirectoController < ApplicationController
     end #transaction
   end #def
 
+  ################# Nuevo consumo por seleccion  (prueba commit no borre tabla) #############
+  # def crear_consumo              
+  #   ConsumoDirecto.transaction do                
+  #     #Quitar bienes de stock               
+  #     @consumo_directo = ConsumoDirecto.new(consumo_directo_params)           
+
+  #     #crear CostoDeBienDeConsumo
+  #     #crear CostoDeBienDeConsumoHistorico
+
+  #     respond_to do |format|
+  #       if @consumo_directo.save                          
+  #         format.json { render json: @consumo_directo }
+  #       else              
+  #         cargar_datos_controles_consumo_directo
+  #         #format.html { render :nuevo_consumo }                        
+  #         format.html { render action: 'nuevo_consumo' }
+  #         #format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
+  #       end
+  #     end
+  #   end #transaction
+  # end #def
+
     # PATCH/PUT /consumos_directo/1
     # PATCH/PUT /consumos_directo/1.json
   def update
@@ -183,9 +205,6 @@ class ConsumosDirectoController < ApplicationController
     else           
         return false
     end       
-  end
-
-  def ver_consumos_directos_por_obra_proyecto_y_fecha
   end
 
   def quitar_bienes_de_stock(recepcion)    
@@ -247,8 +266,7 @@ class ConsumosDirectoController < ApplicationController
     return costo        
   end
 
-  def ver_consumos_por_codigo_destino_fecha
-    
+  def ver_consumos_por_codigo_destino_fecha    
   end
 
   def traer_consumos_por_codigo_destino_y_fecha
@@ -281,6 +299,35 @@ class ConsumosDirectoController < ApplicationController
     if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
       @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
       @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+    end    
+     
+    respond_to do |format|   
+      format.js {}
+    end 
+  end  
+
+  def ver_consumos_y_transferencias_por_nombre_y_fecha 
+  end
+
+  def traer_consumos_y_transferencias_por_nombre_y_fecha        
+    bien_id = params[:bien_id]
+    fecha_inicio = params[:fecha_inicio]
+    fecha_fin = params[:fecha_fin]
+   
+    @bien_de_consumo_para_consumir = nil
+
+    if !bien_id.blank?      
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("bienes_de_consumo.id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, fecha_inicio, fecha_fin) | 
+                                      BienDeConsumoParaTransferir.joins(:bien_de_consumo, :transferencia).where("bienes_de_consumo.id = ? AND transferencias.fecha >= ? AND transferencias.fecha <= ?", bien_id, fecha_inicio, fecha_fin) 
+    # else
+    #   @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", fecha_inicio, fecha_fin) | 
+    #                                   BienDeConsumoParaTransferir.joins(:bien_de_consumo, :transferencia).where("transferencias.fecha >= ? AND transferencias.fecha <= ?", fecha_inicio, fecha_fin)                             
+    end
+
+            
+    if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
+       @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
+       @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
     end    
      
     respond_to do |format|   
@@ -319,6 +366,23 @@ class ConsumosDirectoController < ApplicationController
     @generador = GeneradorDeImpresion.new
     @generador.generar_pdf_consumo_directo(@consumo)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_pdf)
+    send_file ( file )         
+  end
+
+  def imprimir_formulario_consumos_y_transferencias_por_nombre_y_fecha              
+    bien_id = params[:bien_id]
+    fecha_inicio = params[:fecha_inicio]
+    fecha_fin = params[:fecha_fin]
+    #@bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
+
+    if !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
+      @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("bienes_de_consumo.id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, fecha_inicio, fecha_fin) | 
+                                        BienDeConsumoParaTransferir.joins(:bien_de_consumo, :transferencia).where("bienes_de_consumo.id = ? AND transferencias.fecha >= ? AND transferencias.fecha <= ?", bien_id, fecha_inicio, fecha_fin) 
+    end
+
+    @generador = GeneradorDeImpresionSeguimientoSalidas.new
+    @generador.generar_pdf_items_seguimiento_de_salidas(@bienes_de_consumo_para_consumir)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_seguimiento_salidas_pdf)
     send_file ( file )         
   end
 
@@ -399,6 +463,9 @@ class ConsumosDirectoController < ApplicationController
     end
   end
 
+
+  def ver_consumos_directos_por_obra_proyecto_y_fecha
+  end
   
   def traer_consumos_por_obra_proyecto_destino_y_fecha
     obra_proyecto_id = params[:obra_proyecto_id]    
@@ -420,6 +487,30 @@ class ConsumosDirectoController < ApplicationController
     end 
   end
 
+  def obtener_item_para_agregar_a_recepcion_by_id                       
+      puts "************** controller aca"
+      @bien_de_consumo_id = params[:bien_id]
+      @deposito_id = params[:deposito_id]
+      @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", @bien_de_consumo_id, @deposito_id)            
+      @cantidad_a_consumir = params[:cantidad_a_consumir]  
+
+      @bien_de_consumo = BienDeConsumo.find(@bien_de_consumo_id) 
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.new(bien_de_consumo_id: @bien_de_consumo_id, deposito_id: @deposito_id, cantidad: @cantidad_a_consumir) 
+      #@bien_de_consumo_para_consumir.bien_de_consumo = @bien_de_consumo
+
+      item_existe = params[:item_existe]
+      if item_existe == "true"
+        @mensaje_error = "Ya existe el bien"
+      end
+
+      @consumo_directo = ConsumoDirecto.new     
+      @consumo_directo.bienes_de_consumo_para_consumir << @bien_de_consumo_para_consumir
+      
+      respond_to do | format |                                  
+        format.js { }
+      end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_consumo_directo
@@ -428,7 +519,7 @@ class ConsumosDirectoController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def consumo_directo_params
-      #params.require(:consumo_directo).permit(:fecha, :area_id, :obra_proyecto_id, :bienes)
+      #params.require(:consumo_directo).permit(:fecha, :area_id, :obra_proyecto_id, :bien_de_consumo_para_consumir_ids => [])      
       params.require(:consumo_directo).permit! 
     end
 

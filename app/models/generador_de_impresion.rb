@@ -108,6 +108,8 @@ class GeneradorDeImpresion
 		"comprobante_ingreso_a_stock_" + @fecha_inicializacion
 	end
 
+	############
+
 	def nombre_formulario_consumo_odt
 		nombre_formulario_consumo + ".odt"
 	end

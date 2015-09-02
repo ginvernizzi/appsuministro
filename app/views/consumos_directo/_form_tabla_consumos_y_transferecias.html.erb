@@ -1,0 +1,50 @@
+<% if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.length > 0 %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Comprobante</th>      
+      <th>Clase</th>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Destino</th>
+      <th>Cantidad</th>
+      <th>Operación</th>
+      <th> Ver </th>
+    </tr>
+  </thead>  
+  <tbody>    
+    <% @bien_de_consumo_para_consumir.each do |bien| %>
+      <% if bien.respond_to?(:consumo_directo) %>
+        <tr>
+          <td><%= bien.consumo_directo.fecha.strftime("%d/%m/%Y") %></td>
+          <td><%= bien.consumo_directo.id %></td>           
+          <td><%= bien.bien_de_consumo.clase.nombre  %></td>                   
+          <td><%= obtener_codigo_completo_bien_de_consumo(bien.bien_de_consumo.nombre) %></td>
+          <td><%= bien.bien_de_consumo.nombre %></td>
+          <td><%= bien.consumo_directo.area.nombre  %></td>        
+          <td><%= bien.cantidad %></td>   
+          <td><%= "Consumo" %></td>    
+          <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>     
+        </tr>
+      <% else %>
+        <tr>
+          <td><%= bien.transferencia.fecha.strftime("%d/%m/%Y") %></td>
+          <td><%= bien.transferencia.id %></td>            
+          <td><%= bien.bien_de_consumo.clase.nombre  %></td> 
+          <td><%= obtener_codigo_completo_bien_de_consumo(bien.bien_de_consumo.nombre) %></td>
+          <td><%= bien.bien_de_consumo.nombre %></td>
+          <td><%= bien.transferencia.deposito.nombre  %></td>        
+          <td><%= bien.cantidad %></td>   
+          <td><%= "Transferencia" %></td>
+          <td><%= link_to 'Ver', transferencia_path(bien.transferencia.id) %></td>     
+        </tr>
+      <% end %>    
+    <% end %>    
+    <% if(@bien_de_consumo_para_consumir.length > 0) %>              
+        <td><%= link_to 'Imprimir', imprimir_formulario_consumos_y_transferencias_por_nombre_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_de_consumo.id, @bien_de_consumo_para_consumir.first().fecha_inicio, @bien_de_consumo_para_consumir.first().fecha_fin) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+        </td>   
+    <% end %>
+  </tbody>      
+</table>
+<% end %>

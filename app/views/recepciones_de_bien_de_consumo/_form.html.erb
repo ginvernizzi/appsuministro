@@ -9,40 +9,49 @@
       </ul>
     </div>
   <% end %>
-    
-  <div class="field">    
-    <%= f.label :fecha %><br />
-    <%= f.text_field :fecha , { :value => DateTime.now.strftime("%d/%m/%Y")} %> 
 
-  </div> 
+<div class="row">
+  <div class="col-md-4">        
+      <div class="field">    
+        <%= f.label :fecha %><br />
+        <%= f.text_field :fecha , { :value => DateTime.now.strftime("%d/%m/%Y")} %> 
 
-  <div class="field">
-    <%= f.label :estado %><br> 
-    <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS .first(2), :last, :first, :include_blank => "Seleccione estado...") %>       
-  </div>
+      </div> 
 
-   <div id="div_descripcion_provisoria">
-  </div> 
+      <div class="field">
+        <%= f.label :estado %><br> 
+        <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS .first(2), :last, :first, :include_blank => "Seleccione estado...") %>       
+      </div>
 
-  <div class="field">
-      <%= f.label :tipo_de_documento%><br /> 
-      <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", "nombre", :include_blank => "Seleccione un documento...") %>
-  </div>
-  
-  <div class="field">
-    <%= label_tag :numero %><br>      
-    <%= f.text_field :documento_principal, :value => '', :readonly => true%>         
-  </div>    
-       
-  <div class="field">
-    <%= f.label :tipo_de_documento_secundario %><br />
-    <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
-    "nombre", :include_blank => "Seleccione un documento...") %><br /> 
+       <div id="div_descripcion_provisoria">
+      </div> 
 
-    <%= f.label :numero %><br />         
-    <%= text_field_tag :numero_doc_secundario, params[:numero], id: 'numero_doc_secundario' %> 
-    <input type="button" id="agregar_doc" value="Agregar"/>
-  </div>        
+      <div class="field">
+          <%= f.label :tipo_de_documento%><br /> 
+          <%= collection_select(:tdp, "tipo_de_documento_id", @tipos_de_documento, "id", "nombre", :include_blank => "Seleccione un documento...") %>
+      </div>
+      
+      <div class="field">
+        <%= label_tag :numero %><br>      
+        <%= f.text_field :documento_principal, :value => '', :readonly => true%>         
+      </div>    
+           
+      <div class="field">
+        <%= f.label :tipo_de_documento_secundario %><br />
+        <%= collection_select(:tds, "tipo_de_documento_secundario_id", @tipos_de_documento, "id", 
+        "nombre", :include_blank => "Seleccione un documento...") %><br /> 
+
+        <%= f.label :numero %><br />         
+        <%= text_field_tag :numero_doc_secundario, params[:numero], id: 'numero_doc_secundario' %> 
+        <input type="button" id="agregar_doc" value="Agregar"/>
+      </div>   
+    </div>        
+
+      <div class="col-md-4">  
+        <div id="titulo"> </div> 
+        <div id="tabla_items_existentes"> </div>   
+      </div>   
+  </div>     
 
 <div class="panel panel-default">
 <div class="panel-heading">Documentos secundarios</div>

@@ -3,20 +3,46 @@
 
 $(document).on("ready page:load", function() {
 
-  $('#bien_de_consumo_de_recepcion_cantidad').inputmask('999999', { clearMaskOnLostFocus: true, placeholder: ' ' })      
-  //$('#bien_de_consumo_de_recepcion_costo').inputmask('99999.999', { clearMaskOnLostFocus: true, placeholder: ' ' , greedy: false})        
+  $('#bien_de_consumo_de_recepcion_cantidad').inputmask('999999', { clearMaskOnLostFocus: true, placeholder: ' ' })        
 
-   var currentDate = new Date();
-  $('#recepcion_de_bien_de_consumo_fecha').datepicker
-  ({
-    showOn: 'both',  
-    autoclose: true,    
-    format: 'dd/mm/yyyy',
-    language: "es"
-  });
+    var currentDate = new Date();
+    $('#recepcion_de_bien_de_consumo_fecha').datepicker
+    ({
+      showOn: 'both',  
+      autoclose: true,    
+      format: 'dd/mm/yyyy',
+      language: "es"
+    });
 
   //$("#recepcion_de_bien_de_consumo_fecha").datepicker("setDate", currentDate);
-});
+  });
+
+  $("recepcion_de_bien_de_consumo_documento_principal").blur(function(){
+      alert("Hola")
+      var str = this.value;            
+      buscar_numeros_de_documento_parecidos(str); 
+      $('#titulo').html("");
+      $('#tabla_items_existentes').html(""); 
+  });    
+
+  function buscar_numeros_de_documento_parecidos(numero)
+  {   
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      url: "/recepciones_de_bien_de_consumo/traer_documentos_con_numero_existente",      
+      data: { numero: numero },        
+      success: function(data){            
+            //BlanquearCampos();
+            $('#titulo').html("<b> Clases con codigo de Bien de consumo existente </b>");
+            $('#tabla_items_existentes').html(data);
+      },
+      error: function (request, status, error) 
+          {             
+            alert("Ha ocurrido un error");
+          }
+    });       
+  }
 
 
 /////////////////// Vista nueva recepcion. Agrear y quitar Documentos ///////////////////  

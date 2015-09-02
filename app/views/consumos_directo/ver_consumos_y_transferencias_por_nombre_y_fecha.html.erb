@@ -1,4 +1,4 @@
-<h1> Listado de Consumos por Bien y Destino </h1>
+<h1> Seguimiento de salida (consumos y transferencias) por Item y Fecha  </h1>
 
 <div class="row">
   <form class="navbar-form navbar-left" role="search">    
@@ -32,25 +32,17 @@
 <div class="field">
     <%= autocomplete_field_tag 'bien_de_consumo_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75 %>
 </div> 
-
-<div class="field">
-   <%= label :Area, "Area destino" %> <br />   
-</div>  
-<div class="field">
-    <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>
-</div> 
        
 <div>
   <%= hidden_field_tag 'bien_de_consumo_id' %>
-  <%= hidden_field_tag 'area_id' %>
 </div>
 
 <div class="field">
-  <input type="button" value="Obtener" class="" id="obtener_lista_de_consumos_por_codigo_destino_y_fecha">        
+  <input type="button" value="Obtener" class="" id="obtener_lista_de_consumos_y_transferencias_por_bien_y_fecha">        
 </div>
 
 <div id="tabla_bienes">    
-  <%= render 'form_tabla_bienes' %>   
+  <%= render 'form_tabla_consumos_y_transferecias' %>   
 </div> 
 
 

@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       get 'autocomplete_clase_nombre'
       get 'traer_partidas_parciales_con_codigo_de_clase_existente'
       get 'traer_partidas_parciales_con_nombre_de_clase_similar'
+      get 'ver_clases_dadas_de_baja'
     end
   end
 
@@ -68,6 +69,7 @@ Rails.application.routes.draw do
       get 'traer_vista_de_categoria'    
       get 'traer_clases_con_codigo_de_bien_existente' 
       get 'traer_clases_con_nombre_de_bien_de_consumo_similar'      
+      get 'ver_items_dados_de_baja'
     end
     resources :areas  do
       resources :items_stock do
@@ -146,18 +148,23 @@ Rails.application.routes.draw do
     resources :depositos , only: [:new, :destroy]
   end
   
+
   resources :consumos_directo do 
     collection do
+      post 'obtener_item_para_agregar_a_recepcion_by_id'
       get 'autocomplete_obra_proyecto_descripcion'
       get 'nuevo_consumo'
-      post 'crear_consumo'
+      #post 'nuevo_consumo'      
+      post 'crear_consumo'      
       post 'obtener_nombre_de_bien_de_consumo'  
       post 'obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito'
       post 'obtener_responsable_de_area'
       get 'ver_consumos_por_codigo_destino_fecha'  
+      get 'ver_consumos_y_transferencias_por_nombre_y_fecha'
+      get 'traer_consumos_y_transferencias_por_nombre_y_fecha'
       get 'traer_consumos_por_codigo_destino_y_fecha'       
       get 'traer_consumos_por_obra_proyecto_destino_y_fecha'
-      get 'ver_consumos_por_obra_proyecto_y_fecha' 
+      get 'ver_consumos_por_obra_proyecto_y_fecha'       
     end
   end
 
@@ -171,6 +178,10 @@ Rails.application.routes.draw do
   post 'consumos_directo/bien_de_consumo/:bien_id/area/:area_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_codigo_destino_y_fecha/',  
                                                             to: 'consumos_directo#imprimir_formulario_consumos_por_codigo_destino_y_fecha',
                                                             as: 'imprimir_formulario_consumos_por_codigo_destino_y_fecha'
+
+  post 'consumos_directo/bien_de_consumo/:bien_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_y_transferencias_por_nombre_y_fecha/',  
+                                                            to: 'consumos_directo#imprimir_formulario_consumos_y_transferencias_por_nombre_y_fecha',
+                                                            as: 'imprimir_formulario_consumos_y_transferencias_por_nombre_y_fecha'
 
   resources :obras_proyectos  
 
@@ -192,6 +203,7 @@ Rails.application.routes.draw do
   resources :recepciones_de_bien_de_consumo do
       collection do
         get 'ver_rechazadas' 
+        get 'traer_documentos_con_numero_existente'
       end
       resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy]      
   end

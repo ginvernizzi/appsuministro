@@ -9,7 +9,7 @@
       <li><%= link_to "Recepciones vigentes", recepciones_de_bien_de_consumo_path %></li>    
       <li><%= link_to "Recepciones rechazadas", ver_rechazadas_recepciones_de_bien_de_consumo_path %></li>
       <li><%= link_to "Evaluación", recepciones_de_bien_de_consumo_a_evaluar_index_path %></li>
-      <li><%= link_to "Nuevo Consumo", nuevo_consumo_consumos_directo_path  %></li>      
+      <li><%= link_to "Nuevo Consumo",   nuevo_consumo_consumos_directo_path    %></li>      
       <li><%= link_to "Nueva Transferencia", nueva_transferencia_transferencias_path  %></li>               
       <li><a href="#">Ajustes</a></li>
       <li><a href="#">Anulaciones</a></li>
@@ -29,6 +29,10 @@
       <li><%= link_to "Consumos por Obra Proyecto",  ver_consumos_por_obra_proyecto_y_fecha_consumos_directo_path  %></li>  
       <li><%= link_to "Consumos", consumos_directo_path %></li>           
       <li><%= link_to "Tranferencias", transferencias_path %></li>    
+
+      <li><%= link_to "Items dados de baja",  ver_items_dados_de_baja_bienes_de_consumo_path %></li>  
+      <li><%= link_to "Clases dadas de baja",  ver_clases_dadas_de_baja_clases_path  %></li>  
+
       <li><a href="#">Por tipo de Consumo</a></li>
       <li><a href="#">Por stock mínimo</a></li>
       <li><a href="#">Por transferencias realizadas</a></li>
@@ -49,12 +53,18 @@
             <li><%= link_to "Partidas principales", partidas_principales_path %></li>            
             <li><%= link_to "Partidas parciales", partidas_parciales_path %></li>  
             <li><%= link_to "Clases", clases_path %></li>             
-            <li><%= link_to "Items", bienes_de_consumo_path %></li>    
+            <li><%= link_to "Items", bienes_de_consumo_path %></li>            
+            <li class="menu-item dropdown dropdown-submenu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reemplazos</a>
+              <ul class="dropdown-menu">
+                  <li><%= link_to "Reemplazos Clases", reemplazo_clase_index_path %></li>  
+                  <li><%= link_to "Reemplazos Items", reemplazo_bdc_index_path %></li>                      
+              </ul>
+            </li>          
         </ul>
       </li>          
       <li><%= link_to "Obra / proyecto", obras_proyectos_path %></li>  
-      <li><%= link_to "Areas / Deposito", areas_path %></li>            
-      <li><%= link_to "Reemplazo de items", reemplazo_bdc_index_path %></li>         
+      <li><%= link_to "Areas / Deposito", areas_path %></li>                    
     </ul>                        
 </li>
 

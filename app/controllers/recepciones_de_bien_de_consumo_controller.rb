@@ -148,18 +148,33 @@ if
   def enviar_a_evaluar
   @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:id])   
     respond_to do |format|                                                                                       
-      if @recepcion_de_bien_de_consumo.estado == 1                
-          if @recepcion_de_bien_de_consumo.update(estado: "3")                 
-            flash[:notice] = 'La Recepcion fue enviada a evaluacion exitosamente.'             
-          else     
-            flash[:notice] = 'Error. La Recepcion no pudo ser enviada a evaluar.'            
+      if @recepcion_de_bien_de_consumo.estado == 1              
+          if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.length > 0                 
+            if @recepcion_de_bien_de_consumo.update(estado: "3")                 
+              flash[:notice] = 'La Recepcion fue enviada a evaluacion exitosamente.'             
+            else     
+              flash[:notice] = 'Error. La Recepcion no pudo ser enviada a evaluar.'            
+            end
+            format.html { redirect_to recepciones_de_bien_de_consumo_url }          
+            format.json { head :no_content }                      
+          else
+            flash[:alert] = 'La Recepcion no tiene items asignados. No puede ser enviada a evaluar.'      
           end
-          format.html { redirect_to recepciones_de_bien_de_consumo_url }          
-          format.json { head :no_content }            
       else
-        flash[:notice] = 'La Recepcion no es definitiva. No puede ser enviada a evaluar.'      
+        flash[:alert] = 'La Recepcion no es definitiva. No puede ser enviada a evaluar.'      
       end
       format.html { redirect_to recepciones_de_bien_de_consumo_url }          
+    end 
+  end
+
+  def traer_documentos_con_numero_existente
+    numero = params[:numero]        
+    @documentos = DocumentosDeRecepcion.joins(:tipos_de_documento).where("numero_de_documento = ?", numero)      
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js { }
     end 
   end
 

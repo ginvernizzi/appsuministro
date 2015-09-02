@@ -1,9 +1,9 @@
 #encoding: utf-8
 class GeneradorDeImpresionTransferencia
 include ApplicationHelper 
-  def initialize
-    @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
-  end
+	def initialize
+		@fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
+	end
 
 	def generar_pdf_transferencia(transferencia)
 		@bienes = transferencia.bienes_de_consumo_para_transferir		

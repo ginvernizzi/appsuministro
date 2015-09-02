@@ -24,6 +24,10 @@ class BienesDeConsumoController < ApplicationController
   def show
   end
 
+  def ver_items_dados_de_baja
+    @bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NOT NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)    
+  end
+
   def traer_vista_de_categoria  	  
     categoria = params[:categoria]
 

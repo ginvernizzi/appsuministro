@@ -1,0 +1,23 @@
+<% if !@documentos.nil? && @documentos.length > 0 %>
+<table class="table">
+  <thead>
+    <tr>      
+      <th>Tipo de documento</th>
+      <th>Numero</th>    
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @documentos.each do |doc| %>
+      <tr>        
+        <td><%= doc.numero_de_documento %></td>
+        <td><%= doc.tipo_de_documento %></td>               
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<% else %>
+  <b> No se encontraron items <b>
+<% end %>
+

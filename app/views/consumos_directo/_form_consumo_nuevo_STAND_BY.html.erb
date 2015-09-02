@@ -85,7 +85,46 @@
   <div>
        <%= hidden_field(:bien_de_consumo, :id)  %>
   </div>
-   
+
+  <%= link_to "Traer item", obtener_item_para_agregar_a_recepcion_by_id_consumos_directo_path(), id:"traer_item" , method: :post, remote: true %>
+
+  <h2> Items asignados </h2>                      
+  <div class='row'>
+      <div class='col-sm-1'>           
+        <%= hidden_field_tag :bien_id %>        
+      </div>           
+      <div class='col-sm-1'>           
+        <%= label_tag "Codigo" %>
+      </div>           
+      <div class='col-sm-1'> 
+        <%= label_tag "Nombre" %>
+      </div>           
+      <div class='col-sm-1'>           
+       <%= label_tag "Deposito" %>          
+      </div>           
+      <div class='col-sm-1'>           
+       <%= label_tag "Cantidad a consumir" %>   
+      </div>           
+      <div class='col-sm-1'>           
+       <%= label_tag "Unidad" %>
+      </div>           
+      <div class='col-sm-1'>           
+       <%= label_tag "Accion" %>
+      </div>           
+  </div> 
+    
+ <div class="items_agregados" id="items">                         
+    <% @consumo_directo.bienes_de_consumo_para_consumir.each do |bienes| %>  
+      <div class="form-inline">                                            
+        <%= label_tag dom_id(bienes), bienes.bien_de_consumo.nombre %>
+        <%= label_tag dom_id(bienes), bienes.bien_de_consumo.codigo %>  
+        <button> Eliminar </button></br>    
+      </div>  
+    <% end %>                       
+  </div>
+  </br>
+  </br>
+  </br>
   <div class="panel panel-default">
   <div class="panel-heading">Bienes a consumir</div>
   <table id="bienes_table" class="table">
