@@ -11,6 +11,7 @@ $(document).on("ready page:load", function() {
     format: 'dd/mm/yyyy',
     language: "es"
   });
+
   $("#consumo_directo_fecha").datepicker("setDate", currentDate);
 
   $('#fecha_inicio').datepicker
@@ -146,7 +147,7 @@ $(document).on("ready page:load", function() {
 
     var bien_id = $("#bien_de_consumo_id").val();
     var cod = $("#codigo").val();    
-    var nom = $("#nombre").val();    
+    var nom = $("#consumo_directo_nombre").val();    
     var cant_stock = $("#cantidad_stock").val();
     var cant_consumir = $("#cantidad_a_consumir").val();
     var depo_id = $("#consumo_directo_deposito_deposito_id").val();
@@ -192,7 +193,7 @@ $(document).on("ready page:load", function() {
         data: { "consumo_directo": JSON.stringify({ fecha: $("#consumo_directo_fecha").val() ,area_id: $("#consumo_directo_area_id").val(),
                                                     obra_proyecto_id: $("#consumo_directo_obra_proyecto_id").val(),bienes_tabla: bienes})  },
         success:function(result) {       
-              alert("El Consumo fue realizado exitosamente");
+              //alert("El Consumo fue realizado exitosamente");
               //ImprimirFormulario(result.id);              
               window.location.replace("/consumos_directo");   
             },

@@ -134,6 +134,22 @@ class BienesDeConsumoController < ApplicationController
     end
   end
 
+  def existen_stocks_minimos_superados
+    resp = false
+
+    @items = @items = ItemStock.joins(:bien_de_consumo).where("cantidad < bienes_de_consumo.stock_minimo")
+
+    respond_to do |format|
+    if @items.count > 0
+      resp = true   
+    end
+
+    format.json { 
+      render json: {:data => resp}
+    } 
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_bien_de_consumo

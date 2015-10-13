@@ -51,9 +51,31 @@ $(document).on("ready page:load", function() {
       alert("Debe seleccionar la categoria anterior primero");
     } 
   }); 
-  
 
-  // $('.dropdown-submenu > a').submenupicker();
+
+
+  //$('.consumo_submit').bind('ajax:success', function() {
+  // $(".consumo_submit").click(function(){
+    
+  // });
+
+    function consultar_stock_minimo()
+    {
+       $.ajax({
+      type: "get",
+      async: true, 
+      url: "/bienes_de_consumo/existen_stocks_minimos_superados",      
+      data: { },        
+      success: function(data){            
+        if(data)
+          { 
+            $("#container_total").append('<div class="alert alert-warning" role="alert"><p "Hay items con stock minimo superado. Reviste la lista de stock minimos"  </p></div>');
+            //alert ("Hay items con stock minimo superado. Reviste la lista de stock minimos");                
+          }
+        }
+      });   
+    }
+
 });
 
 

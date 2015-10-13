@@ -1,4 +1,4 @@
-<h1>Stock de bienes de consumo</h1>
+<h1>Stock de items que superaron el mínimo</h1>
 
 <div class="row">  
   <br />
@@ -18,8 +18,8 @@
       <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>      
     </div>  
     
-    <input type="button" value="Buscar" id="traer_por_bien_de_consumo_y_area"> 
-    <input type="button" value="Traer todos" id="traer_todos_los_items_stock">   
+    <input type="button" value="Buscar" id="traer_items_stock_minimo_por_bien_de_consumo_y_area"> 
+    <input type="button" value="Traer todos" id="traer_todos_los_items_stock_con_stock_minimo_superado">   
 
     <%= hidden_field_tag 'bien_de_consumo_id' %>
 

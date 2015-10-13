@@ -64,6 +64,10 @@ class TransferenciasController < ApplicationController
 
         respond_to do |format|
           if @transferencia.save && recepcion_de_bien_de_consumo.update(estado: "5")
+
+            if existen_stocks_minimos_superados
+              flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
+            end
             format.html { redirect_to @transferencia, notice: 'La Transferencia fue realizada exitosamente' }
             #format.json { render :show, status: :created, location: @transferencia }
           else
@@ -115,7 +119,10 @@ class TransferenciasController < ApplicationController
         end    
 
         respond_to do |format|
-          if @transferencia.save                                                              
+          if @transferencia.save
+            if existen_stocks_minimos_superados
+              flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
+            end
             format.json { render json: @transferencia }
           else              
             cargar_datos_controles_transferencias

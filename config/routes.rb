@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       get 'traer_clases_con_codigo_de_bien_existente' 
       get 'traer_clases_con_nombre_de_bien_de_consumo_similar'      
       get 'ver_items_dados_de_baja'
+      get 'existen_stocks_minimos_superados'
     end
     resources :areas  do
       resources :items_stock do
@@ -126,6 +127,9 @@ Rails.application.routes.draw do
        get 'guardar_stock_a_fecha'    
        get 'traer_todos_los_items_stock'  
        get 'traer_items_stock_por_bien_y_area'
+       get 'traer_items_stock_minimo_superado'  
+       get 'traer_items_stock_minimo_superado_por_bien_y_area'
+       get 'ver_stock_minimo_superado'
        get 'autocomplete_bien_de_consumo_nombre'      
        get 'autocomplete_area_nombre'
        post 'imprimir_formulario_stock_total_todos_los_bienes'                    

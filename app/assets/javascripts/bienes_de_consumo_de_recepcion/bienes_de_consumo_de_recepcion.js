@@ -90,7 +90,34 @@ var ready = function() {
 
     $('#bien_de_consumo_de_recepcion_nombre').bind('railsAutocomplete.select', function(event, data){                  
       $("#codigo").val(ObtenerCodigoEIdentificadorDeBien(data.item.value, "bien_de_consumo_de_recepcion_bien_de_consumo_id"));
-    });     
+    });   
+
+    function ObtenerCodigoEIdentificadorDeBien(nom, etiqueta_bien_de_consumo_id)
+    {
+      $.ajax({
+      url: "/bienes_de_consumo_de_recepcion/obtener_codigo_de_bien_de_consumo",
+      dataType: "json",
+      //contentType: "application/json", no va, si no envias un json!!!
+      type: "post",
+      data: { nombre: nom },                
+      success:function(data){           
+          if(data.length > 0)       
+          {
+            $("#codigo").val(data[0].detalle_adicional)          
+            $("#bien_de_consumo_de_recepcion_nombre").val(data[0].nombre)
+            //$("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val(data[0].id) 
+            $("#"+etiqueta_bien_de_consumo_id).val(data[0].id)                           
+          }
+          else
+          {
+            alert("Bien de consumo inexistente");              
+          }
+        },
+      error: function (request, status, error) {
+        alert("Bien de consumo inexistente");
+        }
+      });
+    }  
 };
 
 $(document).ready(ready);

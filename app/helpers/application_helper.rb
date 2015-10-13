@@ -90,6 +90,15 @@ module ApplicationHelper
       return codigo_completo
     end 
 
+  def existen_stocks_minimos_superados
+    resp = false
+    @items = @items = ItemStock.joins(:bien_de_consumo).where("cantidad < bienes_de_consumo.stock_minimo")
+
+    if @items.count > 0
+      resp = true   
+    end
+  end
+
 
   def flash_class(level)
     case level

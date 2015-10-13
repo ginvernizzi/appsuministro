@@ -148,6 +148,29 @@ class ItemsStockController < ApplicationController
     end
   end
 
+  def traer_items_stock_minimo_superado
+    @items_stock = ItemStock.joins(:bien_de_consumo).where("cantidad < bienes_de_consumo.stock_minimo")
+                   
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
+  def traer_items_stock_minimo_superado_por_bien_y_area
+    bien_de_consumo_id = params[:bien_de_consumo_id]    
+    area_id = params[:area_id] 
+
+    @items_stock = ItemStock.joins(:bien_de_consumo, :deposito).where("cantidad < bienes_de_consumo.stock_minimo AND bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id)      
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
   private 
 
   def guardar_costos(bdcdr)
