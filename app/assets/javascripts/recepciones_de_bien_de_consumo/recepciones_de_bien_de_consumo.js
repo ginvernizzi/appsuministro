@@ -16,14 +16,7 @@ $(document).on("ready page:load", function() {
 
   //$("#recepcion_de_bien_de_consumo_fecha").datepicker("setDate", currentDate);
   });
-
-  $("recepcion_de_bien_de_consumo_documento_principal").blur(function(){
-      alert("Hola")
-      var str = this.value;            
-      buscar_numeros_de_documento_parecidos(str); 
-      $('#titulo').html("");
-      $('#tabla_items_existentes').html(""); 
-  });    
+  
 
   function buscar_numeros_de_documento_parecidos(numero)
   {   
@@ -34,7 +27,7 @@ $(document).on("ready page:load", function() {
       data: { numero: numero },        
       success: function(data){            
             //BlanquearCampos();
-            $('#titulo').html("<b> Clases con codigo de Bien de consumo existente </b>");
+            $('#titulo').html("<b> Documentos existentes con el número ingresado </b>");
             $('#tabla_items_existentes').html(data);
       },
       error: function (request, status, error) 
@@ -85,16 +78,24 @@ $(document).on("ready page:load", function() {
             var urlToSubmit = ""
             //Habria que traer los tipos de documento
             if($(this).val() == 1) 
-              {
+            {
               $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0'});
               $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false);
-              }            
+            }            
             if($(this).val() == 2) 
-            {   $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'});
-                $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false); 
+            {   
+              $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'});
+              $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false); 
             }              
             if($(this).val() == "") 
-              {$('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', true) };  
+            { 
+              $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', true) 
+            };  
+
+            $("#recepcion_de_bien_de_consumo_documento_principal").blur(function(){
+              var str = this.value;            
+              buscar_numeros_de_documento_parecidos(str); 
+            });  
       });
 
       //Evento al cambiar de item en el combo de documento secundario
