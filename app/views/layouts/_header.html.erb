@@ -24,7 +24,6 @@
             <li><%= link_to "Recepciones finalizadas por documento ppal.", recepciones_de_bien_de_consumo_en_stock_index_path %></li>  
             <li><%= link_to "Recepciones finalizadas por bien de consumo", ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha_recepciones_de_bien_de_consumo_en_stock_index_path %></li>  
             <li><%= link_to "Stock total",items_stock_path %></li> 
-            <li><%= link_to "Stock minimo superado",ver_stock_minimo_superado_items_stock_path %></li>   
             <li><%= link_to "Stock por fecha",reportes_a_fecha_path %></li> 
             <li><%= link_to "Consumos por Bien, Destino y Fecha ",ver_consumos_por_codigo_destino_fecha_consumos_directo_path %></li> 
             <li><%= link_to "Consumos por Obra Proyecto",  ver_consumos_por_obra_proyecto_y_fecha_consumos_directo_path  %></li>  
@@ -68,6 +67,13 @@
             <li><%= link_to "Areas / Deposito", areas_path %></li>                    
           </ul>                        
         </li>
+
+        <li>
+            <a href="/items_stock/ver_stock_minimo_superado" >
+              Items con stock faltante
+              <span class="badge"><%= traer_cantidad_de_items_con_stock_bajo %></span>
+            </a>
+         </li>
 
         <div class="container">
           <div class="navbar-form navbar-right" >

@@ -42,6 +42,10 @@ $(document).on("ready page:load", function() {
     }
   });
 
+  $("#traer_todos_los_items_stock_con_stock_minimo_superado").click();
+
+    
+
   function traer_todos_los_items_de_stock()
   {    
     var urlString = "/items_stock/traer_todos_los_items_stock";    
