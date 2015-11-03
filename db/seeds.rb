@@ -80,22 +80,18 @@ areaAuditoria = Area.create!(nombre: 'Auditoria', responsable:'Fernandez')
 areaSistemas = Area.create!(nombre: 'Legales', responsable:'lopez')
 
 
-# @Inciso = Inciso.create!(nombre: "Inciso", codigo: "0").save
-# @partidaPpal = PartidaPrincipal.create!(nombre: "Partida principal", codigo: "0").save
-# @partidaParcial = PartidaParcial.create!(nombre: "Partida parcial", codigo: "0").save
-# @clase = Clase.create!(nombre: "Clase", codigo: "00000").save
+#Gereador de bienes
+# @clase = Clase.first
+# for i in 10..99
+#   BienDeConsumo.create!(nombre: "polenta"+i.to_s, codigo: "00"+i.to_s, clase: @clase , stock_minimo: 150).save
+# end
 
-########################################################################################################
+    #Gereador de clases
+# @partida = PartidaParcial.first
+# for i in 10..99
+#    Clase.create!(nombre: "classs"+i.to_s, codigo: "000"+i.to_s, partida_parcial: @partida).save
+# end
 
-# @recepcion_de_bien_de_consumo_1 = RecepcionDeBienDeConsumo.create!(fecha:DateTime.now, estado:3) 
-    
-# @tipo_doc_factura.save    
-# @tddp = @tipo_doc_factura
-
-# @docRecepcion_p = DocumentoDeRecepcion.create!(numero_de_documento: "288034355", tipo_de_documento: @tddp)
-
-# @recepcion_de_bien_de_consumo_1.build_documento_principal(documento_de_recepcion:@docRecepcion_p, 
-#                                                           recepcion_de_bien_de_consumo: @recepcion_de_bien_de_consumo_1)
 
 
 

@@ -16,4 +16,6 @@
 </p>
 
 <%= link_to 'Modificar', edit_clase_path(@clase) %> |
-<%= link_to 'Volver', clases_path %>
+<%= link_to 'Volver', session.delete(:return_to) %>
+
+

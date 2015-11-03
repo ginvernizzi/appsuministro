@@ -1,6 +1,7 @@
 //USE ESTA
 var ready = function() {
 
+  //************ Muestra una lista al colocar los 4 digitos del codigo  **********//
   //$("#clase_codigo").keypress(function(){   
   $("#bien_de_consumo_codigo").on("keyup", function(e) {
       var str = this.value;
@@ -33,6 +34,38 @@ var ready = function() {
           }
     });       
   }
+  //********************************************************************//
+
+  $('#bien_de_consumo_clase_id').change(function() {
+
+    var clase_id = $('#bien_de_consumo_clase_id').val()
+    traer_items_de_la_clase(clase_id);
+  });
+
+  $('#clase_nombre').on('railsAutocomplete.select', function(event, data){ 
+    traer_items_de_la_clase(data.item.id);
+  });
+
+    function traer_items_de_la_clase(clase_id)
+  {   
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      url: "/bienes_de_consumo/traer_items_de_la_clase",      
+      data: { clase_id: clase_id },        
+      success: function(data){            
+            //BlanquearCampos();
+            $('#titulo').html("<b> Items de la clase </b>");
+            $('#tabla_items_existentes').html(data);
+      },
+      error: function (request, status, error) 
+          {             
+            alert("Ha ocurrido un error");
+          }
+    });       
+  }
+
+
   
   $("#buscar_clases_con_nombres_bienes_repetidos").on('click', function() {              
       buscar_nombres_existentes($("#bien_de_consumo_nombre").val());      

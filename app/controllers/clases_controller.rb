@@ -1,5 +1,6 @@
 class ClasesController < ApplicationController
-  before_action :set_clase, only: [:show, :edit, :update, :destroy]   
+  before_action :set_clase, only: [:show, :edit, :update, :destroy]  
+  before_action :set_back_page, only: [:show, :new, :traer_vista_dar_de_baja_y_reemplazar] 
 
   autocomplete :clase, :nombre , :full => true 
 
@@ -126,6 +127,10 @@ def traer_vista_dar_de_baja_y_reemplazar
     def set_clase
       @clase = Clase.find(params[:id])
     end
+
+  def set_back_page
+    session[:return_to] ||= request.referer
+  end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def clase_params

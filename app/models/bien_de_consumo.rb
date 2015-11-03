@@ -1,5 +1,8 @@
 class BienDeConsumo < ActiveRecord::Base	
 	include ApplicationHelper
+	
+	attr_accessor :saltear_codigo_de_item_existente
+
 	belongs_to :clase
 	has_many :items_stock
 	has_many :depositos
@@ -22,10 +25,19 @@ class BienDeConsumo < ActiveRecord::Base
     validates_numericality_of :stock_minimo, :only_integer => true, :allow_nil => true, 
     :message => "admite solo numeros."
 
-	validates :codigo, :uniqueness => { :message => 'existente para la Clase', :scope => [:clase_id, :fecha_de_baja] }
+	#validates :codigo, :uniqueness => { :message => 'existente para la Clase', :scope => [:clase_id, :fecha_de_baja] }
+	validate :validar_nombre_de_item_existente, unless: :saltear_codigo_de_item_existente
 	validates :nombre, :uniqueness => { :message => 'existente para la Clase', :scope => [:clase_id, :fecha_de_baja] }
 
 	 def combinar_codigo_nombre
     "#{obtener_codigo_completo_bien_de_consumo(id)}" +" - "+ "#{nombre}"
- 	 end 
+ 	 end
+
+ 	 def validar_nombre_de_item_existente
+ 	 	results =  self.clase.bienes_de_consumo.where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.codigo = ?", self.codigo) 
+ 	 	puts results.count
+ 	 	if results.count > 0
+			errors[:codigo] << "Ya existe un item con ese código para la clase" 
+		end
+	end
 end

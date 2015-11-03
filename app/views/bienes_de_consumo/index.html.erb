@@ -24,7 +24,9 @@
   </tbody>
 </table>
   
-  <%= will_paginate @bienes_de_consumo, renderer: BootstrapPagination::Rails %>
+  <%= will_paginate @bienes_de_consumo, renderer: BootstrapPagination::Rails%>
+
+
 <br>
 
 <%= link_to 'Nuevo Item', new_bien_de_consumo_path %>

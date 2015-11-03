@@ -66,12 +66,14 @@ Rails.application.routes.draw do
 
   resources :bienes_de_consumo do
     collection do
+      get 'traer_items_de_la_clase'
       get 'traer_vista_de_categoria'    
       get 'traer_clases_con_codigo_de_bien_existente' 
       get 'traer_clases_con_nombre_de_bien_de_consumo_similar'      
       get 'ver_items_dados_de_baja'
       get 'existen_stocks_minimos_superados'
     end
+  
     resources :areas  do
       resources :items_stock do
         post 'imprimir_formulario_stock_total_por_bien_y_area' 
