@@ -16,29 +16,7 @@ es-AR:
         user: Usuario
         created_at: Fecha de creación
         deleted_at: Fecha de baja
-        datos_tec:
-          esps_esps: "Tipo de espacio"
         datos_esp:
           gen_esps: "Géneros del espectáculo"
-          publs_edad: "Públicos por edad"
-          publs_exp: "Públicos por experiencia"
-        persona_juridica:
-          num_cuit: "Número de CUIT"
-          num_per_juridica: "Número de personería jurídica"
-          nombre_per_juridica: "Nombre de persona jurídica"
-        extranjero:
-          num_doc: "Número de documento"
-          tipo_doc: "Tipo de documento"
-        nacional:
-          cuil_cuit: "CUIL / CUIT"
     errors:
         models:
-          esps_esp: "Espacios del espéctaculo"
-          gen_esp: "Generos del espéctaculo"
-          publ_edad: "Públicos por edad"
-          publ_exp: "Públicos por experiencia"
-          extranjero:
-            num_doc: "Número de documento"
-            tipo_doc: "Tipo de documento"
-          nacional:
-            cuil_cuit: "CUIL / CUIT"
