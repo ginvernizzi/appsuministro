@@ -19,7 +19,7 @@ before_action :setear_fijos_arbol, only: [:new]
 
 	  @bien_de_consumo_de_recepcion = BienDeConsumoDeRecepcion.new(bien_de_consumo_de_recepcion_params)
 
-    if @bien_de_consumo_de_recepcion.save      
+    if @bien_de_consumo_de_recepcion.save
       flash[:notice] = 'El Bien de consumo fue agregado exitosamente.'      
       redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)      
     else

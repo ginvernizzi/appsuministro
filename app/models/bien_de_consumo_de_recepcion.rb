@@ -13,5 +13,5 @@ class BienDeConsumoDeRecepcion < ActiveRecord::Base
   validates :bien_de_consumo_id, presence: true  
   
   #accepts_nested_attributes_for :bien_de_consumo, :allow_destroy => true    
-  validates_associated :bien_de_consumo
+  #validates_associated :bien_de_consumo
 end

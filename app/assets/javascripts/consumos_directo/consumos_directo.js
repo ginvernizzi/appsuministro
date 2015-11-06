@@ -1,4 +1,5 @@
-$(document).on("ready page:load", function() {
+var ready = function() {
+
   //mascara entero, 6
   $('#cantidad_a_consumir').inputmask('999999', { clearMaskOnLostFocus: true, placeholder: ' ' })    
   $("#codigo").inputmask("9.9.9.99999.9999", { clearMaskOnLostFocus: true })   
@@ -471,8 +472,6 @@ $(document).on("ready page:load", function() {
     });
   }
 
-});           
-
   (function() {
     jQuery(function() {
       var depositos, llenarDepositos;
@@ -521,6 +520,11 @@ $(document).on("ready page:load", function() {
       });
     }); 
   }).call(this);
+
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);         
 
 
 

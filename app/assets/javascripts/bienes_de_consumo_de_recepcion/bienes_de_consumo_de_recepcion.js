@@ -68,7 +68,7 @@ var ready = function() {
         success:function(data){
           if(data.length > 0)       
             {                  
-              $("#nombre").val(data[0].nombre)
+              $("#bien_de_consumo_de_recepcion_nombre").val(data[0].nombre)
               $("#bien_de_consumo_de_recepcion_bien_de_consumo_id").val(data[0].id)                  
             }
             else

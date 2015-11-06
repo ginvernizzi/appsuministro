@@ -69,10 +69,9 @@ class ConsumosDirectoController < ApplicationController
 
         respond_to do |format|
           if  @consumo_directo.save && recepcion_de_bien_de_consumo.update(estado: "5")
-
             flash[:notice] = 'Consumo creado exitosamente'
             if existen_stocks_minimos_superados
-              flash[:error] << 'Hay items con stock minimo superado. Revise la lista de stocks'       
+              flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks faltante'       
             end
             format.html { redirect_to  @consumo_directo }
             #format.json { render :show, status: :created, location: consumo_directo }
@@ -122,7 +121,6 @@ class ConsumosDirectoController < ApplicationController
 
         respond_to do |format|
           if @consumo_directo.save
-
             flash[:notice] = 'Consumo directo creado exitosamente'
             if existen_stocks_minimos_superados
               flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
