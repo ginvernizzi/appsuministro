@@ -57,7 +57,15 @@ var ready = function() {
   });
 
   $("#traer_item_por_id").on('click', function(){
+    if($('#bien_de_consumo_id').val() != "")
+    {
       traer_item_por_id($('#bien_de_consumo_id').val());
+    }
+    else
+    {
+      alert("Debe seleccionar un item");
+    }
+
   });
 
 
@@ -68,7 +76,33 @@ var ready = function() {
     dataType: "json",
     url: "/bienes_de_consumo/traer_item_por_id",            
     data: { bien_de_consumo_id: bien_de_consumo_id }, 
-    success: function(data){            
+    success: function(data){          
+      $('#bien_de_consumo_nombre').val(""); 
+      $('#bien_de_consumo_id').val("");
+      $('#tabla_all_items').html(data)
+    },
+    error: function (request, status, error) 
+        { 
+          alert("Ha ocurrido un error. No se mostrarán los items");
+        }
+    });       
+  }
+
+  
+  $("#traer_todos_los_items").on('click', function(){
+      traer_todos_los_items();
+  });
+
+  function traer_todos_los_items()
+  {
+    $.ajax({
+    type: "get",
+    dataType: "json",
+    url: "/bienes_de_consumo/traer_todos_los_items",            
+    data: { }, 
+    success: function(data){          
+      $('#bien_de_consumo_nombre').val(""); 
+      $('#bien_de_consumo_id').val("");
       $('#tabla_all_items').html(data)
     },
     error: function (request, status, error) 

@@ -172,7 +172,6 @@ class BienesDeConsumoController < ApplicationController
   end
 
   def traer_item_por_id
-
     bien_de_consumo_id = params[:bien_de_consumo_id]    
 
     @bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.id = ?", bien_de_consumo_id).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)
@@ -182,6 +181,14 @@ class BienesDeConsumoController < ApplicationController
     respond_to do |format|   
       format.js {}
     end 
+  end
+
+  def traer_todos_los_items
+    @bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)
+
+    respond_to do |format|
+      format.js{}
+    end
   end
 
   private

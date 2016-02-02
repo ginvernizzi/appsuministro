@@ -67,9 +67,11 @@ $(document).on("ready page:load", function() {
   });
 
   $("#traer_clase_por_id").on('click', function(){
-      traer_clase_por_id($('#clase_id').val());
+      if($('#clase_id').val() != "")
+        { traer_clase_por_id($('#clase_id').val());}
+      else
+        {alert("Debe seleccionar una clase");}
   });
-
 
   function traer_clase_por_id(clase_id)
   {
@@ -79,11 +81,36 @@ $(document).on("ready page:load", function() {
     url: "/clases/traer_clase_por_id",            
     data: { clase_id: clase_id }, 
     success: function(data){            
+      $('#clase_id').val("");
+      $('#clase_nombre_all_clases').val("");
       $('#tabla_todas_las_clases').html(data)
     },
     error: function (request, status, error) 
         { 
-          alert("Ha ocurrido un error. No se mostrarán los items");
+          alert("Ha ocurrido un error. No se mostrarán las clases");
+        }
+    });       
+  }
+
+  $("#traer_todas_las_clases").on('click', function(){
+      {traer_todas_las_clases();} 
+  });
+
+  function traer_todas_las_clases()
+  {
+    $.ajax({
+    type: "get",
+    dataType: "json",
+    url: "/clases/traer_todas_las_clases",            
+    data: {}, 
+    success: function(data){            
+      $('#clase_id').val("");
+      $('#clase_nombre_all_clases').val("");
+      $('#tabla_todas_las_clases').html(data)
+    },
+    error: function (request, status, error) 
+        { 
+          alert("Ha ocurrido un error. No se mostrarán las clases");
         }
     });       
   }

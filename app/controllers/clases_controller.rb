@@ -146,6 +146,13 @@ def traer_vista_dar_de_baja_y_reemplazar
     end 
   end
 
+  def traer_todas_las_clases
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_clase

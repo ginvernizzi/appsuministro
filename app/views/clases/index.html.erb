@@ -8,6 +8,7 @@
         <%= label_tag 'Clase' %>
         <%= autocomplete_field_tag 'clase_nombre_all_clases', '',  autocomplete_clase_nombre_traer_todas_las_clases_clases_path, :size => 75 %>
         <input type="button" value="Buscar" id="traer_clase_por_id"> 
+        <input type="button" value="Quitar filtro" id="traer_todas_las_clases"> 
       </div>  
       <%= hidden_field_tag 'clase_id' %>
     </div>
