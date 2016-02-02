@@ -1,26 +1,25 @@
-<% if !@bienes.nil? && @bienes.length > 0 %>
 <table class="table">
   <thead>
-    <tr>      
-      <th>Código</th>
-      <th>Nombre</th>
-      <th colspan="2"></th>    
+    <tr>
+      <th>Clase</th>
+      <th>Codigo</th>
+      <th>Nombre</th>      
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @bienes.each do |bien_de_consumo| %>
-       <tr>
+    <% @bienes_de_consumo.each do |bien_de_consumo| %>
+      <tr>
+        <td><%= bien_de_consumo.clase.nombre %></td>
         <td><%= obtener_codigo_completo_bien_de_consumo(bien_de_consumo.nombre) %></td>
-        <td><%= bien_de_consumo.nombre %></td>              
+        <td><%= bien_de_consumo.nombre %></td>        
+        <td><%= link_to 'Ver', bien_de_consumo %></td>        
        <td><%= link_to 'Dar de baja', bien_de_consumo, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>
        <td><%= link_to 'Dar de baja y reemplazar', traer_vista_dar_de_baja_y_reemplazar_bienes_de_consumo_path(bien_de_consumo), data: { confirm: '¿Estas seguro?' } %></td>        
       </tr>
     <% end %>
   </tbody>
 </table>
+  <%= will_paginate @bienes_de_consumo, renderer: BootstrapPagination::Rails%>
 <br>
-<% else %>
-  <b> No se encontraron items <b>
-<% end %>
-

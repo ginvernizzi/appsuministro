@@ -1,0 +1,25 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Partida parcial</th>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @clases.each do |clase| %>
+      <tr>
+        <td><%= clase.partida_parcial.nombre %></td>
+        <td><%= obtener_codigo_de_clase(clase.id) %></td>
+        <td><%= clase.nombre %></td>
+        <td><%= link_to 'Ver', clase %></td>        
+        <td><%= link_to 'Dar de baja', clase, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>
+        <td><%= link_to 'Dar de baja y reemplazar', traer_vista_dar_de_baja_y_reemplazar_clases_path(clase), data: { confirm: '¿Estas seguro?' } %></td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @clases, renderer: BootstrapPagination::Rails %>
+<br>

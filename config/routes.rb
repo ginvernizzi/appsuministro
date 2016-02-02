@@ -30,7 +30,9 @@ Rails.application.routes.draw do
     
   resources :clases do 
     collection do
+      get 'autocomplete_clase_nombre_traer_todas_las_clases'   
       get 'autocomplete_clase_nombre'
+      get 'traer_clase_por_id'
       get 'traer_partidas_parciales_con_codigo_de_clase_existente'
       get 'traer_partidas_parciales_con_nombre_de_clase_similar'
       get 'ver_clases_dadas_de_baja'
@@ -66,7 +68,9 @@ Rails.application.routes.draw do
 
   resources :bienes_de_consumo do
     collection do
+      get 'autocomplete_bien_de_consumo_nombre_traer_todos_los_items'   
       get 'traer_items_de_la_clase'
+      get 'traer_item_por_id'
       get 'traer_vista_de_categoria'    
       get 'traer_clases_con_codigo_de_bien_existente' 
       get 'traer_clases_con_nombre_de_bien_de_consumo_similar'      

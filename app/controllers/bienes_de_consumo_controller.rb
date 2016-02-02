@@ -6,6 +6,17 @@ class BienesDeConsumoController < ApplicationController
     @bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)
   end
 
+  def autocomplete_bien_de_consumo_nombre_traer_todos_los_items 
+    #clase_id = params[:clase_id]
+    respond_to do |format|
+      #if clase_id != "" 
+        @bienes = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.nombre ILIKE ?", "%#{params[:term]}%").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)        
+        render :json => @bienes.map { |bien| {:id => bien.id, :label => bien.nombre, :value => bien.nombre} }
+      #end        
+      format.js { }     
+    end        
+  end
+
   def new
   	@bien_de_consumo = BienDeConsumo.new
   	@incisos = Inciso.all
@@ -86,9 +97,8 @@ class BienesDeConsumoController < ApplicationController
 
   def traer_items_de_la_clase
     clase_id = params[:clase_id] 
-    puts "***************** clase id"       
-    puts clase_id
-    @clases = BienDeConsumo.where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.clase_id = ?", clase_id)      
+    #@bienes = BienDeConsumo.where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.clase_id = ?", clase_id)   
+    @bienes = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.clase_id = ?", clase_id).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)   
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
@@ -106,7 +116,7 @@ class BienesDeConsumoController < ApplicationController
     #render :partial => 'form_tabla_stock'
     respond_to do |format|   
       format.js { }
-    end 
+    end
   end
 
   def destroy    
@@ -159,6 +169,19 @@ class BienesDeConsumoController < ApplicationController
       render json: {:data => resp}
     } 
     end
+  end
+
+  def traer_item_por_id
+
+    bien_de_consumo_id = params[:bien_de_consumo_id]    
+
+    @bienes_de_consumo = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.id = ?", bien_de_consumo_id).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js {}
+    end 
   end
 
   private

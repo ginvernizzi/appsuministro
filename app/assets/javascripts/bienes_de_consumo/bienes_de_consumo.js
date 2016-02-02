@@ -1,41 +1,6 @@
 //USE ESTA
 var ready = function() {
 
-  //************ Muestra una lista al colocar los 4 digitos del codigo  **********//
-  // //$("#clase_codigo").keypress(function(){   
-  // $("#bien_de_consumo_codigo").on("keyup", function(e) {
-  //     var str = this.value;
-  //     var n = str.length;      
-      
-  //     if(n == 4)
-  //     { buscar_codigos_existentes(str); }
-  //     else
-  //     { 
-  //       $('#titulo').html("");
-  //       $('#tabla_items_existentes').html(""); 
-  //     }         
-  // });   
-
-  // function buscar_codigos_existentes(codigo)
-  // {   
-  //   $.ajax({
-  //     type: "get",
-  //     dataType: "json",
-  //     url: "/bienes_de_consumo/traer_clases_con_codigo_de_bien_existente",      
-  //     data: { codigo: codigo },        
-  //     success: function(data){            
-  //           //BlanquearCampos();
-  //           $('#titulo').html("<b> Clases con codigo de Bien de consumo existente </b>");
-  //           $('#tabla_items_existentes').html(data);
-  //     },
-  //     error: function (request, status, error) 
-  //         {             
-  //           alert("Ha ocurrido un error");
-  //         }
-  //   });       
-  // }
-  //********************************************************************//
-
   $('#bien_de_consumo_clase_id').change(function() {
 
     var clase_id = $('#bien_de_consumo_clase_id').val()
@@ -65,8 +30,6 @@ var ready = function() {
     });       
   }
 
-
-  
   $("#buscar_clases_con_nombres_bienes_repetidos").on('click', function() {              
       buscar_nombres_existentes($("#bien_de_consumo_nombre").val());      
   })
@@ -86,6 +49,32 @@ var ready = function() {
           {                       
             alert("Ha ocurrido un error");
           }
+    });       
+  }
+
+  $('#bien_de_consumo_nombre').on('railsAutocomplete.select', function(event, data){ 
+    $("#bien_de_consumo_id").val(data.item.id);
+  });
+
+  $("#traer_item_por_id").on('click', function(){
+      traer_item_por_id($('#bien_de_consumo_id').val());
+  });
+
+
+  function traer_item_por_id(bien_de_consumo_id)
+  {
+    $.ajax({
+    type: "get",
+    dataType: "json",
+    url: "/bienes_de_consumo/traer_item_por_id",            
+    data: { bien_de_consumo_id: bien_de_consumo_id }, 
+    success: function(data){            
+      $('#tabla_all_items').html(data)
+    },
+    error: function (request, status, error) 
+        { 
+          alert("Ha ocurrido un error. No se mostrarán los items");
+        }
     });       
   }
 };

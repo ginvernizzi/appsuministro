@@ -8,7 +8,19 @@ class ClasesController < ApplicationController
   # GET /clases.json
   def index
     @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
-  end       
+  end     
+
+
+  def autocomplete_clase_nombre_traer_todas_las_clases 
+    #clase_id = params[:clase_id]
+    respond_to do |format|
+      #if clase_id != "" 
+        @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL AND clases.nombre ILIKE ?", "%#{params[:term]}%").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
+        render :json => @clases.map { |clase| {:id => clase.id, :label => clase.nombre, :value => clase.nombre} }
+      #end        
+      format.js { }     
+    end        
+  end  
 
   def ver_clases_dadas_de_baja
     @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NOT NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
@@ -120,6 +132,18 @@ def traer_vista_dar_de_baja_y_reemplazar
         format.json { render json: @clase.errors, status: :unprocessable_entity }      
       end      
     end
+  end
+
+  def traer_clase_por_id
+    clase_id = params[:clase_id]    
+
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL AND clases.id = ?", clase_id).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)
+          
+    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
+    #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js {}
+    end 
   end
 
   private

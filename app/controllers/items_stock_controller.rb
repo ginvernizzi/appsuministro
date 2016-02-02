@@ -5,7 +5,7 @@ class ItemsStockController < ApplicationController
 
   def index
     #@items_stock = ItemStock.order(:bien_de_consumo_id)    
-    @bienes_de_consumo = BienDeConsumo.all   
+    @bienes_de_consumo = BienDeConsumo.all     
   end
 
   def traer_todos_los_items_stock

@@ -62,4 +62,30 @@ $(document).on("ready page:load", function() {
     $("#categoria_clase_id").change();
   });
 
+  $('#clase_nombre_all_clases').on('railsAutocomplete.select', function(event, data){ 
+    $("#clase_id").val(data.item.id);
+  });
+
+  $("#traer_clase_por_id").on('click', function(){
+      traer_clase_por_id($('#clase_id').val());
+  });
+
+
+  function traer_clase_por_id(clase_id)
+  {
+    $.ajax({
+    type: "get",
+    dataType: "json",
+    url: "/clases/traer_clase_por_id",            
+    data: { clase_id: clase_id }, 
+    success: function(data){            
+      $('#tabla_todas_las_clases').html(data)
+    },
+    error: function (request, status, error) 
+        { 
+          alert("Ha ocurrido un error. No se mostrarán los items");
+        }
+    });       
+  }
+
 });

@@ -1,32 +1,22 @@
 <h1>Lista de Items</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Clase</th>
-      <th>Codigo</th>
-      <th>Nombre</th>      
-      <th colspan="2"></th>
-    </tr>
-  </thead>
+<div class="row">  
+  <br />
+  <div class="span6 offset3">   
+	  <div> 
+	    <div class="field">
+	      <%= label_tag 'Bien de consumo' %>
+	      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '',   autocomplete_bien_de_consumo_nombre_traer_todos_los_items_bienes_de_consumo_path   , :size => 75 %>
+	    	<input type="button" value="Buscar" id="traer_item_por_id"> 
+	    </div>  
+	    <%= hidden_field_tag 'bien_de_consumo_id' %>
+	  </div>
 
-  <tbody>
-    <% @bienes_de_consumo.each do |bien_de_consumo| %>
-      <tr>
-        <td><%= bien_de_consumo.clase.nombre %></td>
-        <td><%= obtener_codigo_completo_bien_de_consumo(bien_de_consumo.nombre) %></td>
-        <td><%= bien_de_consumo.nombre %></td>        
-        <td><%= link_to 'Ver', bien_de_consumo %></td>        
-       <td><%= link_to 'Dar de baja', bien_de_consumo, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>
-       <td><%= link_to 'Dar de baja y reemplazar', traer_vista_dar_de_baja_y_reemplazar_bienes_de_consumo_path(bien_de_consumo), data: { confirm: '¿Estas seguro?' } %></td>        
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+	  <div id="tabla_all_items">    
+	    <%= render 'tabla_lista_de_items' %>       
+	  </div>   
+	 </div>
   
-  <%= will_paginate @bienes_de_consumo, renderer: BootstrapPagination::Rails%>
-
-
-<br>
+</div> 
 
 <%= link_to 'Nuevo Item', new_bien_de_consumo_path %>
