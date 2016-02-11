@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618204822) do
+ActiveRecord::Schema.define(version: 20160211184809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -168,6 +168,12 @@ ActiveRecord::Schema.define(version: 20150618204822) do
     t.datetime "updated_at"
   end
 
+  create_table "ingreso_manual_a_stocks", force: :cascade do |t|
+    t.date     "fecha"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "item_stock_a_fechas", force: :cascade do |t|
     t.integer  "bien_de_consumo_id"
     t.decimal  "costo"
@@ -192,6 +198,7 @@ ActiveRecord::Schema.define(version: 20150618204822) do
   add_index "items_stock", ["bien_de_consumo_id"], name: "index_items_stock_on_bien_de_consumo_id", using: :btree
   add_index "items_stock", ["costo_de_bien_de_consumo_id"], name: "index_items_stock_on_costo_de_bien_de_consumo_id", using: :btree
   add_index "items_stock", ["deposito_id"], name: "index_items_stock_on_deposito_id", using: :btree
+  add_index "items_stock", ["ingreso_manual_a_stock_id"], name: "index_items_stock_on_ingreso_manual_a_stock_id", using: :btree
 
   create_table "obras_proyectos", force: :cascade do |t|
     t.string   "descripcion"
@@ -295,6 +302,7 @@ ActiveRecord::Schema.define(version: 20150618204822) do
 
   add_foreign_key "bienes_de_consumo", "clases"
   add_foreign_key "clases", "partidas_parciales"
+  add_foreign_key "items_stock", "ingreso_manual_a_stocks"
   add_foreign_key "partidas_parciales", "partidas_principales"
   add_foreign_key "partidas_principales", "incisos"
 end

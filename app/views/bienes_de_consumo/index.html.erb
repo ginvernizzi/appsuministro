@@ -6,7 +6,7 @@
 	  <div> 
 	    <div class="field">
 	      <%= label_tag 'Bien de consumo' %>
-	      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '',   autocomplete_bien_de_consumo_nombre_traer_todos_los_items_bienes_de_consumo_path   , :size => 75 %>
+	      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '',   autocomplete_bien_de_consumo_nombre_traer_todos_los_items_bienes_de_consumo_path, :size => 75, :placeholder => "Buscar item....." %>
 	    	<input type="button" value="Buscar" id="traer_item_por_id"> 
 	    	<input type="button" value="Quitar filtro" id="traer_todos_los_items"> 
 	    </div>  
@@ -21,3 +21,6 @@
 </div> 
 
 <%= link_to 'Nuevo Item', new_bien_de_consumo_path %>
+ <td><%= link_to 'Imprimir',  imprimir_listado_de_items_bienes_de_consumo_path, method: :post, data: { confirm: '¿Esta seguro?' }  %>   
+
+

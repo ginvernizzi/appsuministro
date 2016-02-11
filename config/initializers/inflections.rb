@@ -45,5 +45,6 @@ ActiveSupport::Inflector.inflections do |inflect|
 
   inflect.irregular 'reemplazo_bdc', 'reemplazos_bdc'
   inflect.irregular 'reemplazo_clase', 'reemplazos_clase'
+  inflect.irregular 'ingreso_manual_a_stock', 'ingreso_manual_a_stocks'
 
 end

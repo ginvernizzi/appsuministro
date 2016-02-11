@@ -191,6 +191,14 @@ class BienesDeConsumoController < ApplicationController
     end
   end
 
+  def imprimir_listado_de_items
+    @generador = GeneradorDeImpresionListadoDeItems.new
+    @items = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    @generador.generar_pdf_listado_de_items(@items)
+    file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_listado_items_pdf)
+    send_file ( file )    
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_bien_de_consumo

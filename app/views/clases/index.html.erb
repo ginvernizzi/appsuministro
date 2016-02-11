@@ -6,7 +6,7 @@
     <div> 
       <div class="field">
         <%= label_tag 'Clase' %>
-        <%= autocomplete_field_tag 'clase_nombre_all_clases', '',  autocomplete_clase_nombre_traer_todas_las_clases_clases_path, :size => 75 %>
+        <%= autocomplete_field_tag 'clase_nombre_all_clases', '',  autocomplete_clase_nombre_traer_todas_las_clases_clases_path, :size => 75, :placeholder => "Buscar clase....." %>
         <input type="button" value="Buscar" id="traer_clase_por_id"> 
         <input type="button" value="Quitar filtro" id="traer_todas_las_clases"> 
       </div>  
@@ -21,3 +21,4 @@
 </div> 
 
 <%= link_to 'Nueva Clase', new_clase_path %>
+ <td><%= link_to 'Imprimir',  imprimir_listado_de_clases_clases_path, method: :post, data: { confirm: '¿Esta seguro?' }  %>   

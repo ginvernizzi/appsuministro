@@ -31,10 +31,9 @@ class ItemsStockController < ApplicationController
     end 
   end
 
-  def new
-  	@item_stock = ItemStock.new
-    
-  end
+  # def new
+  # 	@item_stock = ItemStock.new    
+  # end
 
   def ver_ingresar_a_stock
 	  @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_id])	

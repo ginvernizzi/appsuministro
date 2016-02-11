@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
    
+  resources :ingreso_manual_a_stocks
   get 'reemplazo_clase/index'
 
   resources :reemplazo_bdc , only: [:index, :new] do
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
       get 'traer_partidas_parciales_con_codigo_de_clase_existente'
       get 'traer_partidas_parciales_con_nombre_de_clase_similar'
       get 'ver_clases_dadas_de_baja'
+      post 'imprimir_listado_de_clases'
     end
   end
 
@@ -78,6 +80,7 @@ Rails.application.routes.draw do
       get 'traer_clases_con_nombre_de_bien_de_consumo_similar'      
       get 'ver_items_dados_de_baja'
       get 'existen_stocks_minimos_superados'
+      post 'imprimir_listado_de_items'
     end
   
     resources :areas  do

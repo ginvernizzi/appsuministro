@@ -153,6 +153,15 @@ def traer_vista_dar_de_baja_y_reemplazar
     end 
   end
 
+  def imprimir_listado_de_clases
+    @generador = GeneradorDeImpresionListadoDeClases.new
+    @items = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo")
+    @generador.generar_pdf_listado_de_clases(@items)
+    file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_listado_clases_pdf)
+    send_file ( file )    
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_clase
