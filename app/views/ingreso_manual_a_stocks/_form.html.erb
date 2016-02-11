@@ -1,0 +1,56 @@
+<%= form_for(@ingreso_manual_a_stock) do |f| %>
+  <% if @ingreso_manual_a_stock.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ingreso_manual_a_stock.errors.count, "error") %> prohibited this ingreso_manual_a_stock from being saved:</h2>
+
+      <ul>
+      <% @ingreso_manual_a_stock.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :fecha %><br>
+    <%= f.date_select :fecha %>
+  </div>
+
+<h2>Bienes de consumo</h2>
+<%= f.fields_for :items_stock do |i_stock| %>
+  <div class="items_stock_fields">
+    <div class="field">
+    <%= i_stock.label :fecha %><br>
+    <%= i_stock.text_field :fecha %>
+    <%= i_stock.check_box :_destroy %>
+    <%= i_stock.label :_destroy, 'remove' %>
+    </div>
+  </div>
+<% end %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Canitdad</th>
+      <th>Costo</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ingreso_manual_a_stock.items_stock.each do |item| %>
+      <tr>
+          <td><%= item.bien_de_consumo_id %> </td>
+          <td><%= item.bien_de_consumo_id %> </td>
+          <td><%= item.cantidad %> </td>
+          <td><%= item.costo %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

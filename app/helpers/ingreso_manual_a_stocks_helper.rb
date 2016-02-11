@@ -1,0 +1,2 @@
+module IngresoManualAStocksHelper
+end
