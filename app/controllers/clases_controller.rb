@@ -2,7 +2,15 @@ class ClasesController < ApplicationController
   before_action :set_clase, only: [:show, :edit, :update, :destroy]  
   before_action :set_back_page, only: [:show, :new, :traer_vista_dar_de_baja_y_reemplazar] 
 
-  autocomplete :clase, :nombre , :full => true 
+  # autocomplete :clase, :nombre , :full => true 
+
+  def autocomplete_clase_nombre 
+    respond_to do |format|
+      @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL AND clases.nombre ILIKE ?", "%#{params[:term]}%").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").paginate(:page => params[:page], :per_page => 30)        
+      render :json => @clases.map { |clase| {:id => clase.id, :label => clase.nombre, :value => clase.nombre} }  
+      format.js { }     
+    end        
+  end
 
   # GET /clases
   # GET /clases.json

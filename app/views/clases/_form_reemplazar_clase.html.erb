@@ -17,7 +17,7 @@
   <div class="col-md-4">  
       <div class="field">
           <%= f.label :partida_parcial%><br /> 
-          <%= f.collection_select :partida_parcial_id, @partidas_parciales, :id, :nombre, :prompt => "seleccione..." %>  
+          <%= f.collection_select :partida_parcial_id, @partidas_parciales, :id, "combinar_codigo_nombre", :prompt => "seleccione...", :readonly => @clase.persisted? %>   
       </div>
       <div class="field">
         <%= f.label :codigo, "Codigo (5 caracteres)" %><br>

@@ -133,7 +133,7 @@ class BienesDeConsumoController < ApplicationController
   end
 
   def traer_vista_dar_de_baja_y_reemplazar   
-    @clases = Clase.where("clases.fecha_de_baja IS NULL")
+    @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo")
     @bien_de_consumo = BienDeConsumo.new
   end
 
