@@ -43,8 +43,10 @@ var ready = function() {
 
   $("#items_stock_bien_de_consumo_id").change(function() { 
     id_de_bien = $("#items_stock_bien_de_consumo_id").val(); 
-    alert(id_de_bien)
-    xxxxxx(id_de_bien)    
+    $("#item_stock_bien_de_consumo_id").val(id_de_bien);
+    $("#bien_de_consumo_nombre").val($("#items_stock_bien_de_consumo_id option:selected").text());
+    traer_costo_de_bien_de_consumo(id_de_bien);
+    traer_cantidad_en_stock_en_suministro(id_de_bien);  
   });
 
 (function() {

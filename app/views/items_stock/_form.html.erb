@@ -40,7 +40,7 @@
 
   <div class="field">
     <%= f.label :cantidad_en_stock, "Cantidad en stock" %><br>
-    <%= text_field_tag :cantidad_en_stock, nil , readonly: true %>      
+    <%= text_field_tag :cantidad_en_stock, nil , :disabled => true, :class=> "uneditable-input" %>      
   </div>  
 
   <div class="field">
@@ -50,7 +50,7 @@
 
   <div class="field">
     <%= f.label :costo_actual, "Costo actual" %><br>
-    <%= text_field_tag :costo_actual, nil,  readonly: true %>        
+    <%= text_field_tag :costo_actual, nil,  :disabled => true, :class=> "uneditable-input" %>        
   </div>  
 
   <div class="field">
