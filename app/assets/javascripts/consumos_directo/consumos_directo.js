@@ -86,53 +86,6 @@ var ready = function() {
     ObtenerBienDeConsumoYcantidadEnStock(cod, depositoId)
   });
 
-  //////////////////////// Nuevo consumo por seleccion  (prueba commit no borre tabla) ////////////////////  
-  // do stuff here.
-  // $("#traer_item").click(function() {    
-  //   var bien_id = $("#bien_de_consumo_id").val();
-  //   var deposito_id = $("#consumo_directo_deposito_deposito_id").val();
-  //   var cantidad_a_consumir = $("#cantidad_a_consumir").val();
-  //   var nombre = $("#nombre").val();
-
-  //   //comparar hidden con el mail ingresado
-  //   //usuarios = [dtanel@gmail.com, ginvernizzi@gmail.com]    
-  //   if (bien_id != "" && bien_id != null)
-  //   {    
-  //     if(El_item_existe(bien_id))        
-  //     {        
-  //       alert("El item ya fue agregado");  
-  //       $(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + true + "&deposito_id=" + deposito_id + "&cantidad_a_consumir=" + cantidad_a_consumir);
-  //       //$(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + true );
-  //     }                          
-  //     else 
-  //     {  
-  //       $(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + false + "&deposito_id=" + deposito_id + "&cantidad_a_consumir=" + cantidad_a_consumir);                
-  //       //$(this).attr("href", "/consumos_directo/obtener_item_para_agregar_a_recepcion_by_id?bien_id=" + bien_id + "&item_existe=" + false );                
-  //     }                      
-  //     blanquear_campos();
-  //   }
-  //   else
-  //   {
-  //     alert("Debe seleccionar el bien de consumo")
-  //   }
-  // });
-
-  // function El_item_existe(bien_id)
-  //   {
-  //     var resp = false
-  //     $('div.items_agregados>div').each(function(){           
-  //       var hijos = $(this).context.children;
-  //       for(var i = 0; i < hijos.length; i++) {        
-  //         if (hijos[i].firstElementChild.value == bien_id)
-  //         { 
-  //           resp = true; 
-  //           break;
-  //         }                                
-  //       }
-  //     });
-  //     return resp;
-  //   }
-  ///////////////////////////////////////////////////////
 
   $("#agregar_bien_a_consumir").click(function() {
     var array_bienes = get_tabla_de_bienes() 

@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(version: 20160211184809) do
     t.integer  "deposito_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ingreso_manual_a_stock_id"
   end
 
   add_index "items_stock", ["bien_de_consumo_id"], name: "index_items_stock_on_bien_de_consumo_id", using: :btree

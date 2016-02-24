@@ -1,8 +1,77 @@
-$(document).on("ready page:load", function() {  
+var ready = function() {
 
   $('#bien_de_consumo_nombre').on('railsAutocomplete.select', function(event, data){ 
-    $("#bien_de_consumo_id").val(data.item.id);
+    $("#item_stock_bien_de_consumo_id").val(data.item.id);
+    traer_costo_de_bien_de_consumo(data.item.id);
+    traer_cantidad_en_stock_en_suministro(data.item.id);
   });
+
+  function traer_costo_de_bien_de_consumo(bien_de_consumo_id)
+  {
+    $.ajax({
+      url: "/bienes_de_consumo/traer_costo_de_bien_de_consumo",
+      dataType: "json",
+      type: "post",
+      data: { bien_id: bien_de_consumo_id },                
+      success:function(data){                           
+          $("#costo_actual").val(data)
+        }, 
+        error: function (request, status, error) 
+          { 
+                       
+          }
+      });   
+  }
+
+  function traer_cantidad_en_stock_en_suministro(bien_de_consumo_id)
+  {
+    $.ajax({
+      url: "/items_stock/traer_cantidad_en_stock_en_suministro",
+      dataType: "json",
+      type: "post",
+      data: { bien_id: bien_de_consumo_id },                
+      success:function(data){                           
+          $("#cantidad_en_stock").val(data)
+        }, 
+        error: function (request, status, error) 
+          { 
+                       
+          }
+      });   
+  }
+
+
+  $("#items_stock_bien_de_consumo_id").change(function() { 
+    id_de_bien = $("#items_stock_bien_de_consumo_id").val(); 
+    alert(id_de_bien)
+    xxxxxx(id_de_bien)    
+  });
+
+(function() {
+    jQuery(function() {
+      var bienes, llenarBienes;
+      llenarBienes = function(bienes) {
+        var clase, options;
+        clase = $('#categoria_clase_id :selected').text();
+        if(clase.indexOf("-") >= 0 )        
+        { clase = clase.split("-")[1].trim() }
+
+        options = $(bienes).filter("optgroup[label='" + clase + "']").html();
+        if (options) {
+          $('#items_stock_bien_de_consumo_id').html('<option value="">seleccione...</option>');
+          return $('#items_stock_bien_de_consumo_id').append(options);
+        } 
+        else {
+          return $('#items_stock_bien_de_consumo_id').empty();
+        }
+      };
+      bienes = $('#items_stock_bien_de_consumo_id').html();
+      llenarBienes(bienes);
+      return $('#categoria_clase_id').change(function() {
+        return llenarBienes(bienes);
+      });
+    }); 
+  }).call(this);
 
   $('#area_nombre').on('railsAutocomplete.select', function(event, data){ 
     $("#area_id").val(data.item.id);         
@@ -116,5 +185,7 @@ $(document).on("ready page:load", function() {
     $("#area_nombre").val("");
   }
 
+};
 
-});
+$(document).ready(ready);
+$(document).on('page:load', ready);

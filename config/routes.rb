@@ -81,6 +81,7 @@ Rails.application.routes.draw do
       get 'ver_items_dados_de_baja'
       get 'existen_stocks_minimos_superados'
       post 'imprimir_listado_de_items'
+      post 'traer_costo_de_bien_de_consumo'
     end
   
     resources :areas  do
@@ -133,8 +134,9 @@ Rails.application.routes.draw do
 
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 
   resources :depositos
-  resources :items_stock , only: [:index ] do
+  resources :items_stock , only: [:index, :new ] do
     collection do 
+      post'ingresar_bienes_a_stock_manualmente' 
        get 'guardar_stock_a_fecha'    
        get 'traer_todos_los_items_stock'  
        get 'traer_items_stock_por_bien_y_area'
@@ -143,7 +145,8 @@ Rails.application.routes.draw do
        get 'ver_stock_minimo_superado'
        get 'autocomplete_bien_de_consumo_nombre'      
        get 'autocomplete_area_nombre'
-       post 'imprimir_formulario_stock_total_todos_los_bienes'                    
+       post 'imprimir_formulario_stock_total_todos_los_bienes'
+        post 'traer_cantidad_en_stock_en_suministro'                 
      end        
   end  
 

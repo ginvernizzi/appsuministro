@@ -3,8 +3,7 @@
              html: { method: "post",  :id => "nuevo_consumo"} ) do |f| %>
   <% if @consumo_directo.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@consumo_directo.errors.count, "error/es") %> prohibe/en que el Consumo sea guardado</h2>
-
+      <h2><%= pluralize(@consumo_directo.errors.count, "error/es") %> prohibe/en que el ingreso sea salvado</h2>
       <ul>
       <% @consumo_directo.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -12,6 +11,7 @@
       </ul>
     </div>
   <% end %>
+
   
   <div class="field" id="impresion">        
   </div> 

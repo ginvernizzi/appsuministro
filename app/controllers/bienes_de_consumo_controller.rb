@@ -199,6 +199,20 @@ class BienesDeConsumoController < ApplicationController
     send_file ( file )    
   end
 
+  def traer_costo_de_bien_de_consumo
+    bien_id = params[:bien_id]
+    @costo_de_bien = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien_id).last
+
+    if !@costo_de_bien.nil?
+      @costo_de_bien = @costo_de_bien["costo"]
+    else
+      @costo_de_bien = nil
+    end
+    respond_to do | format |                                  
+          format.json { render :json => @costo_de_bien }        
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_bien_de_consumo

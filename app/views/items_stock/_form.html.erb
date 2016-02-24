@@ -1,22 +1,95 @@
-
-<%= form_for(@item_stock) do |f| %>
+<%= form_for(@item_stock, url: ingresar_bienes_a_stock_manualmente_items_stock_path, html: { method: "post" }) do |f| %>
   <% if @item_stock.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@item_stock.errors.count, "error") %> Los items no pudieron ser ingresados a stock:</h2>
+      <h2><%= pluralize(@item_stock.errors.count, "error/es") %> impide/n ingresar el item a stock:</h2>
       <ul>
       <% @item_stock.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
-    </div>
+    </div>       
   <% end %>
   
+<div class="row">
+  <div class="col-md-3">      
+      <h3> Buscar por nombre </h3>   
+      <div class="field">
+           <%= f.label :nombre%><br>  
+        </div>   
+        <div class="field">
+            <%= autocomplete_field_tag 'bien_de_consumo_nombre', "", autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75 %>                        
+        </div>  
+        <div class="field">
+          <%= f.hidden_field :bien_de_consumo_id %>
+        </div> 
+    </div>  
+
+    <div class="col-md-3">        
+      <h3> Seleccionar arbol </h3>            
+        <div class="field"> 
+        <%= label_tag :clase, "Clase" %><br>
+        <%= collection_select(:categoria, "clase_id", Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo"), "id", "combinar_codigo_nombre", :include_blank => "Seleccione...") %> 
+             
+        </div>    
+        <div class="field">     
+          <%= label_tag :bien_de_consumo, "Bien de consumo" %><br>
+          <%= grouped_collection_select(:items_stock, :bien_de_consumo_id, Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo"), :bienes_de_consumo, :nombre, :id, :nombre, :include_blank => " Seleccione...") %>
+        </div>
+    </div>      
+  </div>        
+
   <div class="field">
-    <%= label :deposito, :area %><br />       
-    <%= grouped_collection_select(:deposito, :deposito_id, @areas, :depositos, :nombre, :id, :nombre) %>
+    <%= f.label :cantidad_en_stock, "Cantidad en stock" %><br>
+    <%= text_field_tag :cantidad_en_stock, nil , readonly: true %>      
+  </div>  
+
+  <div class="field">
+    <%= f.label :cantidad, "Cantidad nueva en stock" %><br>
+    <%= f.text_field :cantidad  %>          
+  </div>  
+
+  <div class="field">
+    <%= f.label :costo_actual, "Costo actual" %><br>
+    <%= text_field_tag :costo_actual, nil,  readonly: true %>        
+  </div>  
+
+  <div class="field">
+    <%= f.label :costo, "Costo nuevo" %><br>
+    <%= text_field_tag :costo , nil %>          
+  </div>  
+      <div class="panel panel-default">
+          <div class="panel-heading">Items ingresados en la fecha</div>
+          <table id="bienes_table" class="table">
+             <thead>
+              <tr>            
+                  <th>Clase</th>
+                  <th>Codigo</th>
+                  <th>Nombre</th>
+                  <th>Cantidad</th>
+                  <th>Costo</th>    
+                  <th>Costo total</th>
+                  <th>Deposito</th>    
+                  <th>Area</th> 
+              </tr>
+              </thead>
+            <% ItemStock.all.each do |item| %>
+              <tbody>   
+              <tr>
+                  <td><%= item.bien_de_consumo.clase.nombre %></td>
+                  <td><%= obtener_codigo_completo_bien_de_consumo(item.bien_de_consumo.nombre) %></td>
+                  <td><%= item.bien_de_consumo.nombre %></td>
+                  <td><%= item.cantidad %></td>        
+                  <td><%= item.costo_de_bien_de_consumo.costo %></td>
+                  <td><%= obtener_costo_total(item.costo_de_bien_de_consumo.costo, item.cantidad) %></td>
+                  <td><%= item.deposito.nombre %></td>        
+                  <td><%= item.deposito.area.nombre %></td>       
+              </tr>     
+              </tbody>
+            <% end %>
+          </table>
+      </div>
+  <div class="actions">
+    <%= f.submit "Aceptar" %> 
   </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
 <% end %>

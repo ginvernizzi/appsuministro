@@ -40,4 +40,5 @@ class BienDeConsumo < ActiveRecord::Base
 			errors[:codigo] << "Ya existe un item con ese código para la clase" 
 		end
 	end
+
 end
