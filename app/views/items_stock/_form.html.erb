@@ -40,7 +40,7 @@
 
   <div class="field">
     <%= f.label :cantidad_en_stock, "Cantidad en stock" %><br>
-    <%= text_field_tag :cantidad_en_stock, nil , :disabled => true, :class=> "uneditable-input" %>      
+    <%= text_field_tag :cantidad_en_stock, nil , :disabled => true, :class=> "uneditable-input" %>   
   </div>  
 
   <div class="field">
@@ -57,37 +57,7 @@
     <%= f.label :costo, "Costo nuevo" %><br>
     <%= text_field_tag :costo , nil %>          
   </div>  
-      <div class="panel panel-default">
-          <div class="panel-heading">Items ingresados en la fecha</div>
-          <table id="bienes_table" class="table">
-             <thead>
-              <tr>            
-                  <th>Clase</th>
-                  <th>Codigo</th>
-                  <th>Nombre</th>
-                  <th>Cantidad</th>
-                  <th>Costo</th>    
-                  <th>Costo total</th>
-                  <th>Deposito</th>    
-                  <th>Area</th> 
-              </tr>
-              </thead>
-            <% ItemStock.all.each do |item| %>
-              <tbody>   
-              <tr>
-                  <td><%= item.bien_de_consumo.clase.nombre %></td>
-                  <td><%= obtener_codigo_completo_bien_de_consumo(item.bien_de_consumo.nombre) %></td>
-                  <td><%= item.bien_de_consumo.nombre %></td>
-                  <td><%= item.cantidad %></td>        
-                  <td><%= item.costo_de_bien_de_consumo.costo %></td>
-                  <td><%= obtener_costo_total(item.costo_de_bien_de_consumo.costo, item.cantidad) %></td>
-                  <td><%= item.deposito.nombre %></td>        
-                  <td><%= item.deposito.area.nombre %></td>       
-              </tr>     
-              </tbody>
-            <% end %>
-          </table>
-      </div>
+
   <div class="actions">
     <%= f.submit "Aceptar" %> 
   </div>

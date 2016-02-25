@@ -1,6 +1,5 @@
 class BienDeConsumo < ActiveRecord::Base	
 	include ApplicationHelper
-	
 	attr_accessor :saltear_codigo_de_item_existente
 
 	belongs_to :clase
@@ -13,10 +12,9 @@ class BienDeConsumo < ActiveRecord::Base
   	has_one :bien_viejo, through: :reemplazo_viejo, source: :bdc_viejo
   	has_one :bien_nuevo, through: :reemplazo_nuevo, source: :bdc_nuevo  	
 
+	default_scope { order(nombre: :asc) } 
 
 	validates :clase, presence: true 
-
-	#validates :stock_minimo, presence: true 
 
 	validates_length_of :codigo, :minimum => 4, :maximum => 4, :allow_blank => false	   
 	validates_numericality_of :codigo, :only_integer => true, :allow_nil => true, 

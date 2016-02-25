@@ -1,12 +1,12 @@
 class ItemsStockController < ApplicationController  
 
-  #SSautocomplete :bien_de_consumo, :nombre , :full => true, :extra_data => [:codigo]
+  #autocomplete :bien_de_consumo, :nombre , :full => true, :extra_data => [:codigo]
   autocomplete :area, :nombre , :full => true
 
   def autocomplete_bien_de_consumo_nombre
     respond_to do |format|
-      @bienes = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
-      render :json => @bienes.map { |bien| {:id => bien.id, :label => bien.nombre, :value => bien.nombre} }  
+      @bienes = BienDeConsumo.joins(:clase => [:partida_parcial => [:partida_principal]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.nombre ILIKE ?", "%#{params[:term]}%").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+      render :json => @bienes.map { |bien| {:id => bien.id, :value => bien.nombre} }  
       format.js { } 
     end
   end    

@@ -11,7 +11,6 @@ class Clase < ActiveRecord::Base
   has_one :clase_vieja, through: :reemplazo_viejo, source: :clase_vieja
   has_one :clase_nueva, through: :reemplazo_nuevo, source: :clase_nueva    
 
-
   validates :codigo, presence: true
   validates :nombre, presence: true 
 

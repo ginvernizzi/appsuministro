@@ -1,6 +1,7 @@
 var ready = function() {
 
   $('#bien_de_consumo_nombre').on('railsAutocomplete.select', function(event, data){ 
+    blanquear_campos_comobos_clase_y_bienes();
     $("#item_stock_bien_de_consumo_id").val(data.item.id);
     traer_costo_de_bien_de_consumo(data.item.id);
     traer_cantidad_en_stock_en_suministro(data.item.id);
@@ -185,6 +186,12 @@ var ready = function() {
     $("#bien_de_consumo_nombre").val("");              
     $("#area_id").val("");
     $("#area_nombre").val("");
+  }
+
+    function blanquear_campos_comobos_clase_y_bienes()
+  {
+    $("#categoria_clase_id").val("");
+    $("#items_stock_bien_de_consumo_id").empty();           
   }
 
 };
