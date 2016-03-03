@@ -12,7 +12,9 @@ module ApplicationHelper
   def obtener_costo_total(cantidad_unitario, costo_unitario)
       #costo_unitario_con_precision = number_with_precision(cantidad_unitario.to_f , :precision => 3) 
       #costo_unitario_con_precision * cantidad_unitario
-      result = BigDecimal.new(costo_unitario.to_s) * cantidad_unitario.to_i
+      puts "*****Costo unitaio: #{cantidad_unitario}*************"
+      puts "*****Resultado: #{costo_unitario * cantidad_unitario} *************"            
+      result = costo_unitario * cantidad_unitario
       #number_with_precision(result, :precision => 3)
   end 
 
