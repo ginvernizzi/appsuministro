@@ -12,7 +12,7 @@ class BienDeConsumo < ActiveRecord::Base
   	has_one :bien_viejo, through: :reemplazo_viejo, source: :bdc_viejo
   	has_one :bien_nuevo, through: :reemplazo_nuevo, source: :bdc_nuevo  	
 
-	default_scope { order(nombre: :asc) } 
+	# default_scope { order(nombre: :asc) } 
 
 	validates :clase, presence: true 
 
