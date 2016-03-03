@@ -5,5 +5,4 @@ class BienDeConsumoParaConsumir < ActiveRecord::Base
 
   attr_accessor :fecha_inicio
   attr_accessor :fecha_fin
-  #attr_accessible :flag  
 end

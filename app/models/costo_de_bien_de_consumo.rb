@@ -3,4 +3,6 @@ class CostoDeBienDeConsumo < ActiveRecord::Base
   ORIGEN = { :manual => 1, :'desde evaluacion' => 2}
 
   validates :costo, presence: true, numericality: {greater_than: 0}
+
+ 
 end

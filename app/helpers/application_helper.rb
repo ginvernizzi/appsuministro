@@ -10,7 +10,10 @@ module ApplicationHelper
   end
 
   def obtener_costo_total(cantidad_unitario, costo_unitario)
-      cantidad_unitario * costo_unitario      
+      #costo_unitario_con_precision = number_with_precision(cantidad_unitario.to_f , :precision => 3) 
+      #costo_unitario_con_precision * cantidad_unitario
+      result = BigDecimal.new(costo_unitario.to_s) * cantidad_unitario.to_i
+      #number_with_precision(result, :precision => 3)
   end 
 
   def obtener_total_general_de_bienes_de_consumo(bienes_de_consumo)
@@ -26,11 +29,6 @@ module ApplicationHelper
       armar_codigo(@array_bien_de_consumo[0])
     end 
 
-    # def obtener_codigo_completo_bien_de_consumo(id)
-    #   @array_bien_de_consumo = BienDeConsumo.where(id: id)    
-
-    #   armar_codigo(@array_bien_de_consumo[0])  
-    # end 
 
     def armar_codigo(array)
       bien = array

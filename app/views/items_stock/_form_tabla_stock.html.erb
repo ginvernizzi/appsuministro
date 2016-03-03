@@ -5,9 +5,9 @@
         <th>Clase</th>
         <th>Codigo</th>
         <th>Nombre</th>
-        <th>Cantidad</th>
-        <th>Costo</th>
-        <th>Costo total</th>
+        <th style="text-align: right">Cantidad</th>
+        <th style="text-align: right">Costo</th>
+        <th style="text-align: right">Costo total</th>
         <th>Deposito</th>
         <th>Area</th>      
       </tr>
@@ -19,9 +19,9 @@
           <td><%= item_stock.bien_de_consumo.clase.nombre %></td>
           <td><%= obtener_codigo_completo_bien_de_consumo(item_stock.bien_de_consumo.nombre) %></td>
           <td><%= item_stock.bien_de_consumo.nombre %></td>
-          <td><%= item_stock.cantidad %></td>        
-          <td><%= item_stock.costo_de_bien_de_consumo.costo %></td>
-          <td><%= obtener_costo_total(item_stock.costo_de_bien_de_consumo.costo, item_stock.cantidad) %></td>
+          <td style="text-align: right"><%= item_stock.cantidad.to_i %></td>        
+          <td style="text-align: right"><%= number_to_currency(item_stock.costo_de_bien_de_consumo.costo, :precision => 3) %></td>
+          <td style="text-align: right"><%= number_to_currency(obtener_costo_total(item_stock.costo_de_bien_de_consumo.costo, item_stock.cantidad), precision: 3)  %></td>
           <td><%= item_stock.deposito.nombre %></td>        
           <td><%= item_stock.deposito.area.nombre %></td>       
         </tr>
@@ -31,10 +31,11 @@
           <td><%= link_to 'Imprimir', imprimir_formulario_stock_total_todos_los_bienes_items_stock_path , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
           </td>   
         <% else %>  
-            <td><%= link_to 'Imprimir',  bien_de_consumo_area_item_stock_imprimir_formulario_stock_total_por_bien_y_area_path(@items_stock.first().bien_de_consumo.id, @items_stock.first().deposito.area.id, 0), method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+            <td><%= link_to 'Imprimir', bien_de_consumo_area_item_stock_imprimir_formulario_stock_total_por_bien_y_area_path(@items_stock.first().bien_de_consumo.id, @items_stock.first().deposito.area.id, 0), method: :post, data: { confirm: '¿Esta seguro?' }  %>        
             </td>       
         <% end %>
       <% end %>
     </tbody>
   </table>
 <% end %>
+

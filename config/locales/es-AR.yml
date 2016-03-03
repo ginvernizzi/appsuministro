@@ -1,22 +1,396 @@
-es-AR:
-  scaffoldi18n:
-    edit: Editar
-    show: Mostrar
-    destroy: Eliminar
-    new: Alta
-    back: Atrás
-    are_you_sure?: "¿Esta seguro?"
+es_ar:
+  i18n:
+    language:
+      names: "Español Argentina, Espanol Argentina, es ar"
+  # Action View
+  number:
+    # Used in number_with_delimiter()
+    # These are also the defaults for 'currency', 'percentage', 'precision', and 'human'
+    format:
+      # Sets the separator between the units, for more precision (e.g. 1.0 / 2.0 == 0.5)
+      separator: ","
+      # Delimets thousands (e.g. 1,000,000 is a million) (always in groups of three)
+      delimiter: "."
+      # Number of decimals, behind the separator (1 with a precision of 2 gives: 1.00)
+      # of the number of decimal digits (1234 with precision 2 becomes 1200, 1.23543 becomes 1.2)
+      significant: false
+      # If set, the zeros after the decimal separator will always be stripped (eg.: 1.200 will be 1.2)
+      strip_insignificant_zeros: false
+
+    # Used in number_to_currency()
+    currency:
+      format:
+        # Where is the currency sign? %u is the currency unit, %n the number (default: $5.00)
+        format: "%n %u"
+        unit: "€"
+        # These three are to override number.format and are optional
+        separator: ","
+        delimiter: "."
+        precision: 2
+        significant: false
+        strip_insignificant_zeros: false
+
+    # Used in number_to_percentage()
+    percentage:
+      format:
+        # These three are to override number.format and are optional
+        # separator:
+        delimiter: ""
+        # precision:
+
+    # Used in number_to_precision()
+    precision:
+      format:
+        # These three are to override number.format and are optional
+        # separator:
+        delimiter: ""
+        # precision:
+        # significant: false
+        # strip_insignificant_zeros: false
+
+    # Used in number_to_human_size()
+    human:
+      format:
+        # These three are to override number.format and are optional
+        # separator:
+        delimiter: ""
+        precision: 1
+        significant: true
+        strip_insignificant_zeros: true
+      # Used in number_to_human_size()
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one:   "Byte"
+            other: "Bytes"
+          kb: "KB"
+          mb: "MB"
+          gb: "GB"
+          tb: "TB"
+      # Used in number_to_human()
+      decimal_units:
+        format: "%n %u"
+        # Decimal units output formatting
+        # By default we will only quantify some of the exponents
+        # but the commented ones might be defined or overridden
+        # by the user.
+        units:
+          # femto: Quadrillionth
+          # pico: Trillionth
+          # nano: Billionth
+          # micro: Millionth
+          # mili: Thousandth
+          # centi: Hundredth
+          # deci: Tenth
+          unit: ""
+          # ten:
+          #   one: Ten
+          #   other: Tens
+          # hundred: Hundred
+          thousand: "Mil"
+          million: "Millón"
+          billion: "Mil millones"
+          trillion: "Trillón"
+          quadrillion: "Cuatrillón"
+
+  # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
+  datetime:
+    distance_in_words:
+      half_a_minute: "medio minuto"
+      less_than_x_seconds:
+        one:  "menos de 1 segundo"
+        other: "menos de %{count} segundos"
+      x_seconds:
+        one:  "1 segundo"
+        other: "%{count} segundos"
+      less_than_x_minutes:
+        one:  "menos de 1 minuto"
+        other: "menos de %{count} minutos"
+      x_minutes:
+        one:  "1 minuto"
+        other: "%{count} minutos"
+      about_x_hours:
+        one:  "alrededor de 1 hora"
+        other: "alrededor de %{count} horas"
+      x_days:
+        one:  "1 día"
+        other: "%{count} días"
+      about_x_months:
+        one:  "alrededor de 1 mes"
+        other: "alrededor de %{count} meses"
+      x_months:
+        one:  "1 mes"
+        other: "%{count} meses"
+      about_x_years:
+        one:  "alrededor de 1 año"
+        other: "alrededor de %{count} años"
+      over_x_years:
+        one:  "más de 1 año"
+        other: "más de %{count} años"
+      almost_x_years:
+        one: "casi 1 año"
+        other: "casi %{count} años"
+    prompts:
+      year:   "Año"
+      month:  "Mes"
+      day:    "Día"
+      hour:   "Hora"
+      minute: "Minutos"
+      second: "Segundos"
+
+  helpers:
+    select:
+      # Default value for :prompt => true in FormOptionsHelper
+      prompt: "Por favor seleccioná"
+
+    # Default translation keys for submit FormHelper
+    submit:
+      create: 'Guardar %{model}'
+      update: 'Actualizar %{model}'
+      submit: 'Guardar %{model}'
+
+  # Attributes names common to most models
+  #attributes:
+    #created_at: "Created at"
+    #updated_at: "Updated at"
+
+  # Active Record models configuration
+  activerecord:
+    errors:
+      messages:
+        taken: "ya está en uso"
+        record_invalid: "La validación falló: %{errors}"
+        # Append your own errors here or at the model/attributes scope.
+
+      # You can define own errors for models or model attributes.
+      # The values :model, :attribute and :value are always available for interpolation.
+      #
+      # For example,
+      #   models:
+      #     user:
+      #       blank: "This is a custom blank message for %{model}: %{attribute}"
+      #       attributes:
+      #         login:
+      #           blank: "This is a custom blank message for User login"
+      # Will define custom blank validation message for User model and
+      # custom blank validation message for login attribute of User model.
+      #models:
+
+    # Translate model names. Used in Model.human_name().
+    #models:
+      # For example,
+      #   user: "Dude"
+      # will translate User model name to "Dude"
+
+    # Translate model attribute names. Used in Model.human_attribute_name(attribute).
+    #attributes:
+      # For example,
+      #   user:
+      #     login: "Handle"
+      # will translate User attribute "login" as "Handle"
+
+  # Active Model
+  errors:
+    # The default format to use in full error messages.
+    format: "%{attribute} %{message}"
+
+    template:
+      header:
+        one:   "No se pudo guardar este/a %{model} porque se encontró 1 error"
+        other:  "No se pudo guardar este/a %{model} porque se encontraron %{count} errores"
+      # The variable :count is also available
+      body: "Se encontraron problemas con los siguientes campos:"
+
+    # The values :model, :attribute and :value are always available for interpolation
+    # The value :count is available when applicable. Can be used for pluralization.
+    messages: &errors_messages
+      inclusion: "no está incluido en la lista"
+      exclusion: "está reservado"
+      invalid: "no es válido"
+      confirmation: "no coincide con la confirmación"
+      accepted: "debe ser aceptado"
+      empty: "no puede estar vacío"
+      blank: "no puede estar en blanco"
+      too_long: "es demasiado largo (%{count} caractsos máximo)"
+      too_short: "es demasiado corto (%{count} caractsos mínimo)"
+      wrong_length: "no tiene la longitud correcta (%{count} caractsos exactos)"
+      not_a_number: "no es un número"
+      greater_than: "debe ser mayor que %{count}"
+      greater_than_or_equal_to: "debe ser mayor que o igual a %{count}"
+      equal_to: "debe ser igual a %{count}"
+      less_than: "debe ser menor que %{count}"
+      less_than_or_equal_to: "debe ser menor que o igual a %{count}"
+      odd: "debe ser impar"
+      even: "debe ser par"
+
+  # Active Support
+  date:
+    formats:
+      # Use the strftime parameters for formats.
+      # When no format has been given, it uses default.
+      # You can provide other formats here if you like!
+      default: "%d/%m/%Y"
+      short: "%d de %b"
+      long: "%d de %B de %Y"
+
+    day_names: [Domingo, Lunes, Martes, Miércoles, Jueves, Viernes, Sábado]
+    abbr_day_names: [Dom, Lun, Mar, Mie, Jue, Vie, Sab]
+
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre]
+    abbr_month_names: [~, Ene, Feb, Mar, Abr, May, Jun, Jul, Ago, Sep, Oct, Nov, Dic]
+    # Used in date_select and datime_select.
+    order:
+      - :day
+      - :month
+      - :year
+
   time:
     formats:
-      default: ! '%d/%m/%Y %H:%M'
-      short: ! '%d/%m/%Y'
-      con_seg: ! '%d/%m/%Y %H:%M:%S'
+      default: "%A, %d de %B de %Y %H:%M:%S %z"
+      short: "%d de %b %H:%M"
+      long: "%d de %B de %Y %H:%M"
+    am: "am"
+    pm: "pm"
+
+  # Used in array.to_sentence.
+  support:
+    array:
+      words_connector: ", "
+      two_words_connector: " y "
+      last_word_connector: ", y "
+    select:
+      prompt: "Por favor seleccioná"
+
+  # For Rails 2
   activerecord:
-    attributes:
-        user: Usuario
-        created_at: Fecha de creación
-        deleted_at: Fecha de baja
-        datos_esp:
-          gen_esps: "Géneros del espectáculo"
     errors:
-        models:
+      template:
+        header:
+          one:   "No se pudo guardar este/a %{model} porque se encontró 1 error"
+          other: "No se pudo guardar este/a %{model} porque se encontraron %{count} errores"
+        body: "Se encontraron problemas con los siguientes campos:"
+
+      messages:
+        taken: "ya está en uso"
+        record_invalid: "La validación falló: %{errors}"
+        <<: *errors_messages
+
+      full_messages:
+        format: "%{attribute} %{message}"
+  group_created: "Grupo '%{name}' creado. Para requerir a los usuarios tu aprobación de unirse, andá a geochat.instedd.org. Invitá usuarios enviando: %{name} +NRO_DE_TELEFONO"
+  group_already_exists: "El grupo %{name} ya existe. Por favor elegí otro nombre."
+  cannot_create_group_name_too_short: "No podés crear un grupo llamado '%{name}' porque el nombre es muy corto (el mínimo es 2 caractsos)"
+  cannot_create_group_name_reserved: "No podés crear un grupo llamado '%{name}' porque el nombre está reservado."
+  you_must_specify_a_group_to_invite: "Tenés que especificar un grupo al cual invitar usuarios, o elegir un grupo por defecto."
+  welcome_to_group_signup_and_join: "Bienvenido al grupo %{name} de GeoChat. Decinos tu nombre y unite al grupo enviando: TU_NOMBRE join %{name}"
+  user_has_invited_you: "%{user} te ha invitado al grupo %{group}. podés unirte enviando: join %{group}"
+  welcome_to_first_group: "Bienvenido %{user} al grupo %{group}. Respondé con 'at TOWN NAME' o con cualquier mensaje para decir hola a tu grupo!"
+  welcome_to_non_first_group: "Bivenido %{user} a %{group}. Enviá '%{group} Hola grupo!'"
+  user_is_now_a_member_of_group: "%{user} es ahora miembro del grupo %{group}."
+  users_are_all_now_members_of_group: "%{users} ahora son todos miembros del grupo %{group}."
+  could_not_find_registered_user: "No se pudo encontrar al usuario '%{name}' para tu invitación."
+  could_not_find_registered_users: "No se pudo encontrar a los usuarios %{name} para tu invitación."
+  you_cant_invite_yourself: "No podés invitarte a ti mismo."
+  invitation_sent_to_user: "Invitación enviada a %{name}"
+  invitations_sent_to_users: "Invitaciones enviadas a %{name}"
+  you_already_belong_to_group: "Ya pertenecés al grupo %{name}."
+  user_has_accepted_your_invitation: "%{user} acaba de aceptar tu invitación de unirse a %{group}."
+  you_cant_leave_group_because_you_dont_belong_to_it: "No podés abandonar el grupo %{name} porque no pertenecés a él."
+  you_cant_leave_group_because_you_are_its_only_admin: "No podés abandonar el grupo %{name} porque sos su único administrador."
+  good_bye_from_only_group: "Adiós %{user} de tu único grupo %{group}. Para unirte a otro grupo enviá: join NOMBRE_GRUPO"
+  good_bye_from_second_group: "Adiós %{user} del grupo %{group}. Ahora tu grupo por defecto es %{rest}."
+  good_bye_from_more_than_two_groups: "Adiós %{user} del grupo %{group}."
+  you_dont_belong_to_any_group_yet: "Todavía no pertenecés a ningún grupo. Para unirte a uno enviá: join NOMBRE_GRUPO"
+  you_are_not_signed_in: 'No estás registrado en GeoChat. Enviá "login USUARIO CLAVE" para ingresar, o "name TU_NOMBRE" or "TU_NOMBRE join NOMBRE_GRUPO" para registrarte.'
+  user_does_not_exist: "El usuario %{name} no existe."
+  group_does_not_exist: "El grupo %{name} no existe."
+  invitation_pending_for_approval: "Una invitación está pendiente de aprobación. Para aprobarla enviá: invite %{group} %{user}"
+  group_requires_approval: "El grupo %{name} require aprobación para unirse de parte de un administrador. Te informaremos cuando puedas empezar a enviar mensajes."
+  we_have_turned_on_updates_on_this_channel: "Activamos la recepción de mensajes en este %{name}. Respondé con STOP para desactivarla. Preguntas enviá email support@instedd.org."
+  you_sent_on_and_we_have_turned_on_udpated_on_this_channel: "Enviaste '%{message}' y activamos la recepción de mensajes en este %{name}. Respondé con STOP para desactivarlas. Preguntas enviá email support@instedd.org."
+  location_not_found: "La ubicación '%{name}' no se pudo encontrar en el mapa."
+  location_successfuly_updated: "Tu ubicación ha sido actualizada a %{place} (%{location_info})"
+  invalid_login: "Usuario/clave invalidos"
+  hello: "Hola %{name}. Cuando quieras desactivar este dispositivo enviá: bye"
+  device_removed_from_your_account: "%{name}, este dispositivo ha sido removido de tu cuenta."
+  cant_send_messages_to_disabled_group: "No podés enviar mensajes a %{name} porque está deshabilitado."
+  you_dont_have_a_default_group_prefix_messages: "No tenés un grupo por defecto así que prefijá tus mensajes con un grupo (por ejemplo: NOMBRE_GRUPO Hola!) o elegí tu grupo por defecto con: .my group NOMBRE_GRUPO"
+  cant_send_message_to_user_via_group_does_not_belong: "No podés enviar mensajes a %{user} a través del grupo %{group} porque él/ella no pertence a él."
+  cant_send_message_to_user_no_common_group: "No podés enviar mensajes a %{name} porque no comparten un grupo en común."
+  cant_send_message_to_group_invitation_not_approved: "No podés enviar mensajes al grupo %{name} porque tu invitación todavía no ha sido aprobada por un administrador."
+  cant_send_message_to_group_not_a_member: "No podés enviar mensajes al grupo %{name} porque no sos miembro y el grupo requiere aprobación para unirse. Para pedir unirte enviá: join %{name}"
+  your_login_is: "Tu nombre de usuario es: %{name}"
+  login_taken: "El nombre de usuario %{name} ya está tomado."
+  your_new_login_is: "Tu nuevo nombre de usuario es: %{name}."
+  your_display_name_is: "Tu nombre es: %{name}"
+  your_new_display_name_is: "Tu nuevo nombre es: %{name}"
+  forgot_your_password: "Olivaste tu clave? Cambiala enviando: .my password NUEVA_CLAVE"
+  your_new_password_is: "Tu nueva clave es: %{name}"
+  your_phone_number_is: "Tu número de teléfono es: %{name}"
+  you_dont_have_a_phone_number_configured: "No tenés un número de teléfono configurado en GeoChat."
+  you_cant_change_your_phone_number: "No podés cambiar tu número de teléfono."
+  your_email_is: "Tu email es: %{name}"
+  you_dont_have_an_email: "No tenés un email configurado en GeoChat."
+  you_cant_change_your_email: "No podés cambiar tu email."
+  your_only_group_is: "Tu único grupo es: %{name}"
+  your_groups_are: "Tus grupos son: %{name}"
+  you_dont_have_a_default_group_choose_one: "No tenés un grupo por defecto. Para elegir uno enviá: .my group NOMBRE_GRUPO"
+  your_default_group_is: "Tu grupo por defecto es: %{name}"
+  you_cant_set_group_as_default_group_dont_belong: "No podés elegir a %{name} como tu grupo por defecto porque no pertencés a él."
+  your_new_default_group_is: "Tu nuevo grupo por defecto es: %{name}"
+  you_never_reported_your_location: "Nunca reportaste tu ubicación."
+  you_said_you_was_in: "Dijiste que estabas en %{place} (%{location_info}) hace %{time}."
+  you_sent_off_and_we_have_turned_off_channel: "Alertas GeoChat. Enviaste '%{message}' y desactivamos la recepción de mensajes en este %{name}. Respondé con START para activarla. Preguntas enviá email support@instedd.org."
+  you_must_specify_a_group_to_set_admin: "Tenés que especificar un grupo para poner a %{name} como administrador, o elegir un grupo por defecto."
+  user_does_not_belong_to_group: "El usuario %{user} no pertence al grupo %{group}."
+  you_are_already_an_admin_of_group: "Ya sos administrador del grupo %{name}."
+  nice_try: "Buen intento :-P"
+  you_cant_set_admin_you_dont_belong_to_group: "No podés poner a %{user} como administrador de %{group} porque no pertenecés a ese grupo."
+  you_cant_set_admin_you_are_not_admin: "No podés poner a %{user} como administrador de %{group} porque no sos su administrador."
+  user_already_an_admin: "El usuario %{user} ya es administrador del grupo %{group}."
+  user_set_as_admin: "El usuario %{user} es ahora administrador del grupo %{group}."
+  user_has_made_you_admin: "%{user} te hizo administrador del grupo %{group}."
+  a_or_b: "%{a} o %{b}"
+  received_at: "recibido el %{name}"
+  at_place: "en %{name}"
+  at_place_with_location_info: "en %{place}, %{location_info}"
+  message_only_to_you: "%{name} sólo a vos"
+  message_only_to_others_and_you: "%{from} sólo a %{others} y a tí"
+  device_belongs_to_another_user: "Este dispositivo pertence a otro usuario. Para desasociarlo enviá: bye"
+  cannot_signup_name_too_short: "No podés registrarte como '%{name}' porque es muy corto (el mínimo es 2 caractsos)."
+  cannot_signup_name_reserved: "No podés registrarte como '%{name}' porque es un nombre reservado."
+  welcome_to_geochat: "Bienvenido %{name} a GeoChat! Enviá HELP para instrucciones. http://geochat.instedd.org"
+  remember_you_can_log_in: "Recordá que podés ingresar a http://geochat.instedd.org ingresando tu nombre de usuario (%{login}) y la siguiente clave: %{password}"
+  to_send_message_to_a_group_you_must_first_join_one: "Para enviar mensajes a un grupo, primero tenés que unirte a uno. Enviá: join GRUPO"
+  unknown_command: "Comando desconocido .%{command}. Quizás quisiste enviar: .%{suggestion}"
+  you_cant_see_location_no_common_group: "No podés ver la ubicación de %{user} (%{name}) porque no comparten un grupo en común."
+  user_never_reported_location: "%{name} nunca reportó su ubicación."
+  user_is: "El usuario %{user} (%{name}) está en %{place} (%{location_info}) desde hace %{time}."
+  user_display_name_is: "El nombre de %{user} es: %{display_name}."
+  you_already_invited_user: "Ya invitaste a %{user} al grupo %{group}"
+  user_already_belongs_to_group: "El usuario %{user} ya pertence al grupo %{group}"
+  users_already_belongs_to_group: "Los usuarios %{users} ya pertencen al grupo %{group}"
+  now_you_dont_have_a_default_group: "Ahora no tenés un grupo por defecto"
+  language_changed: "Idioma cambiado con éxito a español argentino."
+  geochat_is_not_available_in_language: "GeoChat no está disponible en %{name}."
+  you_can_now_send_and_receive_messages_via_this_channel: "%{name}, ahora podés enviar y recibir mensajes a través de este canal"
+  incorrect_activation_code: "%{name} no es el código de activación correcto"
+  help_help: "Ayuda de GeoChat. Enviá help seguido de un tópico. Tópicos: signup, login, logout, create, join, leave, invite, on, off, my, whereis, whois, admin."
+  help_create: "Para crear un grupo enviá: create NOMBRE_GRUPO"
+  help_invite: "Para invitar a alguien a un grupo enviá: NOMBRE_GRUPO +NUMER_DE_TELEFONO_O_USUARIO"
+  help_join: "Para unirte a un grupo enviá: join NOMBRE_GRUPO"
+  help_language: "Para cambiar el idioma en el cual recibís mensajes de GeoChat, enviá: lang IDIOMA"
+  help_leave: "Para abandonar un grupo enviá: leave NOMBRE_GRUPO"
+  help_login: "Para ingresar a GeoChat desde este canal enviá: login USUARIO CLAVE"
+  help_logout: "Para salir de GeoChat enviá: logout"
+  help_my: "Para cambiar tus opciones enviá: .my OPCIÓN o .my OPCIÓN VALOR. Opciones: login, password, name, email, phone, location, group, groups"
+  help_off: "Para dejar de recibir mensajes desde este canal enviá: off"
+  help_on: "Para empezar a recibir mensajes desde este canal enviá: on"
+  help_admin: "Para poner a un usuario como administrador de un grupo enviá: admin NOMBRE_GRUPO USUARIO"
+  help_ping: "Para verificar que GeoChat está funcionando enviá: ping, seguido de cualquier mensaje"
+  help_signup: "Para registrarte en GeoChat enviá: name TU_NOMBRE"
+  help_where_is: "Para conocer la ubicación de un usuario enviá: .whereis USUARIO"
+  help_who_is: "Para conocer el nombre de un usuario enviá: .whois USUARIO"
+

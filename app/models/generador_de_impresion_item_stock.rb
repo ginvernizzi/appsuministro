@@ -1,6 +1,7 @@
 #encoding: utf-8
 class GeneradorDeImpresionItemStock
 	include ApplicationHelper
+	include ActionView::Helpers::NumberHelper
 	
   def initialize
     @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
@@ -18,9 +19,9 @@ class GeneradorDeImpresionItemStock
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
-				s.add_column("CANTIDAD") { |i| i.cantidad }
-				s.add_column("COSTO") { |i| i.costo_de_bien_de_consumo.costo  }
-				s.add_column("COSTO_TOTAL") { |i| i.costo_de_bien_de_consumo.costo * i.cantidad } 						
+				s.add_column("CANTIDAD") { |i| i.cantidad.to_i }
+				s.add_column("COSTO") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo , :precision => 3)}
+				s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo * i.cantidad, :precision => 3) } 						
 				s.add_column("DEPOSITO") { |i| i.deposito.nombre }
 				s.add_column("AREA") { |i| i.deposito.area.nombre }				
 			end
@@ -31,7 +32,7 @@ class GeneradorDeImpresionItemStock
 		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
 	end
 
-	def nombre_formulario_pdf
+	def nombre_formulario_pdf 
 		nombre_formulario + ".pdf"
 	end
 

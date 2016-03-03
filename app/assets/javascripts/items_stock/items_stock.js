@@ -1,10 +1,38 @@
 var ready = function() {
 
+  (function() {
+      jQuery(function() {
+          var bienes, llenarBienes;
+          llenarBienes = function(bienes) {
+            var clase, options;
+            clase = $('#categoria_clase_id :selected').text();
+            if(clase.indexOf("-") >= 0 )        
+            { clase = clase.split("-")[1].trim() }
+
+            options = $(bienes).filter("optgroup[label='" + clase + "']").html();
+            if (options) {
+              $('#items_stock_bien_de_consumo_id').html('<option value="">seleccione...</option>');
+              return $('#items_stock_bien_de_consumo_id').append(options);
+            } 
+            else {
+              return $('#items_stock_bien_de_consumo_id').empty();
+            }
+          };
+
+          bienes = $('#items_stock_bien_de_consumo_id').html();
+          llenarBienes(bienes);
+          return $('#categoria_clase_id').change(function() {
+            return llenarBienes(bienes);
+          });
+      });
+  }).call(this);
+
   $('#bien_de_consumo_nombre').on('railsAutocomplete.select', function(event, data){ 
     blanquear_campos_comobos_clase_y_bienes();
     $("#item_stock_bien_de_consumo_id").val(data.item.id);
     traer_costo_de_bien_de_consumo(data.item.id);
     traer_cantidad_en_stock_en_suministro(data.item.id);
+    llenar_combos_de_clase_y_bien(data.item.id);
   });
 
   function traer_costo_de_bien_de_consumo(bien_de_consumo_id)
@@ -42,6 +70,24 @@ var ready = function() {
   }
 
 
+  function llenar_combos_de_clase_y_bien(bien_de_consumo_id)
+  {
+    $.ajax({
+      url: "/items_stock/traer_datos_de_clase_y_bien",
+      dataType: "json",
+      type: "get",
+      data: { bien_id: bien_de_consumo_id },                
+      success:function(data){                        
+          $("#categoria_clase_id").val(data[0].clase_id).trigger('change'); 
+          $("#items_stock_bien_de_consumo_id").val(bien_de_consumo_id);       
+        }, 
+        error: function (request, status, error) 
+          { 
+                       
+          }
+      });   
+  }
+
   $("#items_stock_bien_de_consumo_id").change(function() { 
     id_de_bien = $("#items_stock_bien_de_consumo_id").val(); 
     $("#item_stock_bien_de_consumo_id").val(id_de_bien);
@@ -50,31 +96,6 @@ var ready = function() {
     traer_cantidad_en_stock_en_suministro(id_de_bien);  
   });
 
-(function() {
-    jQuery(function() {
-      var bienes, llenarBienes;
-      llenarBienes = function(bienes) {
-        var clase, options;
-        clase = $('#categoria_clase_id :selected').text();
-        if(clase.indexOf("-") >= 0 )        
-        { clase = clase.split("-")[1].trim() }
-
-        options = $(bienes).filter("optgroup[label='" + clase + "']").html();
-        if (options) {
-          $('#items_stock_bien_de_consumo_id').html('<option value="">seleccione...</option>');
-          return $('#items_stock_bien_de_consumo_id').append(options);
-        } 
-        else {
-          return $('#items_stock_bien_de_consumo_id').empty();
-        }
-      };
-      bienes = $('#items_stock_bien_de_consumo_id').html();
-      llenarBienes(bienes);
-      return $('#categoria_clase_id').change(function() {
-        return llenarBienes(bienes);
-      });
-    }); 
-  }).call(this);
 
   $('#area_nombre').on('railsAutocomplete.select', function(event, data){ 
     $("#area_id").val(data.item.id);         

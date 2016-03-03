@@ -142,6 +142,7 @@ Rails.application.routes.draw do
        get 'traer_items_stock_por_bien_y_area'
        get 'traer_items_stock_minimo_superado'  
        get 'traer_items_stock_minimo_superado_por_bien_y_area'
+       get 'traer_datos_de_clase_y_bien'
        get 'ver_stock_minimo_superado'
        get 'autocomplete_bien_de_consumo_nombre'      
        get 'autocomplete_area_nombre'

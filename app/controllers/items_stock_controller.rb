@@ -22,8 +22,7 @@ class ItemsStockController < ApplicationController
   end
 
   def traer_todos_los_items_stock
-    @items_stock = ItemStock.all           
-         
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")  
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
     respond_to do |format|   
@@ -154,7 +153,7 @@ class ItemsStockController < ApplicationController
       
   def imprimir_formulario_stock_total_todos_los_bienes
     @generador = GeneradorDeImpresionItemStock.new
-    @items = ItemStock.all
+    @items = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")  
     @generador.generar_pdf(@items)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )    
@@ -227,6 +226,18 @@ class ItemsStockController < ApplicationController
     end
     respond_to do | format |                                  
           format.json { render :json => @cantidad_en_stock }        
+    end
+  end
+
+  def traer_datos_de_clase_y_bien
+    bien_id = params[:bien_id]
+    @bien_de_consumo = BienDeConsumo.find(bien_id)
+    @bienes = @bien_de_consumo.clase.bienes_de_consumo
+    if @bienes.nil?
+      @bienes = nil
+    end
+    respond_to do | format |                                  
+          format.json { render :json => @bienes }        
     end
   end
 
