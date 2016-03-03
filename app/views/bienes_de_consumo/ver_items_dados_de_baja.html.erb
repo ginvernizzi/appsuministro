@@ -1,0 +1,25 @@
+<h1>Lista de items dados de baja</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Clase</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bienes_de_consumo.each do |bien| %>
+      <tr>
+        <td><%= obtener_codigo_completo_bien_de_consumo(bien.nombre) %></td>
+        <td><%= bien.nombre %></td>
+        <td><%= bien.clase.nombre %></td>
+        <td><%= link_to 'Ver', bien %></td>              
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @bienes_de_consumo, renderer: BootstrapPagination::Rails %>
+<br>
