@@ -23,6 +23,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def new
     @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
     @tipos_de_documento = TipoDeDocumento.all
+
+    @estados = RecepcionDeBienDeConsumo::ESTADOS.first(2)
     
     #inicializa la cantidad de rows de doc secundarios a agregar la primera vez
     gon.numeroDeFila = 1    

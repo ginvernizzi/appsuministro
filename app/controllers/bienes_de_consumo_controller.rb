@@ -1,5 +1,5 @@
 class BienesDeConsumoController < ApplicationController
-  before_action :set_bien_de_consumo, only: [:show, :destroy, :edit]
+  before_action :set_bien_de_consumo, only: [:show, :destroy, :edit, :update]
   before_action :set_back_page, only: [:show, :new, :traer_vista_dar_de_baja_y_reemplazar]
 
   def index
@@ -83,6 +83,20 @@ class BienesDeConsumoController < ApplicationController
     end
   end  
 
+  def update
+    respond_to do |format|
+      if @bien_de_consumo.update(bien_de_consumo_params)        
+        format.html { redirect_to bien_de_consumo_path (@bien_de_consumo), notice: 'El item fué modficado exitosamente.' }                        
+        format.json { render :show, status: :ok, location: @bien_de_consumo }
+      else
+        @clases = Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo")
+        format.html { render :edit }
+        format.json { render json: @bien_de_consumo.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
   def traer_clases_con_codigo_de_bien_existente
     codigo = params[:codigo]        
     @clases = Clase.joins(:bienes_de_consumo).where("bienes_de_consumo.fecha_de_baja IS NULL AND bienes_de_consumo.codigo = ?", codigo)      
@@ -151,6 +165,28 @@ class BienesDeConsumoController < ApplicationController
           format.html { render :traer_vista_dar_de_baja_y_reemplazar }        
           format.json { render json: @bien_de_consumo.errors, status: :unprocessable_entity }      
         end      
+    end
+  end
+
+  def guardar_cambio
+    ActiveRecord::Base.transaction do
+        @bien_de_consumo_erroneo.saltear_codigo_de_item_existente = true
+        @bien_de_consumo_erroneo.update(fecha_de_baja: DateTime.now)
+        @bien_de_consumo.save
+
+        @reemplazo_bdc = ReemplazoBdc.new(bdc_viejo_id:@bien_de_consumo_erroneo.id, bdc_nuevo_id:@bien_de_consumo.id)
+        @reemplazo_bdc.save
+
+        costo_viejo_array = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", @bien_de_consumo_erroneo.id).last()
+
+        items_stock_viejo_array = ItemStock.where("bien_de_consumo_id = ?", @bien_de_consumo_erroneo.id)
+
+        costo_nuevo = guardar_costo_manualmente(@bien_de_consumo.id, costo_viejo_array.costo)
+        costo_historico_nuevo =  guardar_costo_historico(@bien_de_consumo.id, costo_viejo_array.costo)
+
+        items_stock_viejo_array.each do |item|
+          item.update(:bien_de_consumo_id => @bien_de_consumo.id, :costo_de_bien_de_consumo_id => costo_nuevo.id) 
+        end
     end
   end
 
@@ -226,14 +262,16 @@ class BienesDeConsumoController < ApplicationController
 	params.require(:bien_de_consumo).permit(:nombre, :codigo, :detalle_adicional, :unidad_de_medida, :clase_id, :fecha, :stock_minimo)
   end
 
-  def guardar_cambio
-    ActiveRecord::Base.transaction do
-        @bien_de_consumo_erroneo.saltear_codigo_de_item_existente = true
-        @bien_de_consumo_erroneo.update(fecha_de_baja: DateTime.now)
-        @bien_de_consumo.save
-        #@bien_de_consumo_erroneo.fecha_de_baja = DateTime.now
-        @reemplazo_bdc = ReemplazoBdc.new(bdc_viejo_id:@bien_de_consumo_erroneo.id, bdc_nuevo_id:@bien_de_consumo.id)
-        @reemplazo_bdc.save
-    end
+  def guardar_costo_manualmente(bien_de_consumo_id, costo)
+    nuevo_costo = CostoDeBienDeConsumo.new
+    nuevo_costo = CostoDeBienDeConsumo.create(bien_de_consumo_id: bien_de_consumo_id, fecha: DateTime.now, costo: costo, usuario: current_user.name, origen: '2')            
+    return nuevo_costo        
   end
+
+    def guardar_costo_historico(bien_de_consumo_id, costo)
+    nuevo_costo = CostoDeBienDeConsumoHistorico.new
+    nuevo_costo = CostoDeBienDeConsumoHistorico.create(bien_de_consumo_id: bien_de_consumo_id, fecha: DateTime.now, costo: costo, usuario: current_user.name, origen: '2')            
+    return nuevo_costo        
+  end
+
 end

@@ -177,8 +177,6 @@ class TransferenciasController < ApplicationController
         suma = @item_stock[0].cantidad + bdcdr.cantidad              
         @item_stock[0].update(cantidad: suma)              
       else             
-        puts ">>>>>>>>>>>>>>>>>> bdcdr-obj #{bdcdr}"
-        puts ">>>>>>>>>>>>>>>>>>> 174 (ingresar bienes)  bdcdr-obj #{bdcdr.bien_de_consumo.nombre}"
         costo_nuevo = guardar_costos(bdcdr)  
         puts "NO existe Bien y deposito"
         @item_stock = ItemStock.create!(bien_de_consumo: bdcdr.bien_de_consumo, cantidad: bdcdr.cantidad, costo_de_bien_de_consumo:costo_nuevo, deposito: deposito)                                
@@ -188,22 +186,23 @@ class TransferenciasController < ApplicationController
     return true                                           
   end
 
-  def ingresar_bienes_a_stock_transferencia_manual(deposito, bienes)    
-    bienes.each do |bdcdr|  
-      @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], deposito.id)      
+  def ingresar_bienes_a_stock_transferencia_manual(deposito, bienes_tabla)    
+    bienes_tabla.each do |bdcdr|  
+      bien_de_consumo_de_recepcion_obj = BienDeConsumoDeRecepcion.find(bdcdr["Id"])
+      if bien_de_consumo_de_recepcion.nil? bien_de_consumo = bien_de_consumo_de_recepcion.bien_de_consumo else bien_de_consumo = nil end
+
+      @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_de_consumo_de_recepcion.id , deposito.id)      
       if @item_stock[0]                              
         suma = @item_stock[0].cantidad + bdcdr["Cantidad a transferir"].to_i  
-        puts "**********SUMA************** #{@item_stock[0].cantidad} + #{bdcdr["Cantidad a transferir"].to_i}"           
         @item_stock[0].update(cantidad: suma)              
       else             
-        bien_de_consumo_de_recepcion = BienDeConsumoDeRecepcion.where(bien_de_consumo: bdcdr["Id"]) 
-        puts ">>>>>>> 193 #{ bien_de_consumo_de_recepcion[0] }"
-        puts ">>>>>>> 194 #{ bien_de_consumo_de_recepcion[0].bien_de_consumo }"
-        bien_de_consumo_de_recepcion_obj = BienDeConsumoDeRecepcion.find(bien_de_consumo_de_recepcion[0]["id"])
-        puts ">>>>>>> 196 (ingresar) bien_de_ consumo de recepcion nombre #{bien_de_consumo_de_recepcion[0].bien_de_consumo.nombre}"        
-        costo_nuevo = guardar_costos(bien_de_consumo_de_recepcion_obj)
-        @item_stock = ItemStock.create!(bien_de_consumo: bien_de_consumo_de_recepcion_obj.bien_de_consumo, cantidad: bdcdr["Cantidad a transferir"].to_i, costo_de_bien_de_consumo:costo_nuevo, deposito: deposito)                                
-        @item_stock.save                                          
+        if bien_de_consumo_de_recepcion_obj.nil?
+          costo_nuevo = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bdcdr["Id"])                                       
+        else
+          costo_nuevo = guardar_costos(bien_de_consumo_de_recepcion_obj)                                                
+        end
+        @item_stock = ItemStock.create!(bien_de_consumo: bien_de_consumo, cantidad: bdcdr["Cantidad a transferir"].to_i, costo_de_bien_de_consumo:costo_nuevo, deposito: deposito)    
+        @item_stock.save           
       end                        
     end                                    
     return true                                           
@@ -267,8 +266,7 @@ class TransferenciasController < ApplicationController
 
       return costo        
     end    
-
-    ###############################
+    ##############################  
 
     # Use callbacks to share common setup or constraints between actions.
     def set_transferencia

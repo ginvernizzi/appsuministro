@@ -19,7 +19,7 @@
 
       <div class="field">
         <%= f.label :estado %><br> 
-        <%= collection_select(:recepcion_de_bien_de_consumo, "estado", RecepcionDeBienDeConsumo::ESTADOS .first(2), :last, :first, :include_blank => "Seleccione estado...") %>       
+        <%= collection_select(:recepcion_de_bien_de_consumo, "estado", @estados, :last, :first, :include_blank => "Seleccione estado...") %>       
       </div>
 
        <div id="div_descripcion_provisoria">

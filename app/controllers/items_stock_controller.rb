@@ -22,7 +22,7 @@ class ItemsStockController < ApplicationController
   end
 
   def traer_todos_los_items_stock
-    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")  
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")  
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
     respond_to do |format|   

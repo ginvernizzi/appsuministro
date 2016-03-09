@@ -14,9 +14,10 @@
   <div class="row">
     <div class="col-md-4">  
       <div class="field">        
-        <%= f.label :clase%><br /> 
-        <%= f.collection_select :clase_id, @clases, :id, "combinar_codigo_nombre", :prompt => "seleccione...", :readonly => @bien_de_consumo.persisted? %>  
+        <%= f.label :clase %><br /> 
+        <%= f.collection_select :clase_id, @clases, :id, "combinar_codigo_nombre", {}, { :disabled => f.object.persisted?, :prompt => "seleccione..." }  %>
       </div>
+
       <div class="field">
         <%= f.label :codigo, "Codigo (4 caracter)" %><br>
         <%= f.text_field :codigo, :readonly => f.object.persisted? %>

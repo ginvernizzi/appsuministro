@@ -24,7 +24,7 @@ class BienDeConsumo < ActiveRecord::Base
     :message => "admite solo numeros."
 
 	#validates :codigo, :uniqueness => { :message => 'existente para la Clase', :scope => [:clase_id, :fecha_de_baja] }
-	validate :validar_nombre_de_item_existente, unless: :saltear_codigo_de_item_existente
+	validate :validar_nombre_de_item_existente, unless: :saltear_codigo_de_item_existente, :on => [ :create ]
 	validates :nombre, :uniqueness => { :message => 'existente para la Clase', :scope => [:clase_id, :fecha_de_baja] }
 
 	 def combinar_codigo_nombre

@@ -58,7 +58,7 @@
             <td><%= bcr.bien_de_consumo.nombre %> </td>
             <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
             <td><%= bcr.cantidad %> </td>
-            <td><%= bcr.costo %> </td>                        
+            <td><%= number_to_currency(bcr.costo, :precision => 3) %> </td>                        
         <% end %> 
       </tr>            
       <%end%>
