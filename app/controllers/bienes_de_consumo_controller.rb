@@ -170,12 +170,12 @@ class BienesDeConsumoController < ApplicationController
 
   def guardar_cambio
     ActiveRecord::Base.transaction do
-        @bien_de_consumo_erroneo.saltear_codigo_de_item_existente = true
+        @bien_de_consumo_erroneo.saltear_codigo_de_item_existente = true        
         @bien_de_consumo_erroneo.update(fecha_de_baja: DateTime.now)
-        @bien_de_consumo.save
+        @bien_de_consumo.save        
 
         @reemplazo_bdc = ReemplazoBdc.new(bdc_viejo_id:@bien_de_consumo_erroneo.id, bdc_nuevo_id:@bien_de_consumo.id)
-        @reemplazo_bdc.save
+        @reemplazo_bdc.save        
 
         costo_viejo_array = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", @bien_de_consumo_erroneo.id).last()
 

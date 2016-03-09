@@ -189,7 +189,11 @@ class TransferenciasController < ApplicationController
   def ingresar_bienes_a_stock_transferencia_manual(deposito, bienes_tabla)    
     bienes_tabla.each do |bdcdr|  
       bien_de_consumo_de_recepcion_obj = BienDeConsumoDeRecepcion.find(bdcdr["Id"])
-      if bien_de_consumo_de_recepcion.nil? bien_de_consumo = bien_de_consumo_de_recepcion.bien_de_consumo else bien_de_consumo = nil end
+      if bien_de_consumo_de_recepcion.nil? 
+        bien_de_consumo = bien_de_consumo_de_recepcion.bien_de_consumo 
+      else 
+        bien_de_consumo = nil
+      end
 
       @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_de_consumo_de_recepcion.id , deposito.id)      
       if @item_stock[0]                              
