@@ -188,24 +188,16 @@ class TransferenciasController < ApplicationController
 
   def ingresar_bienes_a_stock_transferencia_manual(deposito, bienes_tabla)    
     bienes_tabla.each do |bdcdr|  
-      bien_de_consumo_de_recepcion_obj = BienDeConsumoDeRecepcion.find(bdcdr["Id"])
-      if bien_de_consumo_de_recepcion.nil? 
-        bien_de_consumo = bien_de_consumo_de_recepcion.bien_de_consumo 
-      else 
-        bien_de_consumo = nil
-      end
+      bien_de_consumo_obj = BienDeConsumo.find(bdcdr["Id"])
+      costo_de_bien_de_consumo = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?",bien_de_consumo_obj.id).last
 
-      @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_de_consumo_de_recepcion.id , deposito.id)      
-      if @item_stock[0]                              
+      @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_de_consumo_obj.id , deposito.id)      
+      if @item_stock[0]                     
         suma = @item_stock[0].cantidad + bdcdr["Cantidad a transferir"].to_i  
         @item_stock[0].update(cantidad: suma)              
-      else             
-        if bien_de_consumo_de_recepcion_obj.nil?
-          costo_nuevo = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bdcdr["Id"])                                       
-        else
-          costo_nuevo = guardar_costos(bien_de_consumo_de_recepcion_obj)                                                
-        end
-        @item_stock = ItemStock.create!(bien_de_consumo: bien_de_consumo, cantidad: bdcdr["Cantidad a transferir"].to_i, costo_de_bien_de_consumo:costo_nuevo, deposito: deposito)    
+      else                         
+        puts "NO Hay en stock cantidad a transmitir ********* #{bdcdr["Cantidad a transferir"].to_i} *************"                              
+        @item_stock = ItemStock.create!(bien_de_consumo: bien_de_consumo_obj, cantidad: bdcdr["Cantidad a transferir"].to_i, costo_de_bien_de_consumo:costo_de_bien_de_consumo, deposito: deposito)    
         @item_stock.save           
       end                        
     end                                    
@@ -231,10 +223,9 @@ class TransferenciasController < ApplicationController
     end
 
     def quitar_bienes_de_stock_transferencia_manual(bienes)                
-      bienes.each do |bdcdr|                                           
+      bienes.each do |bdcdr|                
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], bdcdr["DepoId"])           
           if @item_stock[0]
-            puts "**********QUITA************** #{@item_stock[0].cantidad} - #{bdcdr["Cantidad a transferir"].to_i}" 
             resta = @item_stock[0].cantidad - bdcdr["Cantidad a transferir"].to_i              
             @item_stock[0].update(cantidad: resta)              
           else             

@@ -7,9 +7,8 @@ var ready = function() {
             var clase, options;
             clase = $('#categoria_clase_id :selected').text();
             if(clase.indexOf("-") >= 0 )        
-            { clase = clase.split("-")[1].trim() }
-
-            options = $(bienes).filter("optgroup[label='" + clase + "']").html();
+            { clase = clase.split("-")[1].replace(/^\s\s*/, '') }
+            options = $(bienes).filter("optgroup[label='"+clase+"']").html();
             if (options) {
               $('#items_stock_bien_de_consumo_id').html('<option value="">seleccione...</option>');
               return $('#items_stock_bien_de_consumo_id').append(options);
@@ -118,7 +117,7 @@ var ready = function() {
     { traer_items_por_bien_y_area(bien_id, area_id); }
     else 
     { 
-      alert ("Debe seleccionar el Bien de consumo y Area") 
+      alert("Debe seleccionar el Bien de consumo y Area") 
       BlanquearCampos();
     }
   });
@@ -130,7 +129,7 @@ var ready = function() {
     { traer_items_stock_minimo_superado_por_bien_y_area(bien_id, area_id); }
     else 
     { 
-      alert ("Debe seleccionar el Bien de consumo y Area") 
+      alert("Debe seleccionar el Bien de consumo y Area") 
       BlanquearCampos();
     }
   });
