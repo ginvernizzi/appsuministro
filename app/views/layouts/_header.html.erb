@@ -33,8 +33,6 @@
             <li><%= link_to "Clases dadas de baja",  ver_clases_dadas_de_baja_clases_path  %></li>  
 
             <li><a href="#">Por tipo de Consumo</a></li>
-            <li><a href="#">Por stock mínimo</a></li>
-            <li><a href="#">Por transferencias realizadas</a></li>
             <li><a href="#">Por stock total en pesos</a></li>
             <li><a href="#">Logs de auditoría</a></li>
           </ul>
@@ -68,10 +66,12 @@
         </li>
 
         <li>
-            <a href="/items_stock/ver_stock_minimo_superado" >
-              Items con stock faltante
-              <span class="badge"><%= traer_cantidad_de_items_con_stock_bajo %></span>
-            </a>
+            <% if current_user %>
+              <a href="/items_stock/ver_stock_minimo_superado" >
+                Items con stock faltante
+                <span class="badge"><%= traer_cantidad_de_items_con_stock_bajo %></span>
+              </a>
+            <% end %>
          </li>
 
         <div class="container">

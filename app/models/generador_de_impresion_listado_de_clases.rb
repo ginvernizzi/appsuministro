@@ -22,7 +22,8 @@ include ApplicationHelper
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_listado_clases_odt)
 		report.generate(@ruta_formulario_interno_odt)
 		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
-		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		# `libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`
 	end
 
 	def nombre_formulario_listado_clases_pdf

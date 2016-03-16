@@ -23,7 +23,8 @@ class GeneradorDeImpresionRecepcion
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_recepcion_odt)
 		report.generate(@ruta_formulario_interno_odt)
 		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
-		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		# `libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`
 	end
 
 	def generar_pdf_detalle_de_recepcion(recepcion)		
@@ -61,7 +62,8 @@ class GeneradorDeImpresionRecepcion
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_detalle_de_recepcion_odt)
 		report.generate(@ruta_formulario_interno_odt)
 		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
-		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		# `libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`
 	end
 
 	def nombre_formulario_recepcion_pdf
