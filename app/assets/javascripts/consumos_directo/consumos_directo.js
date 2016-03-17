@@ -294,7 +294,7 @@ var ready = function() {
         var id = $("#consumos_directo_bien_de_consumo_id").val();                
         var deposito_id = $("#consumo_directo_deposito_deposito_id").val();          
 
-        if(deposito_id != null)
+        if(deposito_id != "")
         {          
           traer_bien_de_consumo_por_id_y_deposito(id, deposito_id)      
         }
@@ -307,7 +307,7 @@ var ready = function() {
 
   function traer_bien_de_consumo_por_id_y_deposito(id, deposito_id)  
   {
-    if(deposito_id != null || deposito_id == "")
+    if(deposito_id != "")
     { 
       $.ajax({
         url: "/consumos_directo/obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito",

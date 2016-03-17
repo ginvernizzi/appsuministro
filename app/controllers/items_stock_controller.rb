@@ -193,7 +193,7 @@ class ItemsStockController < ApplicationController
   end
 
   def traer_items_stock_minimo_superado
-    @items_stock = ItemStock.joins(:bien_de_consumo).where("cantidad < bienes_de_consumo.stock_minimo")
+    @items_stock = ItemStock.joins(:bien_de_consumo).where("cantidad < bienes_de_consumo.stock_minimo").paginate(:page => params[:page], :per_page => 30)
                    
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
