@@ -6,7 +6,8 @@ var ready = function() {
       if($('#bien_de_consumo_de_recepcion_cantidad').val() != "" &&  
         $("#bien_de_consumo_de_recepcion_costo").val()  != "")      
       {            
-        $('#costoTotal').val(parseFloat($('#bien_de_consumo_de_recepcion_costo').val()) * parseInt($('#bien_de_consumo_de_recepcion_cantidad').val())); 
+        var res = parseFloat($('#bien_de_consumo_de_recepcion_costo').val()) * parseInt($('#bien_de_consumo_de_recepcion_cantidad').val());
+        $('#costoTotal').val(res.toFixed(3)); 
       }
       else
       {  $('#costoTotal').val(""); }          
