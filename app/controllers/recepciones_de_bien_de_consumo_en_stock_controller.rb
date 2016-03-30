@@ -21,8 +21,8 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
   def traer_recepciones_por_fecha
     documento_principal = params[:documento_principal]    
-    fecha_inicio = params[:fecha_inicio]  
-    fecha_fin = params[:fecha_fin]   
+   fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
 
    if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
       @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin);
@@ -41,8 +41,8 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
   def imprimir_formulario_recepciones_por_documento_principal_fecha    
     documento_principal = params[:documento_principal]    
-    fecha_inicio = params[:fecha_inicio]  
-    fecha_fin = params[:fecha_fin]   
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()   
 
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
 
@@ -77,9 +77,10 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
   def traer_recepciones_por_bien_y_fecha
     bien_id = params[:bien_id]    
-    fecha_inicio = params[:fecha_inicio]  
-    fecha_fin = params[:fecha_fin]   
+    fecha_inicio =  DateTime.parse(params[:fecha_inicio]).beginning_of_day()    
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()     
     @recepciones_de_bien_de_consumo = nil
+
 
     begin
       if !bien_id.nil? && !bien_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
@@ -101,8 +102,8 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
   def imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha
     bien_id = params[:bien_id]    
-    fecha_inicio = params[:fecha_inicio]  
-    fecha_fin = params[:fecha_fin]   
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
 
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
 
