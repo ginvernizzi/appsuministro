@@ -537,6 +537,6 @@ class ConsumosDirectoController < ApplicationController
 
     def cargar_datos_controles_consumo_directo        
         @areas = Area.order(:nombre)
-        @obras_proyecto = ObraProyecto.order('LOWER(descripcion)')
+        @obras_proyecto = ObraProyecto.order(:descripcion)
     end
 end
