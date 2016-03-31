@@ -281,8 +281,9 @@ class ConsumosDirectoController < ApplicationController
   def traer_consumos_por_codigo_destino_y_fecha
     area_id = params[:area_id]
     bien_id = params[:bien_id]
-    fecha_inicio = params[:fecha_inicio]
-    fecha_fin = params[:fecha_fin]
+
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
 
     puts "HOLAAA"
     puts "area_id blanco? #{area_id.blank?} #{area_id}" 
@@ -320,8 +321,9 @@ class ConsumosDirectoController < ApplicationController
 
   def traer_consumos_y_transferencias_por_nombre_y_fecha        
     bien_id = params[:bien_id]
-    fecha_inicio = params[:fecha_inicio]
-    fecha_fin = params[:fecha_fin]
+
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
    
     @bien_de_consumo_para_consumir = nil
 
@@ -347,8 +349,9 @@ class ConsumosDirectoController < ApplicationController
   def imprimir_formulario_consumos_por_codigo_destino_y_fecha    
     area_id = params[:area_id]
     bien_id = params[:bien_id]
-    fecha_inicio = params[:fecha_inicio]
-    fecha_fin = params[:fecha_fin]
+
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
     @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
 
     if !area_id.nil? && !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
@@ -380,8 +383,8 @@ class ConsumosDirectoController < ApplicationController
 
   def imprimir_formulario_consumos_y_transferencias_por_nombre_y_fecha              
     bien_id = params[:bien_id]
-    fecha_inicio = params[:fecha_inicio]
-    fecha_fin = params[:fecha_fin]
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
     #@bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
 
     if !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
@@ -478,8 +481,8 @@ class ConsumosDirectoController < ApplicationController
   
   def traer_consumos_por_obra_proyecto_destino_y_fecha
     obra_proyecto_id = params[:obra_proyecto_id]    
-    fecha_inicio = params[:fecha_inicio]
-    fecha_fin = params[:fecha_fin]
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
 
     @bien_de_consumo_para_consumir = nil
 
