@@ -1,6 +1,7 @@
 #encoding: utf-8
 class GeneradorDeImpresionRecepcion
 	include ApplicationHelper 
+	include ActionView::Helpers::NumberHelper
 
 	def initialize
 	    @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
@@ -43,7 +44,7 @@ class GeneradorDeImpresionRecepcion
 			r.add_field("TIPO", recepcion.documento_principal.documento_de_recepcion.tipo_de_documento.nombre)										
 			r.add_field("DOCUMENTO_PRINCIPAL", recepcion.documento_principal.documento_de_recepcion.numero_de_documento)										
 
-			r.add_field("TOTAL_GENERAL", obtener_total_general_de_bienes_de_consumo(recepcion.bienes_de_consumo_de_recepcion))										
+			r.add_field("TOTAL_GENERAL", number_to_currency(obtener_total_general_de_bienes_de_consumo(recepcion.bienes_de_consumo_de_recepcion), :precision => 3))										
 
 			r.add_table("TABLA_DOCUMENTOS_SECUNDARIOS", recepcion.documentos_secundario, :header=>true) do |r|
 				r.add_column("TIPO_SECUNDARIO") { |i| i.documento_de_recepcion.tipo_de_documento.nombre  }
@@ -55,8 +56,8 @@ class GeneradorDeImpresionRecepcion
 				r.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }
 				r.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				r.add_column("CANTIDAD") { |i| i.cantidad }
-				r.add_column("COSTO") { |i| i.costo }									
-				r.add_column("COSTO_TOTAL") { |i| i.costo * i.cantidad }
+				r.add_column("COSTO") { |i| number_to_currency(i.costo, :precision => 3) }									
+				r.add_column("COSTO_TOTAL") { |i| number_to_currency((i.costo * i.cantidad), :precision => 3)  }
 			end
 		end
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_detalle_de_recepcion_odt)

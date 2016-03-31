@@ -46,7 +46,7 @@ class ItemsStockController < ApplicationController
 	  @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_id])	
 	  @areas = Area.all.order(:nombre)
 	  @depositos = Deposito.all
-	  @item_stock = ItemStock.new   @areas = Area.all.order(:nombre)
+	  @item_stock = ItemStock.new  
   end
 
   def ingresar_bienes_a_stock_manualmente
@@ -104,9 +104,8 @@ class ItemsStockController < ApplicationController
 
             costo_de_bien = guardar_costos(bdcdr)
 
-            #@item_stock = ItemStock.where(:bien_de_consumo_id => bdcdr.bien_de_consumo.id && :deposito_id => @deposito.id)
             @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr.bien_de_consumo.id, @deposito.id)
-            #puts "#{ areaArray[0].depositos[1].id } Y #{ @deposito.id } }"
+
             if @item_stock[0]              
               suma = @item_stock[0].cantidad + bdcdr.cantidad              
               @item_stock[0].update(cantidad: suma)              

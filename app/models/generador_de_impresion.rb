@@ -1,6 +1,7 @@
 #encoding: utf-8
 class GeneradorDeImpresion
 	include ApplicationHelper 
+	include ActionView::Helpers::NumberHelper
 
 	def initialize
 	    @fecha_inicializacion = Time.zone.now.to_formatted_s(:number)
@@ -21,8 +22,8 @@ class GeneradorDeImpresion
 				s.add_column("CODIGO") { |i| i.bien_de_consumo.codigo }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }
-				s.add_column("COSTO") { |i| i.costo }
-				s.add_column("TOTAL") { |i| i.costo  * i.cantidad }				
+				s.add_column("COSTO") { |i| number_to_currency(i.costo, :precision => 3) } 
+				s.add_column("TOTAL") { |i| number_to_currency((i.costo * i.cantidad), :precision => 3)  }				
 			end
 		end
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_odt)
@@ -49,7 +50,7 @@ class GeneradorDeImpresion
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				s.add_column("DESCRIPCION_ADICIONAL") { |i| i.bien_de_consumo.detalle_adicional }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }				
-				s.add_column("COSTO") { |i| i.costo }	
+				s.add_column("COSTO") { |i| number_to_currency(i.costo, :precision => 3) }	
 			end
 		end
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_consumo_odt)
