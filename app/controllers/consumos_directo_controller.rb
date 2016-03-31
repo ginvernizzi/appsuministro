@@ -35,8 +35,8 @@ class ConsumosDirectoController < ApplicationController
  
   # GET /consumos_directo/1/edit
   def edit    
-    @areas = Area.all
-    @obras_proyecto = ObraProyecto.all
+    @areas = Area.all.order(:nombre)
+    @obras_proyecto = ObraProyecto.all.order(:descripcion)
   end
 
   # POST /consumos_directo
@@ -533,7 +533,7 @@ class ConsumosDirectoController < ApplicationController
     end
 
     def cargar_datos_controles_consumo_directo        
-      @obras_proyecto = ObraProyecto.all      
-      @areas = Area.all
+        @areas = Area.all.order(:nombre)
+        @obras_proyecto = ObraProyecto.all.order(:descripcion)
     end
 end

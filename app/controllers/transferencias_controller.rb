@@ -276,6 +276,6 @@ class TransferenciasController < ApplicationController
 
     def cargar_datos_controles_transferencias                
       @depositos = Array.new()
-      @areas = Area.all
+      @areas = Area.all.order(:nombre)
     end
 end

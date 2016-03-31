@@ -72,18 +72,19 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
             end
             }
       end
-if
-         @recepcion_de_bien_de_consumo.save                
+        if @recepcion_de_bien_de_consumo.save                
           flash[:notice] = 'La recepcion fue creada exitosamente.'              
           #redirect_to agregar_bienes_recepciones_de_bien_de_consumo_path(@recepcion_de_bien_de_consumo)  
           redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)                      
-        else                          
-          respond_to do |format|  
-            gon.numeroDeFila = 1;            
+        else                      
             @tipos_de_documento = TipoDeDocumento.all
-            format.html { render :new }
-            format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
-        end
+            @estados = RecepcionDeBienDeConsumo::ESTADOS.first(2)    
+            respond_to do |format|  
+              gon.numeroDeFila = 1;            
+              @tipos_de_documento = TipoDeDocumento.all
+              format.html { render :new }
+              format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
+            end
       end
   end
 
@@ -113,9 +114,10 @@ if
         else          
           redirect_to new_recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo)                                    
         end
-     else           
+     else  
+     @tipos_de_documento = TipoDeDocumento.all
+      @estados = RecepcionDeBienDeConsumo::ESTADOS.first(2)            
      respond_to do |format|                                 
-       @tipos_de_documento = TipoDeDocumento.all
        format.html { render :edit }
        format.json { render json: @recepcion_de_bien_de_consumo.errors, status: :unprocessable_entity }
      end

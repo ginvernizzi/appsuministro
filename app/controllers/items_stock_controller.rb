@@ -44,9 +44,9 @@ class ItemsStockController < ApplicationController
 
   def ver_ingresar_a_stock
 	  @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_id])	
-	  @areas = Area.all
+	  @areas = Area.all.order(:nombre)
 	  @depositos = Deposito.all
-	  @item_stock = ItemStock.new   
+	  @item_stock = ItemStock.new   @areas = Area.all.order(:nombre)
   end
 
   def ingresar_bienes_a_stock_manualmente
