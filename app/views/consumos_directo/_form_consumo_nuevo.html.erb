@@ -23,7 +23,7 @@
 
   <div class="field">
       <%= label :area , "Area origen" %><br /> 
-      <%= collection_select(:area_origen, "area_id", @areas, "id", "nombre", :include_blank => "Seleccione un area...") %>
+      <%= collection_select(:area_origen, "area_id", Area.order(:nombre), "id", "nombre", :include_blank => "Seleccione un area...") %>
   </div>
 
   <div class="field">

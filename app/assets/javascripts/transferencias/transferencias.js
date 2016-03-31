@@ -143,8 +143,6 @@ $(document).on("ready page:load", function() {
     $("#nombre").val("");    
     $("#cantidad_stock").val("");
     $("#cantidad_a_transferir").val("");
-    $("#transferencia_area_origen_area_id").val("");    
-    $("#transferencia_deposito_origen_deposito_id").val(""); 
     $("#categoria_clase_id").val("");   
     $("#transferencias_bien_de_consumo_id").val(""); 
     $("#transferencia_nombre").val("");  

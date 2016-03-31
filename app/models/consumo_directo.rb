@@ -1,4 +1,5 @@
 class ConsumoDirecto < ActiveRecord::Base
+
   belongs_to :obra_proyecto
   belongs_to :area
   belongs_to :deposito
