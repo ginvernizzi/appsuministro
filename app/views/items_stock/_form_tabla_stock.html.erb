@@ -37,6 +37,7 @@
       <% end %>
     </tbody>
   </table>
-   <%= will_paginate @items_stock, renderer: BootstrapPagination::Rails%>
+
+     <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => "traer_todos_los_items_stock" }, renderer: BootstrapPagination::Rails) %>
 <% end %>
 

@@ -214,7 +214,6 @@ var ready = function() {
     $("#consumo_directo_nombre").val("");    
     $("#cantidad_stock").val("");
     $("#cantidad_a_consumir").val("");    
-    $("#responsable").val(""); 
     $("#categoria_clase_id").val("");   
     document.getElementById('consumos_directo_bien_de_consumo_id').options.length = 0; 
     
