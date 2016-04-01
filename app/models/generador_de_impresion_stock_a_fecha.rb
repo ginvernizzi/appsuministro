@@ -24,7 +24,7 @@ class GeneradorDeImpresionStockAFecha
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }
 				s.add_column("COSTO") { |i| number_to_currency(i.costo), :precision => 3) }				
-				s.add_column("COSTO TOTAL") { |i| number_to_currency((i.costo * i.cantidad)), :precision => 3) }				
+				s.add_column("COSTO TOTAL") { |i| number_to_currency((i.costo * i.cantidad), :precision => 3) }				
 			end
 		end
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_odt)
