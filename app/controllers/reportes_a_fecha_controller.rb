@@ -6,10 +6,9 @@ class ReportesAFechaController < ApplicationController
   def traer_items_stock
     #displaying filtered results
 
-    date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
-    date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
-
-    if !date_inicio.empty? && !date_fin.empty?
+    if !params[:fecha_inicio].empty? && !params[:fecha_inicio].empty?
+      date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+      date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
       @reportes_a_fecha = ReporteAFecha.where("fecha >= ? AND fecha <= ?", date_inicio, date_fin) 
     else  
       @reportes_a_fecha = ReporteAFecha.all

@@ -33,7 +33,7 @@ class ItemsStockController < ApplicationController
   def traer_items_stock_por_bien_y_area
     bien_de_consumo_id = params[:bien_de_consumo_id]    
     area_id = params[:area_id] 
-    @items_stock = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id)      
+    @items_stock = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id).paginate(:page => params[:page], :per_page => 30)      
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'

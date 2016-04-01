@@ -21,8 +21,8 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
   def traer_recepciones_por_fecha
     documento_principal = params[:documento_principal]    
-   fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
-    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
+    fecha_inicio = params[:fecha_inicio]
+    fecha_fin = params[:fecha_fin]
 
    if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
       @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin);
