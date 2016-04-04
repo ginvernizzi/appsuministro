@@ -14,6 +14,7 @@ class GeneradorDeImpresionItemStock
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", DateTime.now.strftime("%d/%m/%Y"))				
+			r.add_field("COSTO_TOTAL_GRAL", number_to_currency(obtener_total_general_de_items_stock(@items), :precision => 3))	
 
 			r.add_table("TABLA_ITEM_STOCK", @items, :header=>true) do |s|
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }
