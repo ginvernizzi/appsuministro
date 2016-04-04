@@ -140,7 +140,7 @@ var ready = function() {
 
   function traer_todos_los_items_de_stock()
   {    
-    var urlString = "/items_stock/traer_todos_los_items_stock";    
+    var urlString = "/items_stock/traer_todos_los_items_stock/?page=1"
     traer_todos_los_items_por_ajax(urlString);     
   }
 
@@ -168,7 +168,7 @@ var ready = function() {
     $.ajax({
     type: "get",
     dataType: "json",
-    url: urlString,              
+    url: urlString,          
     success: function(data){            
           BlanquearCampos();
           $('#tabla_items').html(data)

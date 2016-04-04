@@ -12,7 +12,6 @@
         <th>Area</th>      
       </tr>
     </thead>
-
     <tbody>
       <% @items_stock.each do |item_stock| %>
         <tr>
@@ -37,7 +36,12 @@
       <% end %>
     </tbody>
   </table>
-
-     <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => "traer_todos_los_items_stock" }, renderer: BootstrapPagination::Rails) %>
+    <tr>   
+      <div  style="text-align:right;">
+        <%= label_tag :total_general, "Costo total general: " %>
+        <%= number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3) %>
+      </div> 
+    </tr>
+     <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => "index" }, renderer: BootstrapPagination::Rails) %>
 <% end %>
 

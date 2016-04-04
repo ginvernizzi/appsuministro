@@ -13,7 +13,8 @@ class ItemsStockController < ApplicationController
 
   def index
     #@items_stock = ItemStock.order(:bien_de_consumo_id)    
-    @bienes_de_consumo = BienDeConsumo.all     
+    #@bienes_de_consumo = BienDeConsumo.all  
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)     
   end
 
   def new
@@ -22,9 +23,6 @@ class ItemsStockController < ApplicationController
   end
 
   def traer_todos_los_items_stock
-    
-    #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
-    #render :partial => 'form_tabla_stock'
     respond_to do |format|   
       @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)  
       format.js {}

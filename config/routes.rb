@@ -151,6 +151,10 @@ Rails.application.routes.draw do
      end        
   end  
 
+  # get '/items_stock/traer_todos_los_items_stock/:page', to: 'items_stock#traer_todos_los_items_stock',
+  #                                                         as: 'traer_todos_los_items_stock_items_stock'
+
+
   post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',  
                                                             to: 'items_stock#imprimir_formulario',
                                                             as: 'imprimir_items_stock_recepciones_de_bien_de_consumo_en_stock'

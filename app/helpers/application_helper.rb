@@ -27,6 +27,20 @@ module ApplicationHelper
     return sum
   end
 
+  #################
+  def obtener_total_general_de_items_stock(items_stock)
+    sum = 0.0
+    items_stock.each do |item|
+      sum = sum + obtener_costo_total_item_stock(item.costo_de_bien_de_consumo.costo, item.cantidad.to_i)      
+    end
+    return sum
+  end
+
+  def obtener_costo_total_item_stock(costo, cantidad)        
+    result = costo * cantidad
+  end 
+  ################
+
     def obtener_codigo_completo_bien_de_consumo(nombre_de_bien_de_consumo)
       @array_bien_de_consumo = BienDeConsumo.where(nombre: nombre_de_bien_de_consumo)    
       armar_codigo(@array_bien_de_consumo[0])
