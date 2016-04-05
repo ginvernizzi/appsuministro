@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Fecha</th>
+      <th>Número</th>
       <th>Area destino</th>
       <th>Deposito destino</th>      
       <th colspan="1"></th>
@@ -14,9 +15,10 @@
     <% @transferencia.each do |transferencia| %>
       <tr>
         <td><%= transferencia.fecha.strftime("%d/%m/%Y") %></td>
+        <td><%= transferencia.id %></td>
         <td><%= transferencia.area.nombre %></td>
         <td><%= transferencia.deposito.nombre %></td>        
-        <td><%= link_to 'Mostrar', transferencia %></td>
+        <td><%= link_to 'Ver', transferencia %></td>
         <td><%= link_to 'Imprimir', imprimir_formulario_transferencias_path(transferencia), method: :post, data: { confirm: '¿Esta seguro?' }  %>    
       </tr>
     <% end %>

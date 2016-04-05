@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Fecha</th>
+      <th>número</th>
       <th>Area</th>
       <th>Obra proyecto</th>
       <th colspan="2"></th>
@@ -14,6 +15,7 @@
     <% @consumos_directo.each do |consumo_directo| %>
       <tr>
         <td><%= consumo_directo.fecha.strftime("%d/%m/%Y") %></td>
+        <td><%= consumo_directo.id %></td>
         <td><%= consumo_directo.area.nombre %></td>
         <td><%= consumo_directo.obra_proyecto.descripcion %></td>
         <td><%= link_to 'Ver', consumo_directo %></td>
