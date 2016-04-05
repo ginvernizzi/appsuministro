@@ -40,7 +40,7 @@ $(document).on("ready page:load", function() {
 
 /////////////////// Vista nueva recepcion. Agrear y quitar Documentos ///////////////////  
   $(document).on("ready page:load", function() {
-      $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' })      
+      //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0' })      
       $('#numero_doc_secundario').attr('readonly', true)            
 
       var tableName = "#recepcion_documento";
@@ -79,12 +79,12 @@ $(document).on("ready page:load", function() {
             //Habria que traer los tipos de documento
             if($(this).val() == 1) 
             {
-              $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0'});
+              //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("9999-99999999", { clearMaskOnLostFocus: true, placeholder: '0'});
               $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false);
             }            
             if($(this).val() == 2) 
             {   
-              $("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'});
+              //$("#recepcion_de_bien_de_consumo_documento_principal").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'});
               $('#recepcion_de_bien_de_consumo_documento_principal').attr('readonly', false); 
             }              
             if($(this).val() == "") 
@@ -104,12 +104,12 @@ $(document).on("ready page:load", function() {
             //Habria que traer los tipos de documento
             if($(this).val() == 1)
               {
-                $("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true , placeholder: '0'});
+                //$("#numero_doc_secundario").inputmask("9999-99999999", {  clearMaskOnLostFocus: true , placeholder: '0'});
                 $("#numero_doc_secundario").attr('readonly', false);
               }                         
             if($(this).val() == 2)
               {
-                $("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'} );
+                //$("#numero_doc_secundario").inputmask("999-9999", { clearMaskOnLostFocus: true, placeholder: '0'} );
                 $("#numero_doc_secundario").attr('readonly', false);
               }   
 
