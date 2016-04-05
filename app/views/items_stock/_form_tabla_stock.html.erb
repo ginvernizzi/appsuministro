@@ -39,7 +39,7 @@
     <tr>   
       <div  style="text-align:right;">
         <%= label_tag :total_general, "Costo total general: " %>
-        <%= number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3) %>
+        <%= @costo_total_general %>
       </div> 
     </tr>
      <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => "index" }, renderer: BootstrapPagination::Rails) %>

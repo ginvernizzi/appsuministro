@@ -15,6 +15,7 @@ class ItemsStockController < ApplicationController
     #@items_stock = ItemStock.order(:bien_de_consumo_id)    
     #@bienes_de_consumo = BienDeConsumo.all  
     @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)     
+    @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(ItemStock.all), :precision => 3)
   end
 
   def new
