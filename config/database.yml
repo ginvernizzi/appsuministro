@@ -107,3 +107,10 @@ staging:
   username: suministro
   #password: <%= ENV['APPSUMINISTRO_DATABASE_PASSWORD'] %>
   password: 123456
+
+pruebadesa:
+  <<: *default
+  database: appsuministro_pruebadesa
+  username: suministro
+  #password: <%= ENV['APPSUMINISTRO_DATABASE_PASSWORD'] %>
+  password: 123456
