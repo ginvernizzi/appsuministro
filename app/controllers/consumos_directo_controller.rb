@@ -67,7 +67,6 @@ class ConsumosDirectoController < ApplicationController
               raise ActiveRecord::Rollback unless costo_de_bien_historico.save
             end 
 
-
             respond_to do |format|
               if  @consumo_directo.save
                 raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "5") 
