@@ -114,7 +114,7 @@ class ConsumosDirectoController < ApplicationController
 
               @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id:  @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,
                                                     usuario: current_user.name, origen: "2" )      
-              raise ActiveRecord::Rollback unless costo_de_bien_historico.save
+              raise ActiveRecord::Rollback unless @costo_de_bien_historico.save
             end    
 
             respond_to do |format|
@@ -138,30 +138,8 @@ class ConsumosDirectoController < ApplicationController
       end #transaction
   end #def
 
-  ################# Nuevo consumo por seleccion  (prueba commit no borre tabla) #############
-  # def crear_consumo              
-  #   ConsumoDirecto.transaction do                
-  #     #Quitar bienes de stock               
-  #     @consumo_directo = ConsumoDirecto.new(consumo_directo_params)           
-
-  #     #crear CostoDeBienDeConsumo
-  #     #crear CostoDeBienDeConsumoHistorico
-
-  #     respond_to do |format|
-  #       if @consumo_directo.save                          
-  #         format.json { render json: @consumo_directo }
-  #       else              
-  #         cargar_datos_controles_consumo_directo
-  #         #format.html { render :nuevo_consumo }                        
-  #         format.html { render action: 'nuevo_consumo' }
-  #         #format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
-  #       end
-  #     end
-  #   end #transaction
-  # end #def
-
-    # PATCH/PUT /consumos_directo/1
-    # PATCH/PUT /consumos_directo/1.json
+  # PATCH/PUT /consumos_directo/1
+  # PATCH/PUT /consumos_directo/1.json
   def update
     respond_to do |format|
       if @consumo_directo.update(consumo_directo_params)
@@ -179,7 +157,6 @@ class ConsumosDirectoController < ApplicationController
   def destroy
     #Falta
     #volver a stock la cantidad correspondiente a 
-
     respond_to do |format|
         if @consumo_directo.update(estado: 2)
             format.html { redirect_to consumos_directo_url, notice: 'El consumo fué dado de baja' }
