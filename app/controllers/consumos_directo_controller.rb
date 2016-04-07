@@ -130,10 +130,11 @@ class ConsumosDirectoController < ApplicationController
               end
             end
         rescue ActiveRecord::Rollback
+            respond_to do |format|
                 cargar_datos_controles_consumo_directo
-                format.html { render :nuevo_consumo }                        
-                #format.html { render action: 'nuevo_consumo' }
-                format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
+                #ormat.html { render :nuevo_consumo }                        
+                format.html { render action: 'nuevo_consumo' }
+            end
         end #begin
       end #transaction
   end #def
