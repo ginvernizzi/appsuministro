@@ -153,9 +153,9 @@ $(document).on("ready page:load", function() {
             },
 
         error: function (request, status, error) {                 
-                //alert("Revise los campos incompletos. El consumo no fue realizado");
-                var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
-                $('#nuevo_consumo').html(form_consumo_directo);
+                alert("Revise los campos incompletos. El consumo no fue realizado");
+                // var form_consumo_directo = jQuery(request.responseText).find('#nuevo_consumo').html()
+                // $('#nuevo_consumo').html(form_consumo_directo);
               }                
       });                
     }

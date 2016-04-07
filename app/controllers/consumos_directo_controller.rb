@@ -96,45 +96,45 @@ class ConsumosDirectoController < ApplicationController
 
   def crear_consumo          
       @consumo_data = ActiveSupport::JSON.decode(params[:consumo_directo])    
-      #ActiveRecord::Base.transaction do
-      ConsumoDirecto.transaction do          
-        #quitar cantidad de stock               
-        
-          @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"])                
+      ActiveRecord::Base.transaction do      
+        begin               
+            @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"])                
 
-          @consumo_data["bienes_tabla"].each do |bien|           
-            
-            @bien_de_consumo = BienDeConsumo.find(bien["Id"]) 
-            deposito = Deposito.find(bien["DepoId"]) 
+            @consumo_data["bienes_tabla"].each do |bien|           
+              
+              @bien_de_consumo = BienDeConsumo.find(bien["Id"]) 
+              deposito = Deposito.find(bien["DepoId"]) 
 
-             @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad:bien["Cantidad a consumir"], costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo , 
-                                                                   bien_de_consumo_id: @bien_de_consumo.id, deposito: deposito)
+               @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad:bien["Cantidad a consumir"], costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo , 
+                                                                     bien_de_consumo_id: @bien_de_consumo.id, deposito: deposito)
+              costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,        
+                                                 usuario: current_user.name, origen: "2" )
+             
+              raise ActiveRecord::Rollback unless costo_de_bien.save
 
+              @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id:  @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,
+                                                    usuario: current_user.name, origen: "2" )      
+              raise ActiveRecord::Rollback unless costo_de_bien_historico.save
+            end    
 
-            costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,        
-                                               usuario: current_user.name, origen: "2" )
-            costo_de_bien.save
-
-            @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id:  @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,
-                                                  usuario: current_user.name, origen: "2" )      
-            @costo_de_bien_historico.save
-          end    
-
-          respond_to do |format|
-            if @consumo_directo.save
-              quitar_bienes_de_stock_consumo_manual(@consumo_data["bienes_tabla"])
-              flash[:notice] = 'Consumo directo creado exitosamente'
-              if existen_stocks_minimos_superados
-                flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
-              end                
-              format.json { render json: @consumo_directo }
-            else
-              cargar_datos_controles_consumo_directo
-              #format.html { render :nuevo_consumo }                        
-              format.html { render action: 'nuevo_consumo' }
-              #format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
+            respond_to do |format|
+              if @consumo_directo.save
+                quitar_bienes_de_stock_consumo_manual(@consumo_data["bienes_tabla"])
+                flash[:notice] = 'Consumo directo creado exitosamente'
+                if existen_stocks_minimos_superados
+                  flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
+                end                
+                format.json { render json: @consumo_directo }
+              else
+                raise ActiveRecord::Rollback
+              end
             end
-          end
+        rescue ActiveRecord::Rollback
+                cargar_datos_controles_consumo_directo
+                #format.html { render :nuevo_consumo }                        
+                format.html { render action: 'nuevo_consumo' }
+                #format.json { render json: @consumo_directo.errors, status: :unprocessable_entity }
+        end #begin
       end #transaction
   end #def
 
@@ -236,21 +236,18 @@ class ConsumosDirectoController < ApplicationController
       end       
   end
 
-  def quitar_bienes_de_stock_consumo_manual(bienes)    
-    #ItemStock.transaction do            
-        bienes.each do |bdcdr|                                           
-            @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], bdcdr["DepoId"])           
-            if @item_stock[0]
-              resta = @item_stock[0].cantidad - bdcdr["Cantidad a consumir"].to_i              
-              @item_stock[0].update(cantidad: resta)              
-            else             
-              #Es imposible que no exista, ya que fue creado en el metodo del controller al ingresar stock              
-              return false            
-            end               
-          #end
-        end                                    
-        return true    
-    #end  
+  def quitar_bienes_de_stock_consumo_manual(bienes)              
+      bienes.each do |bdcdr|                                           
+          @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], bdcdr["DepoId"])           
+          if @item_stock[0]
+            resta = @item_stock[0].cantidad - bdcdr["Cantidad a consumir"].to_i 
+            raise ActiveRecord::Rollback unless @item_stock[0].update(cantidad: resta)             
+          else             
+            #Es imposible que no exista, ya que fue creado en el metodo del controller al ingresar stock              
+            return false            
+          end               
+      end                                    
+      return true    
   end
 
   #Repetido en el controler de item_stock, ver la manera de usar el mismo metodo.
