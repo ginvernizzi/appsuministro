@@ -1,4 +1,4 @@
-var ready = function() {
+$(document).on("ready page:load", function() {  
 
   //mascara entero, 6
   $('#cantidad_a_consumir').inputmask('999999', { clearMaskOnLostFocus: true, placeholder: ' ' })    
@@ -84,7 +84,7 @@ var ready = function() {
     var depositoId = $("#consumo_directo_deposito_deposito_id").val();
 
     ObtenerBienDeConsumoYcantidadEnStock(cod, depositoId)
-  });
+    });
 
 
   $("#agregar_bien_a_consumir").click(function() {
@@ -303,7 +303,7 @@ var ready = function() {
 
   function traer_bien_de_consumo_por_id_y_deposito(id, deposito_id)  
   {
-    if(deposito_id != "")
+    if(deposito_id != "" && deposito_id != null)
     { 
       $.ajax({
         url: "/consumos_directo/obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito",
@@ -469,11 +469,7 @@ var ready = function() {
       });
     }); 
   }).call(this);
-
-};
-
-$(document).ready(ready);
-$(document).on('page:load', ready);         
+});     
 
 
 

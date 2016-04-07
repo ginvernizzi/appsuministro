@@ -1,5 +1,7 @@
 class ConsumoDirecto < ActiveRecord::Base
 
+  ESTADOS = { :ACTIVO => 1, :ANULADO => 2 }
+  
   belongs_to :obra_proyecto
   belongs_to :area
   belongs_to :deposito
