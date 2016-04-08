@@ -1,7 +1,6 @@
 class ConsumosDirectoController < ApplicationController
   before_action :set_consumo_directo, only: [:show, :edit, :update, :destroy]
 
-  
   autocomplete :obra_proyecto, :descripcion , :full => true
 
   # def autocomplete_obra_proyecto_descripcion
@@ -14,7 +13,13 @@ class ConsumosDirectoController < ApplicationController
   # GET /consumos_directo
   # GET /consumos_directo.json
   def index
-    @consumos_directo = ConsumoDirecto.all
+    estado = 1 #estado activo
+    @consumos_directo = ConsumoDirecto.where("estado = ?", 1)
+  end
+
+  def dados_de_baja
+    estado = 2 #estado activo
+    @consumos_directo = ConsumoDirecto.where("estado = ?", 2)
   end
 
   # GET /consumos_directo/1
@@ -52,10 +57,10 @@ class ConsumosDirectoController < ApplicationController
             quitar_bienes_de_stock(recepcion_de_bien_de_consumo)
           
             @consumo_directo = ConsumoDirecto.new(consumo_directo_params)
-            #@consumo_directo.estado = 1   
+            @consumo_directo.estado = 1   
                 
             recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bien| 
-               @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad: bien.cantidad, costo: bien.costo, 
+              @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad: bien.cantidad, costo: bien.costo, 
                                                                      bien_de_consumo: bien.bien_de_consumo, deposito:deposito)
 
 
@@ -101,7 +106,7 @@ class ConsumosDirectoController < ApplicationController
       @consumo_data = ActiveSupport::JSON.decode(params[:consumo_directo])    
       ActiveRecord::Base.transaction do      
         begin               
-            @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"])                
+            @consumo_directo = ConsumoDirecto.new(fecha: @consumo_data["fecha"], area_id: @consumo_data["area_id"] ,obra_proyecto_id: @consumo_data["obra_proyecto_id"], estado: 1)                
 
             @consumo_data["bienes_tabla"].each do |bien|           
               
@@ -159,18 +164,34 @@ class ConsumosDirectoController < ApplicationController
   # DELETE /consumos_directo/1
   # DELETE /consumos_directo/1.json
   def destroy
-    #Falta
-    #volver a stock la cantidad correspondiente a 
-    respond_to do |format|
-        if @consumo_directo.update(estado: 2)
-            format.html { redirect_to consumos_directo_url, notice: 'El consumo fué dado de baja' }
-            format.json { head :no_content }
-        else
-            format.html { redirect_to consumos_directo_url, notice: 'El consumo no pudo ser dado de baja' }
-            format.json { head :no_content }
+    ActiveRecord::Base.transaction do      
+      begin      
+        @consumo_directo.bienes_de_consumo_para_consumir.each do |bien|
+          @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
+          if @item_stock[0]              
+            suma = @item_stock[0].cantidad + bien.cantidad              
+            raise ActiveRecord::Rollback unless @item_stock[0].update(cantidad: suma)              
+          else                        
+            raise ActiveRecord::Rollback                                      
+          end             
         end
-    end
-  end
+      
+        respond_to do |format|
+          if @consumo_directo.update(estado: 2) 
+            format.html { redirect_to consumos_directo_url, notice: 'El consumo fué dado de baja exitosamante' }
+            format.json { head :no_content }
+          else
+            raise ActiveRecord::Rollback  
+          end
+        end
+      rescue ActiveRecord::Rollback
+        respond_to do |format|
+          format.html { redirect_to consumos_directo_url, notice: 'El consumo no pudo ser dado de baja. Consulte con administrador del sistema' }
+          format.json { head :no_content }
+        end
+      end #begin
+    end #transaction
+  end #def
 
   def ingresar_bienes_a_stock(recepcion)
     areaArray = Area.where(id: 1)    

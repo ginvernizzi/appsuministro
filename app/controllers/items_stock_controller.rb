@@ -152,7 +152,7 @@ class ItemsStockController < ApplicationController
       
   def imprimir_formulario_stock_total_todos_los_bienes
     @generador = GeneradorDeImpresionItemStock.new
-    @items = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")  
+    @items = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")  
     @generador.generar_pdf(@items)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )    

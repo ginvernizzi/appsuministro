@@ -90,7 +90,8 @@ $(document).on("ready page:load", function() {
   $("#agregar_bien_a_consumir").click(function() {
     var array_bienes = get_tabla_de_bienes() 
     var bien_encontrado = array_bienes.filter(function( obj ) { return obj.Codigo == $("#codigo").val(); })
-    if (bien_encontrado.length > 0)
+    var deposito_encontrado = array_bienes.filter(function( obj ) { return obj.DepoId == $("#consumo_directo_deposito_deposito_id").val(); })
+    if (bien_encontrado.length > 0 && deposito_encontrado.length > 0)
     { 
 
       alert("El Bien de consumo ya fue agregado")
