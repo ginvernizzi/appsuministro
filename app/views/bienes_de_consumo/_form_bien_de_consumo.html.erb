@@ -46,7 +46,7 @@
          <%= label :Clase, "Clase (nombre)" %> <br />   
       </div>   
       <div class="field">
-          <%= autocomplete_field_tag 'clase_nombre', '', autocomplete_clase_nombre_clases_path , :size => 75 %>
+          <%= autocomplete_field_tag 'clase_nombre', '', autocomplete_clase_nombre_clases_path , :size => 75, :update_elements => {} %>
       </div> 
     </div>
 

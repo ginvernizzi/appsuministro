@@ -6,7 +6,7 @@
 	  <div> 
 	    <div class="field">
 	      <%= label_tag 'Bien de consumo' %>
-	      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '',   autocomplete_bien_de_consumo_nombre_traer_todos_los_items_bienes_de_consumo_path, :size => 75, :placeholder => "Buscar item....." %>
+	      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '',   autocomplete_bien_de_consumo_nombre_traer_todos_los_items_bienes_de_consumo_path, :size => 75, :update_elements => {},  :placeholder => "Buscar item....." %>
 	    	<input type="button" value="Buscar" id="traer_item_por_id"> 
 	    	<input type="button" value="Quitar filtro" id="traer_todos_los_items"> 
 	    </div>  
