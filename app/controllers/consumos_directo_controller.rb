@@ -1,14 +1,8 @@
 class ConsumosDirectoController < ApplicationController
   before_action :set_consumo_directo, only: [:show, :edit, :update, :destroy]
+  before_action :set_back_page, only: [:show] 
 
   autocomplete :obra_proyecto, :descripcion , :full => true
-
-  # def autocomplete_obra_proyecto_descripcion
-  #   @obras = ObraProyecto.where("descripcion ILIKE ?", "%#{params[:term]}%")
-  #   respond_to do |format|      
-  #     format.json { render json: @obras.map{ |x| x.descripcion } }
-  #   end    
-  # end
 
   # GET /consumos_directo
   # GET /consumos_directo.json
@@ -540,5 +534,9 @@ class ConsumosDirectoController < ApplicationController
     def cargar_datos_controles_consumo_directo        
         @areas = Area.order(:nombre)
         @obras_proyecto = ObraProyecto.order(:descripcion)
+    end
+
+    def set_back_page
+      session[:return_to] ||= request.referer
     end
 end
