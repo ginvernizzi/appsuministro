@@ -17,7 +17,7 @@
            <%= f.label :nombre%><br>  
         </div>   
         <div class="field">
-            <%= autocomplete_field_tag 'bien_de_consumo_nombre', "", autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75 %>                        
+            <%= autocomplete_field_tag 'bien_de_consumo_nombre', "", autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75, :update_elements => {} %>
         </div>  
         <div class="field">
           <%= f.hidden_field :bien_de_consumo_id %>

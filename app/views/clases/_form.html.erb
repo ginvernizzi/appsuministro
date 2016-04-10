@@ -36,7 +36,7 @@
        <%= label :partida_parcial, "Partida parcial (nombre)" %> <br />   
     </div>   
     <div class="field">
-        <%= autocomplete_field_tag 'partida_parcial_nombre', '', autocomplete_partida_parcial_nombre_partidas_parciales_path , :size => 75 %>
+        <%= autocomplete_field_tag 'partida_parcial_nombre', '', autocomplete_partida_parcial_nombre_partidas_parciales_path , :size => 75, :update_elements => {} %>
     </div> 
 
     <div id="titulo"> </div> 
