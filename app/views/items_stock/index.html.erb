@@ -8,14 +8,14 @@
       <%= label_tag 'Bien de consumo' %>
     </div>
     <div class="field">
-      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75 %>
+      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75, :update_elements => {} %>
     </div>    
 
     <div class="field">
       <%= label_tag 'Area' %>
     </div>
     <div class="field">
-      <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>      
+      <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75, :update_elements => {} %>      
     </div>  
     
     <input type="button" value="Buscar" id="traer_por_bien_de_consumo_y_area"> 

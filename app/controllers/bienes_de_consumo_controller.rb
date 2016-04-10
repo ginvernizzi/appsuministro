@@ -236,13 +236,13 @@ class BienesDeConsumoController < ApplicationController
 
   def traer_costo_de_bien_de_consumo
     bien_id = params[:bien_id]
-    @costo_de_bien = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien_id).last
+    @costo_de_bien = nil
 
-    if !bien_id.nil? && !@costo_de_bien.nil?
-      @costo_de_bien = @costo_de_bien["costo"]
-    elsetraer_cantidad_en_stock_en_suministro
-      @costo_de_bien = nil
+    if !bien_id.nil?
+      @costo_de_bien = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien_id).last
+      @costo_de_bien = @costo_de_bien["costo"] unless @costo_de_bien.nil?
     end
+    
     respond_to do | format |                                  
           format.json { render :json => @costo_de_bien }        
     end
