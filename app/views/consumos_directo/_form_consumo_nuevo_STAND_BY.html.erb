@@ -28,7 +28,7 @@
 
   <div class="field">
     <%= label :deposito, "Deposito origen" %> <br />     
-    <%= grouped_collection_select(:consumo_directo_deposito, :deposito_id, @areas, :depositos, :nombre, :id, :nombre, :include_blank => " Seleccione un deposito...") %>
+    <%= grouped_collection_select(:consumo_directo_deposito, :deposito_id, @areas, :depositos, :nombre, :id, :nombre, :update_elements => {}, :include_blank => " Seleccione un deposito...") %>
   </div>         
   
   <div class="field">
