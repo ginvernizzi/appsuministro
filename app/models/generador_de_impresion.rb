@@ -29,7 +29,7 @@ class GeneradorDeImpresion
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_odt)
 		report.generate(@ruta_formulario_interno_odt)
 		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
-		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`			
 	end
 
 	def generar_pdf_consumo_directo(consumo)
@@ -56,7 +56,7 @@ class GeneradorDeImpresion
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_consumo_odt)
 		report.generate(@ruta_formulario_interno_odt)
 		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
-		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`			
 	end
 
 	def generar_pdf_items_consumo_directo(bienes_de_consumo_para_consumir)
@@ -82,7 +82,7 @@ class GeneradorDeImpresion
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_consumo_items_odt)
 		report.generate(@ruta_formulario_interno_odt)
 		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
-		`libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`					
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`						
 	end
 
 
