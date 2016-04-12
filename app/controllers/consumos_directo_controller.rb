@@ -8,12 +8,12 @@ class ConsumosDirectoController < ApplicationController
   # GET /consumos_directo.json
   def index
     estado = 1 #estado activo
-    @consumos_directo = ConsumoDirecto.where("estado = ?", 1)
+    @consumos_directo = ConsumoDirecto.where("estado = ?", 1).order(:id => "desc")
   end
 
   def dados_de_baja
     estado = 2 #estado activo
-    @consumos_directo = ConsumoDirecto.where("estado = ?", 2)
+    @consumos_directo = ConsumoDirecto.where("estado = ?", 2).order(:id => "desc")
   end
 
   # GET /consumos_directo/1
