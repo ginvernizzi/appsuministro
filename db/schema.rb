@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407204459) do
+ActiveRecord::Schema.define(version: 20160412190525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,6 +246,13 @@ ActiveRecord::Schema.define(version: 20160407204459) do
     t.text     "descripcion_rechazo"
   end
 
+  create_table "recepciones_para_consumo_directo", force: :cascade do |t|
+    t.integer  "recepcion_de_bien_de_consumo_id"
+    t.integer  "consumo_directo_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
   create_table "reemplazos_bdc", force: :cascade do |t|
     t.integer  "bdc_viejo_id"
     t.integer  "bdc_nuevo_id"
@@ -309,4 +316,6 @@ ActiveRecord::Schema.define(version: 20160407204459) do
   add_foreign_key "items_stock", "ingreso_manual_a_stocks"
   add_foreign_key "partidas_parciales", "partidas_principales"
   add_foreign_key "partidas_principales", "incisos"
+  add_foreign_key "recepciones_para_consumo_directo", "consumos_directo"
+  add_foreign_key "recepciones_para_consumo_directo", "recepciones_de_bien_de_consumo"
 end

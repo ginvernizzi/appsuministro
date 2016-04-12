@@ -1,5 +1,6 @@
 class RecepcionDeBienDeConsumo < ActiveRecord::Base
   belongs_to :documento_de_recepcion  
+  has_one :recepcion_para_consumo_directo
 
   #No cambiar los values o keys, y sus ordenes
   ESTADOS = { :DEFINITIVA => 1, :PROVISORIA => 2 , :"PENDIENTE DE EVALUACION" => 3, :RECHAZADA => 4, :"CONSUMO" => 5, :"EN STOCK" => 6, :"ANULADA" => 7 }

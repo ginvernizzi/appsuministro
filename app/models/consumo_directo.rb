@@ -8,6 +8,8 @@ class ConsumoDirecto < ActiveRecord::Base
   belongs_to :persona
   
   has_many :bienes_de_consumo_para_consumir
+
+  has_one :recepcion_para_consumo_directo
   
   validates :fecha, presence: true
   validates :area, presence: true    
