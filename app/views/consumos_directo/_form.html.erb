@@ -50,7 +50,7 @@
   </tr>
   </thead>
   <tbody>
-  <% if @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
+  <% if !@recepcion_de_bien_de_consumo.nil? && @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.any? %>
       <% @recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bcr| %>
       <tr>        
         <% if bcr.bien_de_consumo %>

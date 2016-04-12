@@ -1,5 +1,6 @@
 class RecepcionesDeBienDeConsumoController < ApplicationController
   before_action :set_recepcion_de_bien_de_consumo, only: [:show, :edit, :update, :destroy]
+  before_action :set_back_page, only: [:show] 
 
   # GET /recepciones_de_bien_de_consumo
   # GET /recepciones_de_bien_de_consumo.json
@@ -12,6 +13,11 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def ver_rechazadas    
     # estado 4: rechazadas
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 4").order(:id)
+  end
+
+  def ver_finalizadas_por_consumo_inmediato  
+    # estado 4: rechazadas
+    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 5").order(:id)
   end
 
   # GET /recepciones_de_bien_de_consumo/1
@@ -134,6 +140,19 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     end
   end
 
+    # DELETE /recepciones_de_bien_de_consumo/1.json
+  def anular_recepcion_consumida
+    #recorrer bienes de la recepcion y restarlos del stock
+    #cambiar estado de recepcion a anulada (estado = 7)
+    #cambiar estado del cunsumo que se hizo por esta recepcion, a anulado.
+
+    @recepcion_de_bien_de_consumo.destroy
+    respond_to do |format|
+      format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion de bien de consumo eliminado exitosamente.' }
+      format.json { head :no_content }
+    end
+  end
+
   def eliminar_documento_secundario     
       @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])                 
       @documento_secundario = DocumentoSecundario.find(params[:documento_secundario_id])    
@@ -191,5 +210,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def recepcion_de_bien_de_consumo_params
       params.require(:recepcion_de_bien_de_consumo).permit!           
+    end
+
+    def set_back_page
+      session[:return_to] ||= request.referer
     end
 end

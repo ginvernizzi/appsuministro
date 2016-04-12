@@ -225,7 +225,8 @@ Rails.application.routes.draw do
   
   resources :recepciones_de_bien_de_consumo do
       collection do
-        get 'ver_rechazadas' 
+        get 'ver_rechazadas'
+        get 'ver_finalizadas_por_consumo_inmediato'
         get 'traer_documentos_con_numero_existente'
       end
       resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy]      

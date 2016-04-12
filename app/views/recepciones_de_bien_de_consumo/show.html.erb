@@ -115,4 +115,4 @@
     <td><%= link_to 'Imprimir', recepciones_de_bien_de_consumo_en_stock_imprimir_detalle_recepcion_path(@recepcion_de_bien_de_consumo.id) %></td>
   </div>
 
-<%= link_to 'Volver', recepciones_de_bien_de_consumo_path %>
+<%= link_to 'Volver', session.delete(:return_to) %>
