@@ -39,7 +39,7 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     end 
   end
 
-  def imprimir_formulario_recepciones_por_documento_principal_fecha    
+  def imprimir_formulario_recepciones_por_documento_principal_fecha
     documento_principal = params[:documento_principal]    
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
     fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()   

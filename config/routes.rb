@@ -123,7 +123,7 @@ Rails.application.routes.draw do
     end
   end
 
-  post 'recepciones_de_bien_de_consumo_en_stock/documento_principal/:documento_principal/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_por_documento_principal_fecha/',  
+  get 'recepciones_de_bien_de_consumo_en_stock/documento_principal/:documento_principal/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_por_documento_principal_fecha/',  
                                                             to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_por_documento_principal_fecha',
                                                             as: 'imprimir_formulario_recepciones_por_documento_principal_fecha'
 
