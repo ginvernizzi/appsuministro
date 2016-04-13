@@ -19,17 +19,11 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
   def show
   end
 
-  def traer_recepciones_por_fecha
+  def traer_recepciones_por_doc_principal
     documento_principal = params[:documento_principal]    
-    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
-    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
 
-   if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin);
-      if @recepciones_de_bien_de_consumo.count > 0
-         @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
-         @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
-      end
+   if !documento_principal.nil? 
+      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_documento_principal(documento_principal);
     else
       @recepciones_de_bien_de_consumo = nil
     end
@@ -37,23 +31,6 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     respond_to do |format|   
       format.js {}
     end 
-  end
-
-  def imprimir_formulario_recepciones_por_documento_principal_fecha
-    documento_principal = params[:documento_principal]    
-    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
-    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()   
-
-    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
-
-    if !documento_principal.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin)
-    end
-
-    @generador = GeneradorDeImpresionRecepcion.new
-    @generador.generar_pdf_recepcion(@recepciones_de_bien_de_consumo)
-    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_recepcion_pdf)
-    send_file ( file )         
   end
 
   def imprimir_detalle_recepcion
@@ -117,10 +94,29 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     send_file ( file )  
   end
 
+    def imprimir_formulario_recepciones_por_documento_principal    
+    documento_principal =params[:documento_principal]       
+
+    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
+
+    if !documento_principal.nil?
+      @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_documento_principal(documento_principal)
+    end
+
+    @generador = GeneradorDeImpresionRecepcion.new
+    @generador.generar_pdf_recepcion(@recepciones_de_bien_de_consumo)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_recepcion_pdf)
+    send_file ( file )         
+  end
+
   private
 
   def query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin)
     RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND fecha BETWEEN ? AND ? AND estado BETWEEN ? AND ? ", documento_principal, fecha_inicio, fecha_fin, 5, 6)        
+  end
+  
+  def query_recepciones_finalizadas_por_documento_principal(documento_principal)
+    RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND estado BETWEEN ? AND ? ", documento_principal, 5, 6)        
   end
 
   def query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin)

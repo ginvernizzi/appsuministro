@@ -114,18 +114,19 @@ Rails.application.routes.draw do
                                                             as: 'nueva_transferencia_desde_recepcion_transferencias'
 
   resources :recepciones_de_bien_de_consumo_en_stock, only: [:index , :show]  do     
-       get 'imprimir_detalle_recepcion'       
-    collection do 
-       get 'autocomplete_documento_principal_nombre'             
-       get 'traer_recepciones_por_fecha'  
-       get 'ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha'                 
-       get 'traer_recepciones_por_bien_y_fecha'                         
-    end
+      get 'imprimir_detalle_recepcion'         
+      collection do 
+        get 'autocomplete_documento_principal_nombre'             
+        get 'traer_recepciones_por_doc_principal'  
+        get 'ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha'                 
+        get 'traer_recepciones_por_bien_y_fecha'                       
+      end
   end
 
-  get 'recepciones_de_bien_de_consumo_en_stock/documento_principal/:documento_principal/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_por_documento_principal_fecha/',  
-                                                            to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_por_documento_principal_fecha',
-                                                            as: 'imprimir_formulario_recepciones_por_documento_principal_fecha'
+  get 'recepciones_de_bien_de_consumo_en_stock/documento_principal/:documento_principal/imprimir_formulario_recepciones_por_documento_principal/',  
+                                                            to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_por_documento_principal',
+                                                            as: 'imprimir_formulario_recepciones_por_documento_principal'
+
 
   post 'recepciones_de_bien_de_consumo_en_stock/bien_de_consumo/:bien_de_consumo_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha/',  
         to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha',

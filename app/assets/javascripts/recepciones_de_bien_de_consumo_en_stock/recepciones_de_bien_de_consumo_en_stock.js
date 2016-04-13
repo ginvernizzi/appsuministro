@@ -43,14 +43,12 @@ $(document).on("ready page:load", function() {
      
   $("#traer_recepciones_fecha").click(function() {        
       var documento_principal = $("#documento_principal").val();      
-      var fecha_inicio = $("#fecha_inicio").val();
-      var fecha_fin = $("#fecha_fin").val();
 
       $.ajax({
         type: "get",
         dataType: "json",
-        url: "/recepciones_de_bien_de_consumo_en_stock/traer_recepciones_por_fecha",        
-        data: { documento_principal: documento_principal, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+        url: "/recepciones_de_bien_de_consumo_en_stock/traer_recepciones_por_doc_principal",        
+        data: { documento_principal: documento_principal },
         success: function(data){            
               blanquear_campos();              
               if (data  == "")
