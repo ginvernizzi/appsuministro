@@ -112,15 +112,18 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
   private
 
   def query_recepciones_finalizadas_por_docuemnto_principal_y_fecha(documento_principal, fecha_inicio, fecha_fin)
-    RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND fecha BETWEEN ? AND ? AND estado BETWEEN ? AND ? ", documento_principal, fecha_inicio, fecha_fin, 5, 6)        
+    #Estado finalizado = 8
+    RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND fecha BETWEEN ? AND ? AND estado = ? ", documento_principal, fecha_inicio, fecha_fin, 8)        
   end
   
   def query_recepciones_finalizadas_por_documento_principal(documento_principal)
-    RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND estado BETWEEN ? AND ? ", documento_principal, 5, 6)        
+    #Estado finalizado = 8
+    RecepcionDeBienDeConsumo.joins(documento_principal: :documento_de_recepcion).where("numero_de_documento = ? AND estado = ? ", documento_principal, 8)        
   end
 
   def query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin)
-    RecepcionDeBienDeConsumo.joins(:bienes_de_consumo_de_recepcion).where("bienes_de_consumo_de_recepcion.bien_de_consumo_id = ? AND fecha BETWEEN ? AND ? AND estado BETWEEN ? AND ? ", bien_id, fecha_inicio, fecha_fin, 5, 6)
+    #Estado finalizado = 8
+    RecepcionDeBienDeConsumo.joins(:bienes_de_consumo_de_recepcion).where("bienes_de_consumo_de_recepcion.bien_de_consumo_id = ? AND fecha BETWEEN ? AND ? AND estado = ? ", bien_id, fecha_inicio, fecha_fin, 8)
   end
 
   # Use callbacks to share common setup or constraints between actions.

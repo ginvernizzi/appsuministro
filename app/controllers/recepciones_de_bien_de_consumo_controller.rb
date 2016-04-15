@@ -16,7 +16,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   end
 
   def ver_finalizadas 
-    # estado 7: finalizadas
+    # estado 8: finalizadas
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 8").order(:id)
   end
 
