@@ -11,7 +11,7 @@ class ConsumosDirectoController < ApplicationController
     @consumos_directo = ConsumoDirecto.where("estado = ?", 1).order(:id => "desc")
   end
 
-  def dados_de_baja
+  def ver_dados_de_baja
     estado = 2 #estado activo
     @consumos_directo = ConsumoDirecto.where("estado = ?", 2).order(:id => "desc")
   end
@@ -69,7 +69,9 @@ class ConsumosDirectoController < ApplicationController
             respond_to do |format|
               if  @consumo_directo.save
                 #Cambio estado recepcion a finalizada por consumo inmediato
-                raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "5") 
+                raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "8") 
+                raise ActiveRecord::Rollback unless  ConsumoDirecto.create(recepcion_de_bien_de_consumo.id, @consumo_directo.id).valid?
+
                 flash[:notice] = 'Consumo creado exitosamente'
                 if existen_stocks_minimos_superados
                   flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks faltante'       
@@ -161,6 +163,10 @@ class ConsumosDirectoController < ApplicationController
   def destroy
     ActiveRecord::Base.transaction do      
       begin      
+        #recorrer bienes de la recepcion y restarlos del stock
+        #cambiar estado de recepcion a anulada (estado = 7)
+        #cambiar estado del cunsumo que se hizo por esta recepcion, a anulado.
+
         @consumo_directo.bienes_de_consumo_para_consumir.each do |bien|
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
           if @item_stock[0]              

@@ -7,7 +7,7 @@
       <th>número</th>
       <th>Area</th>
       <th>Obra proyecto</th>
-      <th colspan="2"></th>
+      <th colspan="1"></th>
     </tr>
   </thead>
 
@@ -18,7 +18,6 @@
         <td><%= consumo_directo.id %></td>
         <td><%= consumo_directo.area.nombre %></td>
         <td><%= consumo_directo.obra_proyecto.descripcion %></td>
-        <td><%= link_to 'Ver', consumo_directo %></td>
         <td><%= link_to 'Imprimir', imprimir_formulario_consumos_directo_path(consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %> </td>
       </tr>
     <% end %>

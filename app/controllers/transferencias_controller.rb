@@ -58,7 +58,7 @@ class TransferenciasController < ApplicationController
 
           respond_to do |format|
             if @transferencia.save 
-              raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "5")
+              raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "8")
               if existen_stocks_minimos_superados
                 flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
               end

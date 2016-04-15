@@ -23,16 +23,19 @@
           <ul class="dropdown-menu" role="menu">
             <li><%= link_to "Recepciones finalizadas por documento ppal.", recepciones_de_bien_de_consumo_en_stock_index_path %></li>  
             <li><%= link_to "Recepciones finalizadas por bien de consumo", ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha_recepciones_de_bien_de_consumo_en_stock_index_path %></li>  
+            <li><%= link_to "Recepciones finalizadas",  ver_finalizadas_recepciones_de_bien_de_consumo_path  %></li>  
             <li><%= link_to "Stock total",items_stock_path %></li> 
             <li><%= link_to "Stock por fecha",reportes_a_fecha_path %></li> 
             <li><%= link_to "Consumos por Bien, Destino y Fecha ",ver_consumos_por_codigo_destino_fecha_consumos_directo_path %></li> 
             <li><%= link_to "Consumos por Obra Proyecto",  ver_consumos_por_obra_proyecto_y_fecha_consumos_directo_path  %></li>  
             <li><%= link_to "Consumos", consumos_directo_path %></li>           
-            <li><%= link_to "Consumos dados de baja", dados_de_baja_consumos_directo_path %></li> 
+            <li><%= link_to "Consumos dados de baja", ver_dados_de_baja_consumos_directo_path %></li> 
             <li><%= link_to "Tranferencias", transferencias_path %></li>    
 
             <li><%= link_to "Items dados de baja",  ver_items_dados_de_baja_bienes_de_consumo_path %></li>  
             <li><%= link_to "Clases dadas de baja",  ver_clases_dadas_de_baja_clases_path  %></li>  
+
+            
 
             <li><a href="#">Por tipo de Consumo</a></li>
             <li><a href="#">Por stock total en pesos</a></li>

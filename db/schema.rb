@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412190525) do
+ActiveRecord::Schema.define(version: 20160414202228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,12 +246,13 @@ ActiveRecord::Schema.define(version: 20160412190525) do
     t.text     "descripcion_rechazo"
   end
 
-  create_table "recepciones_para_consumo_directo", force: :cascade do |t|
-    t.integer  "recepcion_de_bien_de_consumo_id"
-    t.integer  "consumo_directo_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+  create_table "recepciones_para_consumo_directo", id: false, force: :cascade do |t|
+    t.integer "recepcion_de_bien_de_consumo_id"
+    t.integer "consumo_directo_id"
   end
+
+  add_index "recepciones_para_consumo_directo", ["consumo_directo_id"], name: "index_recep_para_cons_dir_on_consumo_directo_id", using: :btree
+  add_index "recepciones_para_consumo_directo", ["recepcion_de_bien_de_consumo_id"], name: "index_recep_para_cons_dir_on_recep_de_bien_de_consumo_id", using: :btree
 
   create_table "reemplazos_bdc", force: :cascade do |t|
     t.integer  "bdc_viejo_id"

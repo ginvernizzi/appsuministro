@@ -15,9 +15,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 4").order(:id)
   end
 
-  def ver_finalizadas_por_consumo_inmediato  
-    # estado 4: rechazadas
-    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 5").order(:id)
+  def ver_finalizadas 
+    # estado 7: finalizadas
+    @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.where("estado = 8").order(:id)
   end
 
   # GET /recepciones_de_bien_de_consumo/1
@@ -133,19 +133,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   #  /recepciones_de_bien_de_consumo/1
   # DELETE /recepciones_de_bien_de_consumo/1.json
   def destroy
-    @recepcion_de_bien_de_consumo.destroy
-    respond_to do |format|
-      format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion de bien de consumo eliminado exitosamente.' }
-      format.json { head :no_content }
-    end
-  end
-
-    # DELETE /recepciones_de_bien_de_consumo/1.json
-  def anular_recepcion_consumida
-    #recorrer bienes de la recepcion y restarlos del stock
-    #cambiar estado de recepcion a anulada (estado = 7)
-    #cambiar estado del cunsumo que se hizo por esta recepcion, a anulado.
-
     @recepcion_de_bien_de_consumo.destroy
     respond_to do |format|
       format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion de bien de consumo eliminado exitosamente.' }

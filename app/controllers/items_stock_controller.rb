@@ -114,7 +114,7 @@ class ItemsStockController < ApplicationController
               @item_stock.save                              
             end                        
           end                                    
-          @recepcion.update(estado: "6")
+          @recepcion.update(estado: "8")
           flash[:notice] = 'Los bienes fueron agregados a stock exitosamente.'                                     
       else           
           flash[:notice] = 'No hay area de suministro cargada, o deposito en la misma. No se podra agergar a stock'                   

@@ -178,7 +178,7 @@ Rails.application.routes.draw do
       post 'obtener_item_para_agregar_a_recepcion_by_id'
       get 'autocomplete_obra_proyecto_descripcion'
       get 'nuevo_consumo'
-      get 'dados_de_baja'      
+      get 'ver_dados_de_baja' 
       post 'crear_consumo'      
       post 'obtener_nombre_de_bien_de_consumo'  
       post 'obtener_nombre_y_stock_de_bien_de_consumo_por_id_y_deposito'
@@ -227,7 +227,7 @@ Rails.application.routes.draw do
   resources :recepciones_de_bien_de_consumo do
       collection do
         get 'ver_rechazadas'
-        #get 'ver_finalizadas_por_consumo_inmediato'
+        get 'ver_finalizadas'
         get 'traer_documentos_con_numero_existente'
       end
       resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy]      

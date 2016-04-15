@@ -3,7 +3,7 @@ class RecepcionDeBienDeConsumo < ActiveRecord::Base
   has_one :recepcion_para_consumo_directo
 
   #No cambiar los values o keys, y sus ordenes
-  ESTADOS = { :DEFINITIVA => 1, :PROVISORIA => 2 , :"PENDIENTE DE EVALUACION" => 3, :RECHAZADA => 4, :"CONSUMO" => 5, :"EN STOCK" => 6, :"ANULADA" => 7 }
+  ESTADOS = { :DEFINITIVA => 1, :PROVISORIA => 2 , :"PENDIENTE DE EVALUACION" => 3, :RECHAZADA => 4, :"CONSUMO" => 5, :"EN STOCK" => 6, :"ANULADA" => 7, :FINALIZADA => 8  }
 
   has_many :bienes_de_consumo_de_recepcion
 
