@@ -177,7 +177,7 @@ class ConsumosDirectoController < ApplicationController
       
         respond_to do |format|
           if @consumo_directo.update(estado: 2) 
-            if !@recepcion.empty? 
+            if !@recepcion.nil? && !@recepcion.empty? 
               raise ActiveRecord::Rollback unless @recepcion.first.recepcion_de_bien_de_consumo.update(estado: 7) 
             end
             format.html { redirect_to consumos_directo_url, notice: 'El consumo fué dado de baja exitosamante' }

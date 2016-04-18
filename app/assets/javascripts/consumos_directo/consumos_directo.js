@@ -35,10 +35,10 @@ $(document).on("ready page:load", function() {
 
   $("#fecha_fin").datepicker("setDate", currentDate);
 
-  $("#consumo_directo_area_id").change(function() { 
-    identificador_del_control = $("#consumo_directo_area_id").val(); 
-    traer_responsable(identificador_del_control)    
-  });
+  //$("#consumo_directo_area_id").change(function() { 
+    //identificador_del_control = $("#consumo_directo_area_id").val(); 
+    //traer_responsable(identificador_del_control)    
+  //});
 
   //////////// AUTOCOMPLETAR VER CONSUMOS POR CODIGO Y DESTINO ///////////
   $('#bien_de_consumo_nombre').on('railsAutocomplete.select', function(event, data){ 
