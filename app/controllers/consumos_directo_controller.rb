@@ -58,20 +58,19 @@ class ConsumosDirectoController < ApplicationController
                                                                      bien_de_consumo: bien.bien_de_consumo, deposito:deposito)
 
 
-              costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,        
+              costo = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,        
                                                     usuario: current_user.name, origen: "2" )
-              raise ActiveRecord::Rollback unless costo_de_bien.save
-              costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,
+              raise ActiveRecord::Rollback unless costo.save
+              costo_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id: bien.bien_de_consumo_id, costo: bien.costo,
                                                     usuario: current_user.name, origen: "2" )      
-              raise ActiveRecord::Rollback unless costo_de_bien_historico.save
+              raise ActiveRecord::Rollback unless costo_historico.save
             end 
 
             respond_to do |format|
               if  @consumo_directo.save
                 #Cambio estado recepcion a finalizada por consumo inmediato
                 raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "8") 
-                raise ActiveRecord::Rollback unless  ConsumoDirecto.create(recepcion_de_bien_de_consumo.id, @consumo_directo.id).valid?
-
+                raise ActiveRecord::Rollback unless RecepcionParaConsumoDirecto.create(recepcion_de_bien_de_consumo: recepcion_de_bien_de_consumo, consumo_directo:@consumo_directo) 
                 flash[:notice] = 'Consumo creado exitosamente'
                 if existen_stocks_minimos_superados
                   flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks faltante'       
@@ -85,7 +84,7 @@ class ConsumosDirectoController < ApplicationController
           end #if ingresos a stock
         rescue ActiveRecord::Rollback
           respond_to do |format|
-                recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+                @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
                 cargar_datos_controles_consumo_directo
                 format.html { render :nuevo_consumo_directo_desde_recepcion }
                 format.json { render json:  @consumo_directo.errors, status: :unprocessable_entity }
@@ -162,23 +161,25 @@ class ConsumosDirectoController < ApplicationController
   # DELETE /consumos_directo/1.json
   def destroy
     ActiveRecord::Base.transaction do      
-      begin      
-        #recorrer bienes de la recepcion y restarlos del stock
-        #cambiar estado de recepcion a anulada (estado = 7)
-        #cambiar estado del cunsumo que se hizo por esta recepcion, a anulado.
+      begin              
+        RecepcionParaConsumoDirecto.all.any? {|h| h.consumo_directo.id ==  @consumo_directo.id } ? @recepcion = RecepcionParaConsumoDirecto.all.where("consumo_directo_id = ?", @consumo_directo.id) : @recepcion = nil
 
         @consumo_directo.bienes_de_consumo_para_consumir.each do |bien|
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
-          if @item_stock[0]              
-            suma = @item_stock[0].cantidad + bien.cantidad              
-            raise ActiveRecord::Rollback unless @item_stock[0].update(cantidad: suma)              
+          if !@item_stock.first.nil?              
+            suma = @item_stock.first.cantidad + bien.cantidad              
+            raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: suma)              
           else                        
             raise ActiveRecord::Rollback                                      
-          end             
-        end
+          end  
+          volver_costo_de_bien_al_anterior(bien) unless @recepcion.nil?
+        end 
       
         respond_to do |format|
           if @consumo_directo.update(estado: 2) 
+            if !@recepcion.empty? 
+              raise ActiveRecord::Rollback unless @recepcion.first.recepcion_de_bien_de_consumo.update(estado: 7) 
+            end
             format.html { redirect_to consumos_directo_url, notice: 'El consumo fué dado de baja exitosamante' }
             format.json { head :no_content }
           else
@@ -187,12 +188,33 @@ class ConsumosDirectoController < ApplicationController
         end
       rescue ActiveRecord::Rollback
         respond_to do |format|
-          format.html { redirect_to consumos_directo_url, notice: 'El consumo no pudo ser dado de baja. Consulte con administrador del sistema' }
+          format.html { redirect_to consumos_directo_url, notice: 'El consumo no pudo ser dado de baja. Consulte con el administrador del sistema' }
           format.json { head :no_content }
         end
       end #begin
     end #transaction
   end #def
+
+  def volver_costo_de_bien_al_anterior(bien_de_consumo_a_consumir)
+    ActiveRecord::Base.transaction do      
+      begin              
+        #Volver al ultimo costo ##### Si el costo del bien en la recepcion es igual al ultimo costo del item, voler y traer el costo inmediato anterior
+        costo_actual = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien_de_consumo_a_consumir.bien_de_consumo.id).last.costo
+        if bien_de_consumo_a_consumir.costo == costo_actual
+          costo_inmediato_anterior = bien_de_consumo_a_consumir.bien_de_consumo.id.last(2).first.costo
+          costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo: bien_de_consumo_a_consumir.bien_de_consumo, costo: costo_inmediato_anterior,        
+                                             usuario: current_user.name, origen: "2" )           
+          costo_de_bien.save!
+          @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo:  bien_de_consumo_a_consumir.bien_de_consumo, costo: costo_inmediato_anterior,
+                                                usuario: current_user.name, origen: "2" )      
+          @costo_de_bien_historico.save!
+        end
+      rescue Exception => e
+        puts "Se produjo el siguiente error: #{e} " 
+        raise ActiveRecord::Rollback
+      end
+    end
+end
 
   def ingresar_bienes_a_stock(recepcion)
     areaArray = Area.where(id: 1)    
