@@ -1,3 +1,5 @@
+require 'capistrano-db-tasks'
+
 # config valid only for current version of Capistrano
 lock '3.4.0'
 
@@ -60,3 +62,9 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 #   end
 
 # end
+
+# if you want to remove the local dump file after loading
+set :db_local_clean, true
+
+# if you want to remove the dump file from the server after downloading
+set :db_remote_clean, true

@@ -130,7 +130,6 @@ ActiveRecord::Schema.define(version: 20160414202228) do
     t.string   "nombre"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "ubicacion"
   end
 
   add_index "depositos", ["area_id"], name: "index_depositos_on_area_id", using: :btree
@@ -196,13 +195,11 @@ ActiveRecord::Schema.define(version: 20160414202228) do
     t.integer  "deposito_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "ingreso_manual_a_stock_id"
   end
 
   add_index "items_stock", ["bien_de_consumo_id"], name: "index_items_stock_on_bien_de_consumo_id", using: :btree
   add_index "items_stock", ["costo_de_bien_de_consumo_id"], name: "index_items_stock_on_costo_de_bien_de_consumo_id", using: :btree
   add_index "items_stock", ["deposito_id"], name: "index_items_stock_on_deposito_id", using: :btree
-  add_index "items_stock", ["ingreso_manual_a_stock_id"], name: "index_items_stock_on_ingreso_manual_a_stock_id", using: :btree
 
   create_table "obras_proyectos", force: :cascade do |t|
     t.string   "descripcion"
@@ -314,7 +311,6 @@ ActiveRecord::Schema.define(version: 20160414202228) do
 
   add_foreign_key "bienes_de_consumo", "clases"
   add_foreign_key "clases", "partidas_parciales"
-  add_foreign_key "items_stock", "ingreso_manual_a_stocks"
   add_foreign_key "partidas_parciales", "partidas_principales"
   add_foreign_key "partidas_principales", "incisos"
   add_foreign_key "recepciones_para_consumo_directo", "consumos_directo"

@@ -62,3 +62,6 @@ set :deploy_to, '/home/deploy/appsuministro'
 #     auth_methods: %w(publickey password)
 #     # password: 'please use keys'
 #   }
+
+set :rails_env, "production"
+set :disallow_pushing, true
