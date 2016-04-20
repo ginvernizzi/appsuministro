@@ -3,6 +3,7 @@ $(document).on("ready page:load", function() {
   //mascara entero, 6
   $('#cantidad_a_consumir').inputmask('999999', { clearMaskOnLostFocus: true, placeholder: ' ' })    
   $("#codigo").inputmask("9.9.9.99999.9999", { clearMaskOnLostFocus: true })   
+  $("#partida_parcial").inputmask("999", { clearMaskOnLostFocus: true })
   
   var currentDate = new Date();
   $('#consumo_directo_fecha').datepicker
