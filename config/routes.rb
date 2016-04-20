@@ -189,6 +189,8 @@ Rails.application.routes.draw do
       get 'traer_consumos_por_codigo_destino_y_fecha'       
       get 'traer_consumos_por_obra_proyecto_destino_y_fecha'
       get 'ver_consumos_por_obra_proyecto_y_fecha'       
+      get 'traer_consumos_por_partida_parcial_destino_y_fecha'
+      get 'ver_consumos_por_partida_parcial_destino_fecha'
     end
   end
 

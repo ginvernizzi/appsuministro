@@ -1,0 +1,57 @@
+<h1> Listado de Consumos por Partida parcial y Destino </h1>
+
+<div class="row">
+  <form class="navbar-form navbar-left" role="search">    
+    <div class="form-group">    
+      <div class"field">
+        <%= label_tag 'seleccione un rango de fechas'%>  
+      </div>
+      <br />
+      <div class"field">
+        <%= label :fecha_inicio, "Desde" %>
+      </div>
+
+      <div class"field">
+        <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
+      </div>
+
+      <div class"field">
+       <%= label :fecha_fin, "Hasta" %>
+      </div>
+
+      <div class"field">
+       <%= text_field_tag :fecha_fin, nil, readonly: true %>        
+      </div>
+    </div>
+  </form>  
+</div> 
+
+<div class="field">
+   <%= label :partida_parcial, "Partida parcial" %> <br />   
+</div>   
+<div class="field">
+    <%= text_field_tag :partida_parcial %>  
+</div> 
+
+<div class="field">
+   <%= label :Area, "Area destino" %> <br />   
+</div>  
+<div class="field">
+    <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>
+</div> 
+       
+<div>
+  <%= hidden_field_tag 'area_id' %>
+</div>
+
+<div class="field">
+  <input type="button" value="Obtener" class="" id="obtener_lista_de_consumos_por_partida_parcial_destino_y_fecha">        
+</div>
+
+<div id="tabla_bienes">    
+  <%= render 'form_tabla_bienes' %>   
+</div> 
+
+
+
+

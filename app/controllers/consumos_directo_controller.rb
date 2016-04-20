@@ -337,6 +337,51 @@ end
     end 
   end  
 
+  def ver_consumos_por_partida_parcial_destino_fecha  
+  end
+
+  def traer_consumos_por_partida_parcial_destino_y_fecha
+
+    codigo_pp = params[:partida_parcial]
+
+    puts "*************** #{params[:partida_parcial]}"
+
+    inciso = codigo_pp[0].to_s
+    ppal = codigo_pp[1].to_s 
+    pparcial = codigo_pp[2].to_s
+
+    area_id = params[:area_id]
+
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
+   
+    @bien_de_consumo_para_consumir = nil
+
+    if !area_id.blank? && !codigo_pp.blank? 
+      puts "************ LOS DOS!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?",inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin)        
+    end
+
+    if codigo_pp.blank? && !area_id.blank? 
+      puts "************ solo el AREA!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", area_id, fecha_inicio, fecha_fin)      
+    end
+      
+    if area_id.blank? && !codigo_pp.blank?
+      puts "************ Solo el BIEN!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", inciso, ppal, pparcial, fecha_inicio, fecha_fin)
+    end
+            
+    if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
+      @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
+      @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+    end    
+     
+    respond_to do |format|   
+      format.js {}
+    end 
+  end  
+
   def ver_consumos_y_transferencias_por_nombre_y_fecha 
   end
 

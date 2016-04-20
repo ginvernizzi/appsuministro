@@ -245,6 +245,31 @@ $(document).on("ready page:load", function() {
       });     
   });
 
+    $("#obtener_lista_de_consumos_por_partida_parcial_destino_y_fecha").click(function() {
+    var partida_parcial = $("#partida_parcial").val();
+    var area__id = $("#area_id").val();
+    var fecha_inicio = $("#fecha_inicio").val();
+    var fecha_fin = $("#fecha_fin").val();
+
+    $.ajax({
+      type: "get",
+      dataType: "json",
+      url: "/consumos_directo/traer_consumos_por_partida_parcial_destino_y_fecha",        
+      data: { partida_parcial: partida_parcial, area_id: area__id, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+      success: function(data){            
+            blanquear_campos_en_consumos_por_codigo_destino_y_fecha();
+            $('#tabla_bienes').html(data)            
+            if(data == "")
+            { alert("No se encontraron resultados") }
+      },
+      error: function (request, status, error) 
+          {             
+            alert("Ha ocurrido un error.");          
+          }                          
+      });     
+  });
+
+
   function blanquear_campos_en_consumos_por_codigo_destino_y_fecha() 
   {
     $("#bien_de_consumo_nombre").val("");       
