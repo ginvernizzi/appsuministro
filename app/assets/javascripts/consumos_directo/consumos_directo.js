@@ -36,10 +36,10 @@ $(document).on("ready page:load", function() {
 
   $("#fecha_fin").datepicker("setDate", currentDate);
 
-  //$("#consumo_directo_area_id").change(function() { 
-    //identificador_del_control = $("#consumo_directo_area_id").val(); 
-    //traer_responsable(identificador_del_control)    
-  //});
+  $("#consumo_directo_area_id").change(function() { 
+    identificador_del_control = $("#consumo_directo_area_id").val(); 
+    traer_responsable(identificador_del_control, "responsable")    
+  });
 
   //////////// AUTOCOMPLETAR VER CONSUMOS POR CODIGO Y DESTINO ///////////
   $('#bien_de_consumo_nombre').on('railsAutocomplete.select', function(event, data){ 
@@ -59,10 +59,10 @@ $(document).on("ready page:load", function() {
   $("#area_origen_area_id").change(function() 
   {
     identificador_del_control = $("#area_origen_area_id").val();
-    traer_responsable(identificador_del_control)    
+    traer_responsable(identificador_del_control, "responsable_origen")    
   });
 
-  function traer_responsable(id_del_control)
+  function traer_responsable(id_del_control, control_responsable)
   {
     $.ajax({
       url: "/consumos_directo/obtener_responsable_de_area",
@@ -71,7 +71,7 @@ $(document).on("ready page:load", function() {
       type: "post",
       data: { area_id: id_del_control },                
       success:function(data){                  
-          $("#responsable").val(data.responsable)              
+          $("#"+control_responsable).val(data.responsable)           
         },
         error: function (request, status, error) 
           { 
