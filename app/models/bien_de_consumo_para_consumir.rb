@@ -3,7 +3,8 @@ class BienDeConsumoParaConsumir < ActiveRecord::Base
   belongs_to :consumo_directo
   belongs_to :deposito
 
-  attr_accessor :fecha_inicio
-  attr_accessor :fecha_fin
-  attr_accessor :ppal
+  attr_accessor :fecha_inicio_impresion
+  attr_accessor :fecha_fin_impresion
+  attr_accessor :ppal_impresion
+  attr_accessor :area_id_impresion
 end

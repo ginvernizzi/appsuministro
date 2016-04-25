@@ -64,4 +64,3 @@ set :deploy_to, '/home/deploy/appsuministro_test'
 #   }
 
 set :rails_env, "staging"
-set :disallow_pushing, true
