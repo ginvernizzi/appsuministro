@@ -46,6 +46,10 @@
     <%= f.label :costo, "costo" %><br>
     <%= f.text_field :costo %>
   </div> 
+  <div class="field">
+    <%= f.label :descripcion, "descripcion" %><br>
+    <%= f.text_area :descripcion %>
+  </div> 
   <div class="field">    
     <%= f.hidden_field :bien_de_consumo_id %>    
   </div>       
@@ -71,6 +75,7 @@
       <th>Codigo</th>
       <th>Cantidad</th>
       <th>Costo</th>
+      <th>Descripción</th>
       <th></th>
     </tr>
   </thead>
@@ -84,6 +89,7 @@
               <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
               <td><%= bcr.cantidad %> </td>
               <td><%= number_to_currency(bcr.costo, :precision => 3) %> </td>
+              <td><%= bcr.descripcion %> </td>
               <td><%= link_to 'Eliminar', recepcion_de_bien_de_consumo_bien_de_consumo_de_recepcion_path(@recepcion_de_bien_de_consumo, bcr), method: :delete, data: { confirm: '¿Esta seguro?' } %></td>
               
           <% end %> 

@@ -102,6 +102,35 @@ Rails.application.routes.draw do
 
   resources :personas
 
+  resources :recepciones_de_bien_de_consumo do
+      collection do
+        get 'ver_rechazadas'
+        get 'traer_documentos_con_numero_existente'
+      end
+      resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy, :show]      
+  end
+
+  get 'recepciones_de_bien_de_consumo/enviar_a_evaluar/:id', 
+                                        :to => 'recepciones_de_bien_de_consumo#enviar_a_evaluar',
+                                        :as => 'enviar_a_evaluar_recepciones_de_bien_de_consumo'
+
+
+  post 'bienes_de_consumo_de_recepcion/obtener_nombre_de_bien_de_consumo', 
+                                        :to => 'bienes_de_consumo_de_recepcion#obtener_nombre_de_bien_de_consumo',
+                                        :as => 'obtener_nombre_bien_de_consumo_bienes_de_consumo_de_recepcion'  
+
+  post 'bienes_de_consumo_de_recepcion/obtener_codigo_de_bien_de_consumo', 
+                                        :to => 'bienes_de_consumo_de_recepcion#obtener_codigo_de_bien_de_consumo',
+                                        :as => 'obtener_codigo_bien_de_consumo_bienes_de_consumo_de_recepcion'                                                
+
+  delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_bien_de_recepcion/:bien_de_consumo_id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
+                                        as: 'eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo'
+                                        
+  post 'recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria', :to => 'recepciones_de_bien_de_consumo#pegar_campo_descripcion_provisoria'  
+
+  delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_documento_secundario/:documento_secundario_id' => 'recepciones_de_bien_de_consumo#eliminar_documento_secundario', 
+                                        as: 'eliminar_documento_secundario_recepciones_de_bien_de_consumo'
+
   resources :transferencias do
     collection do
       get 'nueva_transferencia'
@@ -218,7 +247,6 @@ Rails.application.routes.draw do
 
   resources :obras_proyectos  
 
-
   resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show] do 
     resources :items_stock , only: [:new, :create]
   end
@@ -233,34 +261,6 @@ Rails.application.routes.draw do
   get 'static_pages/home' , :as => 'home'
   get 'static_pages/help'    
   
-  resources :recepciones_de_bien_de_consumo do
-      collection do
-        get 'ver_rechazadas'
-        get 'traer_documentos_con_numero_existente'
-      end
-      resources :bienes_de_consumo_de_recepcion , only: [:index, :new, :create, :destroy]      
-  end
-
-  get 'recepciones_de_bien_de_consumo/enviar_a_evaluar/:id', 
-                                        :to => 'recepciones_de_bien_de_consumo#enviar_a_evaluar',
-                                        :as => 'enviar_a_evaluar_recepciones_de_bien_de_consumo'
-
-
-  post 'bienes_de_consumo_de_recepcion/obtener_nombre_de_bien_de_consumo', 
-                                        :to => 'bienes_de_consumo_de_recepcion#obtener_nombre_de_bien_de_consumo',
-                                        :as => 'obtener_nombre_bien_de_consumo_bienes_de_consumo_de_recepcion'  
-
-  post 'bienes_de_consumo_de_recepcion/obtener_codigo_de_bien_de_consumo', 
-                                        :to => 'bienes_de_consumo_de_recepcion#obtener_codigo_de_bien_de_consumo',
-                                        :as => 'obtener_codigo_bien_de_consumo_bienes_de_consumo_de_recepcion'                                                
-
-  delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_bien_de_recepcion/:bien_de_consumo_id' => 'recepciones_de_bien_de_consumo#eliminar_bien_de_recepcion', 
-                                        as: 'eliminar_bienes_de_recepcion_recepciones_de_bien_de_consumo'
-                                        
-  post 'recepciones_de_bien_de_consumo/pegar_campo_descripcion_provisoria', :to => 'recepciones_de_bien_de_consumo#pegar_campo_descripcion_provisoria'  
-
-  delete 'recepciones_de_bien_de_consumo/:recepcion_de_bien_de_consumo_id/eliminar_documento_secundario/:documento_secundario_id' => 'recepciones_de_bien_de_consumo#eliminar_documento_secundario', 
-                                        as: 'eliminar_documento_secundario_recepciones_de_bien_de_consumo'
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
@@ -275,58 +275,4 @@ Rails.application.routes.draw do
 
   root  'static_pages#home'
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
 end

@@ -88,6 +88,7 @@
       <th>Codigo</th>
       <th>Cantidad</th>
       <th>Costo</th>
+      <th>Descripción</th>
     </tr>
   </thead>
   <tbody>
@@ -99,6 +100,7 @@
           <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
           <td><%= bcr.cantidad %> </td>
           <td><%= bcr.costo %> </td>
+          <td><%= bcr.descripcion %> </td>
         </tr>    
         <%end%>
     <% else %>

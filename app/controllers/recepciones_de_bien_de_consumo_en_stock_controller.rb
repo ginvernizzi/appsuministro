@@ -63,8 +63,8 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
       if !bien_id.nil? && !bien_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
           @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin);
           if @recepciones_de_bien_de_consumo.count > 0
-             @recepciones_de_bien_de_consumo[0].fecha_inicio = params[:fecha_inicio];
-             @recepciones_de_bien_de_consumo[0].fecha_fin = params[:fecha_fin];
+             @recepciones_de_bien_de_consumo[0].fecha_inicio = fecha_inicio;
+             @recepciones_de_bien_de_consumo[0].fecha_fin = fecha_fin;
              @recepciones_de_bien_de_consumo[0].bien_de_consumo_id = params[:bien_id];
           end     
       end

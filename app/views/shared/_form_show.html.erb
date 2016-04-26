@@ -78,6 +78,7 @@
       <th>Cantidad</th>
       <th>Costo</th>
       <th>Costo total</th>
+      <th>Descripción</th>
     </tr>
   </thead>
   <tbody>
@@ -90,6 +91,7 @@
           <td><%= bcr.cantidad %> </td>
           <td><%= bcr.costo %> </td>
           <td><%= obtener_costo_total(bcr.cantidad, bcr.costo) %> </td>
+          <td><%= bcr.descripcion %> </td>
         </tr>              
         <%end%>
     <% else %>

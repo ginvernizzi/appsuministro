@@ -108,6 +108,6 @@ before_action :setear_fijos_arbol, only: [:new]
     end
 
     def bien_de_consumo_de_recepcion_params
-      params.require(:bien_de_consumo_de_recepcion).permit(:cantidad, :costo, :bien_de_consumo_id, :recepcion_de_bien_de_consumo_id)            
+      params.require(:bien_de_consumo_de_recepcion).permit(:cantidad, :costo, :descripcion, :bien_de_consumo_id, :recepcion_de_bien_de_consumo_id)            
     end
 end
