@@ -75,10 +75,14 @@
                 Items con stock faltante
                 <span class="badge"><%= traer_cantidad_de_items_con_stock_bajo %></span>
               </a>
-         </li>
+        </li>
+        <li>
+          <a>
+             <span class="label label-default"><%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.count < 0 }" %></span>
+          </a> 
+        </li>
       <% end %>
 
-        <div class="container">
           <div class="navbar-form navbar-right" >
             <% if current_user %>
                 <%="Conectado como: "%> <strong> <%= "#{current_user.name}" %> </strong> <%="-"%> <%= link_to "salir del sistema", session_path(current_user), method: :delete %>
@@ -92,7 +96,6 @@
                   <% end %>
             <% end %>
           </div>
-        </div> 
       </ul>
   </div>
 </nav>

@@ -47,5 +47,6 @@ ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'reemplazo_clase', 'reemplazos_clase'
   inflect.irregular 'ingreso_manual_a_stock', 'ingreso_manual_a_stocks'
   inflect.irregular 'recepcion_para_consumo_directo', 'recepciones_para_consumo_directo'
+  inflect.irregular 'etiqueta_de_implementacion', 'etiquetas_de_implementacion'
 
 end

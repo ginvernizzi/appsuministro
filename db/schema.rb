@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425194851) do
+ActiveRecord::Schema.define(version: 20160427162709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,6 +163,10 @@ ActiveRecord::Schema.define(version: 20160425194851) do
 
   add_index "documentos_secundario", ["documento_de_recepcion_id"], name: "index_documentos_secundario_on_documento_de_recepcion_id", using: :btree
   add_index "documentos_secundario", ["recepcion_de_bien_de_consumo_id"], name: "index_documentos_secundario_on_recepcion_de_bien_de_consumo_id", using: :btree
+
+  create_table "etiquetas_de_implementacion", force: :cascade do |t|
+    t.string "descripcion"
+  end
 
   create_table "incisos", force: :cascade do |t|
     t.string   "codigo",     limit: 1
