@@ -78,7 +78,7 @@
         </li>
         <li>
           <a>
-             <span class="label label-default"><%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.count < 0 }" %></span>
+             <h5><span class="label label-default">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> </h5>
           </a> 
         </li>
       <% end %>

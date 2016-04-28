@@ -385,7 +385,7 @@ end
   def ver_consumos_y_transferencias_por_nombre_y_fecha 
   end
 
-  def traer_consumos_y_transferencias_por_nombre_y_fecha        
+  def traer_consumos_y_transferencias_por_nombre_y_fecha
     bien_id = params[:bien_id]
 
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
@@ -412,7 +412,7 @@ end
     end 
   end
 
-  def imprimir_formulario_consumos_por_codigo_destino_y_fecha    
+  def imprimir_formulario_consumos_por_codigo_destino_y_fecha
     area_id = params[:area_id]
     bien_id = params[:bien_id]
 
