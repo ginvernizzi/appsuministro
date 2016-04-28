@@ -71,15 +71,13 @@
         </li>
 
         <li>
-              <a href="/items_stock/ver_stock_minimo_superado" >
-                Items con stock faltante
-                <span class="badge"><%= traer_cantidad_de_items_con_stock_bajo %></span>
-              </a>
+          <a href="/items_stock/ver_stock_minimo_superado" >
+            Items con stock faltante
+            <span class="badge"><%= traer_cantidad_de_items_con_stock_bajo %></span>
+          </a>
         </li>
         <li>
-          <a>
              <h5><span class="label label-default">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> </h5>
-          </a> 
         </li>
       <% end %>
 
