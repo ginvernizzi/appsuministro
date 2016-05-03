@@ -57,13 +57,19 @@ class DepositosController < ApplicationController
   # DELETE /depositos/1
   # DELETE /depositos/1.json
   def destroy  
-    @area = Area.find(params[:area_id])
-    @desposito = Deposito.find(params[:id])
-    if @deposito      
-      @deposito.destroy
+    ActiveRecord::Base.transaction do
+      begin
+        @area = Area.find(params[:area_id])
+        @desposito = Deposito.find(params[:id])
+        if @deposito.destroy
+          flash[:notice] = 'El depósito fué eliminado exitosamente'
+        end
+      rescue ActiveRecord::InvalidForeignKey
+        flash[:notice] = 'El depósito tiene relaciones asociadas. No pudo ser eliminado'
+      end
       respond_to do |format|      
-        format.html { redirect_to new_area_deposito_path(@area), notice: 'El deposito fue eliminado exitosamente.' } 
-        format.json { head :no_content }
+         format.html { redirect_to new_area_deposito_path(@area) } 
+         format.json { head :no_content }
       end
     end
   end
