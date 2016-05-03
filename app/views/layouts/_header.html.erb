@@ -78,9 +78,11 @@
         </li>
         <li>
             <% if EtiquetaDeImplementacion.nil? && EtiquetaDeImplementacion.all.first.descripcion == "PRODUCCION"  %>
-                <h5><span class="etiqueta_testing">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> </h5>
-             <% else %>
                 <h5><span class="etiqueta_produccion">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> </h5>
+             <% else %>
+                <h5><span class="etiqueta_testing">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> 
+              </h5>
+      
              <% end %>
         </li>
       <% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160427162709) do
+ActiveRecord::Schema.define(version: 20160503182003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -316,8 +316,11 @@ ActiveRecord::Schema.define(version: 20160427162709) do
 
   add_foreign_key "bienes_de_consumo", "clases"
   add_foreign_key "clases", "partidas_parciales"
+  add_foreign_key "consumos_directo", "areas"
+  add_foreign_key "depositos", "areas"
   add_foreign_key "partidas_parciales", "partidas_principales"
   add_foreign_key "partidas_principales", "incisos"
   add_foreign_key "recepciones_para_consumo_directo", "consumos_directo"
   add_foreign_key "recepciones_para_consumo_directo", "recepciones_de_bien_de_consumo"
+  add_foreign_key "transferencias", "areas"
 end
