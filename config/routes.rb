@@ -230,7 +230,7 @@ Rails.application.routes.draw do
   post 'consumos_directo/imprimir_formulario/:consumo_directo_id',  to: 'consumos_directo#imprimir_formulario',
                                                                     as: 'imprimir_formulario_consumos_directo'                                                               
 
-  post 'consumos_directo/bien_de_consumo/:bien_id/area/:area_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_codigo_destino_y_fecha/',  
+  post 'consumos_directo/bien_de_consumo/(:bien_id)/area/(:area_id)/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_codigo_destino_y_fecha/',  
                                                             to: 'consumos_directo#imprimir_formulario_consumos_por_codigo_destino_y_fecha',
                                                             as: 'imprimir_formulario_consumos_por_codigo_destino_y_fecha'
 

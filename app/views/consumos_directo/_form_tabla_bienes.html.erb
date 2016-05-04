@@ -24,7 +24,7 @@
           </tr>
         <% end %>    
         <% if(@bien_de_consumo_para_consumir.length > 0) %>              
-            <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_codigo_destino_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_de_consumo.id, @bien_de_consumo_para_consumir.first().consumo_directo.area.id, @bien_de_consumo_para_consumir.first().fecha_inicio_impresion, @bien_de_consumo_para_consumir.first().fecha_fin_impresion) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+            <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_codigo_destino_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_de_consumo.id, @bien_de_consumo_para_consumir.first().area_id_impresion, @bien_de_consumo_para_consumir.first().fecha_inicio_impresion, @bien_de_consumo_para_consumir.first().fecha_fin_impresion) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
             </td>   
         <% end %>
     </tbody>      
