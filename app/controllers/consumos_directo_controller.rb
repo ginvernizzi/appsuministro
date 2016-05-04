@@ -305,10 +305,6 @@ end
 
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
     fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
-
-    puts "HOLAAA"
-    puts "area_id blanco? #{area_id.blank?} #{area_id}" 
-    puts "bien_id blanco? #{bien_id.blank?} #{bien_id}"
    
     @bien_de_consumo_para_consumir = nil
 
@@ -328,8 +324,8 @@ end
     end
             
     if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
-      @bien_de_consumo_para_consumir[0].fecha_inicio = fecha_inicio;
-      @bien_de_consumo_para_consumir[0].fecha_fin = fecha_fin;
+      @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
+      @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
     end    
      
     respond_to do |format|   
@@ -403,8 +399,8 @@ end
 
             
     if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
-       @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
-       @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+       @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = params[:fecha_inicio];
+       @bien_de_consumo_para_consumir[0].fecha_fin_impresion = params[:fecha_fin];
     end    
      
     respond_to do |format|   
@@ -597,8 +593,8 @@ end
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", obra_proyecto_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
-           @bien_de_consumo_para_consumir[0].fecha_inicio = params[:fecha_inicio];
-           @bien_de_consumo_para_consumir[0].fecha_fin = params[:fecha_fin];
+           @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = params[:fecha_inicio];
+           @bien_de_consumo_para_consumir[0].fecha_fin_impresion = params[:fecha_fin];
         end
     end
           

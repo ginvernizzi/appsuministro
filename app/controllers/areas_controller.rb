@@ -59,11 +59,11 @@ class AreasController < ApplicationController
       if @area.destroy           
           flash[:notice] = 'El area fue eliminada exitosamente.'
       else
-          flash[:notice] = 'El area tiene relaciones asociadas.No pudo ser eliminada'        
+          flash[:notice] = 'El area tiene relaciones asociadas. No pudo ser eliminada'        
       end 
 
       rescue ActiveRecord::InvalidForeignKey
-        flash[:notice] = 'El area tiene relaciones asociadas.No pudo ser eliminada'
+        flash[:notice] = 'El area tiene relaciones asociadas. No pudo ser eliminada'
       end         
     end #Active
 
