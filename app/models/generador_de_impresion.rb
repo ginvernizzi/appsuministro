@@ -60,15 +60,15 @@ class GeneradorDeImpresion
 	end
 
 	def generar_pdf_items_consumo_directo(bienes_de_consumo_para_consumir)
-		@bienes = bienes_de_consumo_para_consumir		
+		bienes = bienes_de_consumo_para_consumir		
 
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_consumo_directo_items.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", I18n.l(DateTime.now))
-			r.add_field("AREA", @bienes.first.deposito.area.nombre)										
+			r.add_field("AREA", bienes.first.deposito.area.nombre)										
 								
-			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
+			r.add_table("TABLA_CONSUMO_DIRECTO", bienes, :header=>true) do |s|								
 				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha.strftime("%d/%m/%Y") }
 				s.add_column("COMPROBANTE") { |i| i.consumo_directo.id }							
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
