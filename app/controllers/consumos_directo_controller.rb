@@ -415,8 +415,6 @@ end
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
     fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
 
-    @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
-
     if !area_id.blank? && !bien_id.blank? 
       puts "************ LOS DOS!"
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)        
@@ -433,7 +431,9 @@ end
     end
 
     @generador = GeneradorDeImpresion.new
-    @generador.generar_pdf_items_consumo_directo(@bienes_de_consumo_para_consumir)
+    puts "**********************"
+    puts @bien_de_consumo_para_consumir.count
+    @generador.generar_pdf_items_consumo_directo(@bien_de_consumo_para_consumir)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
     send_file ( file )         
   end
