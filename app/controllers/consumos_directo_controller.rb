@@ -412,12 +412,24 @@ end
     area_id = params[:area_id]
     bien_id = params[:bien_id]
 
-    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
-    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
+
     @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.new
 
-    if !area_id.nil? && !bien_id.nil? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)
+    if !area_id.blank? && !bien_id.blank? 
+      puts "************ LOS DOS!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)        
+    end
+
+    if bien_id.blank? && !area_id.blank? 
+      puts "************ solo el AREA!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", area_id, fecha_inicio, fecha_fin)      
+    end
+      
+    if area_id.blank? && !bien_id.blank?
+      puts "************ Solo el BIEN!"
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, fecha_inicio, fecha_fin)        
     end
 
     @generador = GeneradorDeImpresion.new
