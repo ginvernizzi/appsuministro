@@ -21,6 +21,6 @@
 
 set :output, "~/cron_appsuministro.log"
 
-every 1.minutes do
+every 2.hours do
    runner "FotoStock.new.guardar_stock_a_fecha"
 end
