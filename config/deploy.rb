@@ -8,6 +8,13 @@ set :repo_url, 'git@github.com:ginvernizzi/appsuministro.git'
 set :user, 'deploy'
 set :rvm_type, :user
 set :rvm_ruby_version, '2.2.2'
+
+
+set :whenever_roles, ->{ [:web, :app]}
+set :whenever_environment, fetch(:stage) # This fetches the appropriate environment
+set :whenever_identifier, -> { "#{fetch(:application)}_#{fetch(:stage)}" }
+
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 

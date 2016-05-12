@@ -16,6 +16,7 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'capistrano-rails-console'
 gem "capistrano-db-tasks", require: false
+gem 'whenever', { require: false }
 
 group :development, :test do 
   gem 'capistrano-rails'
