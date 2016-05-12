@@ -19,8 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :environment, :pruebadesa
-
 set :output, "~/cron_appsuministro.log"
 
 every 1.minutes do
