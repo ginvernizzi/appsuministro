@@ -14,4 +14,6 @@ class BienDeConsumoDeRecepcion < ActiveRecord::Base
   
   #accepts_nested_attributes_for :bien_de_consumo, :allow_destroy => true    
   #validates_associated :bien_de_consumo
+  attr_accessor :fecha_inicio_impresion
+  attr_accessor :fecha_fin_impresion 
 end

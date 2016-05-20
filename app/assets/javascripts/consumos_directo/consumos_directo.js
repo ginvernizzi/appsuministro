@@ -387,6 +387,30 @@ $(document).on("ready page:load", function() {
   });
 
 
+  $("#obtener_lista_de_consumos_por_fecha_destino_y_clase").click(function() {
+    var codigo = $('#categoria_clase_id :selected').text().split("-")[0].split(".")[1].replace(/ /g,'')
+    var area_id = $("#area_id").val();     
+    var fecha_inicio = $("#fecha_inicio").val();
+    var fecha_fin = $("#fecha_fin").val();
+
+    $.ajax({
+      type: "get",
+      dataType: "json",        
+      url: "/consumos_directo/traer_consumos_por_fecha_destino_y_clase",        
+      data: { area_id: area_id, clase: codigo, fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+      success: function(data){                      
+            $('#tabla_bienes').html(data)            
+            if(data == "")
+              { alert("No se encontraron resultados") }
+      },
+      error: function (request, status, error) 
+          {                         
+            alert("Ha ocurrido un error. Informe al administrador del sistema");            
+          }                          
+      });     
+  });
+
+
   function ObtenerBienDeConsumoYcantidadEnStock(codigo, deposito_id)
   {
     if(codigo != "" && deposito_id != null)

@@ -148,7 +148,9 @@ Rails.application.routes.draw do
         get 'autocomplete_documento_principal_nombre'             
         get 'traer_recepciones_por_doc_principal'  
         get 'ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha'                 
-        get 'traer_recepciones_por_bien_y_fecha'                       
+        get 'traer_recepciones_por_bien_y_fecha'      
+        get 'ver_recepciones_finalizadas_por_fecha'
+        get 'traer_recepciones_finalizadas_por_fecha'                 
       end
   end
 
@@ -160,6 +162,10 @@ Rails.application.routes.draw do
   post 'recepciones_de_bien_de_consumo_en_stock/bien_de_consumo/:bien_de_consumo_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha/',  
         to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha',
         as: 'imprimir_formulario_recepciones_finalizadas_por_bien_y_fecha'
+
+  post 'recepciones_de_bien_de_consumo_en_stock/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_finalizadas_por_fecha/',  
+                                                            to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_finalizadas_por_fecha',
+                                                            as: 'imprimir_formulario_recepciones_finalizadas_por_fecha'
 
 
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 
@@ -220,6 +226,8 @@ Rails.application.routes.draw do
       get 'ver_consumos_por_obra_proyecto_y_fecha'       
       get 'traer_consumos_por_partida_parcial_destino_y_fecha'
       get 'ver_consumos_por_partida_parcial_destino_fecha'
+      get 'ver_consumos_por_fecha_destino_y_clase'
+      get 'traer_consumos_por_fecha_destino_y_clase'
     end
   end
 
@@ -233,6 +241,10 @@ Rails.application.routes.draw do
   post 'consumos_directo/bien_de_consumo/(:bien_id)/area/(:area_id)/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_codigo_destino_y_fecha/',  
                                                             to: 'consumos_directo#imprimir_formulario_consumos_por_codigo_destino_y_fecha',
                                                             as: 'imprimir_formulario_consumos_por_codigo_destino_y_fecha'
+
+  post 'consumos_directo/obra_proyecto/:obra_proyecto_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_obra_proyecto_y_fecha/',  
+                                                            to: 'consumos_directo#imprimir_formulario_consumos_por_obra_proyecto_y_fecha',
+                                                            as: 'imprimir_formulario_consumos_por_obra_proyecto_y_fecha'
 
   post 'consumos_directo/codigo_partida_parcial/(:codigo_partida_parcial)/area/(:area_id)/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_partida_parcial_destino_y_fecha/',  
                                                             to: 'consumos_directo#imprimir_formulario_consumos_por_partida_parcial_destino_y_fecha',

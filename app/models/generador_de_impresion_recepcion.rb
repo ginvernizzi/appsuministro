@@ -68,12 +68,43 @@ class GeneradorDeImpresionRecepcion
 		`unoconv -f pdf #{@ruta_formulario_interno_odt}`
 	end
 
+
+	def generar_pdf_recepciones_finalizadas_por_fecha(bienes_de_recepcion)		
+
+		@bienes = bienes_de_recepcion
+
+		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_recepciones_finalizadas_por_fecha.odt")		
+
+		report = ODFReport::Report.new(@ruta_plantilla) do |r|	
+			r.add_field("FECHA", DateTime.now.strftime("%d/%m/%Y"))																			
+
+			r.add_table("TABLA_RECEPCIONES_FINALIZADAS", @bienes, :header=>true) do |r|			
+				r.add_column("FECHA_CONSUMO") { |i| i.recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") }		
+				r.add_column("COMPROBANTE") { |i| i.recepcion_de_bien_de_consumo.id }			
+				r.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }						
+				r.add_column("DESCRIPCION") { |i| i.bien_de_consumo.nombre }									
+				r.add_column("CANTIDAD") { |i| i.cantidad  }
+				r.add_column("VALOR") { |i| i.costo   }
+				r.add_column("TOTAL") { |i| number_to_currency(i.costo * i.cantidad, :precision => 3)    }
+			end
+		end
+		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_recepciones_finalizadas_por_fecha_odt)
+		report.generate(@ruta_formulario_interno_odt)
+		@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
+		# `libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`		
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`
+	end
+
 	def nombre_formulario_recepcion_pdf
 		nombre_formulario_recepcion + ".pdf"
 	end
 
 	def nombre_formulario_detalle_de_recepcion_pdf
 		nombre_formulario_detalle_de_recepcion + ".pdf"
+	end
+
+	def nombre_formulario_recepciones_finalizadas_por_fecha_pdf
+		nombre_formulario_recepciones_finalizadas_por_fecha + ".pdf"
 	end
 
 	######
@@ -93,6 +124,9 @@ class GeneradorDeImpresionRecepcion
 		"comprobante_recepcion_" + @fecha_inicializacion
 	end
 
+	def nombre_formulario_recepciones_finalizadas_por_fecha
+		"comprobante_recepciones_finalizadas_por_fecha_" + @fecha_inicializacion
+	end
 	############
 
 	def nombre_formulario_detalle_de_recepcion_odt
@@ -102,6 +136,11 @@ class GeneradorDeImpresionRecepcion
 	def nombre_formulario_detalle_de_recepcion
 		"comprobante_detalle_de_recepcion_" + @fecha_inicializacion
 	end
+
+	def nombre_formulario_recepciones_finalizadas_por_fecha_odt 
+		nombre_formulario_recepciones_finalizadas_por_fecha + ".odt"
+	end
+
 	# def nombre_formulario_consumo_items_odt
 	# 	nombre_formulario_consumo_items + ".odt"
 	# end

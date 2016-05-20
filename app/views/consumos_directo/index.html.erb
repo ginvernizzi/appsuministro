@@ -1,33 +1,7 @@
 <h1>Consumos realizados (Inmediatos y por seleccion)</h1>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Fecha</th>
-      <th>número</th>
-      <th>Area</th>
-      <th>Obra proyecto</th>
-      <th>Origen</th>
-      <th>Recepción número</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div id="tabla_bienes">    
+  <%= render 'form_tabla_consumos_por_fecha' %>
+</div> 
 
-  <tbody>
-    <% @consumos_directo.each do |consumo_directo| %>
-      <tr>
-        <td><%= consumo_directo.fecha.strftime("%d/%m/%Y") %></td>
-        <td><%= consumo_directo.id %></td>
-        <td><%= consumo_directo.area.nombre %></td>
-        <td><%= consumo_directo.obra_proyecto.descripcion %></td>
-        <td><%= consumo_desde_recepcion?(consumo_directo.id) ? "Desde recepcion" : "Manual"  %></td>
-        <td><%= consumo_desde_recepcion?(consumo_directo.id) ? RecepcionParaConsumoDirecto.where("consumo_directo_id = ?", consumo_directo.id).first.recepcion_de_bien_de_consumo.id : "" %></td>
-        <td><%= link_to 'Ver', consumo_directo %></td>
-        <td><%= link_to 'Imprimir', imprimir_formulario_consumos_directo_path(consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %> </td>
-        <td><%= link_to 'Dar de baja', consumo_directo, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<br>

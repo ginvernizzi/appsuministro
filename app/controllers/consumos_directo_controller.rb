@@ -7,8 +7,9 @@ class ConsumosDirectoController < ApplicationController
   # GET /consumos_directo
   # GET /consumos_directo.json
   def index
-    estado = 1 #estado activo
-    @consumos_directo = ConsumoDirecto.where("estado = ?", 1).order(:id => "desc")
+    estado_activo = 1 #estado activo
+    @consumos_directo = ConsumoDirecto.where("estado = ?", estado_activo).order(:id => "desc")
+    #@bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.estado = ?", estado_activo)  
   end
 
   def ver_dados_de_baja
@@ -40,7 +41,7 @@ class ConsumosDirectoController < ApplicationController
 
   # POST /consumos_directo
   # POST /consumos_directo.json
-  def create        
+  def create
     ActiveRecord::Base.transaction do      
       begin 
         #ingresar bienes a stock de suministro, y luego quitarlos.
@@ -239,7 +240,7 @@ end
     end       
   end
 
-  def quitar_bienes_de_stock(recepcion)    
+  def quitar_bienes_de_stock(recepcion)
     areaArray = Area.where(id: 1)    
       if areaArray.count > 0 && areaArray[0].depositos.count > 0
           deposito = areaArray[0].depositos.first   
@@ -261,7 +262,7 @@ end
       end       
   end
 
-  def quitar_bienes_de_stock_consumo_manual(bienes)              
+  def quitar_bienes_de_stock_consumo_manual(bienes)
       bienes.each do |bdcdr|                                           
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], bdcdr["DepoId"])           
           if @item_stock[0]
@@ -408,6 +409,32 @@ end
       format.js {}
     end 
   end
+
+  ####################
+  def ver_consumos_por_fecha_destino_y_clase    
+  end
+
+  def traer_consumos_por_fecha_destino_y_clase   
+    area_id = params[:area_id]
+    clase = params[:clase]
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
+   
+    @bien_de_consumo_para_consumir = nil
+    query_consumos_por_fecha_destino_y_clase(area_id, clase, fecha_inicio, fecha_fin)
+            
+    if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
+      @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
+      @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
+      @bien_de_consumo_para_consumir[0].area_id_impresion = area_id;
+      #@bien_de_consumo_para_consumir[0].clase = clase;
+    end    
+     
+    respond_to do |format|   
+      format.js {}
+    end 
+  end  
+  ################
 
   def imprimir_formulario_consumos_por_codigo_destino_y_fecha
     area_id = params[:area_id]
@@ -605,8 +632,9 @@ end
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", obra_proyecto_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
-           @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = params[:fecha_inicio];
-           @bien_de_consumo_para_consumir[0].fecha_fin_impresion = params[:fecha_fin];
+           @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
+           @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
+           @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;           
         end
     end
           
@@ -615,7 +643,30 @@ end
     end 
   end
 
-  def obtener_item_para_agregar_a_recepcion_by_id                       
+  def imprimir_formulario_consumos_por_obra_proyecto_y_fecha
+    obra_proyecto_id = params[:obra_proyecto_id]    
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
+
+    @bien_de_consumo_para_consumir = nil
+
+    if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", obra_proyecto_id, fecha_inicio, fecha_fin)
+        if @bien_de_consumo_para_consumir.count > 0
+           @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
+           @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
+           @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;           
+        end
+    end
+
+    @generador = GeneradorDeImpresionItemsDeConsumo.new
+
+    @generador.generar_pdf_items_consumo_directo(@bien_de_consumo_para_consumir)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
+    send_file ( file )         
+  end
+
+  def obtener_item_para_agregar_a_recepcion_by_id
       puts "************** controller aca"
       @bien_de_consumo_id = params[:bien_id]
       @deposito_id = params[:deposito_id]
@@ -637,6 +688,16 @@ end
       respond_to do | format |                                  
         format.js { }
       end
+  end
+
+  def query_consumos_por_fecha_destino_y_clase(area_id, clase, fecha_inicio, fecha_fin)
+    if !area_id.blank? && !clase.blank?
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase]).where("clases.codigo = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha BETWEEN ? AND ?", clase, area_id, fecha_inicio, fecha_fin).order("consumos_directo.id")
+    end
+
+    if !area_id.blank? && clase.blank?
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha BETWEEN ? AND ?", area_id, fecha_inicio, fecha_fin)        
+    end
   end
 
   private

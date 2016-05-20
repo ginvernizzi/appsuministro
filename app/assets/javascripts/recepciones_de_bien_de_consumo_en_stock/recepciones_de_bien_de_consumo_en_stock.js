@@ -88,6 +88,29 @@ $(document).on("ready page:load", function() {
         });     
     });
 
+    
+    $("#traer_recepciones_finalizadas_por_fecha").click(function() {            
+      var fecha_inicio = $("#fecha_inicio").val();
+      var fecha_fin = $("#fecha_fin").val();
+
+      $.ajax({
+        type: "get",
+        dataType: "json",
+        url: "/recepciones_de_bien_de_consumo_en_stock/traer_recepciones_finalizadas_por_fecha",        
+        data: { fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
+        success: function(data){            
+              if (data  == "")
+                { alert("No se encontraron resultados") }
+              $('#tabla_recepciones').html(data)            
+        },
+        error: function (request, status, error) 
+            {             
+              alert("Hay campos incompletos");
+              blanquear_campos();
+            }                          
+        });     
+    });
+
     function blanquear_campos() 
     {
         $("#documento_principal_nombre").val("");                      

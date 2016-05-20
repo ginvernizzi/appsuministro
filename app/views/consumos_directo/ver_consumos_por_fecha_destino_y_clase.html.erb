@@ -1,0 +1,54 @@
+<h1> Listado de Consumos por Destino y clase </h1>
+
+<div class="row">
+  <form class="navbar-form navbar-left" role="search">    
+    <div class="form-group">    
+      <div class"field">
+        <%= label_tag 'seleccione un rango de fechas'%>  
+      </div>
+      <br />
+      <div class"field">
+        <%= label :fecha_inicio, "Desde" %>
+      </div>
+
+      <div class"field">
+        <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
+      </div>
+
+      <div class"field">
+       <%= label :fecha_fin, "Hasta" %>
+      </div>
+
+      <div class"field">
+       <%= text_field_tag :fecha_fin, nil, readonly: true %>        
+      </div>
+    </div>
+  </form>  
+</div> 
+
+<div class="field">
+   <%= label :Area, "Area destino" %> <br />   
+</div>  
+<div class="field">
+    <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>
+</div>
+
+<div class="field"> 
+<%= label_tag :clase, "Clase" %><br>
+<%= collection_select(:categoria, "clase_id", Clase.joins(:partida_parcial => [:partida_principal]).where("clases.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo"), "id", "combinar_codigo_nombre", :include_blank => "Seleccione...") %>   
+</div>           
+       
+<div>
+  <%= hidden_field_tag 'bien_de_consumo_id' %>
+  <%= hidden_field_tag 'area_id' %>
+</div>
+
+<div class="field">
+  <input type="button" value="Obtener" class="" id="obtener_lista_de_consumos_por_fecha_destino_y_clase">        
+</div>
+
+<div id="tabla_bienes">    
+  <%= render 'form_tabla_bienes' %>   
+</div> 
+
+

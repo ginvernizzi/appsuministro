@@ -23,8 +23,10 @@
           <ul class="dropdown-menu" role="menu">
             <li><%= link_to "Recepciones finalizadas por documento ppal.", recepciones_de_bien_de_consumo_en_stock_index_path %></li>  
             <li><%= link_to "Recepciones finalizadas por bien de consumo", ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha_recepciones_de_bien_de_consumo_en_stock_index_path %></li>   
+            <li><%= link_to "Items finalizados por fecha", ver_recepciones_finalizadas_por_fecha_recepciones_de_bien_de_consumo_en_stock_index_path    %></li> 
             <li><%= link_to "Stock total",items_stock_path %></li> 
-            <li><%= link_to "Stock por fecha",reportes_a_fecha_path %></li>             
+            <li><%= link_to "Stock por fecha",reportes_a_fecha_path %></li>       
+            <li><%= link_to "Items consumidos por destino y clase",ver_consumos_por_fecha_destino_y_clase_consumos_directo_path %></li>                         
             <li><%= link_to "Consumos por Bien, Destino y Fecha ",ver_consumos_por_codigo_destino_fecha_consumos_directo_path %></li>  
             <li><%= link_to "Consumos por Obra Proyecto",  ver_consumos_por_obra_proyecto_y_fecha_consumos_directo_path  %></li>  
             <li><%= link_to "Consumos por Partida parcial, Destino y Fecha ", ver_consumos_por_partida_parcial_destino_fecha_consumos_directo_path %></li>
@@ -80,9 +82,7 @@
             <% if EtiquetaDeImplementacion.nil? && EtiquetaDeImplementacion.all.first.descripcion == "PRODUCCION"  %>
                 <h5><span class="etiqueta_produccion">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> </h5>
              <% else %>
-                <h5><span class="etiqueta_testing">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> 
-              </h5>
-      
+                <h5><span class="etiqueta_testing">  <%="#{EtiquetaDeImplementacion.all.first.descripcion unless EtiquetaDeImplementacion.nil? }" %> </span> </h5>      
              <% end %>
         </li>
       <% end %>

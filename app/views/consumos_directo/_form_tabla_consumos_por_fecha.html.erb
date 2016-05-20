@@ -1,0 +1,29 @@
+<% if !@consumos_directo.nil? && @consumos_directo.length > 0 %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>número</th>
+      <th>Area</th>
+      <th>Obra proyecto</th>
+      <th>Origen</th>
+      <th>Recepción número</th>
+      <th>Ver</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @consumos_directo.each do |consumo_directo| %>
+      <tr>
+        <td><%= consumo_directo.fecha.strftime("%d/%m/%Y") %></td>
+        <td><%= consumo_directo.id %></td>
+        <td><%= consumo_directo.area.nombre %></td>
+        <td><%= consumo_directo.obra_proyecto.descripcion %></td>
+        <td><%= consumo_desde_recepcion?(consumo_directo.id) ? "Desde recepcion" : "Manual"  %></td>
+        <td><%= consumo_desde_recepcion?(consumo_directo.id) ? RecepcionParaConsumoDirecto.where("consumo_directo_id = ?", consumo_directo.id).first.recepcion_de_bien_de_consumo.id : "" %></td>
+        <td><%= link_to 'Ver', consumo_directo_path(consumo_directo.id) %></td>  
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

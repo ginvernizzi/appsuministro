@@ -49,7 +49,6 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
 
   def ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha
-
   end
 
   def traer_recepciones_por_bien_y_fecha
@@ -63,13 +62,34 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
       if !bien_id.nil? && !bien_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
           @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin);
           if @recepciones_de_bien_de_consumo.count > 0
-             @recepciones_de_bien_de_consumo[0].fecha_inicio = fecha_inicio;
-             @recepciones_de_bien_de_consumo[0].fecha_fin = fecha_fin;
+             @recepciones_de_bien_de_consumo[0].fecha_inicio_impresion = fecha_inicio;
+             @recepciones_de_bien_de_consumo[0].fecha_fin_impresion = fecha_fin;
              @recepciones_de_bien_de_consumo[0].bien_de_consumo_id = params[:bien_id];
           end     
       end
 
       rescue Exception
+    end
+          
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
+  def ver_recepciones_finalizadas_por_fecha
+  end
+
+  def traer_recepciones_finalizadas_por_fecha 
+    fecha_inicio =  DateTime.parse(params[:fecha_inicio]).beginning_of_day()    
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()     
+    @bienes_de_consumo_de_recepcion = nil
+
+    if !fecha_inicio.nil? && !fecha_fin.nil?
+        @bienes_de_consumo_de_recepcion = query_recepciones_finalizadas_por_fecha(fecha_inicio, fecha_fin);
+        if @bienes_de_consumo_de_recepcion.count > 0
+           @bienes_de_consumo_de_recepcion[0].fecha_inicio_impresion = fecha_inicio;
+           @bienes_de_consumo_de_recepcion[0].fecha_fin_impresion = fecha_fin;
+        end     
     end
           
     respond_to do |format|   
@@ -94,7 +114,7 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     send_file ( file )  
   end
 
-    def imprimir_formulario_recepciones_por_documento_principal    
+  def imprimir_formulario_recepciones_por_documento_principal    
     documento_principal =params[:documento_principal]       
 
     @recepciones_de_bien_de_consumo = RecepcionDeBienDeConsumo.new
@@ -107,6 +127,22 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     @generador.generar_pdf_recepcion(@recepciones_de_bien_de_consumo)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_recepcion_pdf)
     send_file ( file )         
+  end
+
+  def imprimir_formulario_recepciones_finalizadas_por_fecha   
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
+
+    @bienes_de_consumo_de_recepcion = RecepcionDeBienDeConsumo.new
+
+    if !fecha_inicio.nil? && !fecha_fin.nil?
+      @bienes_de_consumo_de_recepcion = query_recepciones_finalizadas_por_fecha(fecha_inicio, fecha_fin);
+    end
+
+    @generador = GeneradorDeImpresionRecepcion.new
+    @generador.generar_pdf_recepciones_finalizadas_por_fecha(@bienes_de_consumo_de_recepcion)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_recepciones_finalizadas_por_fecha_pdf)
+    send_file ( file )  
   end
 
   private
@@ -124,6 +160,10 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
   def query_recepciones_finalizadas_por_bien_y_fecha(bien_id, fecha_inicio, fecha_fin)
     #Estado finalizado = 8
     RecepcionDeBienDeConsumo.joins(:bienes_de_consumo_de_recepcion).where("bienes_de_consumo_de_recepcion.bien_de_consumo_id = ? AND fecha BETWEEN ? AND ? AND estado = ? ", bien_id, fecha_inicio, fecha_fin, 8)
+  end
+
+  def query_recepciones_finalizadas_por_fecha(fecha_inicio, fecha_fin)
+    BienDeConsumoDeRecepcion.joins(:recepcion_de_bien_de_consumo).where("recepciones_de_bien_de_consumo.estado = ? AND recepciones_de_bien_de_consumo.fecha BETWEEN ? AND ?", 8, fecha_inicio, fecha_fin)
   end
 
   # Use callbacks to share common setup or constraints between actions.
