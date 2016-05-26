@@ -8,7 +8,7 @@
       <th>Obra proyecto</th>
       <th>Origen</th>
       <th>Recepción número</th>
-      <th>Ver</th>
+      <th></th>
     </tr>
   </thead>
 
@@ -19,8 +19,9 @@
         <td><%= consumo_directo.id %></td>
         <td><%= consumo_directo.area.nombre %></td>
         <td><%= consumo_directo.obra_proyecto.descripcion %></td>
-        <td><%= consumo_desde_recepcion?(consumo_directo.id) ? "Desde recepcion" : "Manual"  %></td>
-        <td><%= consumo_desde_recepcion?(consumo_directo.id) ? RecepcionParaConsumoDirecto.where("consumo_directo_id = ?", consumo_directo.id).first.recepcion_de_bien_de_consumo.id : "" %></td>
+        <td><%= consumo_directo.recepciones_de_bien_de_consumo[0] ? "Desde recepción" : "Manual"  %></td>
+        <td><%= consumo_directo.recepciones_de_bien_de_consumo[0] ? consumo_directo.recepciones_de_bien_de_consumo[0].id : ""  %></td>
+        <td></td>
         <td><%= link_to 'Ver', consumo_directo_path(consumo_directo.id) %></td>  
       </tr>
     <% end %>

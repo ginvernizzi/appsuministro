@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503182003) do
+ActiveRecord::Schema.define(version: 20160526174733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,6 +101,14 @@ ActiveRecord::Schema.define(version: 20160503182003) do
 
   add_index "consumos_directo", ["area_id"], name: "index_consumos_directo_on_area_id", using: :btree
   add_index "consumos_directo", ["obra_proyecto_id"], name: "index_consumos_directo_on_obra_proyecto_id", using: :btree
+
+  create_table "consumos_directo_recepciones_de_bien_de_consumo", id: false, force: :cascade do |t|
+    t.integer "recepcion_de_bien_de_consumo_id"
+    t.integer "consumo_directo_id"
+  end
+
+  add_index "consumos_directo_recepciones_de_bien_de_consumo", ["consumo_directo_id"], name: "index_recep_para_cons_dir_on_consumo_directo_id", using: :btree
+  add_index "consumos_directo_recepciones_de_bien_de_consumo", ["recepcion_de_bien_de_consumo_id"], name: "index_recep_para_cons_dir_on_recep_de_bien_de_consumo_id", using: :btree
 
   create_table "costos_de_bien_de_consumo", force: :cascade do |t|
     t.date     "fecha"
@@ -248,14 +256,6 @@ ActiveRecord::Schema.define(version: 20160503182003) do
     t.text     "descripcion_rechazo"
   end
 
-  create_table "recepciones_para_consumo_directo", id: false, force: :cascade do |t|
-    t.integer "recepcion_de_bien_de_consumo_id"
-    t.integer "consumo_directo_id"
-  end
-
-  add_index "recepciones_para_consumo_directo", ["consumo_directo_id"], name: "index_recep_para_cons_dir_on_consumo_directo_id", using: :btree
-  add_index "recepciones_para_consumo_directo", ["recepcion_de_bien_de_consumo_id"], name: "index_recep_para_cons_dir_on_recep_de_bien_de_consumo_id", using: :btree
-
   create_table "reemplazos_bdc", force: :cascade do |t|
     t.integer  "bdc_viejo_id"
     t.integer  "bdc_nuevo_id"
@@ -317,10 +317,10 @@ ActiveRecord::Schema.define(version: 20160503182003) do
   add_foreign_key "bienes_de_consumo", "clases"
   add_foreign_key "clases", "partidas_parciales"
   add_foreign_key "consumos_directo", "areas"
+  add_foreign_key "consumos_directo_recepciones_de_bien_de_consumo", "consumos_directo"
+  add_foreign_key "consumos_directo_recepciones_de_bien_de_consumo", "recepciones_de_bien_de_consumo"
   add_foreign_key "depositos", "areas"
   add_foreign_key "partidas_parciales", "partidas_principales"
   add_foreign_key "partidas_principales", "incisos"
-  add_foreign_key "recepciones_para_consumo_directo", "consumos_directo"
-  add_foreign_key "recepciones_para_consumo_directo", "recepciones_de_bien_de_consumo"
   add_foreign_key "transferencias", "areas"
 end

@@ -6,6 +6,7 @@ class ConsumoDirecto < ActiveRecord::Base
   belongs_to :deposito
   belongs_to :persona  
   has_many :bienes_de_consumo_para_consumir
+  has_and_belongs_to_many :recepciones_de_bien_de_consumo, :class_name => 'RecepcionDeBienDeConsumo'
 
   
   validates :fecha, presence: true

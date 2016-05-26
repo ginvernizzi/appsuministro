@@ -8,7 +8,7 @@ class ConsumosDirectoController < ApplicationController
   # GET /consumos_directo.json
   def index
     estado_activo = 1 #estado activo
-    @consumos_directo = ConsumoDirecto.where("estado = ?", estado_activo).order(:id => "desc")
+    @consumos_directo = ConsumoDirecto.where("estado = ?", estado_activo).includes(:area, :obra_proyecto, :recepciones_de_bien_de_consumo).order(:id => "desc")
     #@bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.estado = ?", estado_activo)  
   end
 
@@ -435,6 +435,28 @@ end
     end 
   end  
   ################
+
+  def imprimir_formulario_consumos_por_fecha_destino_y_clase 
+    area_id = params[:area_id]
+    clase = params[:clase]
+    fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
+   
+    @bien_de_consumo_para_consumir = nil
+    query_consumos_por_fecha_destino_y_clase(area_id, clase, fecha_inicio, fecha_fin)
+            
+    if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
+      @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
+      @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
+      @bien_de_consumo_para_consumir[0].area_id_impresion = area_id;
+      @bien_de_consumo_para_consumir[0].clase_impresion = clase;
+    end    
+
+    @generador = GeneradorDeImpresion.new
+    @generador.items_dados_de_baja_por_area_destino_y_clase(@bien_de_consumo_para_consumir)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
+    send_file ( file )         
+  end
 
   def imprimir_formulario_consumos_por_codigo_destino_y_fecha
     area_id = params[:area_id]

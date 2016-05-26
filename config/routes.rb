@@ -257,6 +257,10 @@ Rails.application.routes.draw do
 
                                                             get ':controller(/:action(/:id))'
 
+  post 'consumos_directo/area_id/:area_id/clase/(:clase)/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_consumos_por_fecha_destino_y_clase/',  
+                                                            to: 'consumos_directo#imprimir_formulario_consumos_por_fecha_destino_y_clase',
+                                                            as: 'imprimir_formulario_consumos_por_fecha_destino_y_clase'                                                            
+
   resources :obras_proyectos  
 
   resources :recepciones_de_bien_de_consumo_a_evaluar, only: [:index , :show] do 
