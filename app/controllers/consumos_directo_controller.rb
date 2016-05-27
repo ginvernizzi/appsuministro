@@ -71,7 +71,8 @@ class ConsumosDirectoController < ApplicationController
               if  @consumo_directo.save
                 #Cambio estado recepcion a finalizada por consumo inmediato
                 raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "8") 
-                raise ActiveRecord::Rollback unless RecepcionParaConsumoDirecto.create(recepcion_de_bien_de_consumo: recepcion_de_bien_de_consumo, consumo_directo:@consumo_directo) 
+                #raise ActiveRecord::Rollback unless RecepcionParaConsumoDirecto.create(recepcion_de_bien_de_consumo: recepcion_de_bien_de_consumo, consumo_directo:@consumo_directo) 
+                raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.consumos_directo << @consumo_directo
                 flash[:notice] = 'Consumo creado exitosamente'
                 if existen_stocks_minimos_superados
                   flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks faltante'       
