@@ -18,7 +18,7 @@
       <td><%= recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") %></td>        
       <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.tipo_de_documento.nombre unless recepcion_de_bien_de_consumo.documento_principal.nil? %></td>
       <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento unless recepcion_de_bien_de_consumo.documento_principal.nil? %></td>    
-      <td><%= genero_un_consumo_directo?(recepcion_de_bien_de_consumo.id) ? RecepcionParaConsumoDirecto.where("recepcion_de_bien_de_consumo_id = ?", recepcion_de_bien_de_consumo.id).first.consumo_directo.id : "" %></td>
+      <td><%= recepcion_de_bien_de_consumo.consumos_directo[0] ? recepcion_de_bien_de_consumo.consumos_directo[0].id : ""  %></td>
         <td><%= link_to 'Ver',  recepciones_de_bien_de_consumo_en_stock_path(recepcion_de_bien_de_consumo)%></td>       
     </tr>
     <% end %>
