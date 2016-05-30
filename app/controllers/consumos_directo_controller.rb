@@ -164,7 +164,7 @@ class ConsumosDirectoController < ApplicationController
   def destroy
     ActiveRecord::Base.transaction do      
       begin              
-        RecepcionParaConsumoDirecto.all.any? {|h| h.consumo_directo.id ==  @consumo_directo.id } ? @recepcion = RecepcionParaConsumoDirecto.all.where("consumo_directo_id = ?", @consumo_directo.id) : @recepcion = nil
+        @consumo_directo.recepciones_de_bien_de_consumo[0] ? @recepcion = @consumo_directo.recepciones_de_bien_de_consumo[0] : @recepcion = nil
 
         @consumo_directo.bienes_de_consumo_para_consumir.each do |bien|
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
@@ -179,8 +179,8 @@ class ConsumosDirectoController < ApplicationController
       
         respond_to do |format|
           if @consumo_directo.update(estado: 2) 
-            if !@recepcion.nil? && !@recepcion.empty? 
-              raise ActiveRecord::Rollback unless @recepcion.first.recepcion_de_bien_de_consumo.update(estado: 7) 
+            if !@recepcion.nil?
+              raise ActiveRecord::Rollback unless @recepcion.update(estado: 7) 
             end
             format.html { redirect_to consumos_directo_url, notice: 'El consumo fué dado de baja exitosamante' }
             format.json { head :no_content }

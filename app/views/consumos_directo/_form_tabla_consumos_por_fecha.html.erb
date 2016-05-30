@@ -8,7 +8,7 @@
       <th>Obra proyecto</th>
       <th>Origen</th>
       <th>Recepción número</th>
-      <th></th>
+      <th span= "2"></th>
     </tr>
   </thead>
 
@@ -22,7 +22,8 @@
         <td><%= consumo_directo.recepciones_de_bien_de_consumo[0] ? "Desde recepción" : "Manual"  %></td>
         <td><%= consumo_directo.recepciones_de_bien_de_consumo[0] ? consumo_directo.recepciones_de_bien_de_consumo[0].id : ""  %></td>
         <td></td>
-        <td><%= link_to 'Ver', consumo_directo_path(consumo_directo.id) %></td>  
+        <td><%= link_to 'Ver', consumo_directo_path(consumo_directo.id) %></td> 
+        <td><%= link_to 'Eliminar', consumo_directo, method: :delete, data: { confirm: '¿Estas seguro?' } %></td> 
       </tr>
     <% end %>
   </tbody>
