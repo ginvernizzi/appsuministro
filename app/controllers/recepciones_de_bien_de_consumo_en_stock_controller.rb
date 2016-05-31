@@ -47,7 +47,6 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
     send_file ( file ) 
   end
 
-
   def ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha
   end
 
@@ -89,6 +88,27 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
         if @bienes_de_consumo_de_recepcion.count > 0
            @bienes_de_consumo_de_recepcion[0].fecha_inicio_impresion = fecha_inicio;
            @bienes_de_consumo_de_recepcion[0].fecha_fin_impresion = fecha_fin;
+        end     
+    end
+          
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
+  def ver_recepciones_finalizadas_por_fecha_por_recepcion
+  end
+
+  def traer_recepciones_finalizadas_por_fecha_por_recepcion 
+    fecha_inicio =  DateTime.parse(params[:fecha_inicio]).beginning_of_day()    
+    fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()     
+    @recepciones_de_bien_de_consumo = nil
+
+    if !fecha_inicio.nil? && !fecha_fin.nil?
+        @recepciones_de_bien_de_consumo = query_recepciones_finalizadas_por_fecha_por_recepcion(fecha_inicio, fecha_fin);
+        if @recepciones_de_bien_de_consumo.count > 0
+           @recepciones_de_bien_de_consumo[0].fecha_inicio_impresion = fecha_inicio;
+           @recepciones_de_bien_de_consumo[0].fecha_fin_impresion = fecha_fin;
         end     
     end
           
@@ -164,6 +184,11 @@ class RecepcionesDeBienDeConsumoEnStockController < ApplicationController
 
   def query_recepciones_finalizadas_por_fecha(fecha_inicio, fecha_fin)
     BienDeConsumoDeRecepcion.joins(:recepcion_de_bien_de_consumo).where("recepciones_de_bien_de_consumo.estado = ? AND recepciones_de_bien_de_consumo.fecha BETWEEN ? AND ?", 8, fecha_inicio, fecha_fin)
+  end
+
+  def query_recepciones_finalizadas_por_fecha_por_recepcion(fecha_inicio, fecha_fin)
+    #Estado finalizado = 8
+    RecepcionDeBienDeConsumo.joins(:bienes_de_consumo_de_recepcion).where("fecha BETWEEN ? AND ? AND estado = ? ", fecha_inicio, fecha_fin, 8)
   end
 
   # Use callbacks to share common setup or constraints between actions.

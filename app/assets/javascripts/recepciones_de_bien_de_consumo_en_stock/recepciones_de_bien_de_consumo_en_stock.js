@@ -90,13 +90,25 @@ $(document).on("ready page:load", function() {
 
     
     $("#traer_recepciones_finalizadas_por_fecha").click(function() {            
+      var url = "/recepciones_de_bien_de_consumo_en_stock/traer_recepciones_finalizadas_por_fecha"
+      traer_recepciones_inalizadas_por_fecha(url);
+
+    });
+
+    $("#traer_recepciones_finalizadas_por_fecha_por_recepcion").click(function() {            
+      var url = "/recepciones_de_bien_de_consumo_en_stock/traer_recepciones_finalizadas_por_fecha_por_recepcion"
+      traer_recepciones_inalizadas_por_fecha(url);
+    });
+
+    function traer_recepciones_inalizadas_por_fecha(url_submit)
+    {
       var fecha_inicio = $("#fecha_inicio").val();
       var fecha_fin = $("#fecha_fin").val();
 
       $.ajax({
         type: "get",
         dataType: "json",
-        url: "/recepciones_de_bien_de_consumo_en_stock/traer_recepciones_finalizadas_por_fecha",        
+        url: url_submit,        
         data: { fecha_inicio:fecha_inicio, fecha_fin:fecha_fin },
         success: function(data){            
               if (data  == "")
@@ -108,8 +120,8 @@ $(document).on("ready page:load", function() {
               alert("Hay campos incompletos");
               blanquear_campos();
             }                          
-        });     
-    });
+        }); 
+    }
 
     function blanquear_campos() 
     {

@@ -150,7 +150,9 @@ Rails.application.routes.draw do
         get 'ver_recepciones_finalizadas_por_bien_de_consumo_y_fecha'                 
         get 'traer_recepciones_por_bien_y_fecha'      
         get 'ver_recepciones_finalizadas_por_fecha'
-        get 'traer_recepciones_finalizadas_por_fecha'                 
+        get 'traer_recepciones_finalizadas_por_fecha' 
+        get 'ver_recepciones_finalizadas_por_fecha_por_recepcion'
+        get 'traer_recepciones_finalizadas_por_fecha_por_recepcion'                
       end
   end
 
@@ -166,6 +168,10 @@ Rails.application.routes.draw do
   post 'recepciones_de_bien_de_consumo_en_stock/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_finalizadas_por_fecha/',  
                                                             to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_finalizadas_por_fecha',
                                                             as: 'imprimir_formulario_recepciones_finalizadas_por_fecha'
+                                                            
+  post 'recepciones_de_bien_de_consumo_en_stock/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_recepciones_por_fecha_por_recepcion/',  
+                                                            to: 'recepciones_de_bien_de_consumo_en_stock#imprimir_formulario_recepciones_por_fecha_por_recepcion',
+                                                            as: 'imprimir_formulario_recepciones_por_fecha_por_recepcion'
 
 
   resources :recepciones_de_bien_de_consumo_consumidas, only: [:index , :show] 

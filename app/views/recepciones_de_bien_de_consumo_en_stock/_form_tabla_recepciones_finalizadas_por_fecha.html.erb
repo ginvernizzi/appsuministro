@@ -1,0 +1,4 @@
+<% if !@recepciones_de_bien_de_consumo.nil? && @recepciones_de_bien_de_consumo.length > 0 %>
+  <%= render "form_tabla_recepciones_de_bien" %> 
+    <td><%= link_to 'Imprimir', imprimir_formulario_recepciones_por_fecha_por_recepcion_path(@recepciones_de_bien_de_consumo.first().fecha_inicio_impresion, @recepciones_de_bien_de_consumo.first().fecha_fin_impresion)%></td>    
+<% end %>
