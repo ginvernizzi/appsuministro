@@ -48,6 +48,7 @@ GEM
       will_paginate
     builder (3.2.2)
     byebug (8.2.1)
+    cancancan (1.14.0)
     capistrano (3.4.0)
       i18n
       rake (>= 10.0.0)
@@ -251,6 +252,7 @@ DEPENDENCIES
   bootstrap-sass (= 3.2.0.0)
   bootstrap-will_paginate (= 0.0.9)
   byebug
+  cancancan (~> 1.10)
   capistrano-bundler
   capistrano-db-tasks
   capistrano-passenger
