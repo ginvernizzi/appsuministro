@@ -8,7 +8,7 @@ class ConsumosDirectoController < ApplicationController
   # GET /consumos_directo.json
   def index
     estado_activo = 1 #estado activo
-    @consumos_directo = ConsumoDirecto.where("estado = ?", estado_activo).includes(:area, :obra_proyecto, :recepciones_de_bien_de_consumo).order(:id => "desc")
+    @consumos_directo = ConsumoDirecto.where("estado = ?", estado_activo).includes(:area, :obra_proyecto, :recepciones_de_bien_de_consumo).order(:id => "desc").paginate(:page => params[:page], :per_page => 30)
     #@bienes_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.estado = ?", estado_activo)  
   end
 
