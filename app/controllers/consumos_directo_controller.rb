@@ -481,6 +481,10 @@ end
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, fecha_inicio, fecha_fin)        
     end
 
+    @bien_de_consumo_para_consumir.each do |i|
+      i.consumo_directo.recepciones_de_bien_de_consumo[0] ? i.descripcion_de_recepcion = i.consumo_directo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).first.descripcion : nil       
+    end
+
     @generador = GeneradorDeImpresion.new
 
     @generador.generar_pdf_items_consumo_directo(@bien_de_consumo_para_consumir)
@@ -518,6 +522,10 @@ end
       pparcial = codigo_pp[2].to_s
       puts "************ Solo el BIEN!"
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", inciso, ppal, pparcial, fecha_inicio, fecha_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    end
+
+    @bien_de_consumo_para_consumir.each do |i|
+      i.consumo_directo.recepciones_de_bien_de_consumo[0] ? i.descripcion_de_recepcion = i.consumo_directo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).first.descripcion : nil       
     end
             
     @generador = GeneradorDeImpresion.new
@@ -676,14 +684,17 @@ end
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
       @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", obra_proyecto_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
-           @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
-           @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
-           @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;           
+          @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
+          @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
+          @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;    
+
+          @bien_de_consumo_para_consumir.each do |i|
+            i.consumo_directo.recepciones_de_bien_de_consumo[0] ? i.descripcion_de_recepcion = i.consumo_directo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).first.descripcion : nil       
+          end
         end
     end
 
     @generador = GeneradorDeImpresionItemsDeConsumo.new
-
     @generador.generar_pdf_items_consumo_directo(@bien_de_consumo_para_consumir)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
     send_file ( file )         

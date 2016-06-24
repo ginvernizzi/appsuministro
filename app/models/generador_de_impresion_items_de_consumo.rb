@@ -24,7 +24,7 @@ class GeneradorDeImpresionItemsDeConsumo
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }				
 				s.add_column("AREA_DESTINO") { |i| i.consumo_directo.area.nombre }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }
-				s.add_column("DESCRIPCION") { |i| i.consumo_directo.recepciones_de_bien_de_consumo ? i.consumo_directo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).first.descripcion : "" }					 			
+				s.add_column("DESCRIPCION") { |i| i.descripcion_de_recepcion }					 			
 			end
 		end
 
