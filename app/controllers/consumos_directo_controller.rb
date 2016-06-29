@@ -428,7 +428,6 @@ end
       @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
       @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
       @bien_de_consumo_para_consumir[0].area_id_impresion = area_id;
-      #@bien_de_consumo_para_consumir[0].clase = clase;
     end    
      
     respond_to do |format|   
