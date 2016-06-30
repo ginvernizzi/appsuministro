@@ -14,7 +14,7 @@ include ActionView::Helpers::NumberHelper
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", Time.now.strftime("%d/%m/%Y"))	
 			
-			r.add_table("TABLA_ITEMS", @clases, :header=>true) do |s|								
+			r.add_table("TABLA_ITEMS", @clases) do |s|								
 				s.add_column("PARTIDA_PARCIAL") { |i| i.partida_parcial.nombre }
 				s.add_column("CODIGO") { |i| obtener_codigo_de_clase(i.id) }
 				s.add_column("NOMBRE") { |i| i.nombre }	

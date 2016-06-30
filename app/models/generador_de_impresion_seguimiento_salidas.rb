@@ -14,7 +14,7 @@ class GeneradorDeImpresionSeguimientoSalidas
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", I18n.l(DateTime.now))														
 
-			r.add_table("TABLA_SEGUIMIENTO_DE_SALIDA", @bienes, :header=>true) do |s|	
+			r.add_table("TABLA_SEGUIMIENTO_DE_SALIDA", @bienes) do |s|	
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }								
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }							
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }	

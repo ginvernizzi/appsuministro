@@ -14,7 +14,7 @@ class GeneradorDeImpresionRecepcion
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", DateTime.now.strftime("%d/%m/%Y"))				
 
-			r.add_table("TABLA_RECEPCIONES", recepciones, :header=>true) do |s|
+			r.add_table("TABLA_RECEPCIONES", recepciones) do |s|
 				s.add_column("NUMERO") { |i| i.id }
 				s.add_column("FECHA") { |i| i.fecha }
 				s.add_column("TIPO_DE_DOCUMENTO") { |i| i.documento_principal.documento_de_recepcion.tipo_de_documento.nombre }
@@ -46,12 +46,12 @@ class GeneradorDeImpresionRecepcion
 
 			r.add_field("TOTAL_GENERAL", number_to_currency(obtener_total_general_de_bienes_de_consumo(recepcion.bienes_de_consumo_de_recepcion), :precision => 3))										
 
-			r.add_table("TABLA_DOCUMENTOS_SECUNDARIOS", recepcion.documentos_secundario, :header=>true) do |r|
+			r.add_table("TABLA_DOCUMENTOS_SECUNDARIOS", recepcion.documentos_secundario) do |r|
 				r.add_column("TIPO_SECUNDARIO") { |i| i.documento_de_recepcion.tipo_de_documento.nombre  }
 				r.add_column("DOCUMENTO_SECUNDARIO") { |i| i.documento_de_recepcion.numero_de_documento }				
 			end
 
-			r.add_table("TABLA_BIENES", @bienes, :header=>true) do |r|			
+			r.add_table("TABLA_BIENES", @bienes) do |r|			
 				r.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				r.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }
 				r.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
@@ -78,7 +78,7 @@ class GeneradorDeImpresionRecepcion
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|	
 			r.add_field("FECHA", DateTime.now.strftime("%d/%m/%Y"))																			
 
-			r.add_table("TABLA_RECEPCIONES_FINALIZADAS", @bienes, :header=>true) do |r|			
+			r.add_table("TABLA_RECEPCIONES_FINALIZADAS", @bienes) do |r|			
 				r.add_column("FECHA_CONSUMO") { |i| i.recepcion_de_bien_de_consumo.fecha.strftime("%d/%m/%Y") }		
 				r.add_column("COMPROBANTE") { |i| i.recepcion_de_bien_de_consumo.id }			
 				r.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre)  }						

@@ -16,7 +16,7 @@ class GeneradorDeImpresionItemsDeConsumo
 			r.add_field("FECHA", I18n.l(DateTime.now))
 			r.add_field("OBRA_PROYECTO", bienes[0].consumo_directo.obra_proyecto.descripcion)
 								
-			r.add_table("TABLA_CONSUMO_DIRECTO", bienes, :header=>true) do |s|								
+			r.add_table("TABLA_CONSUMO_DIRECTO", bienes) do |s|								
 				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha.strftime("%d/%m/%Y") }
 				s.add_column("COMPROBANTE") { |i| i.consumo_directo.id }							
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							

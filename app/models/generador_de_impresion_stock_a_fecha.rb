@@ -18,7 +18,7 @@ class GeneradorDeImpresionStockAFecha
 			r.add_field("AREA", deposito.area.nombre)
 			r.add_field("DEPOSITO", deposito.nombre)
 
-			r.add_table("TABLA_ITEM_STOCK", @items, :header=>true) do |s|				
+			r.add_table("TABLA_ITEM_STOCK", @items) do |s|				
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							

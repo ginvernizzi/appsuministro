@@ -16,7 +16,7 @@ include ApplicationHelper
 			r.add_field("NUMERO", transferencia.id)
 			r.add_field("DEPOSITO", transferencia.deposito.nombre)
 			
-			r.add_table("TABLA_TRANSFERENCIA", @bienes, :header=>true) do |s|								
+			r.add_table("TABLA_TRANSFERENCIA", @bienes) do |s|								
 				s.add_column("CLASE") { |i| i.bien_de_consumo.nombre }
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }

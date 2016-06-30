@@ -15,7 +15,7 @@ class GeneradorDeImpresion
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", I18n.l(recepcion.fecha))				
 
-			r.add_table("TABLA_ITEM_STOCK", @bienes, :header=>true) do |s|
+			r.add_table("TABLA_ITEM_STOCK", @bienes) do |s|
 				s.add_column("TIPO_DOC_PPAL") { recepcion.documento_principal.documento_de_recepcion.tipo_de_documento.nombre }
 				s.add_column("NUMERO_DOC_PPAL") { recepcion.documento_principal.documento_de_recepcion.numero_de_documento }
 				s.add_column("NUMERO_RECECPCION") { recepcion.id }
@@ -44,7 +44,7 @@ class GeneradorDeImpresion
 			r.add_field("OBRAPROYECTO", consumo.obra_proyecto.descripcion)
 			
 
-			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes, :header=>true) do |s|								
+			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes) do |s|								
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
@@ -68,7 +68,7 @@ class GeneradorDeImpresion
 			r.add_field("FECHA", I18n.l(DateTime.now))
 			r.add_field("AREA", bienes[0].deposito.area.nombre)
 								
-			r.add_table("TABLA_CONSUMO_DIRECTO", bienes, :header=>true) do |s|								
+			r.add_table("TABLA_CONSUMO_DIRECTO", bienes) do |s|								
 				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha.strftime("%d/%m/%Y") }
 				s.add_column("COMPROBANTE") { |i| i.consumo_directo.id }							
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
