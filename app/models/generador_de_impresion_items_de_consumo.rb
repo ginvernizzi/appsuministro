@@ -15,6 +15,7 @@ class GeneradorDeImpresionItemsDeConsumo
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", I18n.l(DateTime.now))
 			r.add_field("OBRA_PROYECTO", bienes[0].consumo_directo.obra_proyecto.descripcion)
+			r.add_field("COSTO_TOTAL_GENERAL", obtener_total_general(bienes))
 								
 			r.add_table("TABLA_CONSUMO_DIRECTO", bienes) do |s|								
 				s.add_column("FECHA_CONSUMO") { |i| i.consumo_directo.fecha.strftime("%d/%m/%Y") }
@@ -24,6 +25,8 @@ class GeneradorDeImpresionItemsDeConsumo
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }				
 				s.add_column("AREA_DESTINO") { |i| i.consumo_directo.area.nombre }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }
+				s.add_column("COSTO") { |i| number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo_id).last.costo, precision: 3) }
+				s.add_column("COSTO_TOTAL") { |i| number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo_id).last.costo, i.cantidad), precision: 3) }
 				s.add_column("DESCRIPCION") { |i| i.descripcion_de_recepcion }					 			
 			end
 		end

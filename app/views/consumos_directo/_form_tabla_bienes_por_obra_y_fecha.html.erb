@@ -8,6 +8,8 @@
       <th>Nombre</th>
       <th>Destino</th>
       <th>Cantidad</th>
+      <th>Costo</th>
+      <th style="text-align: right">Costo total</th>
       <th> Ver </th>
     </tr>
   </thead>  
@@ -19,7 +21,9 @@
             <td><%= obtener_codigo_completo_bien_de_consumo(bien.bien_de_consumo.nombre) %></td>
             <td><%= bien.bien_de_consumo.nombre %></td>
             <td><%= bien.consumo_directo.area.nombre  %></td>        
-            <td><%= bien.cantidad %></td>    
+            <td><%= bien.cantidad %></td>
+            <td><%= number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien.bien_de_consumo_id).last.costo, precision: 3) %></td>  
+            <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien.bien_de_consumo_id).last.costo, bien.cantidad), precision: 3) %> </td>   
             <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>    
           </tr>
         <% end %>    
@@ -29,4 +33,8 @@
         <% end %>        
     </tbody>      
 </table>
+    <div  style="text-align:right;">
+      <%= label_tag :total_general, "Costo total general: " %>
+      <%= obtener_total_general(@bien_de_consumo_para_consumir) %>
+    </div> 
 <% end %>
