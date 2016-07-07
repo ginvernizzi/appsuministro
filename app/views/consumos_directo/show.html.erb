@@ -26,6 +26,7 @@
       <th>Descripcion adicional</th>
       <th>Cantidad</th>
       <th>Costo</th>
+      <th style="text-align: right">Costo total</th>
     </tr>
   </thead>
   <tbody>
@@ -37,7 +38,8 @@
           <td><%= bcc.bien_de_consumo.nombre %> </td>          
           <td><%= bcc.bien_de_consumo.detalle_adicional %> </td>       
           <td><%= bcc.cantidad %> </td>
-          <td><%= bcc.costo %> </td>
+          <td><%= number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?",bcc.bien_de_consumo.id).last.costo, precision: 3) %></td>  
+          <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bcc.bien_de_consumo.id).last.costo, bcc.cantidad), precision: 3) %> </td>  
         </tr>    
         <%end%>
     <% else %>
@@ -49,6 +51,10 @@
   </tbody>
 </table>
 </div>
+<div  style="text-align:right;">
+      <%= label_tag :total_general, "Costo total general: " %>
+      <%= obtener_total_general(@consumo_directo.bienes_de_consumo_para_consumir) %>
+  </div>
 <br />
   <div>    
      <td><%= link_to 'Imprimir', imprimir_formulario_consumos_directo_path(@consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %>        

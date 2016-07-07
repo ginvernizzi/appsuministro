@@ -428,6 +428,7 @@ end
       @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
       @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
       @bien_de_consumo_para_consumir[0].area_id_impresion = area_id;
+      @bien_de_consumo_para_consumir[0].clase_impresion = clase;
     end    
      
     respond_to do |format|   
@@ -454,7 +455,7 @@ end
 
     @generador = GeneradorDeImpresion.new
     @generador.items_dados_de_baja_por_area_destino_y_clase(@bien_de_consumo_para_consumir)
-    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
+    file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_consumo_directo_items_por_destino_y_clase_pdf)
     send_file ( file )         
   end
 
