@@ -7,7 +7,7 @@
       <th>Tipo de Documento</th>
       <th>Documento principal</th>
       <th>Consumo generado</th>
-      <th colspan="1"> </th>
+      <th colspan="2"> </th>
     </tr>
   </thead>
 
@@ -20,6 +20,7 @@
       <td><%= recepcion_de_bien_de_consumo.documento_principal.documento_de_recepcion.numero_de_documento unless recepcion_de_bien_de_consumo.documento_principal.nil? %></td>    
       <td><%= recepcion_de_bien_de_consumo.consumos_directo[0] ? recepcion_de_bien_de_consumo.consumos_directo[0].id : ""  %></td>
         <td><%= link_to 'Ver',  recepciones_de_bien_de_consumo_en_stock_path(recepcion_de_bien_de_consumo)%></td>       
+        <td><%= link_to 'Eliminar', recepcion_de_bien_de_consumo , method: :delete, data: { confirm: '¿Esta seguro?' } %> </td>
     </tr>
     <% end %>
   </tbody>

@@ -11,6 +11,7 @@ class RecepcionDeBienDeConsumo < ActiveRecord::Base
 
   has_many :documentos_secundario 
   has_and_belongs_to_many :consumos_directo, :class_name => 'ConsumoDirecto'
+  has_one :recepcion_en_stock
 
   validates :fecha, presence: true
   validates :estado, presence: true, :inclusion => { :in => self::ESTADOS.values }  

@@ -133,12 +133,87 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   #  /recepciones_de_bien_de_consumo/1
   # DELETE /recepciones_de_bien_de_consumo/1.json
   def destroy
-    @recepcion_de_bien_de_consumo.destroy
-    respond_to do |format|
-      format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion de bien de consumo eliminado exitosamente.' }
-      format.json { head :no_content }
-    end
+    ActiveRecord::Base.transaction do      
+      begin   
+        if  @recepcion_de_bien_de_consumo.estado == 8 
+          if !@recepcion_de_bien_de_consumo.recepcion_en_stock.nil? #asociacion en stock NO es nula? fue ingresada a stock?  
+            puts "RECEPCION FINALIZADA POR INGRESO A STOCK"
+            eliminar_recepcion_enviada_a_stock(@recepcion_de_bien_de_consumo)
+          elsif !@recepcion_de_bien_de_consumo.consumos_directo[0].nil?   #consumo NO es nulo? = tiene asociado un consumo?
+              puts "********RECEPCION FINALIZADA POR consumo********"
+              eliminar_recepcion_enviada_a_consumo(@recepcion_de_bien_de_consumo)
+          else 
+            # No corresponde, si esta finalizada, tiene que ser por consumo o por ingreso a stock, si pasa esto es porque es una recepcion que se quiere
+            #eliminar creada antes de crear este modulo.
+            puts 'No se pueden volver sus items para atras. Es una recepcion que se quiere eliminar antes de crear este modulo.' 
+          end
+        else
+            if @recepcion_de_bien_de_consumo.estado == 1 || @recepcion_de_bien_de_consumo.estado == 2
+             puts "*****RECEPCION VIGENTE*******"
+             @recepcion_de_bien_de_consumo.destroy  
+            end 
+        end 
+        
+        # respond_to do |format|
+        #   format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion ha sido eliminada exitosamente.' }
+        #   format.json { head :no_content }
+        # end
+        respond_to do |format|
+          format.html { redirect_to :back,  notice: 'La Recepcion ha sido eliminada exitosamente.'  }
+          format.json { head :no_content }
+        end
+      rescue ActiveRecord::Rollback
+        respond_to do |format|
+          format.html { redirect_to back, notice: 'Ha ocurrido un error. La Recepcion no pudo ser eliminada.' }
+          format.json { head :no_content }
+        end
+      end #begin
+    end #transaction  
   end
+
+  #Los items consumidos vuelven a stock
+  def eliminar_recepcion_enviada_a_consumo(recepcion)  
+        consumo_directo_asociado = recepcion.consumos_directo[0]          
+        consumo_directo_asociado.bienes_de_consumo_para_consumir.each do |bien|
+          @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
+          if !@item_stock.first.nil?              
+            suma = @item_stock.first.cantidad + bien.cantidad              
+            raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: suma)              
+          else                        
+            raise ActiveRecord::Rollback                                      
+          end  
+          volver_costo_de_bien_al_anterior(bien) unless recepcion.nil?
+        end 
+      
+        if consumo_directo_asociado.update(estado: 2) 
+          if !recepcion.nil?
+            raise ActiveRecord::Rollback unless recepcion.update(estado: 7) 
+          end
+        else
+          raise ActiveRecord::Rollback  
+        end
+  end #def
+
+
+  #Los items consumidos vuelven a stock
+  def eliminar_recepcion_enviada_a_stock(recepcion)  
+        deposito_id = 1 #s>>>>>>>> DEPOSITO SUMINISTRO -1 >>>>>>
+        recepcion.bienes_de_consumo_de_recepcion.each do |bien|
+          @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, deposito_id)
+          if !@item_stock.first.nil?              
+            resta = @item_stock.first.cantidad - bien.cantidad              
+            raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: resta)              
+          else                        
+            raise ActiveRecord::Rollback                                      
+          end  
+          volver_costo_de_bien_al_anterior(bien) unless recepcion.nil?
+        end 
+              
+        if !recepcion.nil?
+          raise ActiveRecord::Rollback unless recepcion.update(estado: 7) 
+        end        
+  end #def
+
 
   def eliminar_documento_secundario     
       @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo_id])                 

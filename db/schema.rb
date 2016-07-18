@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160526174733) do
+ActiveRecord::Schema.define(version: 20160718033139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,6 +247,22 @@ ActiveRecord::Schema.define(version: 20160526174733) do
     t.datetime "updated_at"
   end
 
+  create_table "recepcion_de_bien_de_consumo_a_stocks", force: :cascade do |t|
+    t.integer  "recepcion_de_bien_de_consumo_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "recepcion_de_bien_de_consumo_a_stocks", ["recepcion_de_bien_de_consumo_id"], name: "index_recep_a_stock_on_recep_de_bien_de_consumo_id", using: :btree
+
+  create_table "recepcion_en_stocks", force: :cascade do |t|
+    t.integer  "recepcion_de_bien_de_consumo_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "recepcion_en_stocks", ["recepcion_de_bien_de_consumo_id"], name: "index_recepcion_en_stocks_on_recepcion_de_bien_de_consumo_id", using: :btree
+
   create_table "recepciones_de_bien_de_consumo", force: :cascade do |t|
     t.datetime "fecha"
     t.integer  "estado"
@@ -254,6 +270,11 @@ ActiveRecord::Schema.define(version: 20160526174733) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "descripcion_rechazo"
+  end
+
+  create_table "recepciones_para_consumo_directo", id: false, force: :cascade do |t|
+    t.integer "recepcion_de_bien_de_consumo_id"
+    t.integer "consumo_directo_id"
   end
 
   create_table "reemplazos_bdc", force: :cascade do |t|
@@ -322,5 +343,6 @@ ActiveRecord::Schema.define(version: 20160526174733) do
   add_foreign_key "depositos", "areas"
   add_foreign_key "partidas_parciales", "partidas_principales"
   add_foreign_key "partidas_principales", "incisos"
+  add_foreign_key "recepcion_en_stocks", "recepciones_de_bien_de_consumo"
   add_foreign_key "transferencias", "areas"
 end

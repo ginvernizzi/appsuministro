@@ -197,26 +197,26 @@ class ConsumosDirectoController < ApplicationController
     end #transaction
   end #def
 
-  def volver_costo_de_bien_al_anterior(bien_de_consumo_a_consumir)
-    ActiveRecord::Base.transaction do      
-      begin              
-        #Volver al ultimo costo ##### Si el costo del bien en la recepcion es igual al ultimo costo del item, voler y traer el costo inmediato anterior
-        costo_actual = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien_de_consumo_a_consumir.bien_de_consumo.id).last.costo
-        if bien_de_consumo_a_consumir.costo == costo_actual
-          costo_inmediato_anterior = bien_de_consumo_a_consumir.bien_de_consumo.id.last(2).first.costo
-          costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo: bien_de_consumo_a_consumir.bien_de_consumo, costo: costo_inmediato_anterior,        
-                                             usuario: current_user.name, origen: "2" )           
-          costo_de_bien.save!
-          @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo:  bien_de_consumo_a_consumir.bien_de_consumo, costo: costo_inmediato_anterior,
-                                                usuario: current_user.name, origen: "2" )      
-          @costo_de_bien_historico.save!
-        end
-      rescue Exception => e
-        puts "Se produjo el siguiente error: #{e} " 
-        raise ActiveRecord::Rollback
-      end
-    end
-end
+  # def volver_costo_de_bien_al_anterior(bien_de_consumo_a_consumir)
+  #   ActiveRecord::Base.transaction do      
+  #     begin              
+  #       #Volver al ultimo costo ##### Si el costo del bien en la recepcion es igual al ultimo costo del item, voler y traer el costo inmediato anterior
+  #       costo_actual = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien_de_consumo_a_consumir.bien_de_consumo.id).last.costo
+  #       if bien_de_consumo_a_consumir.costo == costo_actual
+  #         costo_inmediato_anterior = bien_de_consumo_a_consumir.bien_de_consumo.id.last(2).first.costo
+  #         costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo: bien_de_consumo_a_consumir.bien_de_consumo, costo: costo_inmediato_anterior,        
+  #                                            usuario: current_user.name, origen: "2" )           
+  #         costo_de_bien.save!
+  #         @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo:  bien_de_consumo_a_consumir.bien_de_consumo, costo: costo_inmediato_anterior,
+  #                                               usuario: current_user.name, origen: "2" )      
+  #         @costo_de_bien_historico.save!
+  #       end
+  #     rescue Exception => e
+  #       puts "Se produjo el siguiente error: #{e} " 
+  #       raise ActiveRecord::Rollback
+  #     end
+  #   end
+  # end
 
   def ingresar_bienes_a_stock(recepcion)
     areaArray = Area.where(id: 1)    
