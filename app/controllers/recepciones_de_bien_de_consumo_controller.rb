@@ -135,7 +135,7 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
   def destroy
     ActiveRecord::Base.transaction do      
       begin   
-        if  @recepcion_de_bien_de_consumo.estado == 8 
+        if  @recepcion_de_bien_de_consumo.estado == 8 #finalizado
           if !@recepcion_de_bien_de_consumo.recepcion_en_stock.nil? #asociacion en stock NO es nula? fue ingresada a stock?  
             puts "RECEPCION FINALIZADA POR INGRESO A STOCK"
             eliminar_recepcion_enviada_a_stock(@recepcion_de_bien_de_consumo)
@@ -145,7 +145,8 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
           else 
             # No corresponde, si esta finalizada, tiene que ser por consumo o por ingreso a stock, si pasa esto es porque es una recepcion que se quiere
             #eliminar creada antes de crear este modulo.
-            puts 'No se pueden volver sus items para atras. Es una recepcion que se quiere eliminar antes de crear este modulo.' 
+            #puts 'No se pueden volver sus items para atras. Es una recepcion que se quiere eliminar antes de crear este modulo.' 
+            raise ActiveRecord::Rollback unless @recepcion_de_bien_de_consumo.update(estado: 7) #anulada
           end
         else
             if @recepcion_de_bien_de_consumo.estado == 1 || @recepcion_de_bien_de_consumo.estado == 2
@@ -154,10 +155,6 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
             end 
         end 
         
-        # respond_to do |format|
-        #   format.html { redirect_to recepciones_de_bien_de_consumo_url, notice: 'La Recepcion ha sido eliminada exitosamente.' }
-        #   format.json { head :no_content }
-        # end
         respond_to do |format|
           format.html { redirect_to :back,  notice: 'La Recepcion ha sido eliminada exitosamente.'  }
           format.json { head :no_content }
