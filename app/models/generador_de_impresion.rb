@@ -50,7 +50,7 @@ class GeneradorDeImpresion
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
-				s.add_column("DESCRIPCION_ADICIONAL") { |i| i.bien_de_consumo.detalle_adicional }							
+				s.add_column("DESCRIPCION_ADICIONAL") { |i| consumo.recepciones_de_bien_de_consumo[0] ? consumo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?",i.bien_de_consumo.id).first.descripcion : "" }							
 				s.add_column("CANTIDAD") { |i| i.cantidad }	
 				s.add_column("COSTO") { |i| number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo, precision: 3) }
 				s.add_column("COSTO_TOTAL") { |i| number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo, i.cantidad), precision: 3) }			
