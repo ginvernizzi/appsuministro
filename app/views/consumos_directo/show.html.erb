@@ -36,7 +36,7 @@
           <td><%= bcc.bien_de_consumo.clase.nombre %> </td>          
           <td><%= obtener_codigo_completo_bien_de_consumo(bcc.bien_de_consumo.nombre) %> </td>
           <td><%= bcc.bien_de_consumo.nombre %> </td>          
-          <td><%= bcc.bien_de_consumo.detalle_adicional %> </td>       
+          <td><%= @consumo_directo.recepciones_de_bien_de_consumo[0] ? @consumo_directo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?",bcc.bien_de_consumo.id).first.descripcion : "" %> </td>       
           <td><%= bcc.cantidad %> </td>
           <td><%= number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?",bcc.bien_de_consumo.id).last.costo, precision: 3) %></td>  
           <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bcc.bien_de_consumo.id).last.costo, bcc.cantidad), precision: 3) %> </td>  
