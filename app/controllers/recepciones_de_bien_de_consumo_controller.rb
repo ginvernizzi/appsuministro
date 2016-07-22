@@ -175,7 +175,9 @@ class RecepcionesDeBienDeConsumoController < ApplicationController
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
           if !@item_stock.first.nil?              
             suma = @item_stock.first.cantidad + bien.cantidad              
-            raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: suma)              
+            raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: suma) 
+            resta = @item_stock.first.cantidad - bien.cantidad              
+            raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: resta)               
           else                        
             raise ActiveRecord::Rollback                                      
           end  
