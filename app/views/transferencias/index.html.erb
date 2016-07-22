@@ -16,8 +16,8 @@
       <tr>
         <td><%= transferencia.fecha.strftime("%d/%m/%Y") %></td>
         <td><%= transferencia.id %></td>
-        <td><%= transferencia.area.nombre %></td>
-        <td><%= transferencia.deposito.nombre %></td>        
+        <td><%= transferencia.area ? transferencia.area.nombre : "" %></td>
+        <td><%= transferencia.deposito ? transferencia.deposito.nombre : "" %></td>        
         <td><%= link_to 'Ver', transferencia %></td>
         <td><%= link_to 'Imprimir', imprimir_formulario_transferencias_path(transferencia), method: :post, data: { confirm: '¿Esta seguro?' }  %>    
       </tr>

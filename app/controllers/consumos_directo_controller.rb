@@ -41,6 +41,7 @@ class ConsumosDirectoController < ApplicationController
 
   # POST /consumos_directo
   # POST /consumos_directo.json
+  # POST de consumo desde una Recepcion
   def create
     ActiveRecord::Base.transaction do      
       begin 
@@ -302,9 +303,9 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def traer_consumos_por_codigo_destino_y_fecha
+    estado_activo = 1 #estado activo de consumo .
     area_id = params[:area_id]
     bien_id = params[:bien_id]
-
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
     fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
    
@@ -312,17 +313,17 @@ class ConsumosDirectoController < ApplicationController
 
     if !area_id.blank? && !bien_id.blank? 
       puts "************ LOS DOS!"
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, area_id, fecha_inicio, fecha_fin)        
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ? AND consumos_directo.estado = ?", bien_id, area_id, fecha_inicio, fecha_fin, estado_activo)        
     end
 
     if bien_id.blank? && !area_id.blank? 
       puts "************ solo el AREA!"
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", area_id, fecha_inicio, fecha_fin)      
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ? AND consumos_directo.estado = ? ", area_id, fecha_inicio, fecha_fin, estado_activo)      
     end
       
     if area_id.blank? && !bien_id.blank?
       puts "************ Solo el BIEN!"
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, fecha_inicio, fecha_fin)        
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("bien_de_consumo_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ? AND consumos_directo.estado = ?", bien_id, fecha_inicio, fecha_fin, estado_activo)        
     end
             
     if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
@@ -340,6 +341,7 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def traer_consumos_por_partida_parcial_destino_y_fecha
+    estado_activo = 1 #estado activo de consumo .
 
     codigo_pp = params[:partida_parcial]
     inciso = codigo_pp[0].to_s
@@ -355,18 +357,18 @@ class ConsumosDirectoController < ApplicationController
 
     if !area_id.blank? && !codigo_pp.blank? 
       puts "************ LOS DOS!"
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?",inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")        
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ? AND consumos_directo.estado = ?",inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin, estado_activo).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")        
     end
 
     if codigo_pp.blank? && !area_id.blank? 
       puts "************ solo el AREA!"
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", area_id, fecha_inicio, fecha_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")      
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("consumos_directo.area_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ? AND consumos_directo.estado = ? ", area_id, fecha_inicio, fecha_fin, estado_activo).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")      
     end
       
     if area_id.blank? && !codigo_pp.blank?
       area_id = nil
       puts "************ Solo el BIEN!"
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", inciso, ppal, pparcial, fecha_inicio, fecha_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ? AND consumos_directo.estado = ?", inciso, ppal, pparcial, fecha_inicio, fecha_fin, estado_activo).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
     end
             
     if !@bien_de_consumo_para_consumir.nil? && @bien_de_consumo_para_consumir.count > 0
@@ -385,19 +387,17 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def traer_consumos_y_transferencias_por_nombre_y_fecha
+    estado_activo = 1 #estado activo de consumo .
     bien_id = params[:bien_id]
-
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
     fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
    
     @bien_de_consumo_para_consumir = nil
 
     if !bien_id.blank?      
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("bienes_de_consumo.id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", bien_id, fecha_inicio, fecha_fin) | 
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("bienes_de_consumo.id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?  AND consumos_directo.estado = ?", bien_id, fecha_inicio, fecha_fin, estado_activo) | 
                                       BienDeConsumoParaTransferir.joins(:bien_de_consumo, :transferencia).where("bienes_de_consumo.id = ? AND transferencias.fecha >= ? AND transferencias.fecha <= ?", bien_id, fecha_inicio, fecha_fin) 
-    # else
-    #   @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", fecha_inicio, fecha_fin) | 
-    #                                   BienDeConsumoParaTransferir.joins(:bien_de_consumo, :transferencia).where("transferencias.fecha >= ? AND transferencias.fecha <= ?", fecha_inicio, fecha_fin)                             
+    
     end
 
             
@@ -415,7 +415,7 @@ class ConsumosDirectoController < ApplicationController
   def ver_consumos_por_fecha_destino_y_clase    
   end
 
-  def traer_consumos_por_fecha_destino_y_clase   
+  def traer_consumos_por_fecha_destino_y_clase 
     area_id = params[:area_id]
     clase = params[:clase]
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
@@ -654,6 +654,7 @@ class ConsumosDirectoController < ApplicationController
   end
   
   def traer_consumos_por_obra_proyecto_destino_y_fecha
+    estado_activo = 1 #estado activo de consumo .
     obra_proyecto_id = params[:obra_proyecto_id]    
     fecha_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
     fecha_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day() 
@@ -661,7 +662,7 @@ class ConsumosDirectoController < ApplicationController
     @bien_de_consumo_para_consumir = nil
 
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", obra_proyecto_id, fecha_inicio, fecha_fin)
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:deposito, :consumo_directo).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
            @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
            @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
@@ -725,12 +726,14 @@ class ConsumosDirectoController < ApplicationController
   end
 
   def query_consumos_por_fecha_destino_y_clase(area_id, clase, fecha_inicio, fecha_fin)
+    estado_activo = 1 #estado activo de consumo .  
+
     if !area_id.blank? && !clase.blank?
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase]).where("clases.codigo = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha BETWEEN ? AND ?", clase, area_id, fecha_inicio, fecha_fin).order("consumos_directo.id")
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo, :bien_de_consumo => [:clase]).where("clases.codigo = ? AND consumos_directo.area_id = ? AND consumos_directo.fecha BETWEEN ? AND ? AND consumos_directo.estado = ?", clase, area_id, fecha_inicio, fecha_fin, estado_activo).order("consumos_directo.id")
     end
 
     if !area_id.blank? && clase.blank?
-      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha BETWEEN ? AND ?", area_id, fecha_inicio, fecha_fin)        
+      @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.area_id = ? AND consumos_directo.fecha BETWEEN ? AND ? AND consumos_directo.estado = ?", area_id, fecha_inicio, fecha_fin, estado_activo)        
     end
   end
 
