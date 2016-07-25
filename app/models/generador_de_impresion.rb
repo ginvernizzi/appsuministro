@@ -33,7 +33,7 @@ class GeneradorDeImpresion
 	end
 
 	def generar_pdf_consumo_directo(consumo)
-		@bienes = consumo.bienes_de_consumo_para_consumir		
+		items = consumo.bienes_de_consumo_para_consumir
 
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_consumo_directo.odt")
 
@@ -42,19 +42,20 @@ class GeneradorDeImpresion
 			r.add_field("AREA", consumo.area.nombre)				
 			r.add_field("NUMERO", consumo.id)
 			r.add_field("OBRAPROYECTO", consumo.obra_proyecto.descripcion)
-		    r.add_field("COSTO_TOTAL_GENERAL", obtener_total_general(@bienes))
+		    r.add_field("COSTO_TOTAL_GENERAL", obtener_total_general(items))
 
-			
+		    if !consumo.recepciones_de_bien_de_consumo.nil?
+		    	items = consumo.recepciones_de_bien_de_consumo.first.bienes_de_consumo_de_recepcion
+		    end
 
-			r.add_table("TABLA_CONSUMO_DIRECTO", @bienes) do |s|								
+			r.add_table("TABLA_CONSUMO_DIRECTO", items) do |s|								
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }							
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
-				s.add_column("DESCRIPCION_ADICIONAL") { |i| consumo.recepciones_de_bien_de_consumo[0] ? consumo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?",i.bien_de_consumo.id).first.descripcion : "" }							
+				s.add_column("DESCRIPCION_ADICIONAL") { |i| i.descripcion } 
 				s.add_column("CANTIDAD") { |i| i.cantidad }	
-				s.add_column("COSTO") { |i| number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo, precision: 3) }
-				s.add_column("COSTO_TOTAL") { |i| number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo, i.cantidad), precision: 3) }			
-				s.add_column("COSTO") { |i| number_to_currency(i.costo, :precision => 3) }	
+				s.add_column("COSTO") { |i| number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo, :precision => 3) }									
+				s.add_column("COSTO_TOTAL") { |i| number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo * i.cantidad, :precision => 3)  }																			   
 			end
 		end
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_consumo_odt)
