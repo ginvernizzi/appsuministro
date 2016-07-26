@@ -71,7 +71,7 @@ class GeneradorDeImpresion
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", I18n.l(DateTime.now))
-			r.add_field("AREA", bienes[0].deposito.area.nombre)
+			r.add_field("AREA", bienes.first.consumo_directo.area.nombre)
 			r.add_field("COSTO_TOTAL_GENERAL", obtener_total_general(bienes))
 			
 								
