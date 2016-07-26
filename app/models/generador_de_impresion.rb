@@ -64,12 +64,13 @@ class GeneradorDeImpresion
 		`unoconv -f pdf #{@ruta_formulario_interno_odt}`			
 	end
 
-	def generar_pdf_items_consumo_directo(bienes_de_consumo_para_consumir)
+	def generar_pdf_items_consumo_directo(titulo, bienes_de_consumo_para_consumir)
 		bienes = bienes_de_consumo_para_consumir		
 
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_consumo_directo_items.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
+			r.add_field("TITULO", titulo)
 			r.add_field("FECHA", I18n.l(DateTime.now))
 			r.add_field("AREA", bienes.first.consumo_directo.area.nombre)
 			r.add_field("COSTO_TOTAL_GENERAL", obtener_total_general(bienes))

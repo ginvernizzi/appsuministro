@@ -487,13 +487,12 @@ class ConsumosDirectoController < ApplicationController
 
     @generador = GeneradorDeImpresion.new
 
-    @generador.generar_pdf_items_consumo_directo(@bien_de_consumo_para_consumir)
+    @generador.generar_pdf_items_consumo_directo("Consumos por Bien y area destino", @bien_de_consumo_para_consumir)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
     send_file ( file )         
   end
 
   def imprimir_formulario_consumos_por_partida_parcial_destino_y_fecha
-    
     codigo_pp = params[:codigo_partida_parcial]
     area_id = params[:area_id]
 
@@ -529,7 +528,7 @@ class ConsumosDirectoController < ApplicationController
     end
             
     @generador = GeneradorDeImpresion.new
-    @generador.generar_pdf_items_consumo_directo(@bien_de_consumo_para_consumir)
+    @generador.generar_pdf_items_consumo_directo("Consumo por partida parcial y area destino",@bien_de_consumo_para_consumir)
     file = Rails.root.join("public/forms_impresiones/" + @generador.nombre_formulario_consumo_items_pdf)
     send_file ( file ) 
   end
