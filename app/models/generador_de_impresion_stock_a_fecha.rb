@@ -8,8 +8,9 @@ class GeneradorDeImpresionStockAFecha
 	def generar_pdf(fecha, items)
 		@items = items
 
-		deposito_array = Deposito.where("nombre like ?", "%-1%") #deposito -1, de area suministro
-		deposito = Deposito.find(deposito_array[0].id)
+		deposito = Area.where("nombre LIKE ?", "%PATRI%").first.depositos.where("nombre ILIKE ?", "%suministro%").first
+		# deposito_array = Deposito.where("nombre like ?", "%-1%") #deposito -1, de area suministro
+		# deposito = Deposito.find(deposito_array[0].id)
 
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_stock_a_fecha.odt")
 
