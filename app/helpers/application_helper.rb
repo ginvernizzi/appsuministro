@@ -50,6 +50,12 @@ module ApplicationHelper
     armar_codigo(@array_bien_de_consumo[0])
   end 
 
+  def traer_descripcion(bien_de_consumo)
+    if bien_de_consumo.has_attribute?("descripcion")
+       return bien_de_consumo.descripcion
+    end
+  end
+
 
   def armar_codigo(array)
     bien = array
