@@ -90,7 +90,7 @@
           <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
           <td><%= bcr.cantidad %> </td>
           <td><%= number_to_currency(bcr.costo, precision: 3) %> </td>
-          <td><%= obtener_costo_total(bcr.cantidad, CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bcr.bien_de_consumo.id).last.costo) %> </td> 
+          <td><%= obtener_costo_total(bcr.cantidad, bcr.costo) %> </td> 
           <td><%= bcr.descripcion %> </td>
         </tr>              
         <%end%>
