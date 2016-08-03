@@ -23,24 +23,29 @@ class ReportesAFechaController < ApplicationController
   end
 
   def show
-    @reporte_a_fecha = ReporteAFecha.find(params[:id])  
-    @items_de_stock_json = JSON.parse(@reporte_a_fecha.stock_diario) 
-    @items_stock = Array.new
+    ActiveRecord::Base.transaction do      
+      begin 
+        @reporte_a_fecha = ReporteAFecha.find(params[:id])  
+        @items_de_stock_json = JSON.parse(@reporte_a_fecha.stock_diario) 
+        @items_stock = Array.new
+        @items_de_stock_json.each do |item|
+          item_stock_a_fecha = ItemStockAFecha.new(
+          bien_de_consumo: BienDeConsumo.find(item['bien_de_consumo_id']),
+          deposito: Deposito.find(item['deposito_id']),
+          costo: item['costo'],
+          cantidad: item['cantidad'])
 
-    @items_de_stock_json.each do |item|
-      item_stock_a_fecha = ItemStockAFecha.new(
-      bien_de_consumo: BienDeConsumo.find(item['bien_de_consumo_id']),
-      deposito: Deposito.find(item['deposito_id']),
-      costo: item['costo'],
-      cantidad: item['cantidad'])
-
-      @items_stock << item_stock_a_fecha
-    end
-
-    respond_to do |format|                        
-      format.html { render :show }
-      format.json { render json: @items_stock.errors, status: :unprocessable_entity }
-  	end	
+          @items_stock << item_stock_a_fecha
+        end
+        respond_to do |format|                        
+          format.html { render :show }
+          format.json { render json: @items_stock.errors, status: :unprocessable_entity }
+      	end
+      rescue Exception => e
+        flash[:notice] = "#{e}. El reporte no se puede ver"
+        redirect_to  reportes_a_fecha_path
+      end
+    end     
   end
 
   def imprimir_formulario
