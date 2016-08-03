@@ -20,7 +20,7 @@
         <td><%= item_stock.cantidad %></td>        
         <td><%= item_stock.deposito.nombre %></td>
         <td><%= item_stock.costo %></td>
-        <td><%= item_stock.costo.to_f * item_stock.cantidad %></td>                            
+        <td><%= number_to_currency(item_stock.costo.to_f * item_stock.cantidad, :precision => 3) %></td>                            
       </tr>
     <% end %>
   </tbody>
