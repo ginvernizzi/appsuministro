@@ -84,11 +84,11 @@ Rails.application.routes.draw do
       post 'traer_costo_de_bien_de_consumo'
     end
   
-    resources :areas  do
-      resources :items_stock do
-        post 'imprimir_formulario_stock_total_por_bien_y_area' 
-      end
-    end
+    # resources :areas  do
+    #   resources :items_stock do
+    #     #post 'imprimir_formulario_stock_total_por_bien_y_area' 
+    #   end
+    #end
   end
 
 
@@ -182,6 +182,7 @@ Rails.application.routes.draw do
        get 'guardar_stock_a_fecha'    
        get 'traer_todos_los_items_stock'  
        get 'traer_items_stock_por_bien_y_area'
+       get 'traer_items_stock_por_fecha_bien_y_area_suministro'
        get 'traer_items_stock_minimo_superado'  
        get 'traer_items_stock_minimo_superado_por_bien_y_area'
        get 'traer_datos_de_clase_y_bien'
@@ -193,8 +194,9 @@ Rails.application.routes.draw do
      end        
   end  
 
-  # get '/items_stock/traer_todos_los_items_stock/:page', to: 'items_stock#traer_todos_los_items_stock',
-  #                                                         as: 'traer_todos_los_items_stock_items_stock'
+  post 'items_stock/area_id/:area_id/bien_id/:bien_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_stock_total_por_bien_y_area/',  
+                                                            to: 'items_stock#imprimir_formulario_stock_total_por_bien_y_area',
+                                                            as: 'imprimir_formulario_stock_total_por_bien_y_area'  
 
 
   post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',  

@@ -30,11 +30,32 @@ class ItemsStockController < ApplicationController
 
   def traer_items_stock_por_bien_y_area
     bien_de_consumo_id = params[:bien_de_consumo_id]    
-    area_id = params[:area_id] 
+    area_id = Area.where("nombre LIKE ?", "%PATRI%").first.id
     @items_stock = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id).paginate(:page => params[:page], :per_page => 30)      
           
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
     #render :partial => 'form_tabla_stock'
+    respond_to do |format|   
+      format.js {}
+    end 
+  end
+
+  def traer_items_stock_por_fecha_bien_y_area_suministro
+    area_id = Area.where("nombre LIKE ?", "%PATRI%").first.id
+    bien_de_consumo_id = params[:bien_de_consumo_id]   
+    date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()  
+    date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()  
+
+    @items_stock = ItemStock.where("bien_de_consumo_id = ?", -1) 
+
+    @items_stock = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)      
+    if !@items_stock.blank? && @items_stock.count > 0
+      @items_stock[0].fecha_inicio_impresion = date_inicio;
+      @items_stock[0].fecha_fin_impresion = date_fin;
+      @items_stock[0].area_id_impresion = area_id;
+      @items_stock[0].bien_id_impresion = bien_de_consumo_id;
+    end
+          
     respond_to do |format|   
       format.js {}
     end 
@@ -145,11 +166,13 @@ class ItemsStockController < ApplicationController
 
 
   def imprimir_formulario_stock_total_por_bien_y_area    
-    bien_de_consumo_id = params[:bien_de_consumo_id]
-    area_id = params[:area_id]      
+    bien_de_consumo_id = params[:bien_id]
+    area_id = params[:area_id] 
+    fecha_fin = params[:fecha_fin] 
+    fecha_inicio = params[:fecha_inicio]     
 
     if !bien_de_consumo_id.nil? && !area_id.nil?
-      @items = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id)  
+      @items = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, fecha_inicio, fecha_fin)
     else
       @items = ItemStock.all
     end

@@ -122,6 +122,21 @@ var ready = function() {
     }
   });
 
+  
+    $("#traer_por_bien_de_consumo_y_area_suministro").on('click', function() {    
+    var bien_id = $("#bien_de_consumo_id").val();
+    var fecha_inicio =  $("#fecha_inicio").val();  
+    var fecha_fin =  $("#fecha_fin").val(); 
+
+    if(bien_id != null &&  bien_id != "")
+    { traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id); }
+    else 
+    { 
+      alert("Debe seleccionar el Bien de consumo") 
+      BlanquearCampos();
+    }
+  });
+
     $("#traer_items_stock_minimo_por_bien_de_consumo_y_area").on('click', function() {    
     var bien_id = $("#bien_de_consumo_id").val();
     var area_id = $("#area_id").val();
@@ -148,6 +163,12 @@ var ready = function() {
   {    
     var urlString = '/items_stock/traer_items_stock_por_bien_y_area';
     traer_items_por_bien_y_area_por_ajax(urlString, bien_id, area_id);
+  }
+
+    function traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id)
+  {    
+    var urlString = '/items_stock/traer_items_stock_por_fecha_bien_y_area_suministro';
+    traer_items_por_fecha_bien_y_area_suministro_por_ajax(urlString, bien_id, fecha_inicio, fecha_fin);
   }
 
   function traer_items_stock_minimo_superado()
@@ -180,7 +201,7 @@ var ready = function() {
     });       
   }
 
-  function traer_items_por_bien_y_area_por_ajax(urlString, bien_id, area_id)
+  function traer_items_por_fecha_bien_y_area_por_ajax(urlString, bien_id, area_id)
   {
       $.ajax({
       type: "get",
@@ -195,6 +216,27 @@ var ready = function() {
       error: function (request, status, error) 
           { 
             alert("Debe seleccionar Bien de consumo y Area"); 
+            BlanquearCampos();
+          }
+    });       
+  }
+
+    function traer_items_por_fecha_bien_y_area_suministro_por_ajax(urlString, bien_id, fecha_inicio, fecha_fin)
+  {
+      $.ajax({
+      type: "get",
+      dataType: "json",
+      url: urlString,        
+      data: { bien_de_consumo_id: bien_id, fecha_inicio: fecha_inicio, fecha_fin: fecha_fin },
+      success: function(data){         
+            if (data  == "")
+              { alert("No se encontraron resultados") }   
+            $('#tabla_items').html(data)
+            BlanquearCampos();
+      },
+      error: function (request, status, error) 
+          { 
+            alert("Debe seleccionar Bien de consumo"); 
             BlanquearCampos();
           }
     });       
