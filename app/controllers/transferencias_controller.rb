@@ -3,8 +3,9 @@ class TransferenciasController < ApplicationController
 
   # GET /transferencias
   # GET /transferencias.json
+  # Transferencia -> estado = 1 Activo
   def index
-    @transferencia = Transferencia.all
+    @transferencia = Transferencia.where("estado = ?", 1).order(:fecha)
   end
 
   # GET /transferencias/1
@@ -34,6 +35,7 @@ class TransferenciasController < ApplicationController
 
   # POST /transferencias
   # POST /transferencias.json
+  # Crear transferencias desde recepcion
   def create
     ActiveRecord::Base.transaction do
       begin  
@@ -44,7 +46,7 @@ class TransferenciasController < ApplicationController
         if (ingresar_bienes_a_stock(recepcion_de_bien_de_consumo, @deposito_origen))
             quitar_bienes_de_stock(recepcion_de_bien_de_consumo, @deposito_origen)
             ingresar_bienes_a_stock(recepcion_de_bien_de_consumo, @deposito_destino)         
-            @transferencia = Transferencia.new(transferencia_params)     
+            @transferencia = Transferencia.new(transferencia_params)             
             
             recepcion_de_bien_de_consumo.bienes_de_consumo_de_recepcion.each do |bien| 
               @transferencia.bienes_de_consumo_para_transferir.build(cantidad: bien.cantidad, costo: bien.costo,  bien_de_consumo_id: bien.bien_de_consumo_id, deposito: @deposito_destino)
@@ -58,7 +60,10 @@ class TransferenciasController < ApplicationController
 
           respond_to do |format|
             if @transferencia.save 
-              raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "8")
+              raise ActiveRecord::Rollback unless @transferencia.update(estado: "1") 
+              raise ActiveRecord::Rollback unless recepcion_de_bien_de_consumo.update(estado: "8")              
+              @recepcion_para_transferencia = @transferencia.build_recepcion_para_transf(recepcion_de_bien_de_consumo: recepcion_de_bien_de_consumo)
+              raise ActiveRecord::Rollback unless @recepcion_para_transferencia.save
               if existen_stocks_minimos_superados
                 flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
               end
@@ -71,9 +76,19 @@ class TransferenciasController < ApplicationController
         end #if
      rescue ActiveRecord::Rollback
         respond_to do |format|
-            recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
-            cargar_datos_controles_consumo_directo
-            format.html { render :nuevo_consumo_directo_desde_recepcion }
+            cargar_datos_controles_transferencias
+            @transferencia = Transferencia.new(transferencia_params)
+            @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+            format.html { render :nueva_transferencia_desde_recepcion }
+            format.json { render json: @transferencia.errors, status: :unprocessable_entity }
+        end
+      rescue ActiveRecord::RecordNotFound
+        respond_to do |format|
+            flash[:error] = 'El depósito destino está incompleto'
+            cargar_datos_controles_transferencias
+            @transferencia = Transferencia.new(transferencia_params)
+            @recepcion_de_bien_de_consumo = RecepcionDeBienDeConsumo.find(params[:recepcion_de_bien_de_consumo][:id])
+            format.html { render :nueva_transferencia_desde_recepcion }
             format.json { render json: @transferencia.errors, status: :unprocessable_entity }
         end
       end #begin
@@ -111,6 +126,7 @@ class TransferenciasController < ApplicationController
           end    
           respond_to do |format|
             if @transferencia.save
+              raise ActiveRecord::Rollback unless @transferencia.update(estado: "1") 
               if existen_stocks_minimos_superados
                 flash[:error] = 'Hay items con stock minimo superado. Revise la lista de stocks'       
               end
@@ -147,10 +163,36 @@ class TransferenciasController < ApplicationController
   # DELETE /transferencias/1
   # DELETE /transferencias/1.json
   def destroy
-    @transferencia.destroy
-    respond_to do |format|
-      format.html { redirect_to transferencias_url, notice: 'Transferencia was successfully destroyed.' }
-      format.json { head :no_content }
+    ActiveRecord::Base.transaction do     
+      begin 
+        deposito_suministro = Area.where("nombre LIKE ?", "%PATRI%").first.depositos.where("nombre ILIKE ?", "%suministro%")
+        if @transferencia.recepcion_para_transf.nil?
+          @transferencia.destroy
+        else
+            @recepcion_de_bien_de_consumo = @transferencia.recepcion_para_transf.recepcion_de_bien_de_consumo
+            @transferencia.bienes_de_consumo_para_transferir.each do |bien_para_transferir|
+              stock_suministro = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_para_transferir.bien_de_consumo.id, deposito_suministro[0].id)
+              stock_suministro[0].cantidad = stock_suministro[0].cantidad + bien_para_transferir.cantidad
+              raise ActiveRecord::Rollback unless stock_suministro[0].save
+              stock_deposito_destino = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_para_transferir.bien_de_consumo.id, bien_para_transferir.deposito.id)
+              stock_deposito_destino[0].cantidad = stock_deposito_destino[0].cantidad - bien_para_transferir.cantidad
+              raise ActiveRecord::Rollback unless stock_deposito_destino[0].save
+            end
+            raise ActiveRecord::Rollback unless @transferencia.update(estado: 2)
+            raise ActiveRecord::Rollback unless @recepcion_de_bien_de_consumo.update(estado: 7)
+        end
+        flash[:notice] = 'La Transferencia fue eliminada exitosamente.'            
+        respond_to do |format|
+            format.html { redirect_to transferencias_url }
+            format.json { head :no_content }
+        end
+      rescue ActiveRecord::Rollback         
+        flash[:notice] = 'Ocurrió un error. La Transferencia no pudo ser eliminada exitosamente.'  
+        respond_to do |format|
+          format.html { redirect_to transferencias_url }
+          format.json { head :no_content }
+        end
+      end  
     end
   end
 

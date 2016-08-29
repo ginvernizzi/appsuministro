@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :ingreso_manual_a_stocks
   get 'reemplazo_clase/index'
 
+  resources :registro_ingreso_stock , only: [:index] 
+
   resources :reemplazo_bdc , only: [:index, :new] do
     collection do       
       get 'autocomplete_bien_de_consumo_dado_de_baja_nombre_by_clase'

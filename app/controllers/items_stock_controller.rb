@@ -69,47 +69,53 @@ class ItemsStockController < ApplicationController
   end
 
   def ingresar_bienes_a_stock_manualmente
-    deposito_id = 1 #>>>>>>>>>>>>>>>>> DEPOSITO SUMINISTRO -1 >>>>>>>>>>>>>>>>>
-    @deposito = Deposito.find(deposito_id)
-    #@bien_de_consumo = BienDeConsumo.find(item_stock_params[:bien_de_consumo_id]) 
-    @item_stock = ItemStock.new
+    ActiveRecord::Base.transaction do      
+      begin 
+        deposito_id = 1 #>>>>>>>>>>>>>>>>> DEPOSITO SUMINISTRO -1 >>>>>>>>>>>>>>>>>
+        @deposito = Deposito.find(deposito_id)
+        #@bien_de_consumo = BienDeConsumo.find(item_stock_params[:bien_de_consumo_id]) 
+        @item_stock = ItemStock.new
 
-    @costo = guardar_costo_manualmente(item_stock_params[:bien_de_consumo_id], params[:costo])
-    @costo_historico =  guardar_costo_historico(item_stock_params[:bien_de_consumo_id], params[:costo])
+        @costo = guardar_costo_manualmente(item_stock_params[:bien_de_consumo_id], params[:costo])
+        @costo_historico =  guardar_costo_historico(item_stock_params[:bien_de_consumo_id], params[:costo])
 
-    @item_stock_array = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", item_stock_params[:bien_de_consumo_id], @deposito.id)
+        @item_stock_array = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", item_stock_params[:bien_de_consumo_id], @deposito.id)
 
-    respond_to do |format|       
-        @costo.save
-        @costo_historico.save
-        if @item_stock_array.count == 0  #si no hay STOCK
-            @item_stock = ItemStock.new(bien_de_consumo_id: item_stock_params[:bien_de_consumo_id], cantidad: item_stock_params[:cantidad], costo_de_bien_de_consumo: @costo, deposito: @deposito)   
-            if @item_stock.save 
-                @costo_historico.save
-                format.html { redirect_to new_item_stock_path, notice: 'Los bienes fueron agregados a stock exitosamente.' }                        
-            else
-                puts "***03******"
-                format.html { render :new }
-                format.json { render json: @item_stock.errors, status: :unprocessable_entity }
+        respond_to do |format|       
+            @registro_ingreso_manual = RegistroIngresoManual.new(bien_de_consumo_id: item_stock_params[:bien_de_consumo_id], cantidad: item_stock_params[:cantidad], costo: params[:costo], deposito: @deposito, usuario: current_user.name)   
+            raise ActiveRecord::rollback unless @registro_ingreso_manual.save 
+            raise ActiveRecord::rollback unless @costo.save
+            if @item_stock_array.count == 0  #si no hay STOCK
+                @item_stock = ItemStock.new(bien_de_consumo_id: item_stock_params[:bien_de_consumo_id], cantidad: item_stock_params[:cantidad], costo_de_bien_de_consumo: @costo, deposito: @deposito)   
+                if @item_stock.save 
+                    raise ActiveRecord::rollback unless @costo_historico.save
+                    format.html { redirect_to new_item_stock_path, notice: 'Los bienes fueron agregados a stock exitosamente.' }                        
+                else
+                    puts "***03******"
+                    format.html { render :new }
+                    format.json { render json: @item_stock.errors, status: :unprocessable_entity }
+                end
+            else             
+                @item_stock = ItemStock.find(@item_stock_array[0].id)
+                if @item_stock.update(cantidad: item_stock_params[:cantidad], costo_de_bien_de_consumo: @costo ) 
+                    puts "***04******"
+                    format.html { redirect_to new_item_stock_path, notice: 'Los bienes fueron agregados a stock exitosamente.' }            
+                else
+                    puts "***05******"
+                    format.html { render :new }
+                    format.json { render json: @item_stock.errors, status: :unprocessable_entity }
+                end
             end
-        else             
-            @item_stock = ItemStock.find(@item_stock_array[0].id)
-            if @item_stock.update(cantidad: item_stock_params[:cantidad], costo_de_bien_de_consumo: @costo ) 
-                puts "***04******"
-                format.html { redirect_to new_item_stock_path, notice: 'Los bienes fueron agregados a stock exitosamente.' }            
-            else
-                puts "***05******"
-                format.html { render :new }
-                format.json { render json: @item_stock.errors, status: :unprocessable_entity }
-            end
-            # else
-            #    puts "***06******"
-            #    format.html { render :new }
-            #    format.json  { render :json => {:costo => @costo, :item_stock => @item_stock, status: :unprocessable_entity }}
-            # end
         end
+      rescue ActiveRecord::Rollback
+          respond_to do |format|
+            format.html { render :new }
+            format.json { render json: @item_stock.errors, status: :unprocessable_entity }
+          end
+      end
     end
   end
+
   
   #Realiza las operaciones pertinentes al hacer un ingreso a stock de los items de una recepcion
   def create    
@@ -217,7 +223,7 @@ class ItemsStockController < ApplicationController
     end 
   end
 
-   def traer_cantidad_en_stock_en_suministro
+  def traer_cantidad_en_stock_en_suministro
     bien_id = params[:bien_id]
     deposito_id = 1 #>>>>>>>>>>>>>>>>> DEPOSITO SUMINISTRO -1 >>>>>>>>>>>>>>>>>
     @cantidad_en_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_id, deposito_id)

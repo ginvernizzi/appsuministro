@@ -5,6 +5,7 @@ class Transferencia < ActiveRecord::Base
   
   	has_many :bienes_de_consumo_para_transferir
   	has_one :recepcion_de_bien_de_consumo
+  	has_one :recepcion_para_transf
 
   	validates :fecha, presence: true
   	validates :area, presence: true    

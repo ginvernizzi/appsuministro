@@ -1,0 +1,30 @@
+<h1>Reporte de ingresos a stock manualmente</h1>
+ <table class="table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Clase</th>
+        <th>Codigo</th>
+        <th>Nombre</th>
+        <th style="text-align: right">Cantidad</th>
+        <th style="text-align: right">Costo</th>
+        <th>Deposito</th>
+        <th>Usuario</th>     
+      </tr>
+    </thead>
+    <tbody>
+      <% @registros.each do |registro| %>
+        <tr>
+          <td><%= registro.created_at %></td>
+          <td><%= registro.bien_de_consumo.clase.nombre %></td>
+          <td><%= obtener_codigo_completo_bien_de_consumo(registro.bien_de_consumo.nombre) %></td>
+          <td><%= registro.bien_de_consumo.nombre %></td>
+          <td style="text-align: right"><%= registro.cantidad.to_i %></td>        
+          <td style="text-align: right"><%= number_to_currency(registro.costo, :precision => 3) %></td>
+          <td><%= registro.deposito.nombre %></td>             
+          <td><%= registro.usuario%></td> 
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<br>

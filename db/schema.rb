@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160718033139) do
+ActiveRecord::Schema.define(version: 20160829154513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -263,6 +263,16 @@ ActiveRecord::Schema.define(version: 20160718033139) do
 
   add_index "recepcion_en_stocks", ["recepcion_de_bien_de_consumo_id"], name: "index_recepcion_en_stocks_on_recepcion_de_bien_de_consumo_id", using: :btree
 
+  create_table "recepcion_para_transfs", force: :cascade do |t|
+    t.integer  "recepcion_de_bien_de_consumo_id"
+    t.integer  "transferencia_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "recepcion_para_transfs", ["recepcion_de_bien_de_consumo_id"], name: "index_recepcion_para_transfs_on_recepcion_de_bien_de_consumo_id", using: :btree
+  add_index "recepcion_para_transfs", ["transferencia_id"], name: "index_recepcion_para_transfs_on_transferencia_id", using: :btree
+
   create_table "recepciones_de_bien_de_consumo", force: :cascade do |t|
     t.datetime "fecha"
     t.integer  "estado"
@@ -299,6 +309,19 @@ ActiveRecord::Schema.define(version: 20160718033139) do
   add_index "reemplazos_clase", ["clase_vieja_id", "clase_nueva_id"], name: "index_reemplazos_clase_on_clase_vieja_id_and_clase_nueva_id", unique: true, using: :btree
   add_index "reemplazos_clase", ["clase_vieja_id"], name: "index_reemplazos_clase_on_clase_vieja_id", using: :btree
 
+  create_table "registro_ingreso_manuals", force: :cascade do |t|
+    t.integer  "bien_de_consumo_id"
+    t.decimal  "cantidad"
+    t.decimal  "costo"
+    t.integer  "deposito_id"
+    t.string   "usuario"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "registro_ingreso_manuals", ["bien_de_consumo_id"], name: "index_registro_ingreso_manuals_on_bien_de_consumo_id", using: :btree
+  add_index "registro_ingreso_manuals", ["deposito_id"], name: "index_registro_ingreso_manuals_on_deposito_id", using: :btree
+
   create_table "reportes_a_fecha", force: :cascade do |t|
     t.date     "fecha"
     t.text     "stock_diario"
@@ -318,6 +341,7 @@ ActiveRecord::Schema.define(version: 20160718033139) do
     t.integer  "deposito_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "estado"
   end
 
   add_index "transferencias", ["area_id"], name: "index_transferencias_on_area_id", using: :btree
@@ -344,5 +368,9 @@ ActiveRecord::Schema.define(version: 20160718033139) do
   add_foreign_key "partidas_parciales", "partidas_principales"
   add_foreign_key "partidas_principales", "incisos"
   add_foreign_key "recepcion_en_stocks", "recepciones_de_bien_de_consumo"
+  add_foreign_key "recepcion_para_transfs", "recepciones_de_bien_de_consumo"
+  add_foreign_key "recepcion_para_transfs", "transferencias"
+  add_foreign_key "registro_ingreso_manuals", "bienes_de_consumo"
+  add_foreign_key "registro_ingreso_manuals", "depositos"
   add_foreign_key "transferencias", "areas"
 end
