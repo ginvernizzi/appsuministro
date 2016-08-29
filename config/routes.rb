@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :ingreso_manual_a_stocks
   get 'reemplazo_clase/index'
 
-  resources :registro_ingreso_stock , only: [:index] 
+  resources :registro_ingreso_manual , only: [:index] 
 
   resources :reemplazo_bdc , only: [:index, :new] do
     collection do       
