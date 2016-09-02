@@ -9,5 +9,5 @@ class Transferencia < ActiveRecord::Base
 
   	validates :fecha, presence: true
   	validates :area, presence: true    
-  	validates :deposito, presence: true    
+  	validates :deposito_id, presence: true    
 end
