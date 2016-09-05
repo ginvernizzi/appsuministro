@@ -167,20 +167,30 @@ class TransferenciasController < ApplicationController
       begin 
         deposito_suministro = Area.where("nombre LIKE ?", "%PATRI%").first.depositos.where("nombre ILIKE ?", "%suministro%")
         if @transferencia.recepcion_para_transf.nil?
-          @transferencia.destroy
+          deposito_destino = Deposito.find(@transferencia.deposito_id)
+          @transferencia.bienes_de_consumo_para_transferir.each do |bien_para_transferir|
+              stock_suministro_origen = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_para_transferir.bien_de_consumo.id, bien_para_transferir.deposito_id)
+              stock_suministro_origen[0].cantidad = stock_suministro_origen[0].cantidad + bien_para_transferir.cantidad
+              raise ActiveRecord::Rollback unless stock_suministro_origen[0].save           
+
+              stock_destino = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_para_transferir.bien_de_consumo.id, deposito_destino.id)
+              stock_destino[0].cantidad = stock_destino[0].cantidad - bien_para_transferir.cantidad
+              raise ActiveRecord::Rollback unless stock_destino[0].save
+            end
         else
             @recepcion_de_bien_de_consumo = @transferencia.recepcion_para_transf.recepcion_de_bien_de_consumo
             @transferencia.bienes_de_consumo_para_transferir.each do |bien_para_transferir|
               stock_suministro = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_para_transferir.bien_de_consumo.id, deposito_suministro[0].id)
               stock_suministro[0].cantidad = stock_suministro[0].cantidad + bien_para_transferir.cantidad
               raise ActiveRecord::Rollback unless stock_suministro[0].save
+
               stock_deposito_destino = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_para_transferir.bien_de_consumo.id, bien_para_transferir.deposito.id)
               stock_deposito_destino[0].cantidad = stock_deposito_destino[0].cantidad - bien_para_transferir.cantidad
               raise ActiveRecord::Rollback unless stock_deposito_destino[0].save
             end
-            raise ActiveRecord::Rollback unless @transferencia.update(estado: 2)
             raise ActiveRecord::Rollback unless @recepcion_de_bien_de_consumo.update(estado: 7)
         end
+        raise ActiveRecord::Rollback unless @transferencia.update(estado: 2)
         flash[:notice] = 'La Transferencia fue eliminada exitosamente.'            
         respond_to do |format|
             format.html { redirect_to transferencias_url }
@@ -256,63 +266,63 @@ class TransferenciasController < ApplicationController
         end                        
       end                                    
       return true      
-    end
+  end
 
-    def quitar_bienes_de_stock_transferencia_manual(bienes)                
-      bienes.each do |bdcdr|                
-          @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], bdcdr["DepoId"])           
-          if @item_stock[0]
-            resta = @item_stock[0].cantidad - bdcdr["Cantidad a transferir"].to_i              
-            raise ActiveRecord::Rollback unless @item_stock[0].update(cantidad: resta)              
-          else             
-            #Es imposible que no exista, ya que fue creado en el metodo del controller al ingresar stock              
-            #o puede pasar de que se lo hayan consumido o transferido un instante antes.
-            return false            
-          end               
-        #end
-      end 
-      return true      
-    end
+  def quitar_bienes_de_stock_transferencia_manual(bienes)                
+    bienes.each do |bdcdr|                
+        @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bdcdr["Id"], bdcdr["DepoId"])           
+        if @item_stock[0]
+          resta = @item_stock[0].cantidad - bdcdr["Cantidad a transferir"].to_i              
+          raise ActiveRecord::Rollback unless @item_stock[0].update(cantidad: resta)              
+        else             
+          #Es imposible que no exista, ya que fue creado en el metodo del controller al ingresar stock              
+          #o puede pasar de que se lo hayan consumido o transferido un instante antes.
+          return false            
+        end               
+      #end
+    end 
+    return true      
+  end
 
-    #espera un objeto bien de consumo de recepcion - recepcion de bienes
-    def guardar_costos(bdcdr)
-      puts ">>>>>>>>>>>>>>>>>>> bdcr array #{bdcdr}"
-      puts ">>>>>>>>>>>>>>>>>>> 240 (guardar costos)  bdcr array #{bdcdr}"
+  #espera un objeto bien de consumo de recepcion - recepcion de bienes
+  def guardar_costos(bdcdr)
+    puts ">>>>>>>>>>>>>>>>>>> bdcr array #{bdcdr}"
+    puts ">>>>>>>>>>>>>>>>>>> 240 (guardar costos)  bdcr array #{bdcdr}"
 
-      costo = CostoDeBienDeConsumo.new
-      costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
-      if costoArray && costoArray.count > 0
-        if bdcdr.costo > costoArray[0].costo                   
-          costoArray[0].update(costo: bdcdr.costo)                
-        end
-        costo = costoArray[0]
-      else      
-        costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                              fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')       
-        
-        raise ActiveRecord::Rollback unless costo.save                
-      end                                         
-      @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
-                                                              fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2') 
-      raise ActiveRecord::Rollback unless @costo_historico.save
+    costo = CostoDeBienDeConsumo.new
+    costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
+    if costoArray && costoArray.count > 0
+      if bdcdr.costo > costoArray[0].costo                   
+        costoArray[0].update(costo: bdcdr.costo)                
+      end
+      costo = costoArray[0]
+    else      
+      costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
+                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')       
+      
+      raise ActiveRecord::Rollback unless costo.save                
+    end                                         
+    @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo, 
+                                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2') 
+    raise ActiveRecord::Rollback unless @costo_historico.save
 
-      return costo        
-    end    
-    ##############################  
+    return costo        
+  end    
+  ##############################  
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_transferencia
-      @transferencia = Transferencia.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_transferencia
+    @transferencia = Transferencia.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def transferencia_params      
-      #params.require(:transferencia).permit(:fecha, :area_id, :deposito_id)
-      params.require(:transferencia).permit! 
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def transferencia_params      
+    #params.require(:transferencia).permit(:fecha, :area_id, :deposito_id)
+    params.require(:transferencia).permit! 
+  end
 
-    def cargar_datos_controles_transferencias                
-      @depositos = Array.new()
-      @areas = Area.all.order(:nombre)
-    end
+  def cargar_datos_controles_transferencias                
+    @depositos = Array.new()
+    @areas = Area.all.order(:nombre)
+  end
 end
