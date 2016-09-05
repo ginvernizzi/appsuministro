@@ -57,7 +57,7 @@ class GeneradorDeImpresionRecepcion
 				r.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }							
 				r.add_column("CANTIDAD") { |i| i.cantidad }
 				r.add_column("COSTO") { |i| number_to_currency(i.costo, :precision => 3) }									
-				r.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo, :precision => 3)  }
+				r.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo * i.cantidad, :precision => 3)  }
 				r.add_column("DESCRIPCION_ITEM") { |i| i.descripcion   }
 			end
 		end
