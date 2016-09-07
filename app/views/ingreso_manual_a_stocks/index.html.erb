@@ -11,7 +11,7 @@
   <tbody>
     <% @ingreso_manual_a_stocks.each do |ingreso_manual_a_stock| %>
       <tr>
-        <td><%= ingreso_manual_a_stock.fecha %></td>
+        <td><%= ingreso_manual_a_stock.fegdfcha.strftime("%d/%m/%Y") %></td> %></td>
         <td><%= link_to 'Show', ingreso_manual_a_stock %></td>
         <td><%= link_to 'Edit', edit_ingreso_manual_a_stock_path(ingreso_manual_a_stock) %></td>
         <td><%= link_to 'Destroy', ingreso_manual_a_stock, method: :delete, data: { confirm: 'Are you sure?' } %></td>

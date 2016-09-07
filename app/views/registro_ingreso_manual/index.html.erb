@@ -15,7 +15,7 @@
     <tbody>
       <% @registros.each do |registro| %>
         <tr>
-          <td><%= registro.created_at %></td>
+          <td><%= registro.created_at.strftime("%d/%m/%Y") %></td>
           <td><%= registro.bien_de_consumo.clase.nombre %></td>
           <td><%= obtener_codigo_completo_bien_de_consumo(registro.bien_de_consumo.nombre) %></td>
           <td><%= registro.bien_de_consumo.nombre %></td>
