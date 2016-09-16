@@ -25,11 +25,8 @@
       <% end %>
       <% if(@items_stock.length > 0) %>
         <% if @items_stock.detect { |e|  @items_stock.count(e.bien_de_consumo_id) > 1 } != nil  %>
-          <td><%= link_to 'Imprimir', imprimir_formulario_stock_total_todos_los_bienes_items_stock_path , method: :post, data: { confirm: '¿Esta seguro?' }  %>
+          <td><%= link_to 'Imprimir', imprimir_formulario_stock_faltante_path , method: :post, data: { confirm: '¿Esta seguro?' }  %>
           </td>
-        <% elsif  %>
-            <td><%= link_to 'Imprimir', imprimir_formulario_stock_total_por_bien_y_area_path(@items_stock[0].area_id_impresion, @items_stock[0].bien_id_impresion, @items_stock[0].fecha_inicio_impresion, @items_stock[0].fecha_fin_impresion), method: :post, data: { confirm: '¿Esta seguro?' }  %>
-            </td>
         <% end %>
       <% end %>
     </tbody>
@@ -40,5 +37,5 @@
         <%= @costo_total_general %>
       </div>
     </tr>
-     <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => "index" }, renderer: BootstrapPagination::Rails) %>
+      <%= will_paginate(@items_stock, :params => { :controller => "items_stock" }, renderer: BootstrapPagination::Rails) %>
 <% end %>

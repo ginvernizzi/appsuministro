@@ -1,36 +1,33 @@
-<h1> Items con stock mmínimo superado </h1>
+<h1> Items con stock mínimo superado </h1>
 
-<div class="row">  
+<div class="row">
   <br />
-  <div class="span6 offset3">   
-  <div> 
+  <div class="span6 offset3">
+  <div>
     <div class="field">
       <%= label_tag 'Bien de consumo' %>
     </div>
     <div class="field">
-      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75 %>
-    </div>    
+      <%= autocomplete_field_tag 'bien_de_consumo_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75, :update_elements => {} %>
+    </div>
 
     <div class="field">
       <%= label_tag 'Area' %>
     </div>
     <div class="field">
-      <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>      
-    </div>  
-    
-    <input type="button" value="Buscar" id="traer_items_stock_minimo_por_bien_de_consumo_y_area"> 
-    <input type="button" value="Traer todos" id="traer_todos_los_items_stock_con_stock_minimo_superado">   
+      <%= autocomplete_field_tag 'area_nombre', '', autocomplete_area_nombre_items_stock_path , :size => 75 %>
+    </div>
+
+    <input type="button" value="Buscar" id="traer_items_stock_minimo_por_bien_de_consumo_y_area">
+    <input type="button" value="Traer todos" id="traer_todos_los_items_stock_con_stock_minimo_superado">
 
     <%= hidden_field_tag 'bien_de_consumo_id' %>
 
     <%= hidden_field_tag 'area_id' %>
   </div>
 
-  <div id="tabla_items">    
-    <%= render 'form_tabla_stock' %>       
-  </div>   
-  
-</div> 
+  <div id="tabla_items">
+    <%= render 'form_tabla_stock_minimo_superado' %>
+  </div>
 
-
-
+</div>

@@ -196,13 +196,20 @@ Rails.application.routes.draw do
        get 'autocomplete_bien_de_consumo_nombre'
        get 'autocomplete_area_nombre'
        post 'imprimir_formulario_stock_total_todos_los_bienes'
-        post 'traer_cantidad_en_stock_en_suministro'
+      post 'traer_cantidad_en_stock_en_suministro'
+      post 'imprimir_formulario_stock_faltante'
      end
   end
 
-  post 'items_stock/area_id/:area_id/bien_id/:bien_id/fecha_inicio/:fecha_inicio/fecha_fin/:fecha_fin/imprimir_formulario_stock_total_por_bien_y_area/',
+
+
+  post 'items_stock/area_id/(:area_id)/bien_id/(:bien_id)/fecha_inicio/(:fecha_inicio)/fecha_fin/(:fecha_fin)/imprimir_formulario_stock_total_por_bien_y_area/',
                                                             to: 'items_stock#imprimir_formulario_stock_total_por_bien_y_area',
                                                             as: 'imprimir_formulario_stock_total_por_bien_y_area'
+
+  post 'items_stock/area_id/(:area_id)/bien_id/(:bien_id)/imprimir_formulario_stock_faltante/',
+                                                            to: 'items_stock#imprimir_formulario_stock_faltante',
+                                                            as: 'imprimir_formulario_stock_faltante'
 
 
   post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',
