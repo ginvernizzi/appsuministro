@@ -89,5 +89,4 @@ class GeneradorDeImpresionItemStock
 	def nombre_formulario_stock_faltante
 		"comprobante_item_stock_faltante" + @fecha_inicializacion
 	end
-
 end
