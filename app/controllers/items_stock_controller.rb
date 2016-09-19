@@ -216,14 +216,15 @@ class ItemsStockController < ApplicationController
     area_id = params[:area_id]
 
     if !bien_de_consumo_id.nil? && !area_id.nil?
-      @items_stock = ItemStock.joins(:bien_de_consumo,:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND cantidad < bienes_de_consumo.stock_minimo", bien_id, area_id)
+      @items_stock = ItemStock.joins(:bien_de_consumo,:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND cantidad < bienes_de_consumo.stock_minimo", bien_de_consumo_id, area_id)
     else
       @items_stock = ItemStock.joins(:bien_de_consumo).where("cantidad < bienes_de_consumo.stock_minimo")
+      puts "TODOS!!!!"
     end
 
     @generador = GeneradorDeImpresionItemStock.new
 
-    @generador.generar_(@items)
+    @generador.generar_pdf_stock_faltante(@items_stock)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )
   end
@@ -233,6 +234,9 @@ class ItemsStockController < ApplicationController
     area_id = params[:area_id]
 
     @items_stock = ItemStock.joins(:bien_de_consumo, :deposito).where("cantidad < bienes_de_consumo.stock_minimo AND bien_de_consumo_id = ? AND depositos.area_id = ?", bien_de_consumo_id, area_id).paginate(:page => params[:page], :per_page => 30)
+    @items_stock[0].area_id_impresion = area_id;
+    @items_stock[0].bien_id_impresion = bien_de_consumo_id;
+
     @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
 
     #pass @reportes_a_fecha to index.html.erb and update only the tbody with id=content which takes @query
