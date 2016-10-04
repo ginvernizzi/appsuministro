@@ -22,13 +22,13 @@
             <td><%= bien.bien_de_consumo.nombre %></td>
             <td><%= bien.consumo_directo.obra_proyecto.descripcion  %></td>
             <td><%= bien.cantidad %></td>
-            <td><%= number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien.bien_de_consumo_id).last.costo, precision: 3) %></td>
+            <td><%= number_to_currency(bien.costo, precision: 3) %></td>
             <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien.bien_de_consumo_id).last.costo, bien.cantidad), precision: 3) %> </td>
             <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>
           </tr>
         <% end %>
         <% if(@bien_de_consumo_para_consumir.length > 0) %>
-            <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_codigo_destino_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_id_impresion, @bien_de_consumo_para_consumir.first().area_id_impresion, @bien_de_consumo_para_consumir.first().fecha_inicio_impresion, @bien_de_consumo_para_consumir.first().fecha_fin_impresion) , method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+            <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_codigo_destino_y_fecha_path(@bien_de_consumo_para_consumir.first().bien_id_impresion, @bien_de_consumo_para_consumir.first().area_id_impresion, @bien_de_consumo_para_consumir.first().fecha_inicio_impresion, @bien_de_consumo_para_consumir.first().fecha_fin_impresion) , method: :post, data: { confirm: '¿Esta seguro?' }  %>
             </td>
         <% end %>
     </tbody>
