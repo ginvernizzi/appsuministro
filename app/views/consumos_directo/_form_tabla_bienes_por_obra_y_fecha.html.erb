@@ -3,7 +3,7 @@
   <thead>
     <tr>
       <th>Fecha</th>
-      <th>Comprobante consumo</th>      
+      <th>Comprobante consumo</th>
       <th>Codigo</th>
       <th>Nombre</th>
       <th>Destino</th>
@@ -12,29 +12,29 @@
       <th style="text-align: right">Costo total</th>
       <th> Ver </th>
     </tr>
-  </thead>  
-    <tbody>    
+  </thead>
+    <tbody>
         <% @bien_de_consumo_para_consumir.each do |bien| %>
           <tr>
             <td><%= bien.consumo_directo.fecha.strftime("%d/%m/%Y") %></td>
-            <td><%= bien.consumo_directo.id %></td>            
+            <td><%= bien.consumo_directo.id %></td>
             <td><%= obtener_codigo_completo_bien_de_consumo(bien.bien_de_consumo.nombre) %></td>
             <td><%= bien.bien_de_consumo.nombre %></td>
-            <td><%= bien.consumo_directo.area.nombre  %></td>        
+            <td><%= bien.consumo_directo.area.nombre  %></td>
             <td><%= bien.cantidad %></td>
-            <td><%= number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien.bien_de_consumo_id).last.costo, precision: 3) %></td>  
-            <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien.bien_de_consumo_id).last.costo, bien.cantidad), precision: 3) %> </td>   
-            <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>    
+            <td><%= number_to_currency(bien.costo, precision: 3) %></td>
+            <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(bien.costo, bien.cantidad), precision: 3) %> </td>
+            <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>
           </tr>
-        <% end %>    
-         <% if(@bien_de_consumo_para_consumir.length > 0) %>              
+        <% end %>
+         <% if(@bien_de_consumo_para_consumir.length > 0) %>
             <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_obra_proyecto_y_fecha_path(@bien_de_consumo_para_consumir.first().obra_proyecto_impresion, @bien_de_consumo_para_consumir.first().fecha_inicio_impresion, @bien_de_consumo_para_consumir.first().fecha_fin_impresion) , method: :post, data: { confirm: '¿Esta seguro?' }  %>
-            </td>   
-        <% end %>        
-    </tbody>      
+            </td>
+        <% end %>
+    </tbody>
 </table>
     <div  style="text-align:right;">
       <%= label_tag :total_general, "Costo total general: " %>
       <%= obtener_total_general(@bien_de_consumo_para_consumir) %>
-    </div> 
+    </div>
 <% end %>

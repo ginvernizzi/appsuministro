@@ -23,7 +23,7 @@
             <td><%= bien.consumo_directo.obra_proyecto.descripcion  %></td>
             <td><%= bien.cantidad %></td>
             <td><%= number_to_currency(bien.costo, precision: 3) %></td>
-            <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bien.bien_de_consumo_id).last.costo, bien.cantidad), precision: 3) %> </td>
+            <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(bien.costo, bien.cantidad), precision: 3) %> </td>
             <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>
           </tr>
         <% end %>
