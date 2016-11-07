@@ -54,8 +54,8 @@ class GeneradorDeImpresion
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
 				s.add_column("DESCRIPCION_ADICIONAL") { |i| traer_descripcion(i)  }
 				s.add_column("CANTIDAD") { |i| i.cantidad }
-				s.add_column("COSTO") { |i| number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo, :precision => 3) }
-				s.add_column("COSTO_TOTAL") { |i| number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", i.bien_de_consumo.id).last.costo * i.cantidad, :precision => 3)  }
+				s.add_column("COSTO") { |i| number_to_currency(i.costo, :precision => 3) }
+				s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo * i.cantidad, :precision => 3)  }
 			end
 		end
 		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_consumo_odt)
