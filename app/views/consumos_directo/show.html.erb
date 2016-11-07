@@ -33,38 +33,38 @@
     <% if @consumo_directo.bienes_de_consumo_para_consumir.any? %>
         <% if @consumo_directo.recepciones_de_bien_de_consumo[0].nil? %>
             <% @consumo_directo.bienes_de_consumo_para_consumir.each do |bcc| %>
-              <tr>        
-                <td><%= bcc.bien_de_consumo.clase.nombre %> </td>          
+              <tr>
+                <td><%= bcc.bien_de_consumo.clase.nombre %> </td>
                 <td><%= obtener_codigo_completo_bien_de_consumo(bcc.bien_de_consumo.nombre) %> </td>
-                <td><%= bcc.bien_de_consumo.nombre %> </td>          
-                <td><%= @consumo_directo.recepciones_de_bien_de_consumo[0] ? @consumo_directo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?",bcc.bien_de_consumo.id).first.descripcion : "" %> </td>   
+                <td><%= bcc.bien_de_consumo.nombre %> </td>
+                <td><%= @consumo_directo.recepciones_de_bien_de_consumo[0] ? @consumo_directo.recepciones_de_bien_de_consumo[0].bienes_de_consumo_de_recepcion.where("bien_de_consumo_id = ?",bcc.bien_de_consumo.id).first.descripcion : "" %> </td>
                 <td><%= bcc.cantidad %> </td>
-                <td><%= number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?",bcc.bien_de_consumo.id).last.costo, precision: 3) %></td>  
-                <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bcc.bien_de_consumo.id).last.costo, bcc.cantidad), precision: 3) %> 
-              </td>  
-              </tr>    
+                <td><%= number_to_currency(bcc.costo, precision: 3) %></td>
+                <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(bcc.costo, bcc.cantidad), precision: 3) %>
+              </td>
+              </tr>
             <%end%>
         <%else%>
          <% @consumo_directo.recepciones_de_bien_de_consumo.first.bienes_de_consumo_de_recepcion.each do |bcr| %>
-              <tr>        
-                <td><%= bcr.bien_de_consumo.clase.nombre %> </td>          
+              <tr>
+                <td><%= bcr.bien_de_consumo.clase.nombre %> </td>
                 <td><%= obtener_codigo_completo_bien_de_consumo(bcr.bien_de_consumo.nombre) %> </td>
-                <td><%= bcr.bien_de_consumo.nombre %> </td>          
-                <td><%= bcr.descripcion %> </td>   
+                <td><%= bcr.bien_de_consumo.nombre %> </td>
+                <td><%= bcr.descripcion %> </td>
                 <td><%= bcr.cantidad %> </td>
-                <td><%= number_to_currency(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?",bcr.bien_de_consumo.id).last.costo, precision: 3) %></td>  
-                <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", bcr.bien_de_consumo.id).last.costo, bcr.cantidad), precision: 3) %> 
-              </td>  
-              </tr>    
+                <td><%= number_to_currency(bcr.costo, precision: 3) %></td>
+                <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(bcr.costo, bcr.cantidad), precision: 3) %>
+              </td>
+              </tr>
             <%end%>
 
         <%end%>
     <% else %>
-        <tr>        
+        <tr>
           <td></td>
           <td></td>
-        </tr>    
-    <% end %>      
+        </tr>
+    <% end %>
   </tbody>
 </table>
 </div>
@@ -73,11 +73,10 @@
       <%= obtener_total_general(@consumo_directo.bienes_de_consumo_para_consumir) %>
   </div>
 <br />
-  <div>    
-     <td><%= link_to 'Imprimir', imprimir_formulario_consumos_directo_path(@consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %>        
+  <div>
+     <td><%= link_to 'Imprimir', imprimir_formulario_consumos_directo_path(@consumo_directo), method: :post, data: { confirm: '¿Esta seguro?' }  %>
        </td>
   </div>
 <br />
 
 <%= link_to 'Volver', session.delete(:return_to)  %>
-
