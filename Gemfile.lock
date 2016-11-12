@@ -106,6 +106,7 @@ GEM
       json
       multi_json
       request_store (>= 1.0)
+    hirb (0.7.3)
     i18n (0.7.0)
     jbuilder (2.4.0)
       activesupport (>= 3.0.0, < 5.1)
@@ -266,6 +267,7 @@ DEPENDENCIES
   exception_notification (= 4.0.1)
   faker (= 1.1.2)
   gon
+  hirb
   jbuilder (~> 2.0)
   jquery-inputmask-rails
   jquery-rails

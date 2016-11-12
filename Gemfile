@@ -18,7 +18,7 @@ gem 'capistrano-rails-console'
 gem "capistrano-db-tasks", require: false
 gem 'whenever', { require: false }
 
-group :development, :test do 
+group :development, :test do
   gem 'capistrano-rails'
   gem 'capistrano-ssh-doctor'
   gem 'capistrano-bundler'
@@ -52,7 +52,7 @@ gem 'sprockets', '3.2.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-gem 'jquery-ui-rails', '~> 5.0' 
+gem 'jquery-ui-rails', '~> 5.0'
 #gem 'jquery-ui-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -90,6 +90,8 @@ gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
 
 gem 'cancancan', '~> 1.10'
+
+gem 'hirb'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
