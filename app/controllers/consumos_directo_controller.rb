@@ -654,10 +654,8 @@ class ConsumosDirectoController < ApplicationController
     @bien_de_consumo_para_consumir = nil
 
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
-        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ?
-        AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?",
-        estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin).select("bienes_de_consumo.nombre", :bien_de_consumo_id, :cantidad, :costo, :consumo_directo_id, "(cantidad * costo) AS costo_total", :deosito_id)
-        #@bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.bien_de_consumo_para_consumir(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
+        #@bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
+        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.bien_de_consumo_para_consumir(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
            @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
            @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
