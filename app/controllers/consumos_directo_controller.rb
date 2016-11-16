@@ -165,8 +165,9 @@ class ConsumosDirectoController < ApplicationController
   def destroy
     ActiveRecord::Base.transaction do
       begin
-        @consumo_directo.recepciones_de_bien_de_consumo[0] ? @recepcion = @consumo_directo.recepciones_de_bien_de_consumo[0] : @recepcion = nil
+        deposito_suministro = Deposito.where("nombre LIKE ?", "%SUMINISTRO%").first
 
+        @consumo_directo.recepciones_de_bien_de_consumo[0] ? @recepcion = @consumo_directo.recepciones_de_bien_de_consumo[0] : @recepcion = nil
         @consumo_directo.bienes_de_consumo_para_consumir.each do |bien|
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
           if !@item_stock.first.nil?
@@ -178,9 +179,20 @@ class ConsumosDirectoController < ApplicationController
           volver_costo_de_bien_al_anterior(bien) unless @recepcion.nil?
         end
 
+
         respond_to do |format|
           if @consumo_directo.update(estado: 2)
             if !@recepcion.nil?
+              @recepcion.bienes_de_consumo_de_recepcion.each do |bien_de_recepcion|
+                @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien_de_recepcion.bien_de_consumo.id, deposito_suministro.id)
+                if !@item_stock.first.nil?
+                  resta = @item_stock.first.cantidad - bien_de_recepcion.cantidad
+                  raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: resta)
+                else
+                  raise ActiveRecord::Rollback
+                end
+              #volver_costo_de_bien_al_anterior(bien) unless recepcion.nil?
+              end
               raise ActiveRecord::Rollback unless @recepcion.update(estado: 7)
             end
             format.html { redirect_to consumos_directo_url, notice: 'El consumo fué dado de baja exitosamante' }
@@ -642,8 +654,10 @@ class ConsumosDirectoController < ApplicationController
     @bien_de_consumo_para_consumir = nil
 
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
-      #@bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
-        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.bien_de_consumo_para_consumir(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
+        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ?
+        AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?",
+        estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin).select("bienes_de_consumo.nombre", :bien_de_consumo_id, :cantidad, :costo, :consumo_directo_id, "(cantidad * costo) AS costo_total", :deosito_id)
+        #@bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.bien_de_consumo_para_consumir(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
         if @bien_de_consumo_para_consumir.count > 0
            @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
            @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
