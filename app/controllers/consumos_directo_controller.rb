@@ -654,9 +654,35 @@ class ConsumosDirectoController < ApplicationController
     @bien_de_consumo_para_consumir = nil
 
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
-        #@bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:bien_de_consumo, :consumo_directo).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
-        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.bien_de_consumo_para_consumir(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
-        if @bien_de_consumo_para_consumir.count > 0
+        #@bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.bien_de_consumo_para_consumir(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin).select("bienes_de_consumo_para_consumir.*, areas.nombre, areas.id").order("areas.nombre, areas.id")
+
+        @bien_de_consumo_para_consumir = BienDeConsumoParaConsumir.joins(:consumo_directo => [:area]).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin).select("bienes_de_consumo_para_consumir.*").order("areas.nombre").group("areas.nombre, bienes_de_consumo_para_consumir.id")
+
+        #@subtotales = BienDeConsumoParaConsumir.bien_de_consumo_para_consumir(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin).select("bienes_de_consumo_para_consumir.*, areas.nombre").group("areas.id, bienes_de_consumo_para_consumir.id").order("areas.id")
+        @subtotales =  BienDeConsumoParaConsumir.joins(:consumo_directo => [:area]).where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", estado_activo,obra_proyecto_id,fecha_inicio, fecha_fin).select("consumos_directo.area_id").group("consumos_directo.area_id").sum("cantidad * costo")
+
+        # @connection = ActiveRecord::Base.establish_connection(
+        #     :adapter => "mysql2",
+        #     :host => "localhost",
+        #     :database => "appsuministro_development",
+        #     :username => "suministro",
+        #     :password => "123456"
+        # )
+        #
+        # @subtotales = "SELECT bienes_de_consumo_para_consumir.*, areas.nombre, areas.id as area_id, (costo * cantidad) AS total
+        #         FROM bienes_de_consumo_para_consumir INNER JOIN consumos_directo ON consumos_directo.id = bienes_de_consumo_para_consumir.consumo_directo_id
+        #         INNER JOIN areas ON areas.id = consumos_directo.area_id
+        #         WHERE (consumos_directo.estado = 1 AND consumos_directo.obra_proyecto_id = 1 AND consumos_directo.fecha >= '21-4-2016' AND consumos_directo.fecha <= '1-11-2016')
+        #         GROUP BY areas.id, bienes_de_consumo_para_consumir.id  ORDER BY area_id"
+        #
+        # @result = @connection.connection.execute(@subtotales);
+        # puts "******************************"
+        # puts @result
+
+        @bien_para_consumir_obj = BienDeConsumoParaConsumir.new
+        @lista_final = @bien_para_consumir_obj.lista_final_con_subtotales(@bien_de_consumo_para_consumir, @subtotales)
+
+        if @bien_de_consumo_para_consumir.length > 0
            @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
            @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
            @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;

@@ -10,6 +10,7 @@
       <th>Cantidad</th>
       <th>Costo</th>
       <th style="text-align: right">Costo total</th>
+      <th>Origen</th>
       <th> Ver </th>
     </tr>
   </thead>
@@ -23,9 +24,17 @@
             <td><%= bien.consumo_directo.area.nombre  %></td>
             <td><%= bien.cantidad %></td>
             <td><%= number_to_currency(bien.costo, precision: 3) %></td>
-            <td style="text-align: right"> <%= number_to_currency(obtener_costo_total(bien.costo, bien.cantidad), precision: 3) %> </td>
+            <td><%= number_to_currency(bien.costo_total, precision: 3) %> </td>
+            <td><%= bien.consumo_directo.recepciones_de_bien_de_consumo[0] ? "Desde recepción" : "Manual"  %></td>
             <td><%= link_to 'Ver', consumo_directo_path(bien.consumo_directo.id) %></td>
           </tr>
+          <% unless bien.subtotal.nil? %>
+            <tr>
+                <td colspan="6"></td>
+                <td style="text-align: right"> <strong> Subtotal: </strong> </td>
+                <td style="text-align: right"> <strong> <%=  number_to_currency(bien.subtotal, precision: 3) %> </strong> </td>
+            </tr>
+          <% end %>
         <% end %>
          <% if(@bien_de_consumo_para_consumir.length > 0) %>
             <td><%= link_to 'Imprimir', imprimir_formulario_consumos_por_obra_proyecto_y_fecha_path(@bien_de_consumo_para_consumir.first().obra_proyecto_impresion, @bien_de_consumo_para_consumir.first().fecha_inicio_impresion, @bien_de_consumo_para_consumir.first().fecha_fin_impresion) , method: :post, data: { confirm: '¿Esta seguro?' }  %>
