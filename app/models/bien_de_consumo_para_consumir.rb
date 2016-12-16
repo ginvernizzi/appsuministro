@@ -18,11 +18,6 @@ class BienDeConsumoParaConsumir < ActiveRecord::Base
   where("consumos_directo.estado = ? AND consumos_directo.obra_proyecto_id = ? AND consumos_directo.fecha >= ? AND consumos_directo.fecha <= ?", estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin) }
 
   def lista_final_con_subtotales(lista_de_consumos_por_obra_proyecto, subtotales_x_area_destino)
-
-      puts "************** subto"
-      puts subtotales_x_area_destino.length
-      puts "subtol **********************"
-
     @lista_final = Array.new
     area_id_actual = lista_de_consumos_por_obra_proyecto.first.consumo_directo.area.id
     lista_de_consumos_por_obra_proyecto.each do |bien|

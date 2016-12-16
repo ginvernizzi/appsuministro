@@ -28,6 +28,7 @@ class GeneradorDeImpresionItemsDeConsumo
 				s.add_column("COSTO") { |i| number_to_currency(i.costo, precision: 3) }
 				s.add_column("COSTO_TOTAL") { |i| number_to_currency(obtener_costo_total(i.costo, i.cantidad), precision: 3) }
 				s.add_column("DESCRIPCION") { |i| i.descripcion_de_recepcion }
+				s.add_column("SUBTOTAL") { |i| number_to_currency(i.subtotal,precision: 3) }
 			end
 		end
 
