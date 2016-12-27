@@ -10,6 +10,8 @@
 User.create!(name: "ana", email: "ana@tnc.gob.ar", password: "123456").save
 User.create!(name: "jorge", email: "jorge@tnc.gob.ar", password: "123456").save
 User.create!(name: "ricardo", email: "ricardo@tnc.gob.ar", password: "123456").save
+User.create!(name: "compras", email: "compras@tnc.gob.ar", password: "123456").save
+
 
 Persona.create!(nombre: "Christian", apellido:" Fincic" ).save
 Persona.create!(nombre: "Ana", apellido:"Salanitro").save
@@ -91,12 +93,3 @@ areaSistemas = Area.create!(nombre: 'Legales', responsable:'lopez')
 # for i in 10..99
 #    Clase.create!(nombre: "classs"+i.to_s, codigo: "000"+i.to_s, partida_parcial: @partida).save
 # end
-
-
-
-
-
-
-
-
-
