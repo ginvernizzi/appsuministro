@@ -25,7 +25,10 @@ class ItemsStockController < ApplicationController
 
   def traer_todos_los_items_stock
     respond_to do |format|
-      @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").paginate(:page => params[:page], :per_page => 30)
+      @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+      @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
+
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_sin_paginar), :precision => 3)
       format.js {}
     end
   end
@@ -68,6 +71,8 @@ class ItemsStockController < ApplicationController
       @items_stock[0].area_id_impresion = area_id;
       @items_stock[0].bien_id_impresion = bien_de_consumo_id;
       @items_stock[0].partida_parcial_impresion = codigo_pp;
+
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
     end
 
     respond_to do |format|
@@ -194,12 +199,12 @@ class ItemsStockController < ApplicationController
     @items = @items_stock = ItemStock.where("bien_de_consumo_id = ?", -1)
 
     if !bien_de_consumo_id.blank? && codigo_pp.blank?
-      @items = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, fecha_inicio, fecha_fin)
+      @items = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND cantidad > 0 AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, fecha_inicio, fecha_fin)
     elsif bien_de_consumo_id.blank? || bien_de_consumo_id.nil? && !codigo_pp.blank?
       inciso = codigo_pp[0].to_s
       ppal = codigo_pp[1].to_s
       pparcial = codigo_pp[2].to_s
-      @items = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin)
+      @items = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("cantidad > 0 AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin)
     end
 
     @generador = GeneradorDeImpresionItemStock.new

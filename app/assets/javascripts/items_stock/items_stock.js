@@ -254,6 +254,8 @@ var ready = function() {
     $("#area_id").val("");
     $("#area_nombre").val("");
     $("#partida_parcial").val("");
+    $("#bien_de_consumo_nombre").prop( "disabled", false );
+    $("#partida_parcial").prop( "disabled", false );
   }
 
     function blanquear_campos_comobos_clase_y_bienes()
@@ -261,6 +263,30 @@ var ready = function() {
     $("#categoria_clase_id").val("");
     $("#items_stock_bien_de_consumo_id").empty();
   }
+
+  $("#bien_de_consumo_nombre").on("keyup", function(e) {
+      var str = this.value;
+      var n = str.length;
+
+      if(n > 0 || str != "")
+      { $("#partida_parcial").prop( "disabled", true ); }
+      else
+      {
+        $("#partida_parcial").prop( "disabled", false );
+      }
+  });
+
+  $("#partida_parcial").on("keyup", function(e) {
+      var str = this.value;
+      var n = str.length;
+
+      if(n > 0 || str != "")
+      { $("#bien_de_consumo_nombre").prop( "disabled", true ); }
+      else
+      {
+        $("#bien_de_consumo_nombre").prop( "disabled", false );
+      }
+  });
 
 };
 $("#partida_parcial").inputmask("999", { clearMaskOnLostFocus: true })
