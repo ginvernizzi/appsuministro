@@ -1,17 +1,17 @@
 <h1>Stock de bienes de consumo</h1>
 
-<div class="row">  
+<div class="row">
   <br />
-  <div class="span6 offset3">   
-  <div> 
+  <div class="span6 offset3">
+  <div>
 
   </div>
 
   <div class="row">
-  <form class="navbar-form navbar-left" role="search">    
-    <div class="form-group">    
+  <form class="navbar-form navbar-left" role="search">
+    <div class="form-group">
       <div class"field">
-        <%= label_tag 'seleccione un rango de fechas'%>  
+        <%= label_tag 'seleccione un rango de fechas'%>
       </div>
       <br />
       <div class"label">
@@ -19,7 +19,7 @@
       </div>
 
       <div class"field">
-      <%= text_field_tag :fecha_inicio, nil, readonly: true %>  
+      <%= text_field_tag :fecha_inicio, nil, readonly: true %>
       </div>
 
       <div class"label">
@@ -27,7 +27,7 @@
       </div>
 
       <div class"field">
-      <%= text_field_tag :fecha_fin, nil, readonly: true %>  
+      <%= text_field_tag :fecha_fin, nil, readonly: true %>
       </div>
 
       <div class="field">
@@ -35,19 +35,24 @@
       </div>
       <div class="field">
         <%= autocomplete_field_tag 'bien_de_consumo_nombre', '', autocomplete_bien_de_consumo_nombre_items_stock_path , :size => 75, :update_elements => {} %>
-      </div>    
-      <input type="button" value="Buscar" id="traer_por_bien_de_consumo_y_area_suministro"> 
-      <input type="button" value="Traer todos" id="traer_todos_los_items_stock">   
-      <%= hidden_field_tag 'bien_de_consumo_id' %> 
+      </div>
+
+      <div class="field">
+         <%= label :partida_parcial, "Partida parcial" %> <br />
+      </div>
+      <div class="field">
+          <%= text_field_tag :partida_parcial %>
+      </div>
+          
+      <input type="button" value="Buscar" id="traer_por_bien_de_consumo_y_area_suministro">
+      <input type="button" value="Traer todos" id="traer_todos_los_items_stock">
+      <%= hidden_field_tag 'bien_de_consumo_id' %>
     </div>
-  </form>    
-</div> 
+  </form>
+</div>
 
-  <div id="tabla_items">    
-    <%= render 'form_tabla_stock' %>       
-  </div>   
-  
-</div> 
+  <div id="tabla_items">
+    <%= render 'form_tabla_stock' %>
+  </div>
 
-
-
+</div>

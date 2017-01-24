@@ -1,5 +1,4 @@
 var ready = function() {
-
   (function() {
       jQuery(function() {
           var bienes, llenarBienes;
@@ -102,6 +101,9 @@ var ready = function() {
 
 
   $("#traer_todos_los_items_stock").on('click', function() {
+    $("#area_id").val("");
+    $("#area_nombre").val("");
+    $("#partida_parcial").val("");
     traer_todos_los_items_de_stock();
   });
 
@@ -127,13 +129,16 @@ var ready = function() {
     var bien_id = $("#bien_de_consumo_id").val();
     var fecha_inicio =  $("#fecha_inicio").val();
     var fecha_fin =  $("#fecha_fin").val();
+    var partida_parcial =  $("#partida_parcial").val();
 
-    if(bien_id != null &&  bien_id != "")
-    { traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id); }
+    if(bien_id === "" && partida_parcial === "")
+    {
+      alert("Debe ingresar/seleccionar algun campo")
+      BlanquearCampos();
+    }
     else
     {
-      alert("Debe seleccionar el Bien de consumo")
-      BlanquearCampos();
+      traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id, partida_parcial);
     }
   });
 
@@ -165,10 +170,10 @@ var ready = function() {
     traer_items_por_bien_y_area_por_ajax(urlString, bien_id, area_id);
   }
 
-    function traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id)
+  function traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id, partida_parcial)
   {
     var urlString = '/items_stock/traer_items_stock_por_fecha_bien_y_area_suministro';
-    traer_items_por_fecha_bien_y_area_suministro_por_ajax(urlString, bien_id, fecha_inicio, fecha_fin);
+    traer_items_por_fecha_bien_y_area_suministro_por_ajax(urlString, bien_id, fecha_inicio, fecha_fin, partida_parcial);
   }
 
   function traer_items_stock_minimo_superado()
@@ -180,7 +185,7 @@ var ready = function() {
   function traer_items_stock_minimo_superado_por_bien_y_area(bien_id, area_id)
   {
     var urlString = "/items_stock/traer_items_stock_minimo_superado_por_bien_y_area";
-    traer_items_por_fecha_bien_y_area_por_ajax(urlString, bien_id, area_id);    
+    traer_items_por_fecha_bien_y_area_por_ajax(urlString, bien_id, area_id);
   }
 
 
@@ -221,13 +226,13 @@ var ready = function() {
     });
   }
 
-    function traer_items_por_fecha_bien_y_area_suministro_por_ajax(urlString, bien_id, fecha_inicio, fecha_fin)
+    function traer_items_por_fecha_bien_y_area_suministro_por_ajax(urlString, bien_id, fecha_inicio, fecha_fin, partida_parcial)
   {
       $.ajax({
       type: "get",
       dataType: "json",
       url: urlString,
-      data: { bien_de_consumo_id: bien_id, fecha_inicio: fecha_inicio, fecha_fin: fecha_fin },
+      data: { bien_de_consumo_id: bien_id, fecha_inicio: fecha_inicio, fecha_fin: fecha_fin, partida_parcial: partida_parcial },
       success: function(data){
             if (data  == "")
               { alert("No se encontraron resultados") }
@@ -236,7 +241,7 @@ var ready = function() {
       },
       error: function (request, status, error)
           {
-            alert("Debe seleccionar Bien de consumo");
+            alert("Ha ocurrido u error");
             BlanquearCampos();
           }
     });
@@ -248,6 +253,7 @@ var ready = function() {
     $("#bien_de_consumo_nombre").val("");
     $("#area_id").val("");
     $("#area_nombre").val("");
+    $("#partida_parcial").val("");
   }
 
     function blanquear_campos_comobos_clase_y_bienes()
@@ -257,6 +263,6 @@ var ready = function() {
   }
 
 };
-
+$("#partida_parcial").inputmask("999", { clearMaskOnLostFocus: true })
 $(document).ready(ready);
 $(document).on('page:load', ready);

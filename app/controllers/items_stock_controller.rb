@@ -45,18 +45,29 @@ class ItemsStockController < ApplicationController
 
   def traer_items_stock_por_fecha_bien_y_area_suministro
     area_id = Area.where("nombre LIKE ?", "%PATRI%").first.id
+
+    codigo_pp = params[:partida_parcial]
     bien_de_consumo_id = params[:bien_de_consumo_id]
     date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
     date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
 
     @items_stock = ItemStock.where("bien_de_consumo_id = ?", -1)
 
-    @items_stock = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+    if !bien_de_consumo_id.blank? && codigo_pp.blank?
+      @items_stock = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+    elsif bien_de_consumo_id.blank? || bien_de_consumo_id.nil? && !codigo_pp.blank?
+      inciso = codigo_pp[0].to_s
+      ppal = codigo_pp[1].to_s
+      pparcial = codigo_pp[2].to_s
+      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+    end
+
     if !@items_stock.blank? && @items_stock.count > 0
       @items_stock[0].fecha_inicio_impresion = date_inicio;
       @items_stock[0].fecha_fin_impresion = date_fin;
       @items_stock[0].area_id_impresion = area_id;
       @items_stock[0].bien_id_impresion = bien_de_consumo_id;
+      @items_stock[0].partida_parcial_impresion = codigo_pp;
     end
 
     respond_to do |format|
@@ -178,15 +189,20 @@ class ItemsStockController < ApplicationController
     area_id = params[:area_id]
     fecha_fin = params[:fecha_fin]
     fecha_inicio = params[:fecha_inicio]
+    codigo_pp = params[:partida_parcial]
 
-    if !bien_de_consumo_id.nil? && !area_id.nil?
+    @items = @items_stock = ItemStock.where("bien_de_consumo_id = ?", -1)
+
+    if !bien_de_consumo_id.blank? && codigo_pp.blank?
       @items = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, fecha_inicio, fecha_fin)
-    else
-      @items = ItemStock.all
+    elsif bien_de_consumo_id.blank? || bien_de_consumo_id.nil? && !codigo_pp.blank?
+      inciso = codigo_pp[0].to_s
+      ppal = codigo_pp[1].to_s
+      pparcial = codigo_pp[2].to_s
+      @items = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin)
     end
 
     @generador = GeneradorDeImpresionItemStock.new
-
     @generador.generar_pdf(@items)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )
@@ -195,7 +211,7 @@ class ItemsStockController < ApplicationController
 
   def imprimir_formulario_stock_total_todos_los_bienes
     @generador = GeneradorDeImpresionItemStock.new
-    @items = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    @items = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND cantidad > 0").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
     @generador.generar_pdf(@items)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )

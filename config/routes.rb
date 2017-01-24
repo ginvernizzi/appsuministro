@@ -203,7 +203,7 @@ Rails.application.routes.draw do
 
 
 
-  post 'items_stock/area_id/(:area_id)/bien_id/(:bien_id)/fecha_inicio/(:fecha_inicio)/fecha_fin/(:fecha_fin)/imprimir_formulario_stock_total_por_bien_y_area/',
+  post 'items_stock/area_id/(:area_id)/bien_id/(:bien_id)/partida_parcial/(:partida_parcial)/fecha_inicio/(:fecha_inicio)/fecha_fin/(:fecha_fin)/imprimir_formulario_stock_total_por_bien_y_area/',
                                                             to: 'items_stock#imprimir_formulario_stock_total_por_bien_y_area',
                                                             as: 'imprimir_formulario_stock_total_por_bien_y_area'
 
