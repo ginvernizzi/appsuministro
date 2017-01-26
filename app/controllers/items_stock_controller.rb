@@ -207,12 +207,12 @@ class ItemsStockController < ApplicationController
     @items = @items_stock = ItemStock.where("bien_de_consumo_id = ?", -1)
 
     if !bien_de_consumo_id.blank? && codigo_pp.blank?
-      @items = ItemStock.joins(:deposito).where("bien_de_consumo_id = ? AND depositos.area_id = ? AND cantidad > 0 AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, fecha_inicio, fecha_fin)
+      @items = ItemStock.joins(:deposito).where("bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND cantidad > 0 AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, fecha_inicio, fecha_fin)
     elsif bien_de_consumo_id.blank? || bien_de_consumo_id.nil? && !codigo_pp.blank?
       inciso = codigo_pp[0].to_s
       ppal = codigo_pp[1].to_s
       pparcial = codigo_pp[2].to_s
-      @items = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("cantidad > 0 AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin)
+      @items = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND cantidad > 0 AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, fecha_inicio, fecha_fin)
     end
 
     @generador = GeneradorDeImpresionItemStock.new
