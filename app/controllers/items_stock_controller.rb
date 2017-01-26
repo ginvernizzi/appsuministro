@@ -208,16 +208,16 @@ class ItemsStockController < ApplicationController
 
     if !bien_de_consumo_id.blank? && codigo_pp.blank?
       puts "******* solo bien de consumo**********"
-      @items_stock = ItemStock.joins(:deposito).where("bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+      @items_stock = ItemStock.joins(:deposito).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
     elsif bien_de_consumo_id.blank? && !codigo_pp.blank?
       puts "******* solo parcial**********"
       inciso = codigo_pp[0].to_s
       ppal = codigo_pp[1].to_s
       pparcial = codigo_pp[2].to_s
-      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
     elsif  bien_de_consumo_id.blank? && codigo_pp.blank?
       puts "******* solo fecha **********"
-      @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+      @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
       @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
     end
 
