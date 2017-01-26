@@ -131,15 +131,7 @@ var ready = function() {
     var fecha_fin =  $("#fecha_fin").val();
     var partida_parcial =  $("#partida_parcial").val();
 
-    if(bien_id === "" && partida_parcial === "")
-    {
-      alert("Debe ingresar/seleccionar algun campo")
-      BlanquearCampos();
-    }
-    else
-    {
-      traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id, partida_parcial);
-    }
+    traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id, partida_parcial);
   });
 
     $("#traer_items_stock_minimo_por_bien_de_consumo_y_area").on('click', function() {

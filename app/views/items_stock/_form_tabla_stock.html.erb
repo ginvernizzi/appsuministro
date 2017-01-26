@@ -42,5 +42,5 @@
         <%= @costo_total_general %>
       </div>
     </tr>
-     <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => "index" }, renderer: BootstrapPagination::Rails) %>
+     <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => @action_destino }, renderer: BootstrapPagination::Rails) %>
 <% end %>
