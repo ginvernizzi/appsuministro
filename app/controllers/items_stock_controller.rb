@@ -208,7 +208,7 @@ class ItemsStockController < ApplicationController
 
     if !bien_de_consumo_id.blank? && codigo_pp.blank?
       puts "******* solo bien de consumo**********"
-      @items_stock = ItemStock.joins(:deposito).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
     elsif bien_de_consumo_id.blank? && !codigo_pp.blank?
       puts "******* solo parcial**********"
       inciso = codigo_pp[0].to_s
