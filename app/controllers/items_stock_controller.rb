@@ -200,8 +200,8 @@ class ItemsStockController < ApplicationController
   def imprimir_formulario_stock_total_por_bien_y_area
     bien_de_consumo_id = params[:bien_id]
     area_id = params[:area_id]
-    fecha_fin = params[:fecha_fin]
-    fecha_inicio = params[:fecha_inicio]
+    date_fin = params[:fecha_fin]
+    date_inicio = params[:fecha_inicio]
     codigo_pp = params[:partida_parcial]
 
     @items = @items_stock = ItemStock.where("bien_de_consumo_id = ?", -1)
