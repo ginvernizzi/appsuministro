@@ -9,12 +9,21 @@ class GeneradorDeImpresionItemStock
 
 	def generar_pdf(items)
 		@items = items
+		@fecha_inicio = DateTime.now
+		@fecha_fin = DateTime.now
+
+		if !@items.blank? && @items.count > 0
+		  @fecha_inicio =  @items[0].fecha_inicio_impresion
+		  @fecha_fin = @items[0].fecha_fin_impresion
+		end
 
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_items_stock.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
 			r.add_field("FECHA", DateTime.now.strftime("%d/%m/%Y"))
 			r.add_field("COSTO_TOTAL_GRAL", number_to_currency(obtener_total_general_de_items_stock(@items), :precision => 3))
+			r.add_field("DESDE", @fecha_inicio)
+			r.add_field("HASTA",@fecha_fin)
 
 			r.add_table("TABLA_ITEM_STOCK", @items) do |s|
 				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }
