@@ -12,10 +12,16 @@ class ItemsStockController < ApplicationController
   end
 
   def index
-    @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    date_inicio = '2000-1-1'
+    date_fin =  DateTime.now
+    @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
     @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
 
-    @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_sin_paginar), :precision => 3)
+    if !@items_stock.blank? && @items_stock.count > 0
+      @items_stock[0].fecha_inicio_impresion = date_inicio;
+      @items_stock[0].fecha_fin_impresion = date_fin;
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_sin_paginar), :precision => 3)
+    end
     @action_destino = "index"
   end
 
@@ -59,13 +65,15 @@ class ItemsStockController < ApplicationController
 
     if !bien_de_consumo_id.blank? && codigo_pp.blank?
       puts "******* solo bien de consumo**********"
-      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo).where("bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+      @items_sin_paginar = ItemStock.joins(:deposito, :bien_de_consumo).where("bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin)
+      @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
     elsif bien_de_consumo_id.blank? && !codigo_pp.blank?
       puts "******* solo parcial**********"
       inciso = codigo_pp[0].to_s
       ppal = codigo_pp[1].to_s
       pparcial = codigo_pp[2].to_s
-      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+      @items_sin_paginar = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, date_inicio, date_fin)
+      @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
     elsif  bien_de_consumo_id.blank? && codigo_pp.blank?
       puts "******* solo fecha **********"
       @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
@@ -79,7 +87,7 @@ class ItemsStockController < ApplicationController
       @items_stock[0].bien_id_impresion = bien_de_consumo_id;
       @items_stock[0].partida_parcial_impresion = codigo_pp;
 
-      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_sin_paginar), :precision => 3)
       @action_destino = "index"
     end
 
@@ -208,21 +216,26 @@ class ItemsStockController < ApplicationController
 
     if !bien_de_consumo_id.blank? && codigo_pp.blank?
       puts "******* solo bien de consumo**********"
-      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+      @items_sin_paginar = ItemStock.joins(:deposito, :bien_de_consumo).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND bien_de_consumo_id = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", bien_de_consumo_id, area_id, date_inicio, date_fin)
+      @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
     elsif bien_de_consumo_id.blank? && !codigo_pp.blank?
       puts "******* solo parcial**********"
       inciso = codigo_pp[0].to_s
       ppal = codigo_pp[1].to_s
       pparcial = codigo_pp[2].to_s
-      @items_stock = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, date_inicio, date_fin).paginate(:page => params[:page], :per_page => 30)
+      @items_sin_paginar = ItemStock.joins(:deposito, :bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal => [:inciso]]]]).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND incisos.codigo = ? AND partidas_principales.codigo = ? AND partidas_parciales.codigo = ? AND depositos.area_id = ? AND items_stock.created_at BETWEEN ? AND ?", inciso, ppal, pparcial, area_id, date_inicio, date_fin)
+      @items_stock =  @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
     elsif  bien_de_consumo_id.blank? && codigo_pp.blank?
       puts "******* solo fecha **********"
       @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("cantidad > 0 AND bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
       @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
     end
 
+    puts "********fecha inicio: #{date_inicio}*********"
+    puts "********fecha fin: #{date_fin}*********"
+
     @generador = GeneradorDeImpresionItemStock.new
-    @generador.generar_pdf(@items_stock)
+    @generador.generar_pdf(@items_sin_paginar)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )
   end
