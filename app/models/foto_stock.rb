@@ -31,7 +31,8 @@ class FotoStock
 				if item['bien_de_consumo_id'].to_i == bien_de_consumo_id_a_buscar
 		      item_stock_a_fecha = ItemStockAFecha.new(bien_de_consumo_id: item['bien_de_consumo_id'], deposito: Deposito.find(item['deposito_id']), costo: item['costo'], cantidad: item['cantidad'])
 		      @items_stock << item_stock_a_fecha
-					puts "ENTRO UNA VEZ"
+					puts "Costo :  #{item['costo']}"
+					puts "Cantidad :  #{item['cantidad']}"
 					break
 				else
 					#puts "No entro!!!!!"
