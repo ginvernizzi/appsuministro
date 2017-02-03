@@ -21,14 +21,14 @@ class FotoStock
 	  puts 'hola!!!!'
 	end
 
-	def traer_lista_de_stocks
+	def get_historial(bien_de_consumo_id_a_buscar)
 	  #@reportes = Array.new
 		@items_stock = Array.new
 	  ReporteAFecha.all.each do |reporte|
 	    @items_de_stock_json = JSON.parse(reporte.stock_diario)
 	    @items_de_stock_json.each do |item|
 				# puts "************* #{item['bien_de_consumo_id'].to_i} *************"
-				if item['bien_de_consumo_id'].to_i == 1715
+				if item['bien_de_consumo_id'].to_i == bien_de_consumo_id_a_buscar
 		      item_stock_a_fecha = ItemStockAFecha.new(bien_de_consumo_id: item['bien_de_consumo_id'], deposito: Deposito.find(item['deposito_id']), costo: item['costo'], cantidad: item['cantidad'])
 		      @items_stock << item_stock_a_fecha
 					puts "ENTRO UNA VEZ"
