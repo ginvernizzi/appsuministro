@@ -21,26 +21,30 @@ class FotoStock
 	  puts 'hola!!!!'
 	end
 
-	def get_historial(bien_de_consumo_id_a_buscar)
-	  #@reportes = Array.new
-		@items_stock = Array.new
-	  ReporteAFecha.all.each do |reporte|
-	    @items_de_stock_json = JSON.parse(reporte.stock_diario)
-	    @items_de_stock_json.each do |item|
-				# puts "************* #{item['bien_de_consumo_id'].to_i} *************"
-				if item['bien_de_consumo_id'].to_i == bien_de_consumo_id_a_buscar
-		      item_stock_a_fecha = ItemStockAFecha.new(bien_de_consumo_id: item['bien_de_consumo_id'], deposito: Deposito.find(item['deposito_id']), costo: item['costo'], cantidad: item['cantidad'])
-		      @items_stock << item_stock_a_fecha
-					puts "Costo :  #{item['costo']}"
-					puts "Cantidad :  #{item['cantidad']}"
-					break
-				else
-					#puts "No entro!!!!!"
-				end
-	    end
-			break
-	  end
-		return	@items_stock
+	def get_historial(bien_de_consumo_id_a_buscar, desde, hasta)
+			fecha_desde = desde.to_date
+			fecha_hasta = hasta.to_date
+			puts fecha_desde
+			puts fecha_hasta
+
+			@items_stock = Array.new
+		  ReporteAFecha.all.each do |reporte|
+					if reporte.fecha.to_date  > fecha_desde &&  reporte.fecha.to_date < fecha_hasta
+						  @items_de_stock_json = JSON.parse(reporte.stock_diario)
+						  @items_de_stock_json.each do |item|
+									if item['bien_de_consumo_id'].to_i == bien_de_consumo_id_a_buscar
+											puts "Entre"
+								      #item_stock_a_fecha = ItemStockAFecha.new(bien_de_consumo_id: item['bien_de_consumo_id'], deposito: Deposito.find(item['deposito_id']), costo: item['costo'], cantidad: item['cantidad'])
+								      #@items_stock << item_stock_a_fecha
+											puts "Costo :  #{item['costo']}"
+											puts "Cantidad :  #{item['cantidad']}"
+											break;
+									end
+						  end
+					end
+		  end
+			return
+			#return	@items_stock
 	end
 
 
