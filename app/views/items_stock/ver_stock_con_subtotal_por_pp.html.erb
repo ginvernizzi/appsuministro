@@ -1,0 +1,45 @@
+<h1>Stock de bienes de consumo con subtotal por partida parcial </h1>
+
+<div class="row">
+  <br />
+  <div class="span6 offset3">
+  <div>
+
+  </div>
+
+  <div class="row">
+  <form class="navbar-form navbar-left" role="search">
+    <div class="form-group">
+      <div class"field">
+        <%= label_tag 'seleccione un rango de fechas'%>
+      </div>
+      <br />
+      <div class"label">
+      <%= label :fecha_inicio, "Desde" %>
+      </div>
+
+      <div class"field">
+      <%= text_field_tag :fecha_inicio, nil, readonly: true %>
+      </div>
+
+      <div class"label">
+      <%= label :fecha_fin, "Hasta" %>
+      </div>
+
+      <div class"field">
+      <%= text_field_tag :fecha_fin, nil, readonly: true %>
+      </div>
+
+
+      <input type="button" value="Buscar" id="traer_por_bien_de_consumo_y_area_suministro">
+      <!-- <input type="button" value="Traer todos" id="traer_stock_total_con_subtotal_por_pp"> -->
+
+    </div>
+  </form>
+</div>
+
+  <div id="tabla_items">
+    <%= render 'form_tabla_stock_con_subtotal_por_pp' %>
+  </div>
+
+</div>

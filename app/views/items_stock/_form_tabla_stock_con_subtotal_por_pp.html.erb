@@ -1,0 +1,40 @@
+<% if !@items_stock.nil? && @items_stock.length > 0 %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Clase</th>
+        <th>Codigo</th>
+        <th>Nombre</th>
+        <th style="text-align: right">Cantidad</th>
+        <th style="text-align: right">Costo</th>
+        <th style="text-align: right">Costo total</th>
+        <th>Deposito</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @items_stock.each do |item_stock| %>
+        <tr>
+          <td><%= item_stock.bien_de_consumo.clase.nombre %></td>
+          <td><%= obtener_codigo_completo_bien_de_consumo(item_stock.bien_de_consumo.nombre) %></td>
+          <td><%= item_stock.bien_de_consumo.nombre %></td>
+          <td style="text-align: right"><%= item_stock.cantidad.to_i %></td>
+          <td style="text-align: right"><%= number_to_currency(item_stock.costo_de_bien_de_consumo.costo, :precision => 3) %></td>
+          <td style="text-align: right"><%= number_to_currency(obtener_costo_total(item_stock.costo_de_bien_de_consumo.costo, item_stock.cantidad), precision: 3)  %></td>
+          <td><%= item_stock.deposito.nombre %></td>
+        </tr>
+      <% end %>
+        <% if(@items_stock.length > 0) %>
+          <td>
+            <%= link_to 'Imprimir', imprimir_formulario_stock_total_por_bien_y_area_path(@items_stock[0].area_id_impresion, @items_stock[0].bien_id_impresion,  @items_stock[0].partida_parcial_impresion, @items_stock[0].fecha_inicio_impresion, @items_stock[0].fecha_fin_impresion), method: :post, data: { confirm: '¿Esta seguro?' }  %>
+        </td>
+      <% end %>
+    </tbody>
+  </table>
+    <tr>
+      <div  style="text-align:right;">
+        <%= label_tag :total_general, "Costo total general: " %>
+        <%= @costo_total_general %>
+      </div>
+    </tr>
+     <%= will_paginate(@items_stock, :params => { :controller => "items_stock", :action => @action_destino }, renderer: BootstrapPagination::Rails) %>
+<% end %>
