@@ -134,6 +134,13 @@ var ready = function() {
     traer_items_por_fecha_bien_y_area_suministro(fecha_inicio, fecha_fin, bien_id, partida_parcial);
   });
 
+  $("#traer_stock_total_con_subtotal_por_pp").on('click', function() {
+  var fecha_fin =  $("#fecha_fin").val();
+  var partida_parcial =  $("#partida_parcial").val();
+
+  traer_stock_total_con_subtotal_por_pp(fecha_inicio, fecha_fin, bien_id, partida_parcial);
+});
+
     $("#traer_items_stock_minimo_por_bien_de_consumo_y_area").on('click', function() {
     var bien_id = $("#bien_de_consumo_id").val();
     var area_id = $("#area_id").val();

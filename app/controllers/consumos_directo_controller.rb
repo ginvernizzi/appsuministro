@@ -654,17 +654,20 @@ class ConsumosDirectoController < ApplicationController
     @bien_de_consumo_para_consumir = nil
 
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
+        puts "**************** #{obra_proyecto_id}"
+        puts "**************** #{fecha_inicio}"
+        puts "**************** #{fecha_fin}"
         @bien_de_consumo_para_consumir = query_consumos_por_fecha_consumos_y_obra_proyecto(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
 
-        @subtotales = query_traer_subtotales_por_area(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
-
-        @bien_para_consumir_obj = BienDeConsumoParaConsumir.new
-        @lista_final = @bien_para_consumir_obj.lista_final_con_subtotales(@bien_de_consumo_para_consumir, @subtotales)
+            puts "**************** #{@bien_de_consumo_para_consumir.count}"
 
         if @bien_de_consumo_para_consumir.length > 0
-           @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
-           @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
-           @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;
+            @subtotales = query_traer_subtotales_por_area(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
+            @bien_para_consumir_obj = BienDeConsumoParaConsumir.new
+            @lista_final = @bien_para_consumir_obj.lista_final_con_subtotales(@bien_de_consumo_para_consumir, @subtotales)
+            @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
+            @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
+            @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;
         end
     end
 
