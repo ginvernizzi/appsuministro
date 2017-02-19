@@ -659,10 +659,10 @@ class ConsumosDirectoController < ApplicationController
         puts "**************** #{fecha_fin}"
         @bien_de_consumo_para_consumir = query_consumos_por_fecha_consumos_y_obra_proyecto(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
 
-            puts "**************** #{@bien_de_consumo_para_consumir.count}"
 
         if @bien_de_consumo_para_consumir.length > 0
-            @subtotales = query_traer_subtotales_por_area(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
+            #@subtotales = query_traer_subtotales_por_area(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
+            @subtotales = traer_subtotales_por_area(@bien_de_consumo_para_consumir)
             @bien_para_consumir_obj = BienDeConsumoParaConsumir.new
             @lista_final = @bien_para_consumir_obj.lista_final_con_subtotales(@bien_de_consumo_para_consumir, @subtotales)
             @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
@@ -673,6 +673,37 @@ class ConsumosDirectoController < ApplicationController
 
     respond_to do |format|
       format.js {}
+    end
+  end
+
+  #array con objeto SubtotalPorArea --> area_id y subtotal
+  def traer_subtotales_por_area(bienes_de_consumo_para_consumir)
+    lista = Array.new
+    sumar_total = 0
+    area_actual = bienes_de_consumo_para_consumir.first.consumo_directo.area_id
+
+    bienes_de_consumo_para_consumir.each do |bien|
+        if area_actual == bien.consumo_directo.area_id
+            sumar_total = sumar_total + (bien.cantidad * bien.costo)
+        else
+            subtotal_por_area = SubtotalPorArea.new
+            subtotal_por_area.area_id = area_actual
+            subtotal_por_area.subtotal = sumar_total
+            lista << subtotal_por_area
+            sumar_total = 0
+
+            area_actual = bien.consumo_directo.area_id
+            sumar_total = sumar_total + (bien.cantidad * bien.costo)
+            if(bien == bienes_de_consumo_para_consumir.last)
+                subtotal_por_area = SubtotalPorArea.new
+                subtotal_por_area.area_id = area_actual
+                subtotal_por_area.subtotal = sumar_total
+                lista << subtotal_por_area
+            end
+        end
+    end
+    lista.each do |item|
+      puts "area: #{item.area_id} ///// sobtotal: #{item.subtotal}"
     end
   end
 

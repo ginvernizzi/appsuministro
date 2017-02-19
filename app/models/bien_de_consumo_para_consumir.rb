@@ -23,14 +23,17 @@ class BienDeConsumoParaConsumir < ActiveRecord::Base
     lista_de_consumos_por_obra_proyecto.each do |bien|
           if bien.consumo_directo.area.id == area_id_actual
               @lista_final << bien
+          else
+              subtotal_del_area = subtotales_x_area_destino.select {|e| e.area_id == area_id_actual}[0].subtotal
+              @lista_final.last.update(subtotal: subtotal_del_area)
+
+              area_id_actual = bien.consumo_directo.area.id
+              @lista_final << bien
+              
               if bien.id == lista_de_consumos_por_obra_proyecto.last.id
-                subtotal_del_area = subtotales_x_area_destino[bien.consumo_directo.area.id]
+                subtotal_del_area = subtotales_x_area_destino.select {|e| e.area_id == bien.consumo_directo.area.id}[0].subtotal
                 @lista_final.last.update(subtotal: subtotal_del_area)
               end
-          else
-              subtotal_del_area = subtotales_x_area_destino[area_id_actual]
-              @lista_final.last.update(subtotal: subtotal_del_area)
-              area_id_actual = bien.consumo_directo.area.id
           end
     end
     return @lista_final
