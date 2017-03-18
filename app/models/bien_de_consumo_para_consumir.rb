@@ -29,7 +29,7 @@ class BienDeConsumoParaConsumir < ActiveRecord::Base
 
               area_id_actual = bien.consumo_directo.area.id
               @lista_final << bien
-              
+
               if bien.id == lista_de_consumos_por_obra_proyecto.last.id
                 subtotal_del_area = subtotales_x_area_destino.select {|e| e.area_id == bien.consumo_directo.area.id}[0].subtotal
                 @lista_final.last.update(subtotal: subtotal_del_area)

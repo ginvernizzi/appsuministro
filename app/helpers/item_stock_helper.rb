@@ -1,3 +1,3 @@
-module ItemStockHelper	
-    
+module ItemStockHelper
+    require 'will_paginate/array'
 end

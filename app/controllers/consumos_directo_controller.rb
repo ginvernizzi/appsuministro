@@ -654,9 +654,7 @@ class ConsumosDirectoController < ApplicationController
     @bien_de_consumo_para_consumir = nil
 
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
-        puts "**************** #{obra_proyecto_id}"
-        puts "**************** #{fecha_inicio}"
-        puts "**************** #{fecha_fin}"
+
         @bien_de_consumo_para_consumir = query_consumos_por_fecha_consumos_y_obra_proyecto(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
 
 
@@ -665,6 +663,7 @@ class ConsumosDirectoController < ApplicationController
             @subtotales = traer_subtotales_por_area(@bien_de_consumo_para_consumir)
             @bien_para_consumir_obj = BienDeConsumoParaConsumir.new
             @lista_final = @bien_para_consumir_obj.lista_final_con_subtotales(@bien_de_consumo_para_consumir, @subtotales)
+
             @bien_de_consumo_para_consumir[0].fecha_inicio_impresion = fecha_inicio;
             @bien_de_consumo_para_consumir[0].fecha_fin_impresion = fecha_fin;
             @bien_de_consumo_para_consumir[0].obra_proyecto_impresion = obra_proyecto_id;
@@ -676,7 +675,6 @@ class ConsumosDirectoController < ApplicationController
     end
   end
 
-  #array con objeto SubtotalPorArea --> area_id y subtotal
   def traer_subtotales_por_area(bienes_de_consumo_para_consumir)
     lista = Array.new
     sumar_total = 0
@@ -702,9 +700,7 @@ class ConsumosDirectoController < ApplicationController
             end
         end
     end
-    lista.each do |item|
-      puts "area: #{item.area_id} ///// sobtotal: #{item.subtotal}"
-    end
+    return lista
   end
 
   def imprimir_formulario_consumos_por_obra_proyecto_y_fecha
@@ -717,9 +713,8 @@ class ConsumosDirectoController < ApplicationController
 
     if !obra_proyecto_id.nil? && !obra_proyecto_id.blank? && !fecha_inicio.nil? && !fecha_fin.nil?
       @bien_de_consumo_para_consumir = query_consumos_por_fecha_consumos_y_obra_proyecto(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
+      @subtotales = query_traer_subtotales_por_area(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
 
-      #@subtotales = query_traer_subtotales_por_area(estado_activo, obra_proyecto_id, fecha_inicio, fecha_fin)
-      @subtotales = traer_subtotales_por_area(@bien_de_consumo_para_consumir)
       @bien_para_consumir_obj = BienDeConsumoParaConsumir.new
       @lista_final = @bien_para_consumir_obj.lista_final_con_subtotales(@bien_de_consumo_para_consumir, @subtotales)
 
