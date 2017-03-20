@@ -27,7 +27,8 @@
       </div>
 
       <div class"field">
-      <%= text_field_tag :fecha_fin, nil, readonly: true %>
+      <!-- <%= text_field_tag :fecha_fin, DateTime.now, readonly: true %> -->
+      <%= text_field_tag 'fecha_fin', DateTime.now %>
       </div>
 
 
@@ -41,5 +42,5 @@
   <div id="tabla_items">
     <%= render 'form_tabla_stock_con_subtotal_por_pp' %>
   </div>
-    
+
 </div>
