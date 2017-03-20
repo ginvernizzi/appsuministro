@@ -288,6 +288,30 @@ class ItemsStockController < ApplicationController
     send_file ( file )
   end
 
+  def imprimir_formulario_stock_total_con_subtotal_por_pp
+    date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
+    date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
+
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND cantidad > 0 AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+
+    if !@items_stock.blank? && @items_stock.count > 0
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
+
+      @subtotales = traer_subtotales_de_stock_por_pp(@items_stock)
+
+      @item_stock_obj = ItemStock.new
+      @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
+
+      @items_stock[0].fecha_inicio_impresion = date_inicio;
+      @items_stock[0].fecha_fin_impresion = date_fin;
+    end
+
+    @generador = GeneradorDeImpresionItemStock.new
+    @generador.generar_pdf_itemsRWERWERWERWERWERWERWER(@items_stock)
+    file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
+    send_file ( file )
+  end
+
 
   def imprimir_formulario_stock_total_por_bien_y_area
     bien_de_consumo_id = params[:bien_id]

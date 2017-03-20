@@ -70,6 +70,45 @@ class GeneradorDeImpresionItemStock
 			`unoconv -f pdf #{@ruta_formulario_interno_odt}`
 	end
 
+	def generar_pdf_itemsRWERWERWERWERWERWERWER(bienes_de_consumo_para_consumir)
+		@items = bienes_de_consumo_para_consumir
+		@fecha_inicio = DateTime.now
+		@fecha_fin = DateTime.now
+
+		if !@items.blank? && @items.count > 0
+			@fecha_inicio =  @items[0].fecha_inicio_impresion.strftime("%d/%m/%Y")
+			@fecha_fin = @items[0].fecha_fin_impresion.strftime("%d/%m/%Y") 
+		end
+
+
+		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_items_stock_subtotal_por_pp.odt")
+
+		report = ODFReport::Report.new(@ruta_plantilla) do |r|
+			r.add_field("FECHA", DateTime.now.strftime("%d/%m/%Y"))
+			r.add_field("COSTO_TOTAL_GRAL", number_to_currency(obtener_total_general_de_items_stock(@items), :precision => 3))
+			r.add_field("DESDE", @fecha_inicio)
+		  r.add_field("HASTA", @fecha_fin)
+
+			r.add_table("TABLA_ITEM_STOCK", @items) do |s|
+				s.add_column("CLASE") { |i| i.bien_de_consumo.clase.nombre }
+				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
+				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
+				s.add_column("CANTIDAD") { |i| i.cantidad.to_i }
+				s.add_column("COSTO") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo , :precision => 3) }
+				s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo * i.cantidad, :precision => 3) }
+				s.add_column("DEPOSITO") { |i| i.deposito.nombre }
+				s.add_column("AREA") { |i| i.deposito.area.nombre }
+				s.add_column("SUBTOTAL") { |i| number_to_currency(i.subtotal,precision: 3) }
+			end
+		end
+		@ruta_formulario_interno_odt = Rails.root.join("public/forms_impresiones/" + nombre_formulario_stock_faltante_odt)
+		report.generate(@ruta_formulario_interno_odt)
+		#@ruta_formularios_internos = Rails.root.join("public/forms_impresiones/")
+		# `libreoffice --headless --invisible --convert-to pdf --outdir #{@ruta_formularios_internos} #{@ruta_formulario_interno_odt}`
+		`unoconv -f pdf #{@ruta_formulario_interno_odt}`
+
+	end
+
 
 	def nombre_formulario_pdf
 		nombre_formulario + ".pdf"
