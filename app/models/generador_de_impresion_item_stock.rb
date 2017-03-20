@@ -70,14 +70,14 @@ class GeneradorDeImpresionItemStock
 			`unoconv -f pdf #{@ruta_formulario_interno_odt}`
 	end
 
-	def generar_pdf_itemsRWERWERWERWERWERWERWER(bienes_de_consumo_para_consumir)
+	def generar_pdf_stock_total_con_subtotal_por_pp(bienes_de_consumo_para_consumir)
 		@items = bienes_de_consumo_para_consumir
 		@fecha_inicio = DateTime.now
 		@fecha_fin = DateTime.now
 
 		if !@items.blank? && @items.count > 0
 			@fecha_inicio =  @items[0].fecha_inicio_impresion.strftime("%d/%m/%Y")
-			@fecha_fin = @items[0].fecha_fin_impresion.strftime("%d/%m/%Y") 
+			@fecha_fin = @items[0].fecha_fin_impresion.strftime("%d/%m/%Y")
 		end
 
 

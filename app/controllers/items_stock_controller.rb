@@ -307,7 +307,7 @@ class ItemsStockController < ApplicationController
     end
 
     @generador = GeneradorDeImpresionItemStock.new
-    @generador.generar_pdf_itemsRWERWERWERWERWERWERWER(@items_stock)
+    @generador.generar_pdf_stock_total_con_subtotal_por_pp(@items_stock)
     file = Rails.root.join("public/forms_impresiones/" +  @generador.nombre_formulario_pdf)
     send_file ( file )
   end
