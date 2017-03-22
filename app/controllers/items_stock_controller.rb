@@ -12,19 +12,19 @@ class ItemsStockController < ApplicationController
   end
 
   #no es necesaria la vista, este metodo está para que traiga por todos los items la primera vez que carga.
-  # def index
-  #   date_inicio = DateTime.new(1980,1,1)
-  #   date_fin =  DateTime.now
-  #   @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
-  #   @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
-  #
-  #   if !@items_stock.blank? && @items_stock.count > 0
-  #     @items_stock[0].fecha_inicio_impresion = date_inicio;
-  #     @items_stock[0].fecha_fin_impresion = date_fin;
-  #     @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_sin_paginar), :precision => 3)
-  #   end
-  #   @action_destino = "index"
-  # end
+  def index
+    date_inicio = DateTime.new(1980,1,1)
+    date_fin =  DateTime.now
+    @items_sin_paginar = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    @items_stock = @items_sin_paginar.paginate(:page => params[:page], :per_page => 30)
+
+    if !@items_stock.blank? && @items_stock.count > 0
+      @items_stock[0].fecha_inicio_impresion = date_inicio;
+      @items_stock[0].fecha_fin_impresion = date_fin;
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_sin_paginar), :precision => 3)
+    end
+    @action_destino = "index"
+  end
 
   def ver_stock_con_subtotal_por_pp
     if !params[:fecha_inicio].blank? && !params[:fecha_fin].blank?
