@@ -9,6 +9,7 @@
 
 set :stage, :staging
 server '192.168.2.25', user: 'deploy', roles: %w{web app}, my_property: :my_value
+set :branch, proc { `git rev-parse --abbrev-ref staging`.chomp }
 
 # role-based syntax
 # ==================
