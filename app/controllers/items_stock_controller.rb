@@ -438,10 +438,10 @@ class ItemsStockController < ApplicationController
     costo = CostoDeBienDeConsumo.new
     costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
     if costoArray && costoArray.count > 0
-      if bdcdr.costo > costoArray[0].costo
+      # if bdcdr.costo > costoArray[0].costo
         costoArray[0].update(costo: bdcdr.costo)
         costo =costoArray[0]
-      end
+      # end
     else
       costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo,
                                             fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
