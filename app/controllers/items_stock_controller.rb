@@ -81,7 +81,7 @@ class ItemsStockController < ApplicationController
 
     items_de_stock.each do |item|
         if pp_actual == obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id)
-            sumar_total = sumar_total + (item.cantidad * item.costo_de_bien_de_consumo.costo)
+            sumar_total = sumar_total + (item.cantidad * item.traer_ultimo_costo_de_bien_de_consumo)
             cantidad_pp = cantidad_pp + 1
         else
             subtotal_por_pp = Subtotal_de_stock_por_pp.new
@@ -94,7 +94,7 @@ class ItemsStockController < ApplicationController
             cantidad_pp = 0
 
             pp_actual = obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id)
-            sumar_total = sumar_total + (item.cantidad * item.costo_de_bien_de_consumo.costo)
+            sumar_total = sumar_total + (item.cantidad * item.traer_ultimo_costo_de_bien_de_consumo)
             cantidad_pp = cantidad_pp + 1
 
             if(item == items_de_stock.last)
@@ -437,16 +437,16 @@ class ItemsStockController < ApplicationController
   def guardar_costos(bdcdr)
     costo = CostoDeBienDeConsumo.new
     costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
-    if costoArray && costoArray.count > 0
-      # if bdcdr.costo > costoArray[0].costo
-        costoArray[0].update(costo: bdcdr.costo)
-        costo =costoArray[0]
-      # end
-    else
+    # if costoArray && costoArray.count > 0
+    #   # if bdcdr.costo > costoArray[0].costo
+    #     costoArray[0].update(costo: bdcdr.costo)
+    #     costo =costoArray[0]
+    #   # end
+    # else
       costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo,
                                             fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
       raise ActiveRecord::Rollback unless costo.save
-    end
+    # end
     @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo,
                                                             fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
     raise ActiveRecord::Rollback unless @costo_historico.save

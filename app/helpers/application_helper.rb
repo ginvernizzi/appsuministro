@@ -26,7 +26,8 @@ module ApplicationHelper
   def obtener_total_general_de_items_stock(items_stock)
     sum = 0.0
     items_stock.each do |item|
-      sum = sum + obtener_costo_total(item.costo_de_bien_de_consumo.costo, item.cantidad.to_i)
+      # sum = sum + obtener_costo_total(item.costo_de_bien_de_consumo.costo, item.cantidad.to_i)
+      sum = sum + obtener_costo_total(item.traer_ultimo_costo_de_bien_de_consumo, item.cantidad.to_i)
     end
     return sum
   end

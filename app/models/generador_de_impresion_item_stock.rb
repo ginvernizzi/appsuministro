@@ -30,8 +30,8 @@ class GeneradorDeImpresionItemStock
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
 				s.add_column("CANTIDAD") { |i| i.cantidad.to_i }
-				s.add_column("COSTO") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo , :precision => 3) }
-				s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo * i.cantidad, :precision => 3) }
+				s.add_column("COSTO") { |i| number_to_currency(i.traer_ultimo_costo_de_bien_de_consumo , :precision => 3) }
+				s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.traer_ultimo_costo_de_bien_de_consumo * i.cantidad, :precision => 3) }
 				s.add_column("DEPOSITO") { |i| i.deposito.nombre }
 				s.add_column("AREA") { |i| i.deposito.area.nombre }
 			end
@@ -57,8 +57,8 @@ class GeneradorDeImpresionItemStock
 					s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 					s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
 					s.add_column("CANTIDAD") { |i| i.cantidad.to_i }
-					s.add_column("COSTO") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo , :precision => 3) }
-					s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo * i.cantidad, :precision => 3) }
+					s.add_column("COSTO") { |i| number_to_currency(i.traer_ultimo_costo_de_bien_de_consumo , :precision => 3) }
+					s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.traer_ultimo_costo_de_bien_de_consumo * i.cantidad, :precision => 3) }
 					s.add_column("DEPOSITO") { |i| i.deposito.nombre }
 					s.add_column("AREA") { |i| i.deposito.area.nombre }
 				end
@@ -94,8 +94,8 @@ class GeneradorDeImpresionItemStock
 				s.add_column("CODIGO") { |i| obtener_codigo_completo_bien_de_consumo(i.bien_de_consumo.nombre) }
 				s.add_column("NOMBRE") { |i| i.bien_de_consumo.nombre }
 				s.add_column("CANTIDAD") { |i| i.cantidad.to_i }
-				s.add_column("COSTO") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo , :precision => 3) }
-				s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.costo_de_bien_de_consumo.costo * i.cantidad, :precision => 3) }
+				s.add_column("COSTO") { |i| number_to_currency(i.traer_ultimo_costo_de_bien_de_consumo , :precision => 3) }
+				s.add_column("COSTO_TOTAL") { |i| number_to_currency(i.traer_ultimo_costo_de_bien_de_consumo * i.cantidad, :precision => 3) }
 				s.add_column("DEPOSITO") { |i| i.deposito.nombre }
 				s.add_column("AREA") { |i| i.deposito.area.nombre }
 				s.add_column("SUBTOTAL") { |i| number_to_currency(i.subtotal,precision: 3) }

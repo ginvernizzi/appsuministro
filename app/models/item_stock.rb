@@ -85,4 +85,12 @@ class ItemStock < ActiveRecord::Base
   #   return items_de_stock
   # end
 
+  def traer_ultimo_costo_de_bien_de_consumo
+    @costos = CostoDeBienDeConsumo.where("bien_de_consumo_id = ?", self.bien_de_consumo_id)
+    if @costos.empty?
+    else
+      @costos.last.costo unless @costos.empty?
+    end
+  end
+
 end
