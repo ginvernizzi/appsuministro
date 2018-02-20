@@ -75,12 +75,6 @@ class GeneradorDeImpresionItemStock
 		@fecha_inicio = DateTime.now
 		@fecha_fin = DateTime.now
 
-		if !@items.blank? && @items.count > 0
-			@fecha_inicio =  @items[0].fecha_inicio_impresion.strftime("%d/%m/%Y")
-			@fecha_fin = @items[0].fecha_fin_impresion.strftime("%d/%m/%Y")
-		end
-
-
 		@ruta_plantilla = Rails.root.join("app/plantillas/formulario_comprobante_items_stock_subtotal_por_pp.odt")
 
 		report = ODFReport::Report.new(@ruta_plantilla) do |r|
