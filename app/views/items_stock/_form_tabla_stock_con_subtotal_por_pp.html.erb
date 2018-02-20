@@ -37,7 +37,7 @@
       <% end %>
     <% if(@items_stock.length > 0) %>
           <td>
-            <%= link_to 'Imprimir', imprimir_formulario_stock_total_con_subtotal_por_pp_path(@items_stock[0].fecha_inicio_impresion, @items_stock[0].fecha_fin_impresion), method: :post, data: { confirm: '¿Esta seguro?' }  %>
+            <%= link_to 'Imprimir', imprimir_formulario_stock_total_con_subtotal_por_pp_path, method: :post, data: { confirm: '¿Esta seguro?' }  %>
         </td>
     <% end %>
     </tbody>

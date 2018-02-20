@@ -23,6 +23,13 @@ class ItemStock < ActiveRecord::Base
     items_de_stock.each do |item|
           if obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id) == pp_actual
               @lista_final << item
+
+              if item.id == items_de_stock.last.id #es el ultimo???
+                puts "#{pp_actual}"
+                subtotal_por_pp = subtotales_por_partida_parcial.select {|e| e.partida_parcial == obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id)}[0].subtotal
+                @lista_final.last.update(subtotal: subtotal_por_pp)
+                return @lista_final
+              end
           else
               subtotal_por_pp = subtotales_por_partida_parcial.select {|e| e.partida_parcial == pp_actual}[0].subtotal
               #test << "********* sub: #{subtotal_por_pp} /// pp: #{pp_actual}"
@@ -33,7 +40,7 @@ class ItemStock < ActiveRecord::Base
               @lista_final << item
 
               if item.id == items_de_stock.last.id
-                subtotal_por_pp = subtotales_por_partida_parcial.select {|e| e.partida_parcial == obtener_codigo_de_partida_parcial(items_de_stock.first.iem_de_consumo_id)}[0].subtotal
+                subtotal_por_pp = subtotales_por_partida_parcial.select {|e| e.partida_parcial == obtener_codigo_de_partida_parcial(items_de_stock.last.iem_de_consumo_id)}[0].subtotal
                 #test << "********* sub: #{subtotal_por_pp} /// pp: #{pp_actual}"
                 @lista_final.last.update(subtotal: subtotal_por_pp)
               end

@@ -27,24 +27,15 @@ class ItemsStockController < ApplicationController
   end
 
   def ver_stock_con_subtotal_por_pp
-    if !params[:fecha_inicio].blank? && !params[:fecha_fin].blank?
-      date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
-      date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo").first(50)
 
-      @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    if !@items_stock.blank? && @items_stock.count > 0
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
+      @subtotales = traer_subtotales_de_stock_por_pp(@items_stock)
 
-      if !@items_stock.blank? && @items_stock.count > 0
-        @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
-
-        @subtotales = traer_subtotales_de_stock_por_pp(@items_stock)
-
-        @item_stock_obj = ItemStock.new
-        @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
-        @items_stock = @items_stock.paginate(:page => params[:page], :per_page => 30)
-
-        @items_stock[0].fecha_inicio_impresion = date_inicio;
-        @items_stock[0].fecha_fin_impresion = date_fin;
-      end
+      @item_stock_obj = ItemStock.new
+      @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
+      @items_stock = @items_stock.paginate(:page => params[:page], :per_page => 30)
     end
 
     @action_destino = "ver_stock_con_subtotal_por_pp"
@@ -54,12 +45,13 @@ class ItemsStockController < ApplicationController
     date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
     date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
 
-    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
 
     if !@items_stock.blank? && @items_stock.count > 0
       @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
 
       @subtotales = traer_subtotales_de_stock_por_pp(@items_stock)
+
 
       @item_stock_obj = ItemStock.new
       @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
@@ -83,6 +75,14 @@ class ItemsStockController < ApplicationController
         if pp_actual == obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id)
             sumar_total = sumar_total + (item.cantidad * item.traer_ultimo_costo_de_bien_de_consumo)
             cantidad_pp = cantidad_pp + 1
+
+            if(item.id == items_de_stock.last.id)
+                subtotal_por_pp = Subtotal_de_stock_por_pp.new
+                subtotal_por_pp.partida_parcial = pp_actual
+                subtotal_por_pp.subtotal = sumar_total
+                subtotal_por_pp.cantidad_pp = cantidad_pp
+                lista << subtotal_por_pp
+            end
         else
             subtotal_por_pp = Subtotal_de_stock_por_pp.new
             subtotal_por_pp.partida_parcial = pp_actual
@@ -96,14 +96,6 @@ class ItemsStockController < ApplicationController
             pp_actual = obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id)
             sumar_total = sumar_total + (item.cantidad * item.traer_ultimo_costo_de_bien_de_consumo)
             cantidad_pp = cantidad_pp + 1
-
-            if(item == items_de_stock.last)
-                subtotal_por_pp = Subtotal_de_stock_por_pp.new
-                subtotal_por_pp.partida_parcial = pp_actual
-                subtotal_por_pp.subtotal = sumar_total
-                subtotal_por_pp.cantidad = cantidad_pp
-                lista << subtotal_por_pp
-            end
         end
     end
     return lista

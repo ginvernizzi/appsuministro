@@ -212,9 +212,8 @@ Rails.application.routes.draw do
                                                             to: 'items_stock#imprimir_formulario_stock_faltante',
                                                             as: 'imprimir_formulario_stock_faltante'
 
-  post 'items_stock/fecha_inicio/(:fecha_inicio)/fecha_fin/(:fecha_fin)/imprimir_formulario_stock_total_con_subtotal_por_pp/',
-                                                                                                                      to: 'items_stock#imprimir_formulario_stock_total_con_subtotal_por_pp',
-                                                                                                                      as: 'imprimir_formulario_stock_total_con_subtotal_por_pp'
+  post 'items_stock/imprimir_formulario_stock_total_con_subtotal_por_pp/', to: 'items_stock#imprimir_formulario_stock_total_con_subtotal_por_pp',
+                                                                          as: 'imprimir_formulario_stock_total_con_subtotal_por_pp'
 
 
   post 'recepciones_de_bienes_de_consumo_en_stock/:recepcion_de_bien_de_consumo_id/items_stock/imprimir_formulario/',
