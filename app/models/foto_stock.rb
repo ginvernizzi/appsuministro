@@ -2,7 +2,7 @@ class FotoStock
 	def guardar_stock_a_fecha
 		@items_stock_a_fecha = Array.new
 		deposito = Deposito.find(1) #deposito suministro "piso -1"
-		@items_stock = ItemStock.where("deposito_id = ?", deposito.id)
+		@items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("deposito_id = ?", deposito.id).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
 
 		@items_stock.each do |item_stock|
 		  item_stock_a_fecha = ItemStockAFecha.new(bien_de_consumo_id: item_stock.bien_de_consumo.id, costo: item_stock.costo_de_bien_de_consumo.costo, cantidad: item_stock.cantidad, deposito_id: item_stock.deposito.id)
