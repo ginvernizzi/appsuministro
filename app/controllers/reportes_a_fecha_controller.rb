@@ -24,6 +24,7 @@ class ReportesAFechaController < ApplicationController
   def show
     ActiveRecord::Base.transaction do
       begin
+        @costo_total_general = 0
         @reporte_a_fecha = ReporteAFecha.find(params[:id])
         @items_de_stock_json = JSON.parse(@reporte_a_fecha.stock_diario)
         @items_stock = Array.new
@@ -34,8 +35,13 @@ class ReportesAFechaController < ApplicationController
           costo: item['costo'],
           cantidad: item['cantidad'])
 
+          @costo_total_general = @costo_total_general + (item['costo'].to_d * item['cantidad'].to_i)
+
           @items_stock << item_stock_a_fecha
         end
+
+        @costo_total_general = number_to_currency(@costo_total_general, :precision => 3)
+
         respond_to do |format|
           format.html { render :show }
           format.json { render json: @items_stock.errors, status: :unprocessable_entity }
