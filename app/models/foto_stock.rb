@@ -49,16 +49,16 @@ class FotoStock
 
 	def traer_registros_de_stock_con_errores
 		@salida = Array.new
-		RecepcionDeBienDeConsumo.all.find_each(batch_size: 50) do |recepcion|
+		RecepcionDeBienDeConsumo.where("fecha IS NOT NULL AND estado <> ? AND estado <> ?", 7, 4).find_each(batch_size: 50) do |recepcion|
 			@reporte_a_fecha = ReporteAFecha.where("fecha = ?", recepcion.fecha).last	#Traigo el ultimo foto de stock para la fecha de la rececpion
 			if !@reporte_a_fecha.nil?
 				@items_de_stock_json = JSON.parse(@reporte_a_fecha.stock_diario)
 				recepcion.bienes_de_consumo_de_recepcion.each do |item|
 					@costo_de_bien_de_consumo = @items_de_stock_json.select {|h1| h1["bien_de_consumo_id"] == item.bien_de_consumo_id }
 					if !@costo_de_bien_de_consumo.blank?
-						@costo_foto = @costo_de_bien_de_consumo[0]["costo"]
+						@costo_foto = @costo_de_bien_de_consumo.first["costo"]
 						if item.costo != @costo_foto.to_d
-							@registro = Salida.new(item.bien_de_consumo_id, item.costo, @costo_foto.to_d)
+							@registro = Salida.new(recepcion.fecha, @reporte_a_fecha.id ,item.bien_de_consumo_id, item.costo, @costo_foto.to_d)
 							@salida << @registro
 						end
 					end
