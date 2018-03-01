@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180301172535) do
+ActiveRecord::Schema.define(version: 20180301184312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 20180301172535) do
   create_table "costos_de_bien_de_consumo_historico", force: :cascade do |t|
     t.date     "fecha"
     t.integer  "bien_de_consumo_id"
-    t.decimal  "costo"
+    t.decimal  "costo",              precision: 10, scale: 3
     t.string   "usuario"
     t.integer  "origen"
     t.datetime "created_at"
