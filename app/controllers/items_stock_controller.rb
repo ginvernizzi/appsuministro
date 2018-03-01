@@ -27,24 +27,15 @@ class ItemsStockController < ApplicationController
   end
 
   def ver_stock_con_subtotal_por_pp
-    if !params[:fecha_inicio].blank? && !params[:fecha_fin].blank?
-      date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
-      date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
 
-      @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    if !@items_stock.blank? && @items_stock.count > 0
+      @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
+      @subtotales = traer_subtotales_de_stock_por_pp(@items_stock)
 
-      if !@items_stock.blank? && @items_stock.count > 0
-        @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
-
-        @subtotales = traer_subtotales_de_stock_por_pp(@items_stock)
-
-        @item_stock_obj = ItemStock.new
-        @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
-        @items_stock = @items_stock.paginate(:page => params[:page], :per_page => 30)
-
-        @items_stock[0].fecha_inicio_impresion = date_inicio;
-        @items_stock[0].fecha_fin_impresion = date_fin;
-      end
+      @item_stock_obj = ItemStock.new
+      @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
+      @items_stock = @items_stock.paginate(:page => params[:page], :per_page => 30)
     end
 
     @action_destino = "ver_stock_con_subtotal_por_pp"
@@ -54,12 +45,13 @@ class ItemsStockController < ApplicationController
     date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
     date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
 
-    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
 
     if !@items_stock.blank? && @items_stock.count > 0
       @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
 
       @subtotales = traer_subtotales_de_stock_por_pp(@items_stock)
+
 
       @item_stock_obj = ItemStock.new
       @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
@@ -81,8 +73,16 @@ class ItemsStockController < ApplicationController
 
     items_de_stock.each do |item|
         if pp_actual == obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id)
-            sumar_total = sumar_total + (item.cantidad * item.costo_de_bien_de_consumo.costo)
+            sumar_total = sumar_total + (item.cantidad * item.traer_ultimo_costo_de_bien_de_consumo)
             cantidad_pp = cantidad_pp + 1
+
+            if(item.id == items_de_stock.last.id)
+                subtotal_por_pp = Subtotal_de_stock_por_pp.new
+                subtotal_por_pp.partida_parcial = pp_actual
+                subtotal_por_pp.subtotal = sumar_total
+                subtotal_por_pp.cantidad_pp = cantidad_pp
+                lista << subtotal_por_pp
+            end
         else
             subtotal_por_pp = Subtotal_de_stock_por_pp.new
             subtotal_por_pp.partida_parcial = pp_actual
@@ -94,16 +94,8 @@ class ItemsStockController < ApplicationController
             cantidad_pp = 0
 
             pp_actual = obtener_codigo_de_partida_parcial(item.bien_de_consumo.clase.partida_parcial.id)
-            sumar_total = sumar_total + (item.cantidad * item.costo_de_bien_de_consumo.costo)
+            sumar_total = sumar_total + (item.cantidad * item.traer_ultimo_costo_de_bien_de_consumo)
             cantidad_pp = cantidad_pp + 1
-
-            if(item == items_de_stock.last)
-                subtotal_por_pp = Subtotal_de_stock_por_pp.new
-                subtotal_por_pp.partida_parcial = pp_actual
-                subtotal_por_pp.subtotal = sumar_total
-                subtotal_por_pp.cantidad = cantidad_pp
-                lista << subtotal_por_pp
-            end
         end
     end
     return lista
@@ -259,11 +251,12 @@ class ItemsStockController < ApplicationController
                 else
                   @item_stock = ItemStock.new(bien_de_consumo: bdcdr.bien_de_consumo, cantidad: bdcdr.cantidad, costo_de_bien_de_consumo: costo_de_bien, deposito: @deposito)
                   raise ActiveRecord::Rollback unless @item_stock.save
+
+                  @recepcion_en_stock = RecepcionEnStock.create!(recepcion_de_bien_de_consumo: @recepcion)
+                  raise ActiveRecord::Rollback unless @recepcion_en_stock.save
                 end
               end
               raise ActiveRecord::Rollback unless @recepcion.update(estado: "8")
-              @recepcion_en_stock = RecepcionEnStock.create!(recepcion_de_bien_de_consumo: @recepcion)
-              raise ActiveRecord::Rollback unless @recepcion_en_stock.save
 
               flash[:notice] = 'Los bienes fueron agregados a stock exitosamente.'
           else
@@ -289,10 +282,7 @@ class ItemsStockController < ApplicationController
   end
 
   def imprimir_formulario_stock_total_con_subtotal_por_pp
-    date_fin = DateTime.parse(params[:fecha_fin]).at_end_of_day()
-    date_inicio = DateTime.parse(params[:fecha_inicio]).beginning_of_day()
-
-    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND cantidad > 0 AND items_stock.created_at BETWEEN ? AND ?", date_inicio, date_fin).order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
+    @items_stock = ItemStock.joins(:bien_de_consumo => [:clase => [:partida_parcial => [:partida_principal]]]).where("bienes_de_consumo.fecha_de_baja IS NULL AND cantidad > 0").order("partidas_principales.codigo").order("partidas_parciales.codigo").order("clases.codigo").order("bienes_de_consumo.codigo")
 
     if !@items_stock.blank? && @items_stock.count > 0
       @costo_total_general = number_to_currency(obtener_total_general_de_items_stock(@items_stock), :precision => 3)
@@ -301,9 +291,6 @@ class ItemsStockController < ApplicationController
 
       @item_stock_obj = ItemStock.new
       @items_stock = @item_stock_obj.lista_final_con_subtotales(@items_stock, @subtotales)
-
-      @items_stock[0].fecha_inicio_impresion = date_inicio;
-      @items_stock[0].fecha_fin_impresion = date_fin;
     end
 
     @generador = GeneradorDeImpresionItemStock.new
@@ -437,16 +424,16 @@ class ItemsStockController < ApplicationController
   def guardar_costos(bdcdr)
     costo = CostoDeBienDeConsumo.new
     costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
-    if costoArray && costoArray.count > 0
-      if bdcdr.costo > costoArray[0].costo
-        costoArray[0].update(costo: bdcdr.costo)
-        costo =costoArray[0]
-      end
-    else
+    # if costoArray && costoArray.count > 0
+    #   # if bdcdr.costo > costoArray[0].costo
+    #     costoArray[0].update(costo: bdcdr.costo)
+    #     costo =costoArray[0]
+    #   # end
+    # else
       costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo,
-                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
+                                              fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
       raise ActiveRecord::Rollback unless costo.save
-    end
+    # end
     @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo,
                                                             fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
     raise ActiveRecord::Rollback unless @costo_historico.save

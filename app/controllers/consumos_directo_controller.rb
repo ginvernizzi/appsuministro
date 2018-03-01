@@ -114,10 +114,10 @@ class ConsumosDirectoController < ApplicationController
 
                @consumo_directo.bienes_de_consumo_para_consumir.build(cantidad:bien["Cantidad a consumir"], costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo ,
                                                                      bien_de_consumo_id: @bien_de_consumo.id, deposito: deposito)
-              costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,
-                                                 usuario: current_user.name, origen: "2" )
+              # costo_de_bien = CostoDeBienDeConsumo.new(fecha: DateTime.now, bien_de_consumo_id: @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,
+              #                                    usuario: current_user.name, origen: "2" )
 
-              raise ActiveRecord::Rollback unless costo_de_bien.save
+              # raise ActiveRecord::Rollback unless costo_de_bien.save
 
               @costo_de_bien_historico = CostoDeBienDeConsumoHistorico.new(fecha: DateTime.now, bien_de_consumo_id:  @bien_de_consumo.id, costo: CostoDeBienDeConsumo.where(bien_de_consumo_id: @bien_de_consumo.id)[0].costo,
                                                     usuario: current_user.name, origen: "2" )
@@ -167,14 +167,17 @@ class ConsumosDirectoController < ApplicationController
       begin
         deposito_suministro = Deposito.where("nombre LIKE ?", "%SUMINISTRO%").first
 
+        # si el consumo fue desde recepcion, se guarda la rececpion
         @consumo_directo.recepciones_de_bien_de_consumo[0] ? @recepcion = @consumo_directo.recepciones_de_bien_de_consumo[0] : @recepcion = nil
         @consumo_directo.bienes_de_consumo_para_consumir.each do |bien|
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
           if !@item_stock.first.nil?
             suma = @item_stock.first.cantidad + bien.cantidad
             raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: suma)
+            puts "Volvio el stock correctamente"
           else
             raise ActiveRecord::Rollback
+            puts "revisar esto"
           end
           volver_costo_de_bien_al_anterior(bien) unless @recepcion.nil?
         end
@@ -274,9 +277,9 @@ class ConsumosDirectoController < ApplicationController
     costo = CostoDeBienDeConsumo.new
     costoArray = CostoDeBienDeConsumo.where(bien_de_consumo_id: bdcdr.bien_de_consumo.id)
     if costoArray && costoArray.count > 0
-      if bdcdr.costo > costoArray[0].costo
+      # if bdcdr.costo > costoArray[0].costo
         costoArray[0].update(costo:bdcdr.costo)
-      end
+      # end
       costo = costoArray[0]
     else
       costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo,
