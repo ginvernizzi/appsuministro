@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160902191839) do
+ActiveRecord::Schema.define(version: 20180301172535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,22 @@ ActiveRecord::Schema.define(version: 20160902191839) do
     t.datetime "updated_at"
     t.string   "ubicacion"
   end
+
+  create_table "auditorias_stock", force: :cascade do |t|
+    t.datetime "fecha"
+    t.integer  "bien_de_consumo_id"
+    t.integer  "operacion"
+    t.integer  "tipo_de_movimiento"
+    t.decimal  "valor_anterior"
+    t.integer  "deposito_id"
+    t.string   "usuario"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.decimal  "valor_operado"
+  end
+
+  add_index "auditorias_stock", ["bien_de_consumo_id"], name: "index_auditorias_stock_on_bien_de_consumo_id", using: :btree
+  add_index "auditorias_stock", ["deposito_id"], name: "index_auditorias_stock_on_deposito_id", using: :btree
 
   create_table "bienes_de_consumo", force: :cascade do |t|
     t.string   "nombre"
@@ -113,7 +129,7 @@ ActiveRecord::Schema.define(version: 20160902191839) do
   create_table "costos_de_bien_de_consumo", force: :cascade do |t|
     t.date     "fecha"
     t.integer  "bien_de_consumo_id"
-    t.decimal  "costo",              precision: 8, scale: 3
+    t.decimal  "costo",              precision: 10, scale: 3
     t.string   "usuario"
     t.integer  "origen"
     t.datetime "created_at"
@@ -247,14 +263,6 @@ ActiveRecord::Schema.define(version: 20160902191839) do
     t.datetime "updated_at"
   end
 
-  create_table "recepcion_de_bien_de_consumo_a_stocks", force: :cascade do |t|
-    t.integer  "recepcion_de_bien_de_consumo_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-  end
-
-  add_index "recepcion_de_bien_de_consumo_a_stocks", ["recepcion_de_bien_de_consumo_id"], name: "index_recep_a_stock_on_recep_de_bien_de_consumo_id", using: :btree
-
   create_table "recepcion_en_stocks", force: :cascade do |t|
     t.integer  "recepcion_de_bien_de_consumo_id"
     t.datetime "created_at",                      null: false
@@ -280,11 +288,6 @@ ActiveRecord::Schema.define(version: 20160902191839) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "descripcion_rechazo"
-  end
-
-  create_table "recepciones_para_consumo_directo", id: false, force: :cascade do |t|
-    t.integer "recepcion_de_bien_de_consumo_id"
-    t.integer "consumo_directo_id"
   end
 
   create_table "reemplazos_bdc", force: :cascade do |t|
@@ -359,6 +362,8 @@ ActiveRecord::Schema.define(version: 20160902191839) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
+  add_foreign_key "auditorias_stock", "bienes_de_consumo"
+  add_foreign_key "auditorias_stock", "depositos"
   add_foreign_key "bienes_de_consumo", "clases"
   add_foreign_key "clases", "partidas_parciales"
   add_foreign_key "consumos_directo", "areas"

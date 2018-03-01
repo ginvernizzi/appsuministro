@@ -167,14 +167,17 @@ class ConsumosDirectoController < ApplicationController
       begin
         deposito_suministro = Deposito.where("nombre LIKE ?", "%SUMINISTRO%").first
 
+        # si el consumo fue desde recepcion, se guarda la rececpion
         @consumo_directo.recepciones_de_bien_de_consumo[0] ? @recepcion = @consumo_directo.recepciones_de_bien_de_consumo[0] : @recepcion = nil
         @consumo_directo.bienes_de_consumo_para_consumir.each do |bien|
           @item_stock = ItemStock.where("bien_de_consumo_id = ? AND deposito_id = ?", bien.bien_de_consumo.id, bien.deposito_id)
           if !@item_stock.first.nil?
             suma = @item_stock.first.cantidad + bien.cantidad
             raise ActiveRecord::Rollback unless @item_stock.first.update(cantidad: suma)
+            puts "Volvio el stock correctamente"
           else
             raise ActiveRecord::Rollback
+            puts "revisar esto"
           end
           volver_costo_de_bien_al_anterior(bien) unless @recepcion.nil?
         end

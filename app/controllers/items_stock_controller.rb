@@ -251,11 +251,12 @@ class ItemsStockController < ApplicationController
                 else
                   @item_stock = ItemStock.new(bien_de_consumo: bdcdr.bien_de_consumo, cantidad: bdcdr.cantidad, costo_de_bien_de_consumo: costo_de_bien, deposito: @deposito)
                   raise ActiveRecord::Rollback unless @item_stock.save
+
+                  @recepcion_en_stock = RecepcionEnStock.create!(recepcion_de_bien_de_consumo: @recepcion)
+                  raise ActiveRecord::Rollback unless @recepcion_en_stock.save
                 end
               end
               raise ActiveRecord::Rollback unless @recepcion.update(estado: "8")
-              @recepcion_en_stock = RecepcionEnStock.create!(recepcion_de_bien_de_consumo: @recepcion)
-              raise ActiveRecord::Rollback unless @recepcion_en_stock.save
 
               flash[:notice] = 'Los bienes fueron agregados a stock exitosamente.'
           else
@@ -430,7 +431,7 @@ class ItemsStockController < ApplicationController
     #   # end
     # else
       costo = CostoDeBienDeConsumo.create!(bien_de_consumo: bdcdr.bien_de_consumo,
-                                            fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
+                                              fecha: DateTime.now, costo: bdcdr.costo, usuario: current_user.name, origen: '2')
       raise ActiveRecord::Rollback unless costo.save
     # end
     @costo_historico = CostoDeBienDeConsumoHistorico.create!(bien_de_consumo: bdcdr.bien_de_consumo,
